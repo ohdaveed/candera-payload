@@ -23,7 +23,9 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@payloadcms/admin-bar": "3.85.0",
+    "@payloadcms/db-postgres": "3.85.0",
     "@payloadcms/db-vercel-postgres": "3.85.0",
     "@payloadcms/live-preview-react": "3.85.0",
     "@payloadcms/next": "3.85.0",
