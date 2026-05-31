@@ -16,6 +16,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { syncEtsyListings } from './utilities/syncEtsy'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -100,6 +101,20 @@ export default buildConfig({
   globals: [Header, Footer],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+  endpoints: [
+    {
+      path: '/sync-etsy',
+      method: 'get',
+      handler: async (req) => {
+        if (!req.user) {
+          return Response.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+        const shopId = 25894791
+        const result = await syncEtsyListings(shopId, req.payload)
+        return Response.json(result)
+      },
+    },
+  ],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
