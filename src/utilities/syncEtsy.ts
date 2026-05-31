@@ -67,7 +67,7 @@ export async function syncEtsyListings(shopId: number, payload: Payload) {
 
     return { success: true, count: syncedCount }
   } catch (error) {
-    payload.logger.error('Error syncing Etsy listings:', error)
+    payload.logger.error({ err: error, msg: 'Error syncing Etsy listings' })
     throw error
   }
 }
