@@ -117,15 +117,21 @@ export const FormBlock: React.FC<
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
             <RichText data={confirmationMessage} />
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {isLoading && !hasSubmitted && <p aria-live="polite">Loading, please wait…</p>}
+          {error && (
+            <div aria-live="polite" role="alert">
+              {`${error.status || '500'}: ${error.message || ''}`}
+            </div>
+          )}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
-                    const Field = fields?.[field.blockType as keyof typeof fields] as React.ElementType
+                    const Field = fields?.[
+                      field.blockType as keyof typeof fields
+                    ] as React.ElementType
                     if (Field) {
                       return (
                         <div className="mb-6 last:mb-0" key={index}>
@@ -144,8 +150,8 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
+              <Button disabled={isLoading} form={formID} type="submit" variant="default">
+                {isLoading ? 'Submitting…' : submitButtonLabel}
               </Button>
             </form>
           )}

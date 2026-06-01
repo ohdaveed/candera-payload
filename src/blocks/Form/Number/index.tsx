@@ -25,8 +25,12 @@ export const Number: React.FC<
         )}
       </Label>
       <Input
+        aria-describedby={errors[name] ? `${name}-error` : undefined}
+        aria-invalid={errors[name] ? 'true' : undefined}
+        autoComplete="off"
         defaultValue={defaultValue}
         id={name}
+        inputMode="numeric"
         type="number"
         {...register(name, { required })}
       />

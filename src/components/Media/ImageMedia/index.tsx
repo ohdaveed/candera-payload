@@ -4,7 +4,7 @@ import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
 import NextImage from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { Props as MediaProps } from '../types'
 
@@ -46,8 +46,10 @@ const placeholderBlur =
  */
 
 export const ImageMedia: React.FC<MediaProps> = (props) => {
+  const [imageError, setImageError] = useState(false)
   const {
     alt: altFromProps,
+    fallbackLabel = 'Image unavailable',
     fill,
     pictureClassName,
     imgClassName,
@@ -77,6 +79,30 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
+  if (!src || imageError) {
+    const fallbackText = fallbackLabel === false ? null : fallbackLabel
+
+    return (
+      <div
+        {...(fallbackText
+          ? {
+              'aria-label': alt || fallbackText,
+              role: 'img',
+            }
+          : {
+              'aria-hidden': true,
+            })}
+        className={cn(
+          'flex h-full min-h-48 w-full items-center justify-center bg-candera-ash px-4 text-center text-sm text-candera-sage',
+          fill && 'absolute inset-0',
+          imgClassName,
+        )}
+      >
+        {fallbackText}
+      </div>
+    )
+  }
+
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
@@ -94,8 +120,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={placeholderBlur}
         priority={priority}
-        quality={80}
         loading={loading}
+        onError={() => setImageError(true)}
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}

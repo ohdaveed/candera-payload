@@ -20,11 +20,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html
-      className={cn(GeistMono.variable, 'scroll-smooth')}
-      lang="en"
-      suppressHydrationWarning
-    >
+    <html className={cn(GeistMono.variable, 'scroll-smooth')} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
@@ -45,8 +41,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
+          <a
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
+            href="#main-content"
+          >
+            Skip to Main Content
+          </a>
           <Header />
-          {children}
+          <main id="main-content">{children}</main>
           <Footer />
         </Providers>
         <Analytics />

@@ -42,9 +42,15 @@ export const Card: React.FC<{
       )}
       ref={cardRef}
     >
-      <div className="relative w-full ">
-        {!imageToUse && <div className="">No image</div>}
-        {imageToUse && typeof imageToUse !== 'string' && <Media resource={imageToUse} size="33vw" />}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-candera-ash">
+        {!imageToUse && (
+          <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage">
+            Image unavailable
+          </div>
+        )}
+        {imageToUse && typeof imageToUse !== 'string' && (
+          <Media fill imgClassName="object-cover" resource={imageToUse} size="33vw" />
+        )}
       </div>
       <div className="p-4">
         {showCategories && hasCategories && (
