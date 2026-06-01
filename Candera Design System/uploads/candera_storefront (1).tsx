@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import { 
   ShoppingBag, 
   ChevronRight, 
@@ -18,11 +18,25 @@ import {
   Loader2,
   Send,
   Compass,
-  ArrowUpRight
+  ArrowUpRight,
+  Globe,
+  Camera,
+  PenTool
 } from 'lucide-react';
 
 // Static candle catalog representing our main batch items
-const CANDLE_DATA = [
+const CANDLE_DATA: {
+  id: string;
+  name: string;
+  notes: { top: string; heart: string; base: string };
+  atmosphere: string;
+  price: number;
+  burnTime: string;
+  image: string;
+  tag: string;
+  etsyUrl: string;
+  batch: string;
+}[] = [
   {
     id: 'c1',
     name: 'High Desert',
@@ -61,8 +75,28 @@ const CANDLE_DATA = [
   }
 ];
 
+interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+}
+
+interface Answer {
+  question: string;
+  answer: string;
+}
+
+interface QuizResult {
+  candleName: string;
+  scentProfile: string;
+  atmosphere: string;
+  philosophy: string;
+  customRitual: string;
+  matchedCandle: string;
+}
+
 // Expanded 5-question ritual path
-const QUIZ_QUESTIONS = [
+const QUIZ_QUESTIONS: QuizQuestion[] = [
   { 
     id: 'q1',
     question: "Where do you find your deepest sense of calm?", 
@@ -91,7 +125,7 @@ const QUIZ_QUESTIONS = [
 ];
 
 // Gemini API client-side helper utilizing exponential backoff
-const callGeminiAPI = async (prompt, systemPrompt, isJson = false, jsonSchema = null) => {
+const callGeminiAPI = async (prompt: string, systemPrompt: string, isJson: boolean = false, jsonSchema: object | null = null): Promise<any> => {
   const apiKey = ""; // Left empty for automatic injection at runtime on Canvas
   const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
   const apiUrl = `${baseUrl}?key=${apiKey}`;
@@ -101,7 +135,11 @@ const callGeminiAPI = async (prompt, systemPrompt, isJson = false, jsonSchema = 
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      const payload = {
+      const payload: {
+        contents: { role: string; parts: { text: string }[] }[];
+        systemInstruction: { parts: { text: string }[] };
+        generationConfig?: { responseMimeType: string; responseSchema: object };
+      } = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         systemInstruction: {
           parts: [{ text: systemPrompt }]
@@ -144,7 +182,13 @@ const callGeminiAPI = async (prompt, systemPrompt, isJson = false, jsonSchema = 
 };
 
 // Graceful transition button redirecting securely to an Etsy listing
-const RedirectButton = ({ url, children, className }) => {
+interface RedirectButtonProps {
+  url: string;
+  children: ReactNode;
+  className?: string;
+}
+
+const RedirectButton: React.FC<RedirectButtonProps> = ({ url, children, className = '' }) => {
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleClick = () => {
@@ -176,12 +220,17 @@ const RedirectButton = ({ url, children, className }) => {
 };
 
 // Advanced Scent Quiz using Gemini to dynamically generate customized scent profiles
-const ScentQuiz = ({ isOpen, onClose }) => {
+interface ScentQuizProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const ScentQuiz: React.FC<ScentQuizProps> = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [quizResult, setQuizResult] = useState(null);
+  const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   if (!isOpen) return null;
@@ -189,8 +238,8 @@ const ScentQuiz = ({ isOpen, onClose }) => {
   const totalSteps = QUIZ_QUESTIONS.length;
   const progress = ((step + 1) / (totalSteps + 1)) * 100;
 
-  const handleOptionSelect = (option) => {
-    const updatedAnswers = [...answers, { question: QUIZ_QUESTIONS[step].question, answer: option }];
+  const handleOptionSelect = (option: string) => {
+    const updatedAnswers: Answer[] = [...answers, { question: QUIZ_QUESTIONS[step].question, answer: option }];
     setAnswers(updatedAnswers);
     setStep(step + 1);
   };
@@ -203,7 +252,7 @@ const ScentQuiz = ({ isOpen, onClose }) => {
     setErrorMessage('');
   };
 
-  const handleGenerateAlignment = async (e) => {
+  const handleGenerateAlignment = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
@@ -232,7 +281,7 @@ const ScentQuiz = ({ isOpen, onClose }) => {
 
     try {
       const result = await callGeminiAPI(userPrompt, systemPrompt, true, jsonSchema);
-      setQuizResult(result);
+      setQuizResult(result as QuizResult);
     } catch (err) {
       setErrorMessage("The air is still. We couldn't catch the alignment. Let's try again in a moment.");
     } finally {
@@ -271,7 +320,7 @@ const ScentQuiz = ({ isOpen, onClose }) => {
                   <h3 className="text-2xl md:text-3xl font-serif leading-tight text-[#1A1A1B]">{QUIZ_QUESTIONS[step].question}</h3>
                 </div>
                 <div className="grid gap-3">
-                  {QUIZ_QUESTIONS[step].options.map((option, idx) => (
+                  {QUIZ_QUESTIONS[step].options.map((option: string, idx: number) => (
                     <button 
                       key={idx} 
                       onClick={() => handleOptionSelect(option)}
@@ -385,21 +434,26 @@ const ScentQuiz = ({ isOpen, onClose }) => {
   );
 };
 
+interface Message {
+  role: 'oracle' | 'user';
+  text: string;
+}
+
 // Elegant floating Scent Oracle bot for deep atmospheric storytelling and ingredient lookup
-const ScentOracle = () => {
+const ScentOracle: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     { role: 'oracle', text: 'Peace be with you, seeker. I am the Candera Scent Oracle. Ask me of botanical notes, calming rituals, or our slow-craft methodology.' }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
@@ -450,7 +504,7 @@ const ScentOracle = () => {
           </div>
 
           <div className="flex-grow p-4 overflow-y-auto space-y-4">
-            {messages.map((m, idx) => (
+            {messages.map((m: Message, idx: number) => (
               <div 
                 key={idx} 
                 className={`flex flex-col max-w-[85%] ${m.role === 'user' ? 'ml-auto items-end' : 'mr-auto items-start'}`}
@@ -502,7 +556,7 @@ const ScentOracle = () => {
 };
 
 // Ambient Daily Breathwork Meditation widget leveraging the Gemini API
-const DailyRitualWidget = () => {
+const DailyRitualWidget: React.FC = () => {
   const [mood, setMood] = useState('Grounded Focus');
   const [ritual, setRitual] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -536,7 +590,7 @@ const DailyRitualWidget = () => {
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center">
-        {moods.map((m) => (
+        {moods.map((m: string) => (
           <button
             key={m}
             onClick={() => setMood(m)}
@@ -635,7 +689,7 @@ export default function App() {
               </h2>
               <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button 
-                  onClick={() => document.getElementById('collection').scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => document.getElementById('collection')!.scrollIntoView({ behavior: 'smooth' })}
                   className="bg-white text-[#1A1A1B] text-[11px] px-14 py-5 uppercase tracking-[0.2em] font-bold hover:bg-[#F5F2ED] transition-all shadow-2xl min-h-[60px] w-full sm:w-auto"
                 >
                   Explore the Collection
@@ -785,9 +839,9 @@ export default function App() {
               Cultivating intentional living through scent and micro-batch artisanry by Olesia Plascencia. Based in the high desert, shared everywhere.
             </p>
             <div className="flex gap-6 text-stone-400">
-              <Instagram size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
-              <Twitter size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
-              <Linkedin size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
+              <Camera size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
+              <Globe size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
+              <PenTool size={20} className="hover:text-[#1A1A1B] cursor-pointer transition-colors" />
             </div>
           </div>
           
