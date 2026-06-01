@@ -18,6 +18,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { syncEtsyListings } from './utilities/syncEtsy'
+import { createHomeEndpoint } from './endpoints/createHome'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -120,6 +121,7 @@ export default buildConfig({
         },
   }),
   endpoints: [
+    createHomeEndpoint,
     {
       path: '/sync-etsy',
       method: 'get',

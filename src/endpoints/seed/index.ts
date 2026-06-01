@@ -99,6 +99,8 @@ export const seed = async ({
     ),
   ])
 
+  const candleraImages = await loadCandleraImages()
+
   const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'users',
@@ -138,6 +140,22 @@ export const seed = async ({
       }),
     ),
   ])
+
+  // Upload Candera product images
+  const candleraMediaDocs: Record<string, { id: string | number }> = {}
+  for (const [key, file] of Object.entries(candleraImages)) {
+    if (file) {
+      try {
+        candleraMediaDocs[key] = await payload.create({
+          collection: 'media',
+          data: { alt: key.replace(/-/g, ' ') },
+          file,
+        })
+      } catch (_e) {
+        // skip if already exists
+      }
+    }
+  }
 
   payload.logger.info(`— Seeding posts...`)
 
@@ -204,35 +222,69 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding products...`)
 
-  const [_product1, _product2, _product3] = await Promise.all([
-    payload.create({
-      collection: 'products',
-      data: {
-        title: 'Candera Signature Scent',
-        slug: 'candera-signature-scent',
-        etsyListingId: 1001,
-        extraPhotos: [image1Doc.id],
-      },
+  const productSeedData = [
+    {
+      title: 'Seashell Garden Glow', slug: 'seashell-garden-glow', etsyListingId: 1001,
+      vessel: '001', price: 38, productTag: 'Bestseller', atmosphere: 'Coastal & Airy',
+      burnTime: '50 Hours',
+      tagline: 'Gathered from the tide. A practice in coastal stillness.',
+      scentProfile: { top: 'Sea Breeze', heart: 'Driftwood', base: 'Salt Air' },
+      imageKey: 'seashell-garden',
+    },
+    {
+      title: 'Meadowlight Botanical', slug: 'meadowlight-botanical', etsyListingId: 1002,
+      vessel: '002', price: 38, productTag: 'New Release', atmosphere: 'Fresh & Botanical',
+      burnTime: '50 Hours',
+      tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
+      scentProfile: { top: 'Fresh Green', heart: 'Lily of the Valley', base: 'Morning Dew' },
+      imageKey: 'meadowlight-botanical',
+    },
+    {
+      title: 'Crimson Noir', slug: 'crimson-noir', etsyListingId: 1003,
+      vessel: '003', price: 38, productTag: 'Limited Batch', atmosphere: 'Moody & Intimate',
+      burnTime: '50 Hours',
+      tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
+      scentProfile: { top: 'Dark Berry', heart: 'Merlot', base: 'Vetiver' },
+      imageKey: 'crimson-noir',
+    },
+    {
+      title: 'Ever After Glow', slug: 'ever-after-glow', etsyListingId: 1004,
+      vessel: '004', price: 38, productTag: 'Bestseller', atmosphere: 'Romantic & Soft',
+      burnTime: '50 Hours',
+      tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
+      scentProfile: { top: 'White Lilac', heart: 'Blue Hydrangea', base: 'Soft Musk' },
+      imageKey: 'ever-after-glow',
+    },
+    {
+      title: "Anya's Eyes", slug: 'anyas-eyes', etsyListingId: 1005,
+      vessel: '005', price: 38, productTag: 'Limited Batch', atmosphere: 'Gentle & Contemplative',
+      burnTime: '50 Hours',
+      tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
+      scentProfile: { top: 'Lilac', heart: 'Pressed Pansy', base: 'Soft Powder' },
+      imageKey: 'anyas-eyes',
+    },
+    {
+      title: 'Scarlet Bloom', slug: 'scarlet-bloom', etsyListingId: 1006,
+      vessel: '006', price: 38, productTag: 'New Release', atmosphere: 'Bold & Floral',
+      burnTime: '50 Hours',
+      tagline: 'Botanical architecture. Bold florals grounded in ritual.',
+      scentProfile: { top: 'Fresh Florals', heart: 'Botanical Rose', base: 'Green Stem' },
+      imageKey: 'scarlet-bloom',
+    },
+  ]
+
+  await Promise.all(
+    productSeedData.map(({ imageKey, ...product }) => {
+      const mediaDoc = candleraMediaDocs[imageKey]
+      return payload.create({
+        collection: 'products',
+        data: {
+          ...product,
+          ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
+        } as any,
+      })
     }),
-    payload.create({
-      collection: 'products',
-      data: {
-        title: 'Midnight Jasmine',
-        slug: 'midnight-jasmine',
-        etsyListingId: 1002,
-        extraPhotos: [image2Doc.id],
-      },
-    }),
-    payload.create({
-      collection: 'products',
-      data: {
-        title: 'Rustic Pine',
-        slug: 'rustic-pine',
-        etsyListingId: 1003,
-        extraPhotos: [image3Doc.id],
-      },
-    }),
-  ])
+  )
 
   payload.logger.info(`— Seeding contact form...`)
 
@@ -251,7 +303,11 @@ export const seed = async ({
       context: {
         disableRevalidate: true,
       },
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+      data: home({
+        heroImage: (candleraMediaDocs['seashell-garden'] as any) || imageHomeDoc,
+        metaImage: image2Doc,
+        innerCircleImage: (candleraMediaDocs['crimson-noir'] as any) || undefined,
+      }),
     }),
     payload.create({
       collection: 'pages',
@@ -336,6 +392,39 @@ export const seed = async ({
   ])
 
   payload.logger.info('Seeded database successfully!')
+}
+
+async function loadCandleraImages(): Promise<Record<string, File | null>> {
+  const fs = await import('fs')
+  const path = await import('path')
+
+  const images = [
+    'seashell-garden',
+    'meadowlight-botanical',
+    'crimson-noir',
+    'ever-after-glow',
+    'anyas-eyes',
+    'scarlet-bloom',
+  ]
+
+  const result: Record<string, File | null> = {}
+
+  for (const name of images) {
+    const filePath = path.join(process.cwd(), 'public', 'candera', `${name}.jpg`)
+    try {
+      const data = fs.readFileSync(filePath)
+      result[name] = {
+        name: `${name}.jpg`,
+        data,
+        mimetype: 'image/jpeg',
+        size: data.byteLength,
+      }
+    } catch {
+      result[name] = null
+    }
+  }
+
+  return result
 }
 
 async function fetchFileByURL(url: string): Promise<File> {
