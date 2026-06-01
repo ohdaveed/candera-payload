@@ -16,7 +16,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   primaryCtaUrl,
 }) => {
   return (
-    <section className="relative flex min-h-[760px] items-center justify-center overflow-hidden -mx-4 sm:-mx-8 md:-mx-16 lg:-mx-24">
+    <section className="relative flex min-h-[760px] items-center justify-center overflow-hidden">
       {/* Background image */}
       {media && typeof media === 'object' && (
         <div className="absolute inset-0">
