@@ -142,7 +142,6 @@ export const createHomeEndpoint: Endpoint = {
         )
       }
       const innerCircleMedia = mediaByKey['crimson-noir']
-
       const existing = await payload.find({
         collection: 'pages',
         where: { slug: { equals: 'home' } },
