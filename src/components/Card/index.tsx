@@ -109,7 +109,7 @@ export const Card: React.FC<{
         {showCategories && hasCategories && !scentProfile && (
           <div className="uppercase text-sm text-candera-sage">
             {categories?.map((category, index) => {
-              if (typeof category === 'object') {
+              if (category && typeof category === 'object') {
                 const { title: titleFromCategory } = category
                 const categoryTitle = titleFromCategory || 'Untitled category'
                 const isLast = index === categories.length - 1
