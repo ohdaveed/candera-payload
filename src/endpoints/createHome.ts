@@ -24,7 +24,7 @@ function readLocalImage(filename: string): File | null {
 
 const PRODUCT_DATA = [
   {
-    title: 'Seashell Garden Glow', slug: 'seashell-garden-glow', etsyListingId: 2001,
+    title: 'Seashell Garden Glow', slug: 'seashell-garden-glow', etsyListingId: 1001,
     vessel: '001', price: 38, productTag: 'Bestseller', atmosphere: 'Coastal & Airy',
     burnTime: '50 Hours',
     tagline: 'Gathered from the tide. A practice in coastal stillness.',
@@ -32,7 +32,7 @@ const PRODUCT_DATA = [
     imageKey: 'seashell-garden',
   },
   {
-    title: 'Meadowlight Botanical', slug: 'meadowlight-botanical', etsyListingId: 2002,
+    title: 'Meadowlight Botanical', slug: 'meadowlight-botanical', etsyListingId: 1002,
     vessel: '002', price: 38, productTag: 'New Release', atmosphere: 'Fresh & Botanical',
     burnTime: '50 Hours',
     tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
@@ -40,7 +40,7 @@ const PRODUCT_DATA = [
     imageKey: 'meadowlight-botanical',
   },
   {
-    title: 'Crimson Noir', slug: 'crimson-noir', etsyListingId: 2003,
+    title: 'Crimson Noir', slug: 'crimson-noir', etsyListingId: 1003,
     vessel: '003', price: 38, productTag: 'Limited Batch', atmosphere: 'Moody & Intimate',
     burnTime: '50 Hours',
     tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
@@ -48,7 +48,7 @@ const PRODUCT_DATA = [
     imageKey: 'crimson-noir',
   },
   {
-    title: 'Ever After Glow', slug: 'ever-after-glow', etsyListingId: 2004,
+    title: 'Ever After Glow', slug: 'ever-after-glow', etsyListingId: 1004,
     vessel: '004', price: 38, productTag: 'Bestseller', atmosphere: 'Romantic & Soft',
     burnTime: '50 Hours',
     tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
@@ -56,7 +56,7 @@ const PRODUCT_DATA = [
     imageKey: 'ever-after-glow',
   },
   {
-    title: "Anya's Eyes", slug: 'anyas-eyes', etsyListingId: 2005,
+    title: "Anya's Eyes", slug: 'anyas-eyes', etsyListingId: 1005,
     vessel: '005', price: 38, productTag: 'Limited Batch', atmosphere: 'Gentle & Contemplative',
     burnTime: '50 Hours',
     tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
@@ -64,7 +64,7 @@ const PRODUCT_DATA = [
     imageKey: 'anyas-eyes',
   },
   {
-    title: 'Scarlet Bloom', slug: 'scarlet-bloom', etsyListingId: 2006,
+    title: 'Scarlet Bloom', slug: 'scarlet-bloom', etsyListingId: 1006,
     vessel: '006', price: 38, productTag: 'New Release', atmosphere: 'Bold & Floral',
     burnTime: '50 Hours',
     tagline: 'Botanical architecture. Bold florals grounded in ritual.',
@@ -108,8 +108,11 @@ export const createHomeEndpoint: Endpoint = {
           } catch (_e) {
             // ignore duplicate
           }
+        } else {
+          payload.logger.warn(`[createHome] Local image file not found: ${file}`)
         }
       }
+
 
       // Upsert products
       for (const { imageKey, ...product } of PRODUCT_DATA) {
