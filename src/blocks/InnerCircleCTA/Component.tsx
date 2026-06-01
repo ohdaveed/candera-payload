@@ -20,7 +20,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
   media,
 }) => {
   return (
-    <section className="flex flex-col md:flex-row min-h-[480px] -mx-4 sm:-mx-8 md:-mx-16 lg:-mx-24">
+    <section className="flex flex-col md:flex-row min-h-[480px]">
       {/* Left editorial photo */}
       {media && typeof media === 'object' && (
         <div className="relative w-full md:w-1/2 min-h-[300px] md:min-h-full overflow-hidden">
