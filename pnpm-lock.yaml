@@ -25,6 +25,9 @@ importers:
       '@payloadcms/db-vercel-postgres':
         specifier: 3.85.0
         version: 3.85.0(@neondatabase/serverless@1.1.0)(@types/pg@8.20.0)(payload@3.85.0(bufferutil@4.1.0)(graphql@16.14.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(utf-8-validate@6.0.6)
+      '@payloadcms/email-nodemailer':
+        specifier: ^3.85.0
+        version: 3.85.0(payload@3.85.0(bufferutil@4.1.0)(graphql@16.14.0)(typescript@6.0.3)(utf-8-validate@6.0.6))
       '@payloadcms/live-preview-react':
         specifier: 3.85.0
         version: 3.85.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -1090,6 +1093,12 @@ packages:
 
   '@payloadcms/drizzle@3.85.0':
     resolution: {integrity: sha512-G5UJ4V0QRuWcoKDBF8NHktA1MJ5lgeTOL3D2rJXNAJlaq+jDf6jz0vXFguiYzbEcVRyS81GifsQsb1ldgAfJcQ==}
+    peerDependencies:
+      payload: 3.85.0
+
+  '@payloadcms/email-nodemailer@3.85.0':
+    resolution: {integrity: sha512-TeWdnPQL1vIHOZRu6ll+SznuN8QkdacLLvqj8GJf+pkZjpCtiLst2kQd59q2Xen+wpYiQAoKcKi4x4Sx0b8i7A==}
+    engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       payload: 3.85.0
 
@@ -3696,6 +3705,10 @@ packages:
     resolution: {integrity: sha512-GYVXHE2KnrzAfsAjl4uP++evGFCrAU1jta4ubEjIG7YWt/64Gqv66a30yKwWczVjA6j3bM4nBwH7Pk1JmDHaxQ==}
     engines: {node: '>=18'}
 
+  nodemailer@8.0.10:
+    resolution: {integrity: sha512-BLFuSth7QtHOkBzyqTehWWyub0NTRDuK2Q2SQfnGLsrJnzyU+Yeh4WpV1eZGuARFj1xQJHIdnTuJZLP+b9R1GQ==}
+    engines: {node: '>=6.0.0'}
+
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -5782,6 +5795,11 @@ snapshots:
       - prisma
       - sql.js
       - sqlite3
+
+  '@payloadcms/email-nodemailer@3.85.0(payload@3.85.0(bufferutil@4.1.0)(graphql@16.14.0)(typescript@6.0.3)(utf-8-validate@6.0.6))':
+    dependencies:
+      nodemailer: 8.0.10
+      payload: 3.85.0(bufferutil@4.1.0)(graphql@16.14.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
 
   '@payloadcms/graphql@3.85.0(graphql@16.14.0)(payload@3.85.0(bufferutil@4.1.0)(graphql@16.14.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(typescript@6.0.3)':
     dependencies:
@@ -8579,6 +8597,8 @@ snapshots:
   node-gyp-build@4.8.4: {}
 
   node-releases@2.0.46: {}
+
+  nodemailer@8.0.10: {}
 
   normalize-path@3.0.0: {}
 
