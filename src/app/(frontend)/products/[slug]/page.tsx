@@ -116,15 +116,17 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               atmosphere={product.atmosphere}
             />
 
-            <a
-              href="https://www.etsy.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-[46px] px-8 text-[11px] font-bold uppercase tracking-[.2em] bg-candera-obsidian text-white hover:bg-candera-ember transition-colors mt-2"
-              style={{ borderRadius: 0 }}
-            >
-              Add to the Ritual
-            </a>
+            {product.etsyListingId && (
+              <a
+                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center h-[46px] px-8 text-[11px] font-bold uppercase tracking-[.2em] bg-candera-obsidian text-white hover:bg-candera-ember transition-colors mt-2"
+                style={{ borderRadius: 0 }}
+              >
+                Add to the Ritual
+              </a>
+            )}
 
             {/* Product details list */}
             {product.scentProfile && (
