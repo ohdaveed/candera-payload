@@ -1,0 +1,38 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 30px 34px; width: 700px; font-family: "DM Sans"; }
+  .grp { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .grp:last-child { margin-bottom: 0; }
+  button { font-family: "DM Sans"; border: 1px solid transparent; border-radius: 0; cursor: pointer; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; font-size: 11px; padding: 0 26px; height: 44px; transition: all .15s; }
+  .primary { background: #141412; color: #fff; }
+  .accent { background: #dd7d52; color: #fff; }
+  .lav { background: #b28c9c; color: #141412; }
+  .outline { background: transparent; border-color: #dacbb8; color: #141412; }
+  .ghost { background: transparent; color: #7a8174; }
+  .link { background: transparent; color: #141412; border-bottom: 1px solid #141412; height: auto; padding: 4px 0; border-radius: 0; }
+  .lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: #dacbb8; width: 64px; }
+</style>
+</head>
+<body>
+  <div class="grp"><span class="lbl">Primary</span>
+    <button class="primary">Shop the Batch</button>
+    <button class="accent">Request Entry</button>
+    <button class="lav">Explore</button>
+  </div>
+  <div class="grp"><span class="lbl">Quiet</span>
+    <button class="outline">View Collection</button>
+    <button class="ghost">Cancel</button>
+    <button class="link">Take the Scent Quiz</button>
+  </div>
+  <div class="grp"><span class="lbl">Hover</span>
+    <button class="primary" style="background:#dd7d52">Shop the Batch</button>
+    <span style="font-size:11px;color:#7a8174;font-style:italic;font-family:EB Garamond">→ darken to Ember, nudge down 1px on press</span>
+  </div>
+</body>
+</html>

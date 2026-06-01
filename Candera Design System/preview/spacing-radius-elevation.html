@@ -1,0 +1,43 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 28px 32px; width: 700px; font-family: "DM Sans"; }
+  .wrap { display: flex; gap: 40px; }
+  .col { flex: 1; }
+  .hd { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.22em; color: #dacbb8; margin-bottom: 16px; }
+  .radii { display: flex; gap: 18px; align-items: flex-end; }
+  .rad { text-align: center; }
+  .rad .box { width: 62px; height: 50px; background: #d8d5cc; border: 1px solid #dacbb8; }
+  .rad .t { font-size: 10px; color: #141412; margin-top: 8px; }
+  .rad .s { font-size: 9px; color: #7a8174; }
+  .elev { display: flex; gap: 22px; }
+  .el { text-align: center; }
+  .el .box { width: 84px; height: 56px; background: #fff; border-radius: 2px; }
+  .el .t { font-size: 9px; color: #7a8174; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="col">
+      <div class="hd">Radius — nearly square</div>
+      <div class="radii">
+        <div class="rad"><div class="box" style="border-radius:0"></div><div class="t">Button</div><div class="s">0px</div></div>
+        <div class="rad"><div class="box" style="border-radius:2px"></div><div class="t">Card · Input</div><div class="s">2px</div></div>
+        <div class="rad"><div class="box" style="border-radius:0"></div><div class="t">Image</div><div class="s">0px</div></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="hd">Elevation — restrained</div>
+      <div class="elev">
+        <div class="el"><div class="box" style="box-shadow:0 1px 2px rgba(20,20,18,0.05),0 0 0 1px rgba(20,20,18,0.04)"></div><div class="t">Card</div></div>
+        <div class="el"><div class="box" style="box-shadow:0 18px 40px -12px rgba(20,20,18,0.25)"></div><div class="t">Hero CTA</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

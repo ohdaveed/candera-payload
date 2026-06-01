@@ -1,0 +1,228 @@
+/* ============================================================
+   CANDERA — Colors & Type Foundations
+   A luxury botanical candle storefront.
+   "Mineral stillness with botanical warmth."
+
+   Load fonts (Google Fonts) before this file:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300..500;1,9..40,300..500&display=swap" rel="stylesheet">
+   ============================================================ */
+
+:root {
+  /* ---- Brand palette (raw tokens) ----------------------- */
+  --candera-vellum: #f5f2ed;    /* primary content bg — warm aged cream */
+  --candera-field: #d8d5cc;     /* feature panel bg — sage-olive */
+  --candera-ash: #e2ddd6;       /* quiet UI moments, section breaks */
+  --candera-stone: #dacbb8;     /* borders, dividers — mineral */
+  --candera-sage: #7a8174;      /* secondary text, muted labels (large/decorative) */
+  --candera-rose: #b28c9c;      /* PRIMARY brand color — Dusk Rose, a muted dusty pink */
+  --candera-ember: #dd7d52;     /* warm copper — accents, hover, ritual moments */
+  --candera-obsidian: #141412;  /* primary text — deep & grounded */
+
+  /* Legacy alias — "Lavender" was renamed to Dusk Rose. Kept so old refs don't break. */
+  --candera-lavender: var(--candera-rose);
+
+  /* ---- Accessible / AA-safe variants -------------------- */
+  /* The soft brand shades above are tuned for mood + large display. Use these
+     deepened variants for SMALL text and for white-text-on-color (CTAs, tags)
+     so pairings clear WCAG 2.1 AA (4.5:1 body / 3:1 large + UI). See the
+     contrast notes in README. Keep the soft originals for large display only. */
+  --candera-sage-text: #5f6459;   /* small secondary text — AA on vellum/white (5.4:1) */
+  --candera-ember-strong: #a8502b;/* ember CTAs (white text 5.4:1) + small ember text (4.8:1) */
+  --candera-rose-strong: #8a5e72; /* rose/primary CTAs (white text 5.3:1) + small rose text (4.7:1) */
+
+  /* Auxiliary surface seen in the footer */
+  --candera-linen: #fdfbf7;     /* near-white warm linen */
+
+  /* ---- Semantic color roles ----------------------------- */
+  --background: var(--candera-vellum);
+  --surface: #ffffff;            /* white content sections */
+  --surface-muted: #fafaf8;      /* stone-50 equivalent */
+  --foreground: var(--candera-obsidian);
+  --fg-1: var(--candera-obsidian);          /* primary text */
+  --fg-2: var(--candera-sage);              /* secondary text (large) */
+  --fg-2-text: var(--candera-sage-text);    /* secondary text (small, AA) */
+  --fg-3: var(--candera-stone);             /* tertiary / placeholder */
+  --primary: var(--candera-rose);           /* Dusk Rose is the primary brand color */
+  --primary-strong: var(--candera-rose-strong); /* AA-safe primary for text/CTA white-on-color */
+  --primary-foreground: var(--candera-vellum);
+  --accent: var(--candera-ember);
+  --accent-strong: var(--candera-ember-strong); /* AA-safe accent for text/CTA */
+  --accent-foreground: var(--candera-vellum);
+  --border: var(--candera-stone);
+  --border-soft: rgba(218, 204, 184, 0.4); /* stone @ 40% */
+  --ring: var(--candera-rose);
+  --selection-bg: var(--candera-stone);
+  --destructive: #ef4444;
+
+  /* Dark / "Nocturnal" surface (inverted) */
+  --obsidian-bg: var(--candera-obsidian);
+  --obsidian-fg: var(--candera-vellum);
+
+  /* ---- Font families ------------------------------------ */
+  --font-display: "Fraunces", Georgia, serif;     /* hero, wordmark, product names */
+  --font-editorial: "EB Garamond", Georgia, serif;  /* pull quotes, scent descriptions */
+  --font-sans: "DM Sans", system-ui, sans-serif;  /* body, nav, labels, prices, buttons */
+
+  /* ---- Type scale (modular 1.25 — Major Third) ---------- */
+  --text-xs: 0.64rem;    /* ~10px — vessel numbers, tracking-widest labels */
+  --text-sm: 0.8rem;     /* ~13px — nav links, captions */
+  --text-base: 1rem;     /* 16px  — body copy */
+  --text-lg: 1.25rem;    /* 20px  — lead paragraphs, product subtitles */
+  --text-xl: 1.563rem;   /* 25px  — section headings (DM Sans) */
+  --text-2xl: 1.953rem;  /* 31px  — page headings */
+  --text-3xl: 3rem;      /* 48px  — display headings (Fraunces) */
+  --text-hero: clamp(3rem, 9vw, 7.25rem); /* hero wordmark / headline */
+
+  /* ---- Tracking ----------------------------------------- */
+  --tracking-tight: -0.01em;   /* Fraunces display */
+  --tracking-normal: 0;
+  --tracking-wide: 0.1em;
+  --tracking-wider: 0.2em;     /* uppercase labels */
+  --tracking-widest: 0.3em;    /* eyebrow labels, buttons */
+
+  --leading-tight: 1.08;
+  --leading-snug: 1.3;
+  --leading-relaxed: 1.7;
+
+  /* ---- Spacing (8px base) ------------------------------- */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;     /* minimum between page sections */
+  --space-128: 128px;
+
+  /* ---- Radius (nearly-square throughout) ---------------- */
+  --radius-button: 0px;   /* hard square */
+  --radius-card: 2px;
+  --radius-input: 2px;
+  --radius-badge: 2px;
+  --radius-image: 0px;
+
+  /* ---- Elevation (restrained, low) ---------------------- */
+  --shadow-sm: 0 1px 2px rgba(20, 20, 18, 0.05);
+  --shadow-card: 0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04);
+  --shadow-lg: 0 18px 40px -12px rgba(20, 20, 18, 0.25);
+  --ring-hairline: inset 0 0 0 1px rgba(20, 20, 18, 0.05);
+
+  /* ---- Motion (intentional, ritual — never bouncy) ------ */
+  --ease-enter: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-micro: 100ms;
+  --dur-entrance: 900ms;   /* 800–1200ms */
+  --dur-reveal: 1000ms;
+  --max-content: 1280px;
+}
+
+/* ============================================================
+   Semantic element styles — apply via class on plain HTML
+   ============================================================ */
+
+.candera {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--fg-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-numeric: tabular-nums;
+}
+.candera ::selection { background: var(--selection-bg); color: var(--candera-obsidian); }
+
+/* Display headings — Fraunces, optical sizing on */
+.candera h1, .h1 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+.hero-heading {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-hero);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+.candera h2, .h2 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  margin: 0;
+}
+.candera h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  margin: 0;
+}
+
+/* Eyebrow / kicker label — DM Sans, uppercase, wide tracking */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--accent);
+}
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--fg-2);
+}
+
+/* Body */
+.candera p, .body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 300;
+  line-height: var(--leading-relaxed);
+  color: var(--fg-1);
+  text-wrap: pretty;
+}
+.lead {
+  font-size: var(--text-lg);
+  font-weight: 300;
+  line-height: var(--leading-relaxed);
+  color: var(--fg-2);
+}
+
+/* Editorial / pull-quote — EB Garamond italic */
+.editorial {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--fg-2);
+}
+
+/* Price — DM Sans, tabular */
+.price {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: var(--tracking-wide);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}

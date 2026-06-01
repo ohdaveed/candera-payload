@@ -1,0 +1,33 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 24px 28px; width: 700px; font-family: "DM Sans"; }
+  .legend { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: #b9ab97; margin-bottom: 16px; }
+  .legend b { color: #5f6459; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .sw { border: 1px solid rgba(218,204,184,0.6); border-radius: 2px; overflow: hidden; background: #fff; }
+  .chip { height: 58px; display: flex; align-items: center; justify-content: center; }
+  .chip span { color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; }
+  .cap { padding: 9px 11px; }
+  .name { font-size: 11px; font-weight: 600; color: #141412; }
+  .hex { font-size: 10px; color: #7a8174; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+  .pass { font-size: 9px; color: #2f7d4f; font-weight: 700; margin-top: 4px; letter-spacing: 0.04em; }
+  .note { font-size: 11px; color: #5f6459; margin-top: 16px; line-height: 1.6; }
+  .note b { color: #141412; }
+</style>
+</head>
+<body>
+  <div class="legend">Deepened for <b>small text &amp; white-on-color</b> · WCAG AA (≥4.5:1)</div>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#5f6459"><span>Aa</span></div><div class="cap"><div class="name">Sage Text</div><div class="hex">#5F6459</div><div class="pass">5.4:1 on vellum ✓</div></div></div>
+    <div class="sw"><div class="chip" style="background:#a8502b"><span>Aa</span></div><div class="cap"><div class="name">Ember Strong</div><div class="hex">#A8502B</div><div class="pass">5.5:1 white text ✓</div></div></div>
+    <div class="sw"><div class="chip" style="background:#8a5e72"><span>Aa</span></div><div class="cap"><div class="name">Rose Strong</div><div class="hex">#8A5E72</div><div class="pass">5.3:1 white text ✓</div></div></div>
+  </div>
+  <div class="note">Use the <b>soft</b> brand shades (Dusk Rose, Ember, Sage) for large display &amp; decoration; switch to these <b>strong</b> variants for body-size labels, eyebrows, and any CTA/tag with white text. Obsidian on vellum stays AAA at 16:1.</div>
+</body>
+</html>
