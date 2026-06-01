@@ -15,6 +15,7 @@ const collections: CollectionSlug[] = [
   'media',
   'pages',
   'posts',
+  'products',
   'forms',
   'form-submissions',
   'search',
@@ -173,6 +174,9 @@ export const seed = async ({
   await payload.update({
     id: post1Doc.id,
     collection: 'posts',
+    context: {
+      disableRevalidate: true,
+    },
     data: {
       relatedPosts: [post2Doc.id, post3Doc.id],
     },
@@ -180,6 +184,9 @@ export const seed = async ({
   await payload.update({
     id: post2Doc.id,
     collection: 'posts',
+    context: {
+      disableRevalidate: true,
+    },
     data: {
       relatedPosts: [post1Doc.id, post3Doc.id],
     },
@@ -187,10 +194,45 @@ export const seed = async ({
   await payload.update({
     id: post3Doc.id,
     collection: 'posts',
+    context: {
+      disableRevalidate: true,
+    },
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
     },
   })
+
+  payload.logger.info(`— Seeding products...`)
+
+  const [product1, product2, product3] = await Promise.all([
+    payload.create({
+      collection: 'products',
+      data: {
+        title: 'Candera Signature Scent',
+        slug: 'candera-signature-scent',
+        etsyListingId: 1001,
+        extraPhotos: [image1Doc.id],
+      },
+    }),
+    payload.create({
+      collection: 'products',
+      data: {
+        title: 'Midnight Jasmine',
+        slug: 'midnight-jasmine',
+        etsyListingId: 1002,
+        extraPhotos: [image2Doc.id],
+      },
+    }),
+    payload.create({
+      collection: 'products',
+      data: {
+        title: 'Rustic Pine',
+        slug: 'rustic-pine',
+        etsyListingId: 1003,
+        extraPhotos: [image3Doc.id],
+      },
+    }),
+  ])
 
   payload.logger.info(`— Seeding contact form...`)
 
@@ -206,11 +248,17 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
       data: contactPageData({ contactForm: contactForm }),
     }),
   ])
@@ -220,8 +268,18 @@ export const seed = async ({
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
+      context: {
+        disableRevalidate: true,
+      },
       data: {
         navItems: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Products',
+              url: '/products',
+            },
+          },
           {
             link: {
               type: 'custom',
@@ -244,6 +302,9 @@ export const seed = async ({
     }),
     payload.updateGlobal({
       slug: 'footer',
+      context: {
+        disableRevalidate: true,
+      },
       data: {
         navItems: [
           {
