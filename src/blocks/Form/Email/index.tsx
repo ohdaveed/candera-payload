@@ -26,9 +26,14 @@ export const Email: React.FC<
         )}
       </Label>
       <Input
+        aria-describedby={errors[name] ? `${name}-error` : undefined}
+        aria-invalid={errors[name] ? 'true' : undefined}
+        autoComplete="email"
         defaultValue={defaultValue}
         id={name}
-        type="text"
+        inputMode="email"
+        spellCheck={false}
+        type="email"
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
       />
 
