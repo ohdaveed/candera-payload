@@ -154,19 +154,8 @@ export const createHomeEndpoint: Endpoint = {
         _status: 'published',
         title: 'Home',
         hero: {
-          type: 'highImpact',
-          links: [{ link: { type: 'custom', appearance: 'default', label: 'Explore the Collection', url: '#collection' } }],
-          media: heroMedia?.id,
-          richText: {
-            root: {
-              type: 'root',
-              children: [
-                { type: 'heading', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'An invitation to slow down.', version: 1 }], direction: 'ltr', format: '', indent: 0, tag: 'h1', version: 1 },
-                { type: 'paragraph', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'Limited Release: Batch 014 now curing in the studio.', version: 1 }], direction: 'ltr', format: '', indent: 0, textFormat: 0, version: 1 },
-              ],
-              direction: 'ltr', format: '', indent: 0, version: 1,
-            },
-          },
+          type: 'none',
+          richText: { root: { type: 'root', children: [{ type: 'paragraph', children: [], direction: 'ltr', format: '', indent: 0, textFormat: 0, version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 } },
         },
         layout: [
           {
