@@ -109,9 +109,14 @@ export default buildConfig({
         if (!req.user) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
-        const shopId = 25894791
-        const result = await syncEtsyListings(shopId, req.payload)
-        return Response.json(result)
+        try {
+          const shopId = 25894791
+          const result = await syncEtsyListings(shopId, req.payload)
+          return Response.json(result)
+        } catch (error) {
+          req.payload.logger.error({ err: error, msg: 'Error in /sync-etsy endpoint' })
+          return Response.json({ error: 'Error syncing Etsy listings' }, { status: 500 })
+        }
       },
     },
   ],

@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import React, { useState } from 'react'
+import React, { useState, startTransition } from 'react'
 
 import type { Theme } from './types'
 
@@ -30,7 +30,9 @@ export const ThemeSelector: React.FC = () => {
 
   React.useEffect(() => {
     const preference = window.localStorage.getItem(themeLocalStorageKey)
-    setValue(preference ?? 'auto')
+    startTransition(() => {
+      setValue(preference ?? 'auto')
+    })
   }, [])
 
   return (

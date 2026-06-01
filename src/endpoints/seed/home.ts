@@ -8,7 +8,7 @@ type HomeArgs = {
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
-  metaImage,
+  metaImage: _metaImage,
 }) => {
   return {
     slug: 'home',

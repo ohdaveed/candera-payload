@@ -48,7 +48,6 @@ export const FormBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
@@ -57,10 +56,7 @@ export const FormBlock: React.FC<
           value,
         }))
 
-        // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true)
-        }, 1000)
+        setIsLoading(true)
 
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
@@ -75,8 +71,6 @@ export const FormBlock: React.FC<
           })
 
           const res = await req.json()
-
-          clearTimeout(loadingTimerID)
 
           if (req.status >= 400) {
             setIsLoading(false)
@@ -131,8 +125,7 @@ export const FormBlock: React.FC<
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                    const Field = fields?.[field.blockType as keyof typeof fields] as React.ElementType
                     if (Field) {
                       return (
                         <div className="mb-6 last:mb-0" key={index}>

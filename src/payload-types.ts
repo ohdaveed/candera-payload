@@ -202,6 +202,10 @@ export interface FolderInterface {
  */
 export interface Media {
   id: number;
+  /**
+   * The numeric ID of the image from Etsy.
+   */
+  etsyImageId?: number | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -1310,6 +1314,7 @@ export interface ProductsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  etsyImageId?: T;
   alt?: T;
   caption?: T;
   folder?: T;
