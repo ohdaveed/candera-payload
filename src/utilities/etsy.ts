@@ -1,16 +1,15 @@
-const ETSY_API_KEY = process.env.ETSY_API_KEY
-const ETSY_SHARED_SECRET = process.env.ETSY_SHARED_SECRET
 const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
 
 export async function fetchEtsy(endpoint: string, options: RequestInit = {}) {
+  const apiKey = process.env.ETSY_API_KEY
+  const sharedSecret = process.env.ETSY_SHARED_SECRET
   const url = `${ETSY_BASE_URL}${endpoint}`
-  const apiKey = `${ETSY_API_KEY}:${ETSY_SHARED_SECRET}`
   
   const res = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
-      'x-api-key': apiKey,
+      'x-api-key': `${apiKey}:${sharedSecret}`,
     },
   })
 

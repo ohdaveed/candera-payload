@@ -1,4 +1,4 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, Product, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -12,11 +12,19 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo,
+  } = props
 
   const limit = limitFromProps || 3
 
-  let posts: Post[] = []
+  let data: (Post | Product)[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -26,8 +34,8 @@ export const ArchiveBlock: React.FC<
       else return category
     })
 
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
+    const fetchedDocs = await payload.find({
+      collection: relationTo || 'posts',
       depth: 1,
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
@@ -41,14 +49,14 @@ export const ArchiveBlock: React.FC<
         : {}),
     })
 
-    posts = fetchedPosts.docs
+    data = fetchedDocs.docs as (Post | Product)[]
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
         if (typeof post.value === 'object') return post.value
       }) as Post[]
 
-      posts = filteredSelectedPosts
+      data = filteredSelectedPosts
     }
   }
 
@@ -59,7 +67,7 @@ export const ArchiveBlock: React.FC<
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+      <CollectionArchive posts={data as any} relationTo={relationTo || 'posts'} />
     </div>
   )
 }
