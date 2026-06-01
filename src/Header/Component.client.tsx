@@ -31,9 +31,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [headerTheme])
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
+    <header className="container relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
+      <div className="py-8 flex items-start justify-between gap-4">
+        <Link aria-label="Candera Home" className="shrink-0" href="/">
           <Logo loading="eager" priority="high" className="invert dark:invert-0" />
         </Link>
         <HeaderNav data={data} />

@@ -23,6 +23,8 @@ export const Checkbox: React.FC<
     <Width width={width}>
       <div className="flex items-center gap-2">
         <CheckboxUi
+          aria-describedby={errors[name] ? `${name}-error` : undefined}
+          aria-invalid={errors[name] ? 'true' : undefined}
           defaultChecked={defaultValue}
           id={name}
           {...props}
