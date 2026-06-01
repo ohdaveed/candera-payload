@@ -7,9 +7,16 @@ import React, { Fragment } from 'react'
 import type { Post, Product } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import { FragranceProfile } from '@/components/FragranceProfile'
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
   extraPhotos?: Product['extraPhotos']
+  scentProfile?: Product['scentProfile']
+  burnTime?: Product['burnTime']
+  atmosphere?: Product['atmosphere']
+  productTag?: Product['productTag']
+  vessel?: Product['vessel']
+  price?: Product['price']
 }
 
 export const Card: React.FC<{
@@ -23,7 +30,7 @@ export const Card: React.FC<{
   const { cardRef, linkRef } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title, extraPhotos } = doc || {}
+  const { slug, categories, meta, title, extraPhotos, scentProfile, burnTime, atmosphere, productTag, vessel, price } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -51,18 +58,61 @@ export const Card: React.FC<{
         {imageToUse && typeof imageToUse !== 'string' && (
           <Media fill imgClassName="object-cover" resource={imageToUse} size="33vw" />
         )}
+        {/* Product tag badge */}
+        {productTag && (
+          <div className="absolute top-3 left-3">
+            <span
+              className={cn(
+                'text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1.5',
+                productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
+                productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
+                productTag === 'New Release' && 'bg-candera-rose text-white',
+              )}
+            >
+              {productTag}
+            </span>
+          </div>
+        )}
+        {vessel && (
+          <div className="absolute top-3 right-3">
+            <span className="text-[9px] font-bold uppercase tracking-[.18em] px-2 py-1 bg-white/80 text-candera-obsidian">
+              Batch {vessel}
+            </span>
+          </div>
+        )}
       </div>
-      <div className="p-4">
-        {showCategories && hasCategories && (
-          <div className="uppercase text-sm mb-4">
+      <div className="p-4 flex flex-col gap-2">
+        {/* Product header row */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex flex-col gap-1">
+            {vessel && (
+              <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage">
+                Vessel {vessel}
+              </span>
+            )}
+            {titleToUse && (
+              <h3 className="text-[15px] font-medium leading-snug text-candera-obsidian m-0">
+                <Link className="hover:text-candera-ember transition-colors" href={href} ref={linkRef}>
+                  {titleToUse}
+                </Link>
+              </h3>
+            )}
+          </div>
+          {price != null && (
+            <span className="text-[14px] font-semibold text-candera-obsidian shrink-0">
+              ${Number(price).toFixed(2)}
+            </span>
+          )}
+        </div>
+
+        {/* Categories fallback for posts */}
+        {showCategories && hasCategories && !scentProfile && (
+          <div className="uppercase text-sm text-candera-sage">
             {categories?.map((category, index) => {
-              if (typeof category === 'object') {
+              if (category && typeof category === 'object') {
                 const { title: titleFromCategory } = category
-
                 const categoryTitle = titleFromCategory || 'Untitled category'
-
                 const isLast = index === categories.length - 1
-
                 return (
                   <Fragment key={index}>
                     {categoryTitle}
@@ -70,21 +120,35 @@ export const Card: React.FC<{
                   </Fragment>
                 )
               }
-
               return null
             })}
           </div>
         )}
-        {titleToUse && (
-          <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={linkRef}>
-                {titleToUse}
-              </Link>
-            </h3>
-          </div>
+
+        {/* Fragrance profile for products */}
+        {scentProfile && (
+          <FragranceProfile
+            profile={scentProfile}
+            burnTime={burnTime}
+            atmosphere={atmosphere}
+          />
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+
+        {/* Description for posts */}
+        {description && !scentProfile && (
+          <p className="text-sm text-candera-sage-text leading-relaxed">{sanitizedDescription}</p>
+        )}
+
+        {/* Add to ritual CTA for products */}
+        {relationTo === 'products' && (
+          <Link
+            href={href}
+            className="mt-2 flex items-center justify-center h-[40px] text-[10px] font-bold uppercase tracking-[.2em] bg-candera-obsidian text-white hover:bg-candera-ember transition-colors"
+            style={{ borderRadius: 0 }}
+          >
+            View Product
+          </Link>
+        )}
       </div>
     </article>
   )

@@ -343,7 +343,16 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | StorefrontHeroBlock
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | TestimonialsBlock
+    | InnerCircleCTABlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -461,6 +470,21 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StorefrontHeroBlock".
+ */
+export interface StorefrontHeroBlock {
+  heroTag?: string | null;
+  headline: string;
+  subheading?: string | null;
+  media: number | Media;
+  primaryCtaLabel?: string | null;
+  primaryCtaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'storefrontHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -806,6 +830,39 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  eyebrow?: string | null;
+  items?:
+    | {
+        quote: string;
+        author: string;
+        location?: string | null;
+        badge?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InnerCircleCTABlock".
+ */
+export interface InnerCircleCTABlock {
+  headline: string;
+  description?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  media?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'innerCircleCTA';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -835,6 +892,32 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   extraPhotos?: (number | Media)[] | null;
+  /**
+   * Short poetic tagline shown on product cards.
+   */
+  tagline?: string | null;
+  /**
+   * Badge shown on product cards.
+   */
+  productTag?: ('Bestseller' | 'New Release' | 'Limited Batch') | null;
+  /**
+   * Mood descriptor e.g. "Coastal & Airy".
+   */
+  atmosphere?: string | null;
+  /**
+   * Expected burn time e.g. "50 Hours".
+   */
+  burnTime?: string | null;
+  scentProfile?: {
+    top?: string | null;
+    heart?: string | null;
+    base?: string | null;
+  };
+  /**
+   * Vessel number e.g. "001".
+   */
+  vessel?: string | null;
+  price?: number | null;
   categories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
@@ -1160,11 +1243,14 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        storefrontHero?: T | StorefrontHeroBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        innerCircleCTA?: T | InnerCircleCTABlockSelect<T>;
       };
   meta?:
     | T
@@ -1179,6 +1265,20 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StorefrontHeroBlock_select".
+ */
+export interface StorefrontHeroBlockSelect<T extends boolean = true> {
+  heroTag?: T;
+  headline?: T;
+  subheading?: T;
+  media?: T;
+  primaryCtaLabel?: T;
+  primaryCtaUrl?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1266,6 +1366,37 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  items?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        location?: T;
+        badge?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InnerCircleCTABlock_select".
+ */
+export interface InnerCircleCTABlockSelect<T extends boolean = true> {
+  headline?: T;
+  description?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1305,6 +1436,19 @@ export interface ProductsSelect<T extends boolean = true> {
   slug?: T;
   description?: T;
   extraPhotos?: T;
+  tagline?: T;
+  productTag?: T;
+  atmosphere?: T;
+  burnTime?: T;
+  scentProfile?:
+    | T
+    | {
+        top?: T;
+        heart?: T;
+        base?: T;
+      };
+  vessel?: T;
+  price?: T;
   categories?: T;
   updatedAt?: T;
   createdAt?: T;
