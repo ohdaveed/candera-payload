@@ -20,31 +20,32 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
   }
 
   if (categories && Array.isArray(categories) && categories.length > 0) {
-    const populatedCategories: { id: string | number; title: string }[] = []
-    for (const category of categories) {
-      if (!category) {
-        continue
-      }
+    const categoryIds = categories.filter(
+      (category) => category && typeof category !== 'object',
+    ) as (string | number)[]
+    const populatedCategories: { id: string | number; title: string }[] = categories.filter(
+      (category) => category && typeof category === 'object',
+    ) as { id: string | number; title: string }[]
 
-      if (typeof category === 'object') {
-        populatedCategories.push(category)
-        continue
-      }
-
-      const doc = await req.payload.findByID({
+    if (categoryIds.length > 0) {
+      const { docs: fetchedCategories } = await req.payload.find({
         collection: 'categories',
-        id: category,
-        disableErrors: true,
         depth: 0,
-        select: { title: true },
+        pagination: false,
         req,
+        select: { title: true },
+        where: {
+          id: {
+            in: categoryIds,
+          },
+        },
       })
 
-      if (doc !== null) {
-        populatedCategories.push(doc)
-      } else {
+      populatedCategories.push(...(fetchedCategories as { id: string | number; title: string }[]))
+
+      if (fetchedCategories.length < categoryIds.length) {
         console.error(
-          `Failed. Category not found when syncing collection '${collection}' with id: '${id}' to search.`,
+          `Failed. Some categories not found when syncing collection '${collection}' with id: '${id}' to search.`,
         )
       }
     }

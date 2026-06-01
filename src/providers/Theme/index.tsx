@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
+import React, { createContext, useCallback, use, useEffect, useState, startTransition } from 'react'
 
 import type { Theme, ThemeContextType } from './types'
 
@@ -48,7 +48,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     document.documentElement.setAttribute('data-theme', themeToSet)
-    setThemeState(themeToSet)
+    startTransition(() => {
+      setThemeState(themeToSet)
+    })
   }, [])
 
   return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>

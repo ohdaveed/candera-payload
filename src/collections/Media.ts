@@ -25,6 +25,14 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'etsyImageId',
+      type: 'number',
+      unique: true,
+      admin: {
+        description: 'The numeric ID of the image from Etsy.',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
       //required: true,

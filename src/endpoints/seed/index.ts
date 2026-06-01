@@ -204,7 +204,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding products...`)
 
-  const [product1, product2, product3] = await Promise.all([
+  const [_product1, _product2, _product3] = await Promise.all([
     payload.create({
       collection: 'products',
       data: {
