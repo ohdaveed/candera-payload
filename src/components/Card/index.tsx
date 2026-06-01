@@ -100,7 +100,7 @@ export const Card: React.FC<{
           </div>
           {price != null && (
             <span className="text-[14px] font-semibold text-candera-obsidian shrink-0">
-              ${price.toFixed(2)}
+              ${Number(price).toFixed(2)}
             </span>
           )}
         </div>
