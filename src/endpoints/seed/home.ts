@@ -140,7 +140,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         description:
           'Our batches often sell out in days. Join our list to receive early access to new scent drops and personal ritual invitations.',
         ctaLabel: 'Request Entry',
-        ctaUrl: '/inner-circle',
+        ctaUrl: '/#collection',
         ...(innerCircleImage ? { media: innerCircleImage.id } : {}),
       } as any,
     ],
