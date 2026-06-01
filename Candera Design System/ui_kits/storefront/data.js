@@ -1,0 +1,91 @@
+/* Candera storefront — catalog + content data.
+   Sourced from candera-frontend/src/data/products.json + content/*.json */
+window.CANDERA = {
+  site: {
+    brandName: "CANDERA",
+    footerTagline:
+      "Cultivating intentional living through scent and micro-batch artisanry. Based in the studio, shared everywhere.",
+    copyrightYear: "2026",
+    copyrightName: "Candera Studio",
+  },
+  home: {
+    heroTag: "Hand-Poured in the Studio",
+    heroHeadline: "An invitation to slow down.",
+    heroSubheading: "Limited Release: Batch 014 now curing in the studio.",
+    collectionTag: "The Current Batch",
+    collectionHeadline: "Rooted in Earth, Released in Air.",
+    collectionDescription:
+      "Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.",
+    innerCircleHeadline: "Join the Inner Circle",
+    innerCircleDescription:
+      "Our batches often sell out in days. Join our list to receive early access to new scent drops and personal ritual invitations.",
+    testimonialsTag: "Voices of the Inner Circle",
+    testimonials: [
+      { quote: "The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.", author: "Elena R.", location: "Los Angeles", badge: "Verified Ritualist" },
+      { quote: "I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.", author: "James T.", location: "Austin", badge: "Repeat Collector" },
+      { quote: "A ritual I look forward to every evening. This is the soul of my living room.", author: "Sarah L.", location: "Brooklyn", badge: "Verified Ritualist" },
+    ],
+  },
+  products: [
+    {
+      slug: "seashell-garden-glow", name: "Seashell Garden Glow", vessel: "001", price: 38.0,
+      tagline: "Gathered from the tide. A practice in coastal stillness.",
+      description: "Capturing the raw, mineral breath of the Pacific. A softly salty sea breeze meets sun-warmed sand at the threshold of dusk. Hand-poured into numbered vessels, adorned with botanicals gathered at the water's edge. This is a scent for the unhurried.",
+      scent_profile: { top: "Sea Breeze", heart: "Driftwood", base: "Salt Air" },
+      notes: ["Sea breeze", "Driftwood", "Salt air", "Warm sand"],
+      details: ["15 oz · Soy & beeswax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Coastal", batch: "001" },
+      tag: "Bestseller", atmosphere: "Coastal & Airy", image: "../../assets/images/seashell-garden.jpg",
+    },
+    {
+      slug: "meadowlight-botanical", name: "Meadowlight Botanical", vessel: "002", price: 38.0,
+      tagline: "Sunlight through wildflowers. A ritual of spring emergence.",
+      description: "A soft, clean emergence. Lily of the Valley blended with fresh green stems and morning dew, bonded at precisely 185°F. Each vessel is a landscape of pressed botanicals, glowing from within like a romantic cottage garden at first light.",
+      scent_profile: { top: "Fresh Green", heart: "Lily of the Valley", base: "Morning Dew" },
+      notes: ["Lily of the valley", "Wildflower", "Fresh green", "Morning dew"],
+      details: ["15 oz · Soy & beeswax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Serene", batch: "002" },
+      tag: "New Release", atmosphere: "Fresh & Botanical", image: "../../assets/images/meadowlight-botanical.jpg",
+    },
+    {
+      slug: "crimson-noir", name: "Crimson Noir", vessel: "003", price: 38.0,
+      tagline: "Dusk in the sensory revolution. A deeper, more intimate practice.",
+      description: "A grounded study in depth. Ripe berries and velvety merlot meet quiet earth and vetiver. Pure products born from 16 hours of intention, filling the space without demand—sensual, grounded, and intensely private.",
+      scent_profile: { top: "Dark Berry", heart: "Merlot", base: "Vetiver" },
+      notes: ["Merlot", "Dark berry", "Vetiver", "Quiet earth"],
+      details: ["15 oz · Soy & beeswax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Introspective", batch: "003" },
+      tag: "Limited Batch", atmosphere: "Moody & Intimate", image: "../../assets/images/crimson-noir.jpg",
+    },
+    {
+      slug: "ever-after-glow", name: "Ever After Glow", vessel: "004", price: 38.0,
+      tagline: "A garden in full bloom. Radiating elegance and ritual serenity.",
+      description: "A fairy-tale devotion. Blue hydrangeas and white lilac meet airy spring blossoms, evoking the quiet grace of a blooming sanctuary. Designed for romantic evenings and the pursuit of tranquility.",
+      scent_profile: { top: "White Lilac", heart: "Blue Hydrangea", base: "Soft Musk" },
+      notes: ["Blue hydrangea", "White lilac", "Soft green", "Spring blossom"],
+      details: ["15 oz · Soy & beeswax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Romantic", batch: "004" },
+      tag: "Bestseller", atmosphere: "Romantic & Soft", image: "../../assets/images/ever-after-glow.jpg",
+    },
+    {
+      slug: "anyas-eyes", name: "Anya's Eyes", vessel: "005", price: 38.0,
+      tagline: "The quiet beauty of pansies. A contemplative botanical study.",
+      description: "A powdery, floral silence. Real pressed pansies meet the scent of lilac and spring earth. Hand-poured in micro-batches, each numbered vessel is a piece of wearable botanica, capturing the unhurried color of a garden in early bloom.",
+      scent_profile: { top: "Lilac", heart: "Pressed Pansy", base: "Soft Powder" },
+      notes: ["Pressed pansy", "Lilac", "Soft powder", "Spring earth"],
+      details: ["15 oz · Natural wax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Contemplative", batch: "005" },
+      tag: "Limited Batch", atmosphere: "Gentle & Contemplative", image: "../../assets/images/anyas-eyes.jpg",
+    },
+    {
+      slug: "scarlet-bloom", name: "Scarlet Bloom", vessel: "006", price: 38.0,
+      tagline: "Botanical architecture. Bold florals grounded in ritual.",
+      description: "A statement of visual and aromatic integrity. Rich red botanicals suspended in natural wax, scented with fresh botanical rose and green stems. A limited release vessel for the intentional collector.",
+      scent_profile: { top: "Fresh Florals", heart: "Botanical Rose", base: "Green Stem" },
+      notes: ["Botanical rose", "Fresh florals", "Green stem", "Warm base"],
+      details: ["15 oz · Soy & beeswax blend", "Numbered vessel", "Micro-batch cured", "Ships from California"],
+      metadata: { burn_time: "50 Hours", mood: "Bold", batch: "006" },
+      tag: "New Release", atmosphere: "Bold & Floral", image: "../../assets/images/scarlet-bloom.jpg",
+    },
+  ],
+};

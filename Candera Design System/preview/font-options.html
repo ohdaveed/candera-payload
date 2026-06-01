@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Playfair+Display:ital,wght@0,400..700;1,400..600&family=Cormorant:ital,wght@0,400..600;1,400..500&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 0; width: 760px; font-family: "DM Sans"; }
+  .row { display: grid; grid-template-columns: 138px 1fr; border-bottom: 1px solid rgba(218,204,184,0.5); }
+  .row:last-child { border-bottom: none; }
+  .meta { padding: 22px 18px; border-right: 1px solid rgba(218,204,184,0.5); display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .fname { font-size: 12px; font-weight: 700; color: #141412; letter-spacing: 0.02em; }
+  .fnote { font-size: 9px; color: #7a8174; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.1em; }
+  .cur { display: inline-block; margin-top: 3px; font-size: 8px; font-weight: 700; color: #a8502b; letter-spacing: 0.16em; }
+  .spec { padding: 20px 26px; display: flex; flex-direction: column; gap: 6px; }
+  .wm { font-weight: 700; font-size: 17px; letter-spacing: 0.04em; color: #141412; }
+  .head { font-style: italic; font-weight: 400; font-size: 33px; line-height: 1.04; color: #141412; letter-spacing: -0.01em; }
+  .f-fraunces .head, .f-fraunces .wm { font-family: "Fraunces"; font-optical-sizing: auto; }
+  .f-playfair .head, .f-playfair .wm { font-family: "Playfair Display"; }
+  .f-cormorant .head, .f-cormorant .wm { font-family: "Cormorant"; }
+  .f-georgia .head, .f-georgia .wm { font-family: Georgia, "Times New Roman", serif; }
+</style>
+</head>
+<body style="font-size: 20px">
+  <div class="row f-fraunces">
+    <div class="meta"><span class="fname">Fraunces</span><span class="fnote">Display · pressed</span><span class="cur">◀ CURRENT</span></div>
+    <div class="spec"><span class="wm">CANDERA</span><span class="head">An invitation to slow down.</span></div>
+  </div>
+  <div class="row f-playfair">
+    <div class="meta"><span class="fname">Playfair Display</span><span class="fnote">Classic luxury serif</span></div>
+    <div class="spec"><span class="wm">CANDERA</span><span class="head">An invitation to slow down.</span></div>
+  </div>
+  <div class="row f-georgia">
+    <div class="meta"><span class="fname">Georgia</span><span class="fnote">What the .tsx renders</span></div>
+    <div class="spec"><span class="wm">CANDERA</span><span class="head">An invitation to slow down.</span></div>
+  </div>
+  <div class="row f-cormorant">
+    <div class="meta"><span class="fname">Cormorant</span><span class="fnote">Delicate · editorial</span></div>
+    <div class="spec"><span class="wm">CANDERA</span><span class="head">An invitation to slow down.</span></div>
+  </div>
+</body>
+</html>

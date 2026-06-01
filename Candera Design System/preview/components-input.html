@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 30px 34px; width: 700px; font-family: "DM Sans"; }
+  .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: end; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #7a8174; }
+  .box { background: transparent; border: 1px solid #dacbb8; border-radius: 2px; padding: 11px 14px; font-family: "DM Sans"; font-size: 14px; color: #141412; }
+  .box.ph { color: #dacbb8; }
+  .box.focus { border-color: #141412; box-shadow: 0 0 0 2px rgba(155,140,159,0.25); color: #141412; }
+  button { margin-top: 0; height: 46px; background: #141412; color: #f5f2ed; border: none; border-radius: 0; text-transform: uppercase; letter-spacing: 0.2em; font-size: 11px; font-weight: 700; font-family: "DM Sans"; cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="field"><label>Name</label><div class="box ph">Your name</div></div>
+    <div class="field"><label>Email</label><div class="box focus">elena@studio.co</div></div>
+    <div class="field" style="grid-column:1/2"><label>Underline variant</label><div class="box" style="border:none;border-bottom:1px solid #dacbb8;border-radius:0;padding-left:0">your@email.com</div></div>
+    <button>Request Entry</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #f5f2ed; padding: 28px 30px; width: 700px; font-family: "DM Sans"; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .sw { border: 1px solid rgba(218,204,184,0.5); border-radius: 2px; overflow: hidden; }
+  .chip { height: 76px; display: flex; align-items: flex-end; padding: 8px 9px; }
+  .chip span { font-size: 8.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; }
+  .cap { padding: 9px 10px; background: #fff; }
+  .name { font-size: 11px; font-weight: 600; color: #141412; }
+  .hex { font-size: 10px; color: #7a8174; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+  .role { font-size: 9px; color: #dacbb8; margin-top: 1px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#b28c9c"><span style="color:#f5f2ed">Primary</span></div><div class="cap"><div class="name">Dusk Rose</div><div class="hex">#B28C9C</div><div class="role">Primary color</div></div></div>
+    <div class="sw"><div class="chip" style="background:#dd7d52"><span style="color:#fff">Accent</span></div><div class="cap"><div class="name">Ember</div><div class="hex">#DD7D52</div><div class="role">CTAs · hover</div></div></div>
+    <div class="sw"><div class="chip" style="background:#7a8174"><span style="color:#f5f2ed">Muted</span></div><div class="cap"><div class="name">Sage</div><div class="hex">#7A8174</div><div class="role">2° text</div></div></div>
+    <div class="sw"><div class="chip" style="background:#141412"><span style="color:#f5f2ed">Text</span></div><div class="cap"><div class="name">Obsidian</div><div class="hex">#141412</div><div class="role">1° text</div></div></div>
+  </div>
+</body>
+</html>
