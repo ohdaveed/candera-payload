@@ -8,24 +8,31 @@ import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { SearchIcon } from 'lucide-react'
 
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
+export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({ data, transparent }) => {
   const navItems = data?.navItems || []
+
+  const linkClass = [
+    'text-[11px] font-semibold uppercase tracking-[.2em] transition-colors hover:text-candera-ember',
+    transparent ? 'text-white/80' : 'text-candera-sage',
+  ].join(' ')
 
   return (
     <nav
       aria-label="Main Navigation"
-      className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm md:text-base"
+      className="flex items-center gap-6"
     >
       {navItems.map(({ link }, i) => {
-        return <CMSLink key={i} {...link} appearance="link" />
+        return (
+          <CMSLink key={i} {...link} appearance="link" className={linkClass} />
+        )
       })}
       <Link
         aria-label="Search"
-        className="inline-flex size-8 items-center justify-center rounded-md hover:bg-primary/10 focus-visible:outline-1 focus-visible:ring-4 focus-visible:ring-ring/20"
+        className={['inline-flex items-center justify-center transition-colors hover:text-candera-ember', transparent ? 'text-white/80' : 'text-candera-sage'].join(' ')}
         href="/search"
       >
         <span className="sr-only">Search</span>
-        <SearchIcon aria-hidden="true" className="w-5 text-primary" />
+        <SearchIcon aria-hidden="true" className="w-4" />
       </Link>
     </nav>
   )
