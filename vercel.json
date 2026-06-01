@@ -1,4 +1,7 @@
 {
+  "buildCommand": "NODE_OPTIONS=--no-deprecation payload migrate && pnpm build",
+  "installCommand": "pnpm install",
+  "node": "24.x",
   "crons": [
     {
       "path": "/api/payload-jobs/run",
