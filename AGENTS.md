@@ -55,9 +55,16 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 
 ## Database & Migrations
 
-Uses `@payloadcms/db-postgres` with `push: false` — migrations always required. `DATABASE_URL` env var (fallback: `POSTGRES_URL`). After schema change: `pnpm payload migrate:create`, commit migration, then migrations run on deploy via `pnpm run ci`.
+**Production:** Neon Serverless Postgres via Vercel integration. `@payloadcms/db-postgres` with `push: false` — migrations always required. Connection string from `DATABASE_URL` (fallback: `POSTGRES_URL`). The Vercel Neon integration auto-provides a pooled connection string; the `@payloadcms/db-vercel-postgres` adapter activates when the URL is a Neon endpoint. `@neondatabase/serverless` is the runtime driver.
 
-Local Postgres via Docker Compose (port 54320). Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`.
+**Local:** Docker Compose Postgres (port 54320). Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Localhost URLs bypass the Vercel adapter and use standard `@payloadcms/db-postgres` directly.
+
+**Neon quirks:**
+- Compute suspends after 5 min idle; first query after suspend has a cold-start penalty (~hundreds of ms)
+- Pooled connections: append `-pooler` to the endpoint hostname in the connection string
+- ILIKE queries use `pg_trgm`; ensure the extension is enabled if doing case-insensitive search at scale
+
+**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file → on deploy `pnpm run ci` runs `payload migrate && pnpm build`.
 
 ## Testing quirks
 
