@@ -16,6 +16,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { syncEtsyListings } from './utilities/syncEtsy'
 
 const filename = fileURLToPath(import.meta.url)
@@ -64,6 +65,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || process.env.POSTGRES_URL || '',
     },
+    push: false,
   }),
   collections: [
     {
@@ -101,6 +103,22 @@ export default buildConfig({
   globals: [Header, Footer],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'info@candera.com',
+    defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
+    transportOptions: process.env.SMTP_HOST
+      ? {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT) || 587,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        }
+      : {
+          jsonTransport: true, // Use a non-network transport if no SMTP_HOST is provided
+        },
+  }),
   endpoints: [
     {
       path: '/sync-etsy',
