@@ -163,7 +163,7 @@ describe('EtsyClient', () => {
       'https://openapi.etsy.com/v3/application/shops/123/listings/active',
       expect.objectContaining({
         headers: expect.objectContaining({
-          Authorization: 'Bearer valid-access-token',
+          authorization: 'Bearer valid-access-token',
         }),
       })
     )
@@ -226,7 +226,7 @@ describe('EtsyClient', () => {
       'https://openapi.etsy.com/v3/application/shops/123/listings/active',
       expect.objectContaining({
         headers: expect.objectContaining({
-          Authorization: 'Bearer new-access-token',
+          authorization: 'Bearer new-access-token',
         }),
       })
     )

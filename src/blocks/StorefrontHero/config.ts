@@ -46,5 +46,59 @@ export const StorefrontHero: Block = {
       defaultValue: '#collection',
       label: 'Primary CTA URL',
     },
+    {
+      name: 'secondaryCtaLabel',
+      type: 'text',
+      defaultValue: 'Take the Scent Quiz →',
+      label: 'Secondary CTA Label',
+    },
+    {
+      name: 'secondaryCtaUrl',
+      type: 'text',
+      defaultValue: '#scent-quiz',
+      label: 'Secondary CTA URL',
+    },
+    {
+      name: 'showStatusCard',
+      type: 'checkbox',
+      defaultValue: true,
+      label: 'Show Status Card',
+    },
+    {
+      name: 'statusCardTitle',
+      type: 'text',
+      defaultValue: 'Batch 014',
+      label: 'Status Card Title',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
+    {
+      name: 'statusCardSubtitle',
+      type: 'text',
+      defaultValue: '47 units · hand-poured',
+      label: 'Status Card Subtitle',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
+    {
+      name: 'statusCardStatus',
+      type: 'text',
+      defaultValue: 'Curing',
+      label: 'Status Card Status Label',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
+    {
+      name: 'statusCardShips',
+      type: 'text',
+      defaultValue: '~3 weeks',
+      label: 'Status Card Ships Label',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
   ],
 }

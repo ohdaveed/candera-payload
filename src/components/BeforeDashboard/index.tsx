@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { Package, Tags, Inbox } from 'lucide-react'
 
 import { DashboardHeader } from './DashboardHeader'
@@ -27,7 +28,8 @@ const BeforeDashboard: React.FC<{ payload: PayloadType; user: { email?: string; 
       payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
     ])
 
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const now = new Date()
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString()
   const { totalDocs: newSubmissions } = await payload.find({
     collection: 'form-submissions',
     where: { createdAt: { greater_than: sevenDaysAgo } },
@@ -77,15 +79,15 @@ const BeforeDashboard: React.FC<{ payload: PayloadType; user: { email?: string; 
       </section>
 
       <div className="candera-dashboard__footer">
-        <a href="/admin/collections/pages" className="candera-dashboard__footer-link">
+        <Link href="/admin/collections/pages" className="candera-dashboard__footer-link">
           Pages &amp; Content
-        </a>
-        <a href="/admin/collections/media" className="candera-dashboard__footer-link">
+        </Link>
+        <Link href="/admin/collections/media" className="candera-dashboard__footer-link">
           Media
-        </a>
-        <a href="/admin/collections/posts" className="candera-dashboard__footer-link">
+        </Link>
+        <Link href="/admin/collections/posts" className="candera-dashboard__footer-link">
           Posts
-        </a>
+        </Link>
       </div>
     </div>
   )
