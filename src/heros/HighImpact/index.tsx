@@ -17,7 +17,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative -mt-[10.4rem] flex min-h-[80vh] items-center justify-center overflow-hidden bg-linen"
+      className="relative isolate -mt-[10.4rem] flex min-h-[80vh] items-center justify-center overflow-hidden bg-linen"
       data-theme="light"
     >
       <div className="container mb-8 z-10 relative flex items-center justify-center">
