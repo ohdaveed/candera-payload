@@ -24,3 +24,16 @@ A deep module (`src/utilities/revalidate.ts`) that manages registry tables, rule
 
 ### Cache Buster Port
 A seam (`CacheBusterPort` interface) representing the invalidation client. It isolates the environment-dependent Next.js caching APIs (`revalidatePath`, `revalidateTag`), allowing mock implementations in tests.
+
+## Etsy Product Synchronization
+
+The workflow of fetching listings from Etsy's API, downloading media assets, parsing text descriptions into Lexical structures, and transactional upserts to the Payload database.
+
+### Sync Engine
+A deep, database-agnostic module (`src/utilities/syncEtsy.ts`) that coordinates the synchronization. It operates solely against abstract ports, ensuring the synchronization algorithm can be tested and verified in memory.
+
+### Database Store Port
+A seam (`ProductStorePort` interface) decoupling product inserts, checks, and transactions from Payload collections.
+
+### Media Storage Port
+A seam (`MediaStoragePort` interface) decoupling image streams, duplicate detection, and file registration from the media database and external fetch clients.
