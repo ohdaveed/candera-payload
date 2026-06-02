@@ -5,21 +5,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev                          # Start dev server (http://localhost:3000)
-pnpm build                        # Build for production (runs next-sitemap postbuild)
-pnpm start                        # Serve production build
+# Inject environment variables using pass-cli
+pass-cli run --env-file .env -- pnpm dev                          # Start dev server (http://localhost:3000)
+pass-cli run --env-file .env -- pnpm build                        # Build for production (runs next-sitemap postbuild)
+pass-cli run --env-file .env -- pnpm start                        # Serve production build
 pnpm lint                         # Run ESLint
 pnpm lint:fix                     # Auto-fix lint issues
 
-pnpm test                         # Run all tests (integration then E2E)
-pnpm test:int                     # Vitest integration tests (tests/int/**/*.int.spec.ts)
-pnpm test:e2e                     # Playwright E2E tests (tests/e2e/, requires dev server)
+pass-cli run --env-file .env -- pnpm test                         # Run all tests (integration then E2E)
+pass-cli run --env-file .env -- pnpm test:int                     # Vitest integration tests (tests/int/**/*.int.spec.ts)
+pass-cli run --env-file .env -- pnpm test:e2e                     # Playwright E2E tests (tests/e2e/, requires dev server)
 
-pnpm payload migrate:create       # Create a new DB migration after schema changes
-pnpm payload migrate              # Run pending migrations (required before prod deploy)
+pass-cli run --env-file .env -- pnpm payload migrate:create       # Create a new DB migration after schema changes
+pass-cli run --env-file .env -- pnpm payload migrate              # Run pending migrations (required before prod deploy)
 pnpm generate:types               # Regenerate src/payload-types.ts from collections
 pnpm generate:importmap           # Regenerate Payload admin import map
 ```
+
+**Environment Variables:** This project uses `pass-cli` for secret management. The `.env` file contains `pass://` URIs. Do not overwrite `.env` with raw secrets; always use `pass-cli run --env-file .env -- <command>` to inject them at runtime.
 
 The CI deploy command is `pnpm run ci` which runs `payload migrate && pnpm build`.
 

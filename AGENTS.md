@@ -5,10 +5,13 @@ This file preserves hard-earned context for AI agents working in this repo.
 ## Quick start
 
 ```bash
-pnpm install && pnpm dev    # Start dev server at http://localhost:3000
-pnpm build                  # Production build (runs next-sitemap postbuild)
-pnpm start                  # Serve production build
+# Inject environment variables using pass-cli
+pass-cli run --env-file .env -- pnpm dev    # Start dev server at http://localhost:3000
+pass-cli run --env-file .env -- pnpm build  # Production build (runs next-sitemap postbuild)
+pass-cli run --env-file .env -- pnpm start  # Serve production build
 ```
+
+**Environment Variables:** This project uses `pass-cli` for secret management. The `.env` file contains `pass://` URIs. Do not overwrite `.env` with raw secrets; always use `pass-cli run --env-file .env -- <command>` to inject them at runtime.
 
 ## Commands
 
