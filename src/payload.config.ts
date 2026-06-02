@@ -27,7 +27,25 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      titleSuffix: 'Candera Candles',
+      icons: [
+        {
+          url: '/favicon.ico',
+        },
+      ],
+    },
     components: {
+      graphics: {
+        Logo: {
+          path: '@/components/Logo/Logo',
+          exportName: 'Logo',
+        },
+        Icon: {
+          path: '@/components/Logo/Logo',
+          exportName: 'LogoIcon',
+        },
+      },
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
@@ -76,6 +94,7 @@ export default buildConfig({
       folders: true,
       admin: {
         useAsTitle: 'name',
+        group: 'System',
       },
       fields: [
         {

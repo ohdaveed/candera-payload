@@ -14,6 +14,7 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'etsyListingId', 'updatedAt'],
+    group: 'Commerce',
   },
   fields: [
     {
