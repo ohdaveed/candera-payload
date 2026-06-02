@@ -7,6 +7,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { StorefrontHeroBlock } from '@/blocks/StorefrontHero/Component'
+import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
+import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -14,6 +17,9 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  storefrontHero: StorefrontHeroBlock,
+  testimonials: TestimonialsBlock,
+  innerCircleCTA: InnerCircleCTABlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -22,6 +28,8 @@ export const RenderBlocks: React.FC<{
   const { blocks } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
+
+  const fullBleedBlocks = new Set(['storefrontHero', 'testimonials', 'innerCircleCTA'])
 
   if (hasBlocks) {
     return (
@@ -33,8 +41,13 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const isFullBleed = fullBleedBlocks.has(blockType)
               return (
-                <div className="my-16" key={index}>
+                <div
+                  className={isFullBleed ? '' : 'my-16'}
+                  id={blockType === 'archive' ? 'collection' : undefined}
+                  key={index}
+                >
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
