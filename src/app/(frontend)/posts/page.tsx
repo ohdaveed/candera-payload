@@ -28,15 +28,19 @@ export default async function Page() {
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pt-32 pb-24">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+      <div className="container mb-20">
+        <div className="max-w-[560px]">
+          <span className="eyebrow block mb-4">Candera Stories</span>
+          <h1 className="hero-heading text-candera-obsidian">The Journal</h1>
+          <p className="editorial mt-6 text-candera-sage-text">
+            Reflections on intentional living, the art of scent, and the stories behind our seasonal batches.
+          </p>
         </div>
       </div>
 
-      <div className="container mb-8">
+      <div className="container mb-12">
         <PageRange
           collection="posts"
           currentPage={posts.page}
@@ -45,9 +49,9 @@ export default async function Page() {
         />
       </div>
 
-      <CollectionArchive posts={posts.docs} />
+      <CollectionArchive posts={posts.docs} relationTo="posts" />
 
-      <div className="container">
+      <div className="container mt-16">
         {posts.totalPages > 1 && posts.page && (
           <Pagination page={posts.page} totalPages={posts.totalPages} />
         )}
@@ -58,6 +62,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `The Journal | Candera Candles`,
   }
 }

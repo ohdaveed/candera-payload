@@ -62,13 +62,19 @@ export const ArchiveBlock: React.FC<
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className="my-32" id={`block-${id}`}>
       {introContent && (
-        <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+        <div className="container mb-12">
+          <RichText 
+            className="ms-0 max-w-[560px] 
+              [&_h3]:h2 [&_h3]:mb-4
+              [&_p]:editorial [&_p]:text-candera-sage-text" 
+            data={introContent} 
+            enableGutter={false} 
+          />
         </div>
       )}
-      <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'posts'} />
+      <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
     </div>
   )
 }
