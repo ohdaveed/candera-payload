@@ -14,9 +14,16 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   media,
   primaryCtaLabel,
   primaryCtaUrl,
+  secondaryCtaLabel,
+  secondaryCtaUrl,
+  showStatusCard,
+  statusCardTitle,
+  statusCardSubtitle,
+  statusCardStatus,
+  statusCardShips,
 }) => {
   return (
-    <section className="relative flex min-h-[800px] items-center justify-center overflow-hidden bg-candera-obsidian">
+    <section className="relative flex min-h-[720px] md:min-h-[800px] items-center justify-center overflow-hidden bg-candera-obsidian">
       {/* Background image */}
       {media && typeof media === 'object' && (
         <div className="absolute inset-0">
@@ -45,45 +52,87 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center max-w-[800px] px-6 pt-32 pb-16">
-        {heroTag && (
-          <span
-            className="eyebrow block mb-8 text-white/90"
-          >
-            {heroTag}
-          </span>
-        )}
-
-        <h1
-          className="hero-heading text-white m-0"
-        >
-          {headline}
-        </h1>
-
-        {subheading && (
-          <p
-            className="editorial mt-8 max-w-[32rem] text-white/80"
-          >
-            {subheading}
-          </p>
-        )}
-
-        <div className="flex flex-wrap items-center justify-center gap-6 mt-12">
-          {primaryCtaLabel && primaryCtaUrl && (
-            <Link
-              href={primaryCtaUrl}
-              className="inline-flex items-center justify-center gap-3 h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian transition-all duration-300 hover:bg-candera-vellum shadow-2xl"
-              style={{ borderRadius: 0 }}
-            >
-              {primaryCtaLabel}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
+      {/* Content Container */}
+      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end w-full max-w-[1280px] mx-auto px-10 pb-20 pt-32 md:pt-40 gap-12">
+        {/* Left Side Content */}
+        <div className="flex flex-col items-start text-left max-w-[580px]">
+          {heroTag && (
+            <span className="eyebrow block mb-6 text-candera-ember">
+              {heroTag}
+            </span>
           )}
+
+          <h1 className="hero-heading text-white m-0 text-left font-display font-normal italic leading-none">
+            {headline}
+          </h1>
+
+          {subheading && (
+            <p className="editorial mt-6 text-left max-w-[32rem] text-white/70">
+              {subheading}
+            </p>
+          )}
+
+          <div className="flex flex-wrap items-center gap-8 mt-10">
+            {primaryCtaLabel && primaryCtaUrl && (
+              <Link
+                href={primaryCtaUrl}
+                className="inline-flex items-center justify-center gap-3 h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-ember text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-2xl"
+                style={{ borderRadius: 0 }}
+              >
+                {primaryCtaLabel}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            )}
+            {secondaryCtaLabel && secondaryCtaUrl && (
+              <Link
+                href={secondaryCtaUrl}
+                className="font-sans text-[12px] font-medium uppercase tracking-[.2em] text-white/70 hover:text-white transition-colors duration-200"
+              >
+                {secondaryCtaLabel}
+              </Link>
+            )}
+          </div>
         </div>
+
+        {/* Right Side Status Card */}
+        {showStatusCard && (
+          <div className="bg-candera-vellum/95 backdrop-blur-md border border-candera-stone/30 p-6 md:p-8 w-full md:w-[260px] self-stretch md:self-auto shadow-2xl text-left transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-5 h-[1px] bg-candera-ember" />
+              <p className="font-sans text-[9px] font-bold uppercase tracking-[.25em] text-candera-ember-strong m-0">
+                Current Release
+              </p>
+            </div>
+            <p className="font-display text-[30px] md:text-[34px] font-normal italic leading-none text-candera-obsidian m-0 mb-1">
+              {statusCardTitle}
+            </p>
+            <p className="font-mono text-[11px] text-candera-sage-text m-0 mb-4 tracking-wider uppercase font-semibold">
+              {statusCardSubtitle}
+            </p>
+            <div className="border-t border-candera-stone/20 pt-4 flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-[10px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
+                  Status
+                </span>
+                <span className="font-sans text-[10px] font-bold uppercase tracking-[.18em] text-candera-ember">
+                  {statusCardStatus}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-[10px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
+                  Ships
+                </span>
+                <span className="font-sans text-[10px] font-bold uppercase tracking-[.18em] text-candera-obsidian">
+                  {statusCardShips}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )
 }
+

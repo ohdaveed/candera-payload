@@ -484,6 +484,13 @@ export interface StorefrontHeroBlock {
   media: number | Media;
   primaryCtaLabel?: string | null;
   primaryCtaUrl?: string | null;
+  secondaryCtaLabel?: string | null;
+  secondaryCtaUrl?: string | null;
+  showStatusCard?: boolean | null;
+  statusCardTitle?: string | null;
+  statusCardSubtitle?: string | null;
+  statusCardStatus?: string | null;
+  statusCardShips?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'storefrontHero';
@@ -1296,6 +1303,13 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   media?: T;
   primaryCtaLabel?: T;
   primaryCtaUrl?: T;
+  secondaryCtaLabel?: T;
+  secondaryCtaUrl?: T;
+  showStatusCard?: T;
+  statusCardTitle?: T;
+  statusCardSubtitle?: T;
+  statusCardStatus?: T;
+  statusCardShips?: T;
   id?: T;
   blockName?: T;
 }

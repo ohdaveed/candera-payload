@@ -287,7 +287,7 @@ export class EtsyClient {
 
     const res = await fetch(url.toString(), {
       ...fetchOptions,
-      headers,
+      headers: Object.fromEntries(headers.entries()),
     })
 
     if (!res.ok) {

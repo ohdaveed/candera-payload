@@ -5,74 +5,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   slug: 'home',
   _status: 'published',
   hero: {
-    type: 'highImpact',
-    links: [
-      {
-        link: {
-          type: 'custom',
-          appearance: 'default',
-          label: 'Shop the Batch',
-          url: '/products',
-        },
-      },
-      {
-        link: {
-          type: 'custom',
-          appearance: 'outline',
-          label: 'The Studio',
-          url: '/posts',
-        },
-      },
-    ],
-    richText: {
-      root: {
-        type: 'root',
-        children: [
-          {
-            type: 'heading',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'Breathe. Before the day takes over.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            tag: 'h1',
-            version: 1,
-          },
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'Hand-poured botanical candles. Numbered micro-batches. Scent as a practice in stilling the noise.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            textFormat: 0,
-            version: 1,
-          },
-        ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1,
-      },
-    },
+    type: 'none',
   },
   meta: {
     description: 'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
@@ -80,6 +13,22 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   },
   title: 'Home',
   layout: [
+    {
+      blockType: 'storefrontHero',
+      heroTag: 'Hand-Poured in the Studio',
+      headline: 'An invitation to slow down.',
+      subheading: 'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+      primaryCtaLabel: 'Explore the Collection',
+      primaryCtaUrl: '#collection',
+      secondaryCtaLabel: 'Take the Scent Quiz →',
+      secondaryCtaUrl: '#scent-quiz',
+      showStatusCard: true,
+      statusCardTitle: 'Batch 014',
+      statusCardSubtitle: '47 units · hand-poured',
+      statusCardStatus: 'Curing',
+      statusCardShips: '~3 weeks',
+    } as any,
+
     {
       blockType: 'archive',
       categories: [],
@@ -135,6 +84,30 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       populateBy: 'collection',
       relationTo: 'products',
       limit: 6,
+    } as any,
+    {
+      blockType: 'testimonials',
+      eyebrow: 'From Our Ritualists',
+      items: [
+        {
+          quote: 'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
+          author: 'Elena R.',
+          location: 'Los Angeles',
+          badge: 'Verified Ritualist',
+        },
+        {
+          quote: 'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
+          author: 'James T.',
+          location: 'Austin',
+          badge: 'Repeat Collector',
+        },
+        {
+          quote: 'A ritual I look forward to every evening. This is the soul of my living room.',
+          author: 'Sarah L.',
+          location: 'Brooklyn',
+          badge: 'Verified Ritualist',
+        },
+      ],
     } as any,
     {
       blockType: 'innerCircleCTA',
