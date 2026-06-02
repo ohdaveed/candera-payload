@@ -42,7 +42,7 @@ export interface RevalidationRule<TDoc = unknown> {
 }
 
 export class FlexibleRevalidator {
-  private rules: RevalidationRule[] = []
+  private rules: RevalidationRule<any>[] = []
   private cacheBuster: CacheBusterPort
 
   constructor(cacheBuster: CacheBusterPort) {
@@ -109,7 +109,7 @@ export const nextCacheBuster = new NextCacheBusterAdapter()
 export const globalRevalidator = new FlexibleRevalidator(nextCacheBuster)
 
 // 1. Pages Revalidation Rule
-globalRevalidator.registerRule({
+globalRevalidator.registerRule<any>({
   name: 'pages-revalidation',
   collections: ['pages'],
   condition: (ctx) => !ctx.req.context.disableRevalidate,
@@ -133,7 +133,7 @@ globalRevalidator.registerRule({
 })
 
 // 2. Posts Revalidation Rule
-globalRevalidator.registerRule({
+globalRevalidator.registerRule<any>({
   name: 'posts-revalidation',
   collections: ['posts'],
   condition: (ctx) => !ctx.req.context.disableRevalidate,
@@ -157,7 +157,7 @@ globalRevalidator.registerRule({
 })
 
 // 3. Redirects Revalidation Rule
-globalRevalidator.registerRule({
+globalRevalidator.registerRule<any>({
   name: 'redirects-revalidation',
   collections: ['redirects'],
   resolve: () => ({

@@ -218,7 +218,7 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
         const results: RawEtsyListing[] = []
         for (const id of source.listingIds) {
           try {
-            const data = await this.client.request<unknown>(`/listings/${id}`, {
+            const data = await this.client.request<RawEtsyListing>(`/listings/${id}`, {
               params: { includes: 'Images' },
             })
             if (data) results.push(data)
@@ -270,10 +270,20 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
 
   async transaction<T>(operation: (txStore: ProductStorePort) => Promise<T>): Promise<T> {
     if (this.payload.db.beginTransaction) {
-      return await this.payload.db.beginTransaction(async () => {
+      const transactionID = await this.payload.db.beginTransaction()
+      try {
         const transactionalStore = new ProductionProductStoreAdapter(this.payload)
-        return await operation(transactionalStore)
-      })
+        const result = await operation(transactionalStore)
+        if (this.payload.db.commitTransaction && transactionID !== undefined && transactionID !== null) {
+          await this.payload.db.commitTransaction(transactionID)
+        }
+        return result
+      } catch (error) {
+        if (this.payload.db.rollbackTransaction && transactionID !== undefined && transactionID !== null) {
+          await this.payload.db.rollbackTransaction(transactionID)
+        }
+        throw error
+      }
     }
     return await operation(this)
   }

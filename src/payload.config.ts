@@ -180,6 +180,9 @@ export default buildConfig({
       path: '/etsy/oauth/callback',
       method: 'get',
       handler: async (req) => {
+        if (!req.url) {
+          return Response.json({ error: 'Missing request URL' }, { status: 400 })
+        }
         const url = new URL(req.url)
         const code = url.searchParams.get('code')
         if (!code) {

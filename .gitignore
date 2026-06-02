@@ -22,3 +22,6 @@ node_modules/
 /playwright/.cache/
 .env*
 tsconfig.tsbuildinfo
+
+# Added by ggshield
+.cache_ggshield
