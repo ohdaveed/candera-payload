@@ -44,7 +44,7 @@ export const Card: React.FC<{
   return (
     <article
       className={cn(
-        'group flex flex-col h-full bg-white transition-all duration-500',
+        'group flex flex-col h-full bg-white transition-[color,opacity,transform] duration-500 motion-reduce:transition-none',
         className,
       )}
       ref={cardRef}
@@ -58,7 +58,7 @@ export const Card: React.FC<{
         {imageToUse && typeof imageToUse !== 'string' ? (
           <Media 
             fill 
-            imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105" 
+            imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100" 
             resource={imageToUse} 
             size="33vw" 
           />
@@ -89,8 +89,8 @@ export const Card: React.FC<{
         ) : null}
 
         {/* Hover overlay for button */}
-        <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center p-6">
-           <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+        <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
+           <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
              <Link
                 href={href}
                 className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
@@ -121,7 +121,7 @@ export const Card: React.FC<{
           </div>
           {price != null && (
             <span className="price text-[15px] font-medium shrink-0 pt-4">
-              ${Number(price).toFixed(2)}
+              {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price))}
             </span>
           )}
         </div>
