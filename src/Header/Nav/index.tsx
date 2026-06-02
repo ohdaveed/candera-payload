@@ -6,34 +6,60 @@ import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, ShoppingBag } from 'lucide-react'
 
 export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({ data, transparent }) => {
   const navItems = data?.navItems || []
 
   const linkClass = [
-    'text-[10px] font-bold uppercase tracking-[.3em] transition-colors hover:text-candera-ember-strong',
-    transparent ? 'text-white/90' : 'text-candera-sage-text',
+    'text-[10px] font-bold uppercase tracking-[.3em] transition-colors hover:text-candera-ember-strong px-3 py-2 rounded-md hover:bg-black/5',
+    transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
+  ].join(' ')
+
+  const iconBtnClass = [
+    'inline-flex items-center justify-center p-2 rounded-full transition-colors hover:text-candera-ember-strong hover:bg-black/5',
+    transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
   ].join(' ')
 
   return (
     <nav
       aria-label="Main Navigation"
-      className="flex items-center gap-10"
+      className="flex items-center gap-1"
     >
       {navItems.map(({ link }, i) => {
         return (
           <CMSLink key={i} {...link} appearance="link" className={linkClass} />
         )
       })}
-      <Link
-        aria-label="Search"
-        className={['inline-flex items-center justify-center transition-colors hover:text-candera-ember-strong', transparent ? 'text-white/90' : 'text-candera-sage-text'].join(' ')}
-        href="/search"
-      >
-        <span className="sr-only">Search</span>
-        <SearchIcon aria-hidden="true" className="w-4" />
-      </Link>
+
+      <div className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10">
+        <Link
+          aria-label="Search"
+          className={iconBtnClass}
+          href="/search"
+        >
+          <span className="sr-only">Search</span>
+          <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
+        </Link>
+
+        <Link
+          aria-label="Shopping bag"
+          className={`${iconBtnClass} relative`}
+          href="/products"
+        >
+          <span className="sr-only">Shopping bag</span>
+          <ShoppingBag aria-hidden="true" className="w-[18px] h-[18px]" />
+          <span
+            aria-hidden="true"
+            className={[
+              'absolute -top-0.5 -right-0.5 flex h-[14px] w-[14px] items-center justify-center rounded-full text-[8px] font-bold leading-none',
+              transparent ? 'bg-white text-candera-obsidian' : 'bg-candera-obsidian text-white',
+            ].join(' ')}
+          >
+            0
+          </span>
+        </Link>
+      </div>
     </nav>
   )
 }
