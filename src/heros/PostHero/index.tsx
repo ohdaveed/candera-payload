@@ -29,6 +29,17 @@ export const PostHero: React.FC<{
         </div>
       )}
 
+      {/* Dot-grid fallback when no hero image */}
+      {!heroImage && (
+        <div
+          className="absolute inset-0 -z-10 opacity-[0.06]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #8b7355 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
+      )}
+
       {/* Radial scrim */}
       <div
         className="absolute inset-0 -z-10"

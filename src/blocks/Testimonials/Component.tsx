@@ -32,7 +32,11 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
               key={i}
               className="flex flex-col items-center text-center gap-6 group"
             >
-              <div className="flex gap-1 text-candera-ember-strong/60 transition-colors group-hover:text-candera-ember-strong">
+              <div
+                className="flex gap-1 text-candera-ember-strong/60 transition-colors group-hover:text-candera-ember-strong"
+                role="img"
+                aria-label="5 out of 5 stars"
+              >
                 {[...Array(5)].map((_, j) => <StarIcon key={j} />)}
               </div>
               <p className="editorial text-[18px] text-candera-obsidian leading-[1.8]">

@@ -72,8 +72,9 @@ export const Card: React.FC<{
                 'text-[9px] font-bold uppercase tracking-[.25em] px-3 py-1.5',
                 productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
                 productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                productTag === 'New Release' && 'bg-candera-rose-strong text-white',
+                productTag === 'New Release' && 'bg-candera-stone text-candera-obsidian',
               )}
+              aria-label={productTag}
             >
               {productTag}
             </span>
@@ -88,8 +89,8 @@ export const Card: React.FC<{
           </div>
         ) : null}
 
-        {/* Hover overlay for button */}
-        <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
+        {/* Hover overlay for button — desktop only */}
+        <div className="hidden md:flex absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none items-center justify-center p-6">
            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
              <Link
                 href={href}
@@ -100,27 +101,30 @@ export const Card: React.FC<{
               </Link>
            </div>
         </div>
+
+        {/* Persistent tap affordance — mobile only */}
+        <div className="md:hidden absolute bottom-0 inset-x-0 bg-white/90 py-2.5 text-center text-[9px] font-bold uppercase tracking-[.3em] text-candera-obsidian pointer-events-none">
+          View Details →
+        </div>
       </div>
       
       <div className="pt-6 pb-2 flex flex-col flex-grow">
         {/* Product header row */}
-        <div className="flex items-start justify-between gap-4 mb-3">
-          <div className="flex flex-col gap-1.5">
-            {vessel ? (
-              <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage-text">
-                Vessel {vessel}
-              </span>
-            ) : null}
-            {titleToUse ? (
-              <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong">
-                <Link href={href} ref={linkRef}>
-                  {titleToUse}
-                </Link>
-              </h3>
-            ) : null}
-          </div>
+        <div className="flex flex-col gap-1 mb-3">
+          {vessel ? (
+            <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage-text">
+              Vessel {vessel}
+            </span>
+          ) : null}
+          {titleToUse ? (
+            <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong">
+              <Link href={href} ref={linkRef}>
+                {titleToUse}
+              </Link>
+            </h3>
+          ) : null}
           {price != null && (
-            <span className="price text-[15px] font-medium shrink-0 pt-4">
+            <span className="price text-[15px] font-medium mt-1.5 block">
               {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price))}
             </span>
           )}

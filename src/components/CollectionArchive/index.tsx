@@ -11,6 +11,17 @@ export type Props = {
 export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts, relationTo = 'posts' } = props
 
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="container py-24 text-center flex flex-col items-center gap-4">
+        <span className="eyebrow">Nothing here yet</span>
+        <p className="editorial text-candera-sage-text max-w-[360px]">
+          New batches are crafted on a slow schedule — check back soon.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className={cn('container')}>
       <div>

@@ -151,10 +151,7 @@ export class EtsySyncEngine {
           productData.extraPhotos = [mainImageId]
         }
 
-        // Perform the upsert inside a transaction boundary
-        await ports.productStore.transaction(async (txStore) => {
-          await txStore.upsertProduct(listing_id, productData)
-        })
+        await ports.productStore.upsertProduct(listing_id, productData)
 
         syncedCount++
       } catch (err) {

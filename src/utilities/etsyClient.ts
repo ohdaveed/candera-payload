@@ -66,25 +66,28 @@ export class DefaultPayloadTokenRepository implements TokenRepository {
 
   async saveToken(accessToken: string, refreshToken: string, expiresIn: number): Promise<void> {
     const payload = await this.getPayload()
-    
-    // Purge any existing tokens to maintain single-token locality
+    const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString()
+
+    // Upsert: update the existing row in place rather than delete-then-create
+    // to avoid a race window where concurrent refreshes leave duplicate records.
     const existing = await payload.find({
       collection: 'etsy-tokens',
-      limit: 100,
+      limit: 1,
+      sort: '-updatedAt',
     })
-    for (const doc of existing.docs) {
-      await payload.delete({ collection: 'etsy-tokens', id: doc.id })
-    }
 
-    const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString()
-    await payload.create({
-      collection: 'etsy-tokens',
-      data: {
-        accessToken,
-        refreshToken,
-        expiresAt,
-      },
-    })
+    if (existing.docs.length > 0) {
+      await payload.update({
+        collection: 'etsy-tokens',
+        id: existing.docs[0].id,
+        data: { accessToken, refreshToken, expiresAt },
+      })
+    } else {
+      await payload.create({
+        collection: 'etsy-tokens',
+        data: { accessToken, refreshToken, expiresAt },
+      })
+    }
   }
 
   async updateToken(id: string | number, tokenDetails: TokenDetails): Promise<void> {

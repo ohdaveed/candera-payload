@@ -34,15 +34,19 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pt-32 pb-24 bg-candera-linen min-h-screen">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+      <div className="container mb-20">
+        <div className="max-w-[560px]">
+          <span className="eyebrow block mb-4">Candera Stories</span>
+          <h1 className="hero-heading text-candera-obsidian">The Journal</h1>
+          <p className="editorial mt-6 text-candera-sage-text">
+            Reflections on intentional living, the art of scent, and the stories behind our seasonal batches.
+          </p>
         </div>
       </div>
 
-      <div className="container mb-8">
+      <div className="container mb-12">
         <PageRange
           collection="posts"
           currentPage={posts.page}
@@ -65,7 +69,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
+    title: `The Journal — Page ${pageNumber || ''} | Candera Candles`,
   }
 }
 
@@ -76,7 +80,7 @@ export async function generateStaticParams() {
     overrideAccess: false,
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  const totalPages = Math.ceil(totalDocs / 12)
 
   const pages: { pageNumber: string }[] = []
 

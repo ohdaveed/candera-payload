@@ -121,13 +121,24 @@ export const FormBlock: React.FC<
       <div className="p-0 border-t border-candera-stone/20 pt-16">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <div className="py-12 text-center">
-               <RichText className="editorial" data={confirmationMessage} />
+            <div className="py-16 px-8 bg-candera-linen border border-candera-stone/20 text-center flex flex-col items-center gap-6">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-candera-ember-strong">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="8 12 11 15 16 9" />
+              </svg>
+              <span className="eyebrow">Received</span>
+              <RichText className="hero-heading text-candera-obsidian" data={confirmationMessage} />
+              <p className="editorial text-candera-sage-text text-[14px]">We&apos;ll be in touch shortly.</p>
             </div>
           ) : null}
           {isLoading && !hasSubmitted ? <p className="editorial animate-pulse" aria-live="polite">Preparing correspondence…</p> : null}
           {error ? (
-            <div className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium" aria-live="polite" role="alert">
+            <div className="mb-8 p-4 bg-red-50 border border-red-300 text-red-700 text-[13px] font-medium flex items-start gap-3" aria-live="polite" role="alert">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
               {`${error.status || '500'}: ${error.message || ''}`}
             </div>
           ) : null}

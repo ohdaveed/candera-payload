@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
-import { Card } from '@/components/Card'
+import React, { Suspense } from 'react'
+import { ProductFilters } from '@/components/ProductFilters'
+
+export const revalidate = 600
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
@@ -18,6 +20,20 @@ export default async function ProductsPage() {
     pagination: false,
   })
 
+  const minimized = products.map((p) => ({
+    id: String(p.id),
+    slug: p.slug,
+    title: p.title,
+    extraPhotos: p.extraPhotos,
+    scentProfile: p.scentProfile,
+    burnTime: p.burnTime,
+    atmosphere: p.atmosphere,
+    productTag: p.productTag,
+    vessel: p.vessel,
+    price: p.price,
+    tagline: p.tagline,
+  }))
+
   return (
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <div className="container">
@@ -29,45 +45,9 @@ export default async function ProductsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
-          {products.map((product) => {
-            const {
-              slug,
-              categories,
-              title,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-            } = product
-
-            const minimizedDoc: any = {
-              slug,
-              categories: categories?.map((cat) =>
-                typeof cat === 'object' ? { title: cat.title } : cat,
-              ),
-              title,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-            }
-
-            return (
-              <Card
-                key={product.id}
-                doc={minimizedDoc}
-                relationTo="products"
-              />
-            )
-          })}
-        </div>
+        <Suspense>
+          <ProductFilters products={minimized} />
+        </Suspense>
       </div>
     </div>
   )

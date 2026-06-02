@@ -150,7 +150,7 @@ export default buildConfig({
     createHomeEndpoint,
     {
       path: '/sync-etsy',
-      method: 'get',
+      method: 'post',
       handler: async (req) => {
         if (!req.user) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
@@ -169,10 +169,20 @@ export default buildConfig({
       path: '/etsy/oauth/init',
       method: 'get',
       handler: async (req) => {
+        if (!req.user) {
+          return Response.json({ error: 'Unauthorized' }, { status: 401 })
+        }
         const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
         const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
-        const url = client.generateAuthUrl()
-        return Response.redirect(url)
+        const authUrlStr = client.generateAuthUrl()
+        const state = new URL(authUrlStr).searchParams.get('state') || ''
+        const res = Response.redirect(authUrlStr)
+        // Store state in a short-lived HttpOnly cookie for CSRF verification in callback
+        res.headers.set(
+          'Set-Cookie',
+          `etsy_oauth_state=${state}; HttpOnly; Path=/; SameSite=Lax; Max-Age=600`,
+        )
+        return res
       },
     },
     {
@@ -204,14 +214,31 @@ export default buildConfig({
         }
         const url = new URL(req.url)
         const code = url.searchParams.get('code')
+        const incomingState = url.searchParams.get('state') || ''
         if (!code) {
           return Response.json({ error: 'Missing authorization code' }, { status: 400 })
         }
+
+        // Verify CSRF state cookie
+        const cookieHeader = req.headers.get('cookie') || ''
+        const storedState = cookieHeader
+          .split(';')
+          .map((c) => c.trim())
+          .find((c) => c.startsWith('etsy_oauth_state='))
+          ?.split('=')[1] ?? ''
+
+        if (!storedState || storedState !== incomingState) {
+          return Response.json({ error: 'State mismatch — possible CSRF' }, { status: 403 })
+        }
+
         try {
           const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
           const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
           await client.completeAuthFlow(code)
-          return Response.redirect('/admin')
+          const res = Response.redirect('/admin')
+          // Clear the state cookie
+          res.headers.set('Set-Cookie', 'etsy_oauth_state=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0')
+          return res
         } catch (error) {
           return Response.json({ error: String(error) }, { status: 500 })
         }

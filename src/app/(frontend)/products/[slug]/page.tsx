@@ -8,10 +8,10 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
 import type { Product } from '@/payload-types'
-
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { generateMeta } from '@/utilities/generateMeta'
+import { Card } from '@/components/Card'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -39,6 +39,22 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
     product.extraPhotos && product.extraPhotos.length > 0
       ? product.extraPhotos[0]
       : null
+
+  const payload = await getPayload({ config: configPromise })
+  const relatedProducts: Product[] = product.productTag
+    ? (await payload.find({
+        collection: 'products',
+        limit: 3,
+        overrideAccess: false,
+        pagination: false,
+        where: {
+          and: [
+            { productTag: { equals: product.productTag } },
+            { slug: { not_equals: decodedSlug } },
+          ],
+        },
+      })).docs
+    : []
 
   return (
     <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
@@ -73,7 +89,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                     'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl',
                     product.productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
                     product.productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                    product.productTag === 'New Release' && 'bg-candera-rose-strong text-white',
+                    product.productTag === 'New Release' && 'bg-candera-stone text-candera-obsidian',
                   ]
                     .filter(Boolean)
                     .join(' ')}
@@ -138,17 +154,52 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* CTA — below specifications */}
             {product.etsyListingId && (
-              <a
-                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
-              >
-                Add to Cart — Add to the Ritual
-              </a>
+              <div>
+                <a
+                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
+                >
+                  Shop on Etsy →
+                </a>
+                <p className="text-[12px] text-candera-sage-text mt-3">
+                  Complete your purchase through our Etsy studio.
+                </p>
+              </div>
             )}
           </div>
         </div>
+
+        {relatedProducts.length > 0 && (
+          <div className="mt-32 pt-16 border-t border-candera-stone/20">
+            <div className="mb-12">
+              <span className="eyebrow block mb-3">From the Same Batch</span>
+              <h2 className="hero-heading text-candera-obsidian" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
+                You May Also Like
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-16">
+              {relatedProducts.map((p) => (
+                <Card
+                  key={p.id}
+                  doc={{
+                    slug: p.slug,
+                    title: p.title,
+                    extraPhotos: p.extraPhotos,
+                    scentProfile: p.scentProfile,
+                    burnTime: p.burnTime,
+                    atmosphere: p.atmosphere,
+                    productTag: p.productTag,
+                    vessel: p.vessel,
+                    price: p.price,
+                  }}
+                  relationTo="products"
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </article>
   )

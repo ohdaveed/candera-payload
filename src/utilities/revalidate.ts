@@ -156,7 +156,36 @@ globalRevalidator.registerRule<any>({
   },
 })
 
-// 3. Redirects Revalidation Rule
+// 3. Products Revalidation Rule
+globalRevalidator.registerRule<any>({
+  name: 'products-revalidation',
+  collections: ['products'],
+  resolve: (ctx) => {
+    const paths: string[] = ['/products']
+    const tags = ['products-sitemap']
+
+    const slug = ctx.doc?.slug
+    if (slug) paths.push(`/products/${slug}`)
+    if (ctx.previousDoc?.slug && ctx.previousDoc.slug !== slug) {
+      paths.push(`/products/${ctx.previousDoc.slug}`)
+    }
+
+    return { paths, tags }
+  },
+})
+
+// 4. Posts list + paginated pages Revalidation Rule (supplement to per-post rule above)
+globalRevalidator.registerRule<any>({
+  name: 'posts-list-revalidation',
+  collections: ['posts'],
+  condition: (ctx) => !ctx.req.context.disableRevalidate,
+  resolve: () => ({
+    paths: ['/posts'],
+    tags: ['posts-sitemap'],
+  }),
+})
+
+// 5. Redirects Revalidation Rule
 globalRevalidator.registerRule<any>({
   name: 'redirects-revalidation',
   collections: ['redirects'],
@@ -195,3 +224,4 @@ export function createCollectionHooks(collection: string, revalidator: FlexibleR
 export const pageRevalidateHooks = createCollectionHooks('pages')
 export const postRevalidateHooks = createCollectionHooks('posts')
 export const redirectRevalidateHooks = createCollectionHooks('redirects')
+export const productRevalidateHooks = createCollectionHooks('products')

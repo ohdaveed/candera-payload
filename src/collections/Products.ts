@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { productRevalidateHooks } from '../utilities/revalidate'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -115,4 +116,8 @@ export const Products: CollectionConfig = {
       hasMany: true,
     },
   ],
+  hooks: {
+    afterChange: [productRevalidateHooks.afterChange],
+    afterDelete: [productRevalidateHooks.afterDelete],
+  },
 }
