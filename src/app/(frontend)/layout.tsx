@@ -32,6 +32,7 @@ const dmSans = DM_Sans({
 
 const ebGaramond = EB_Garamond({
   subsets: ['latin'],
+  weight: 'variable',
   style: ['normal', 'italic'],
   variable: '--font-eb-garamond',
   display: 'swap',

@@ -94,12 +94,16 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
-    vercelBlobStorage({
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
+    ...(process.env.BLOB_READ_WRITE_TOKEN?.startsWith('vercel_blob_rw_')
+      ? [
+          vercelBlobStorage({
+            collections: {
+              media: true,
+            },
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+          }),
+        ]
+      : []),
   ],
   globals: [Header, Footer],
   secret: process.env.PAYLOAD_SECRET,

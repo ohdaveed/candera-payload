@@ -1,34 +1,29 @@
-/# Implementation Plan
+# Vercel Deployment Failure Resolution Plan
 
-Debug Payload CMS admin login (`/admin`) failing on Vercel production deployment. The core issue is that the Payload CMS is deployed on Neon Postgres via Vercel, but no admin user exists in the production database to authenticate with at `/admin/login`. The build itself may also have been failing previously due to missing migrations — that's been fixed with `vercel.json` changes already.
+## Diagnosis
+The latest deployment failed immediately after a series of high-risk changes in commit `82af8f7ec9a201104fee34a9c2ba3b2d6eae175b`. Key potential issues identified:
+1. **pnpm 11 Upgrade**: The project was upgraded to pnpm 11.5.0. pnpm 11 ignores `pnpm.overrides` and `pnpm.onlyBuiltDependencies` in `package.json`, which are critical for `sharp` (image processing) and `esbuild`. This likely causes `next build` to fail or `sharp` to be missing.
+2. **Missing Meta in Product Card**: The "minification" logic in `src/app/(frontend)/products/page.tsx` stripped the `meta` field, which the `Card` component uses for its primary image. While not a crash, it's a regression.
+3. **Font Loading**: `EB_Garamond` was added via `next/font/google`, but its configuration might be missing some weights if needed by the design.
+4. **Dynamic Imports**: Some blocks were moved to `dynamic` imports, which might affect SSR or build-time optimization in the app router if not handled correctly.
 
-[Types]
-No new types or interfaces needed. The existing `User` type from Payload is sufficient.
+## Proposed Fixes
 
-[Files]
-No new files. Only modifications to existing files in `src/endpoints/seed/index.ts` to ensure a default admin user is created during migration/deployment.
+### 1. Revert pnpm to version 10.x
+Reverting to a stable pnpm version will restore support for `overrides` and `onlyBuiltDependencies` in `package.json`, ensuring `sharp` and other native modules are built correctly on Vercel.
 
-[Functions]
-**Modified functions:**
-- `src/endpoints/seed/index.ts` — `seed()` function: Add creation of a default admin user with email/password, not just `demo-author@example.com` (which has limited permissions). Ensure a user with proper admin access is created.
-- `src/collections/Users/index.ts` — `Users` collection config: Potentially add a `beforeChange` or `afterChange` hook to handle admin seeding, or modify the access control to ensure the seeded user is an admin.
+### 2. Fix Product Card Data
+Ensure `meta` is included in the minimized document passed to the `Card` component in `src/app/(frontend)/products/page.tsx`.
 
-**No new functions to add.** The fix leverages Payload CMS's built-in auth flow and just ensures a usable admin user exists.
+### 3. Polish Font Configuration
+Refine the `EB_Garamond` configuration to include necessary weights and ensure it matches the editorial style.
 
-[Classes]
-No class modifications needed.
+### 4. Verify Payload Config
+Ensure `payload.config.ts` handles the `BLOB_READ_WRITE_TOKEN` gracefully during build time if it's not present.
 
-[Dependencies]
-No new dependencies required.
+## Implementation Steps
 
-[Testing]
-Manual verification:
-1. Run `pnpm build` locally to confirm the build passes
-2. Verify the admin login page loads at `/admin` on the deployed Vercel URL
-3. Test logging in with the seeded admin credentials
-4. Check Vercel deployment logs for build or migration errors
-
-[Implementation Order]
-1. Create a mechanism to seed an admin user during the deploy process (either via a script in `vercel.json` or through the seed endpoint)
-2. Update the `vercel.json` to trigger user seeding after migration (if needed)
-3. Deploy and verify the admin login works end-to-end
+1. **Downgrade pnpm**: Update `package.json` to use `pnpm@10.33.0` and regenerate the lockfile (or restore it from git history).
+2. **Update `products/page.tsx`**: Add `meta` to the `minimizedDoc`.
+3. **Adjust `layout.tsx`**: Ensure `EB_Garamond` has the expected weights.
+4. **Test Build Locally**: Run `pnpm build` (ignoring blob errors if possible) to verify code integrity.
