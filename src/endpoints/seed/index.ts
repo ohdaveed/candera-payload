@@ -303,11 +303,7 @@ export const seed = async ({
       context: {
         disableRevalidate: true,
       },
-      data: home({
-        heroImage: (candleraMediaDocs['seashell-garden'] as any) || imageHomeDoc,
-        metaImage: image2Doc,
-        innerCircleImage: (candleraMediaDocs['crimson-noir'] as any) || undefined,
-      }),
+      data: home({ heroImage: (candleraMediaDocs['seashell-garden'] as any) || imageHomeDoc }),
     }),
     payload.create({
       collection: 'pages',

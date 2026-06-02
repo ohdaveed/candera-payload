@@ -1,42 +1,48 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 import type { Media } from '@/payload-types'
+import { createRichText, createHeading, createParagraph } from '@/utilities/lexicalHelpers'
 
 type HomeArgs = {
   heroImage: Media
-  metaImage: Media
-  innerCircleImage?: Media
 }
+
+const BRAND_NAME = 'Candera Candles'
+const TAGLINE = 'Handcrafted luxury candles for your home. Experience the essence of tranquility with our signature scents.'
+const COLLECTION_HEADING = 'Our Collection'
+const COLLECTION_BODY = 'Explore our range of artisanal candles, each designed to create a unique atmosphere in your space.'
+const CTA_HEADING = 'Find Your Perfect Scent'
+const CTA_BODY = 'Need help choosing? Contact us for personalized recommendations.'
+const META_TITLE = 'Candera Candles'
+const META_DESCRIPTION = 'Handcrafted luxury candles for your home.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
-  metaImage: _metaImage,
-  innerCircleImage,
 }) => {
   return {
     slug: 'home',
     _status: 'published',
     hero: {
-      type: 'none',
-      richText: {
-        root: {
-          type: 'root',
-          children: [
-            {
-              type: 'paragraph',
-              children: [],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              textFormat: 0,
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
+      type: 'highImpact',
+      links: [
+        {
+          link: {
+            type: 'custom',
+            appearance: 'default',
+            label: 'Shop All',
+            url: '/products',
+          },
         },
-      },
+        {
+          link: {
+            type: 'custom',
+            appearance: 'outline',
+            label: 'Contact',
+            url: '/contact',
+          },
+        },
+      ],
+      media: heroImage.id,
+      richText: createRichText([createHeading(BRAND_NAME, 'h1'), createParagraph(TAGLINE)]),
     },
     layout: [
       {
@@ -53,55 +59,10 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockName: 'Product Archive',
         blockType: 'archive',
         categories: [],
-        introContent: {
-          root: {
-            type: 'root',
-            children: [
-              {
-                type: 'heading',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'Rooted in Earth, Released in Air.',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                tag: 'h2',
-                version: 1,
-              },
-              {
-                type: 'paragraph',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                textFormat: 0,
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1,
-          },
-        },
+        introContent: createRichText([
+          createHeading(COLLECTION_HEADING, 'h3'),
+          createParagraph(COLLECTION_BODY),
+        ]),
         populateBy: 'collection',
         relationTo: 'products',
         limit: 6,
@@ -131,24 +92,16 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
             location: 'Brooklyn',
             badge: 'Verified Ritualist',
           },
-        ],
-      } as any,
-      {
-        blockName: 'Inner Circle CTA',
-        blockType: 'innerCircleCTA',
-        headline: 'Join the Inner Circle',
-        description:
-          'Our batches often sell out in days. Join our list to receive early access to new scent drops and personal ritual invitations.',
-        ctaLabel: 'Request Entry',
-        ctaUrl: '/#collection',
-        ...(innerCircleImage ? { media: innerCircleImage.id } : {}),
-      } as any,
+        richText: createRichText([
+          createHeading(CTA_HEADING, 'h3'),
+          createParagraph(CTA_BODY),
+        ]),
+      },
     ],
     meta: {
-      description:
-        'Cultivating intentional living through scent and micro-batch artisanry. Hand-poured in the studio.',
+      description: META_DESCRIPTION,
       image: heroImage.id,
-      title: 'Candera — An invitation to slow down.',
+      title: META_TITLE,
     },
     title: 'Home',
   }
