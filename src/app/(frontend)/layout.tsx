@@ -19,7 +19,6 @@ import { getServerSideURL } from '@/utilities/getURL'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
-  style: ['normal', 'italic'],
   variable: '--font-fraunces',
   display: 'swap',
 })
