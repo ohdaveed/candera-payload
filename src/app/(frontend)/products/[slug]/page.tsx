@@ -86,8 +86,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
           {/* Right: details */}
           <div className="lg:col-span-5 flex flex-col gap-10 py-4">
-            <div className="flex flex-col gap-4">
-               {product.vessel && (
+            {/* Header zone */}
+            <div className="flex flex-col gap-4 border-b border-candera-stone/20 pb-8">
+              {product.vessel && (
                 <span className="eyebrow">
                   Vessel {product.vessel}
                 </span>
@@ -105,10 +106,29 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             </div>
 
             {product.price != null && (
-              <p className="price text-[28px] font-medium border-y border-candera-stone/20 py-6">
+              <p className="price text-[28px] font-medium">
                 ${Number(product.price).toFixed(2)}
               </p>
             )}
+
+            {/* Specifications — above CTA per standard e-commerce hierarchy */}
+            <div className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 px-6 py-6">
+              <p className="eyebrow mb-5">
+                Specifications
+              </p>
+              <ul className="flex flex-col gap-3.5 p-0 list-none">
+                {[
+                  { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
+                  { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
+                  { label: 'Origin', value: 'Ships from California' },
+                ].map(({ label, value }) => (
+                  <li key={label} className="flex justify-between items-baseline gap-4 text-[13px]">
+                    <span className="font-semibold text-candera-obsidian shrink-0">{label}</span>
+                    <span className="text-candera-sage-text text-right">{value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <FragranceProfile
               profile={product.scentProfile}
@@ -116,35 +136,17 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               atmosphere={product.atmosphere}
             />
 
-            <div className="flex flex-col gap-6">
-              {product.etsyListingId && (
-                <a
-                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
-                >
-                  Add to the Ritual
-                </a>
-              )}
-
-              {/* Product details list */}
-              {product.scentProfile && (
-                <div className="border-t border-candera-stone/20 pt-10">
-                  <p className="eyebrow mb-6">
-                    Specifications
-                  </p>
-                  <ul className="flex flex-col gap-4 p-0 list-none">
-                    {['15 oz · Soy & beeswax blend', 'Numbered vessel', 'Micro-batch cured', 'Ships from California'].map((detail) => (
-                      <li key={detail} className="editorial text-[14px] text-candera-sage-text flex items-center gap-3">
-                        <span className="w-1.5 h-[1px] bg-candera-stone inline-block shrink-0" />
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            {/* CTA — below specifications */}
+            {product.etsyListingId && (
+              <a
+                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
+              >
+                Add to Cart — Add to the Ritual
+              </a>
+            )}
           </div>
         </div>
       </div>
