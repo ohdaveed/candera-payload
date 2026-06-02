@@ -48,7 +48,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         {/* Back link */}
         <Link
           href="/products"
-          className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage hover:text-candera-ember transition-colors mb-16 group"
+          className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-1">
             <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -62,7 +62,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {heroImage && typeof heroImage !== 'string' ? (
               <Media fill imgClassName="object-cover" resource={heroImage} priority />
             ) : (
-              <div className="flex h-full items-center justify-center text-candera-sage text-sm italic">
+              <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
                 Image unavailable
               </div>
             )}
@@ -73,7 +73,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                     'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl',
                     product.productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
                     product.productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                    product.productTag === 'New Release' && 'bg-candera-rose text-white',
+                    product.productTag === 'New Release' && 'bg-candera-rose-strong text-white',
                   ]
                     .filter(Boolean)
                     .join(' ')}
@@ -122,7 +122,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                   href={`https://www.etsy.com/listing/${product.etsyListingId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember transition-all duration-300 shadow-xl !rounded-none"
+                  className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
                 >
                   Add to the Ritual
                 </a>

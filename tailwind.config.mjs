@@ -167,7 +167,7 @@ const config = {
                 color: 'theme(colors.candera.sage-text)',
               },
               a: {
-                color: 'theme(colors.candera.ember)',
+                color: 'theme(colors.candera.ember-strong)',
                 textDecoration: 'underline',
                 fontWeight: '500',
                 '&:hover': {
@@ -197,7 +197,7 @@ const config = {
               blockquote: {
                 fontFamily: 'var(--font-editorial)',
                 fontStyle: 'italic',
-                borderLeftColor: 'theme(colors.candera.rose)',
+                borderLeftColor: 'theme(colors.candera.rose-strong)',
                 color: 'theme(colors.candera.sage-text)',
               },
               ul: {

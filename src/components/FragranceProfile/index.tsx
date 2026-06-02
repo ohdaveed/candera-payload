@@ -30,14 +30,14 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
 
   return (
     <div className="border-t border-candera-stone/40 pt-3 mt-3">
-      <p className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage mb-2">
+      <p className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage-text mb-2">
         Fragrance Profile
       </p>
       <div className="grid grid-cols-3 gap-1 mb-2">
         {tiers.map(({ label, value }) => (
           value ? (
             <div key={label} className="flex flex-col gap-0.5">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-candera-sage">{label}</span>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-candera-sage-text">{label}</span>
               <span className="text-[11px] text-candera-obsidian leading-tight">{value}</span>
             </div>
           ) : null
