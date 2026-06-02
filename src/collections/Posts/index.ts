@@ -16,7 +16,7 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
-import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { postRevalidateHooks } from '../../utilities/revalidate'
 
 import {
   MetaDescriptionField,
@@ -217,9 +217,9 @@ export const Posts: CollectionConfig<'posts'> = {
     slugField(),
   ],
   hooks: {
-    afterChange: [revalidatePost],
+    afterChange: [postRevalidateHooks.afterChange],
     afterRead: [populateAuthors],
-    afterDelete: [revalidateDelete],
+    afterDelete: [postRevalidateHooks.afterDelete],
   },
   versions: {
     drafts: {

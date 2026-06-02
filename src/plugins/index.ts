@@ -4,7 +4,7 @@ import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
-import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { redirectRevalidateHooks } from '@/utilities/revalidate'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
@@ -42,7 +42,7 @@ export const plugins: Plugin[] = [
         })
       },
       hooks: {
-        afterChange: [revalidateRedirects],
+        afterChange: [redirectRevalidateHooks.afterChange],
       },
     },
   }),
