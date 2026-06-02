@@ -1,5 +1,5 @@
 import { type Payload } from 'payload'
-import { fetchEtsy, getEtsyListingsBatch } from './etsy'
+import { EtsyClient, DefaultPayloadTokenRepository } from './etsyClient'
 import type { Product } from '@/payload-types'
 
 /**
@@ -40,12 +40,17 @@ function textToRichText(text: string): Product['description'] {
  * Fetches the main image for an Etsy listing and syncs it to the Media collection.
  * Idempotent: won't re-download if the image already exists.
  */
-async function syncListingImage(listingId: number, payload: Payload, existingImages?: any[]) {
+async function syncListingImage(
+  listingId: number,
+  payload: Payload,
+  client: EtsyClient,
+  existingImages?: any[]
+) {
   try {
     let images = existingImages
 
     if (!images) {
-      const imageData = await fetchEtsy(`/listings/${listingId}/images`)
+      const imageData = await client.request<{ results: any[] }>(`/listings/${listingId}/images`)
       images = imageData.results || []
     }
 
@@ -110,20 +115,23 @@ export async function syncEtsyListings(
     : `Starting Etsy sync for shop ${source}...`
   )
 
+  const tokenRepository = new DefaultPayloadTokenRepository(payload)
+  const client = new EtsyClient(undefined, tokenRepository)
+
   try {
     let listings: any[] = []
 
     if (isBatch) {
       // 1a. Fetch specific listings in batch
       try {
-        const data = await getEtsyListingsBatch(source, ['Images'])
+        const data = await client.getListingsBatch(source, ['Images'])
         listings = data.results || []
       } catch (err: any) {
         payload.logger.warn(`Batch fetch failed, attempting individual fetches: ${err.message}`)
         // Fallback: try each ID individually
         for (const id of source) {
           try {
-            const data = await fetchEtsy(`/listings/${id}`, { params: { includes: 'Images' } })
+            const data = await client.request<{ results: any[] }>(`/listings/${id}`, { params: { includes: 'Images' } })
             if (data) listings.push(data)
           } catch (individualErr: any) {
             payload.logger.error(`Failed to fetch individual listing ${id}: ${individualErr.message}`)
@@ -132,9 +140,7 @@ export async function syncEtsyListings(
       }
     } else {
       // 1b. Fetch active listings from shop
-      const data = await fetchEtsy(`/shops/${source}/listings/active`, {
-        params: { limit: 100 }
-      })
+      const data = await client.getShopListings(source, 100)
       listings = data.results || []
     }
 
@@ -160,7 +166,7 @@ export async function syncEtsyListings(
       const slug = `${baseSlug}-${listing_id}`
 
       // Fetch and sync the main image (pass existing images if we have them from batch)
-      const mainImageId = await syncListingImage(listing_id, payload, images)
+      const mainImageId = await syncListingImage(listing_id, payload, client, images)
 
       const productData: Partial<Product> = {
         title,

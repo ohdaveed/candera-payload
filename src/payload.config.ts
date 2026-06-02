@@ -20,7 +20,7 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { syncEtsyListings } from './utilities/syncEtsy'
 import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
-import { getAuthorizationUrl, exchangeCode, storeTokens } from './utilities/etsyOAuth'
+import { EtsyClient, DefaultPayloadTokenRepository } from './utilities/etsyClient'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -147,51 +147,51 @@ export default buildConfig({
       },
     },
     {
-      path: "/etsy/oauth/init",
-      method: "get",
-      handler: async () => {
-        const url = getAuthorizationUrl();
-        return Response.redirect(url);
+      path: '/etsy/oauth/init',
+      method: 'get',
+      handler: async (req) => {
+        const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
+        const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
+        const url = client.generateAuthUrl()
+        return Response.redirect(url)
       },
     },
     {
-      path: "/etsy/set-vacation",
-      method: "get",
+      path: '/etsy/set-vacation',
+      method: 'get',
       handler: async (req) => {
         if (!req.user) {
-          return Response.json({ error: "Unauthorized" }, { status: 401 });
+          return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
         try {
-          const { fetchEtsyWithAuth } = await import("./utilities/etsyOAuth");
-          const res = await fetchEtsyWithAuth("/shops/25894791", {
-            method: "PUT",
+          const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
+          const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
+          const data = await client.request<any>('/shops/25894791', {
+            method: 'PUT',
             body: JSON.stringify({ is_vacation: false }),
-          });
-          const data = await res.json();
-          if (!res.ok) {
-            return Response.json({ error: data }, { status: res.status });
-          }
-          return Response.json({ success: true, shop: data });
+          })
+          return Response.json({ success: true, shop: data })
         } catch (error) {
-          return Response.json({ error: String(error) }, { status: 500 });
+          return Response.json({ error: String(error) }, { status: 500 })
         }
       },
     },
     {
-      path: "/etsy/oauth/callback",
-      method: "get",
+      path: '/etsy/oauth/callback',
+      method: 'get',
       handler: async (req) => {
-        const url = new URL(req.url);
-        const code = url.searchParams.get("code");
+        const url = new URL(req.url)
+        const code = url.searchParams.get('code')
         if (!code) {
-          return Response.json({ error: "Missing authorization code" }, { status: 400 });
+          return Response.json({ error: 'Missing authorization code' }, { status: 400 })
         }
         try {
-          const token = await exchangeCode(code);
-          await storeTokens(token.access_token, token.refresh_token, token.expires_in);
-          return Response.redirect("/admin");
+          const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
+          const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
+          await client.completeAuthFlow(code)
+          return Response.redirect('/admin')
         } catch (error) {
-          return Response.json({ error: String(error) }, { status: 500 });
+          return Response.json({ error: String(error) }, { status: 500 })
         }
       },
     },
