@@ -44,17 +44,17 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
         ))}
       </div>
       <div className="flex items-center justify-between flex-wrap gap-1">
-        {burnTime && (
+        {burnTime ? (
           <span className="flex items-center gap-1 text-[10px] text-candera-sage-text">
             <ClockIcon />
             {burnTime}
           </span>
-        )}
-        {atmosphere && (
+        ) : null}
+        {atmosphere ? (
           <span className="text-[9px] font-bold uppercase tracking-wider text-candera-sage-text">
             {atmosphere}
           </span>
-        )}
+        ) : null}
       </div>
     </div>
   )
