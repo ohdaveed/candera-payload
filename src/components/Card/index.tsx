@@ -50,16 +50,16 @@ export const Card: React.FC<{
       ref={cardRef}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-candera-ash">
-        {!imageToUse && (
+        {!imageToUse ? (
           <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage">
             Image unavailable
           </div>
-        )}
-        {imageToUse && typeof imageToUse !== 'string' && (
+        ) : null}
+        {imageToUse && typeof imageToUse !== 'string' ? (
           <Media fill imgClassName="object-cover" resource={imageToUse} size="33vw" />
-        )}
+        ) : null}
         {/* Product tag badge */}
-        {productTag && (
+        {productTag ? (
           <div className="absolute top-3 left-3">
             <span
               className={cn(
@@ -72,31 +72,31 @@ export const Card: React.FC<{
               {productTag}
             </span>
           </div>
-        )}
-        {vessel && (
+        ) : null}
+        {vessel ? (
           <div className="absolute top-3 right-3">
             <span className="text-[9px] font-bold uppercase tracking-[.18em] px-2 py-1 bg-white/80 text-candera-obsidian">
               Batch {vessel}
             </span>
           </div>
-        )}
+        ) : null}
       </div>
       <div className="p-4 flex flex-col gap-2">
         {/* Product header row */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-1">
-            {vessel && (
+            {vessel ? (
               <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage">
                 Vessel {vessel}
               </span>
-            )}
-            {titleToUse && (
+            ) : null}
+            {titleToUse ? (
               <h3 className="m-0 text-balance text-[15px] font-medium leading-snug text-candera-obsidian">
                 <Link className="hover:text-candera-ember transition-colors" href={href} ref={linkRef}>
                   {titleToUse}
                 </Link>
               </h3>
-            )}
+            ) : null}
           </div>
           {price != null && (
             <span className="price text-[14px] font-semibold shrink-0">

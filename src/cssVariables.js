@@ -26,7 +26,7 @@ export const cssVariables = {
     },
     fonts: {
       display: "'Fraunces', Georgia, serif",
-      editorial: "'EB Garamond', Georgia, serif",
+      editorial: "var(--font-eb-garamond), Georgia, serif",
       sans: "'DM Sans', system-ui, sans-serif",
     },
     spacing: {

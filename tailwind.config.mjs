@@ -27,9 +27,9 @@ const config = {
 
       /* ---- CANDERA Fonts ---- */
       fontFamily: {
-        serif: ['var(--font-fraunces)', 'EB Garamond', 'serif'],
+        serif: ['var(--font-fraunces)', 'var(--font-eb-garamond)', 'serif'],
         display: ['var(--font-fraunces)', 'Georgia', 'serif'],
-        editorial: ['EB Garamond', 'Georgia', 'serif'],
+        editorial: ['var(--font-eb-garamond)', 'Georgia', 'serif'],
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
       },
 

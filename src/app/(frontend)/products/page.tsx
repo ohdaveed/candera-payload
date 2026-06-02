@@ -37,13 +37,43 @@ export default async function ProductsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              doc={product as any}
-              relationTo="products"
-            />
-          ))}
+          {products.map((product) => {
+            const {
+              slug,
+              categories,
+              title,
+              extraPhotos,
+              scentProfile,
+              burnTime,
+              atmosphere,
+              productTag,
+              vessel,
+              price,
+            } = product
+
+            const minimizedDoc = {
+              slug,
+              categories: categories?.map((cat) =>
+                typeof cat === 'object' ? { title: cat.title } : cat,
+              ),
+              title,
+              extraPhotos,
+              scentProfile,
+              burnTime,
+              atmosphere,
+              productTag,
+              vessel,
+              price,
+            }
+
+            return (
+              <Card
+                key={product.id}
+                doc={minimizedDoc as any}
+                relationTo="products"
+              />
+            )
+          })}
         </div>
       </div>
     </div>
