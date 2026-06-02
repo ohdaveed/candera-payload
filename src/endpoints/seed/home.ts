@@ -7,13 +7,13 @@ type HomeArgs = {
 }
 
 const BRAND_NAME = 'Candera Candles'
-const TAGLINE = 'Handcrafted luxury candles for your home. Experience the essence of tranquility with our signature scents.'
-const COLLECTION_HEADING = 'Rooted in Earth, Released in Air.'
-const COLLECTION_BODY = 'Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.'
-const CTA_HEADING = 'An Invitation to the Ritual'
-const CTA_BODY = 'Discover the scent that speaks to your space. Take our curated scent quiz for a personalized sensory recommendation.'
-const META_TITLE = 'Candera Candles | Luxury Botanical Studio'
-const META_DESCRIPTION = 'Hand-poured luxury botanical candles. Cultivating intentional living through scent.'
+const TAGLINE = 'Hand-poured botanical candles for the moments that ask you to slow down. Numbered micro-batches, stoneware vessels, two weeks of studio stillness.'
+const COLLECTION_HEADING = 'Six vessels. One batch. Your space.'
+const COLLECTION_BODY = 'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'
+const CTA_HEADING = 'Never Miss a Batch'
+const CTA_BODY = 'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.'
+const META_TITLE = 'Candera Candles | Botanical Scent Studio'
+const META_DESCRIPTION = 'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
@@ -28,7 +28,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           link: {
             type: 'custom',
             appearance: 'default',
-            label: 'Explore the Collection',
+            label: 'Shop the Batch',
             url: '/products',
           },
         },
@@ -36,15 +36,15 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           link: {
             type: 'custom',
             appearance: 'outline',
-            label: 'Our Story',
+            label: 'The Studio',
             url: '/posts',
           },
         },
       ],
       media: heroImage.id,
       richText: createRichText([
-        createHeading('An invitation to slow down.', 'h1'), 
-        createParagraph('Hand-poured luxury botanical candles. Cultivating intentional living through scent and micro-batch artisanry.')
+        createHeading('Breathe. Before the day takes over.', 'h1'), 
+        createParagraph('Hand-poured botanical candles. Numbered micro-batches. Scent as a practice in stilling the noise.')
       ]),
     },
     layout: [
@@ -52,10 +52,10 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockName: 'Storefront Hero',
         blockType: 'storefrontHero',
         heroTag: 'Hand-Poured in the Studio',
-        headline: 'A Practice in Stillness.',
-        subheading: 'Limited Release: Batch 014 now curing in the studio.',
+        headline: 'Breathe. Before the day takes over.',
+        subheading: 'Batch 014 — 50 hours of slow-burn clarity. Cured for two weeks in the studio, ready for your space.',
         media: heroImage.id,
-        primaryCtaLabel: 'Shop the Batch',
+        primaryCtaLabel: 'Claim Your Vessel',
         primaryCtaUrl: '/products',
       } as any,
       {
@@ -63,8 +63,8 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockType: 'archive',
         categories: [],
         introContent: createRichText([
-          createHeading('The Current Batch.', 'h2'),
-          createParagraph('Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity. Cured for two weeks in the studio stillness.'),
+          createHeading('Six vessels. One batch. Your space.', 'h2'),
+          createParagraph('Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'),
         ]),
         populateBy: 'collection',
         relationTo: 'products',
@@ -73,7 +73,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Testimonials',
         blockType: 'testimonials',
-        eyebrow: 'Voices of the Inner Circle',
+        eyebrow: 'From Our Ritualists',
         items: [
           {
             quote:

@@ -1,5 +1,5 @@
 import { type Payload } from 'payload'
-import { fetchEtsy } from './etsy'
+import { fetchEtsy, getEtsyListingsBatch } from './etsy'
 import type { Product } from '@/payload-types'
 
 /**
@@ -40,11 +40,16 @@ function textToRichText(text: string): Product['description'] {
  * Fetches the main image for an Etsy listing and syncs it to the Media collection.
  * Idempotent: won't re-download if the image already exists.
  */
-async function syncListingImage(listingId: number, payload: Payload) {
+async function syncListingImage(listingId: number, payload: Payload, existingImages?: any[]) {
   try {
-    const imageData = await fetchEtsy(`/listings/${listingId}/images`)
-    const images = imageData.results || []
-    if (images.length === 0) return null
+    let images = existingImages
+
+    if (!images) {
+      const imageData = await fetchEtsy(`/listings/${listingId}/images`)
+      images = imageData.results || []
+    }
+
+    if (!images || images.length === 0) return null
 
     // Get the first image (rank 1)
     const mainImage = images[0]
@@ -95,18 +100,48 @@ async function syncListingImage(listingId: number, payload: Payload) {
   }
 }
 
-export async function syncEtsyListings(shopId: number, payload: Payload) {
-  payload.logger.info(`Starting Etsy sync for shop ${shopId}...`)
+export async function syncEtsyListings(
+  source: number | number[],
+  payload: Payload
+) {
+  const isBatch = Array.isArray(source)
+  payload.logger.info(isBatch 
+    ? `Starting Etsy sync for ${source.length} listing IDs...` 
+    : `Starting Etsy sync for shop ${source}...`
+  )
 
   try {
-    // 1. Fetch active listings from Etsy
-    const data = await fetchEtsy(`/shops/${shopId}/listings/active`)
-    const listings = data.results || []
+    let listings: any[] = []
+
+    if (isBatch) {
+      // 1a. Fetch specific listings in batch
+      try {
+        const data = await getEtsyListingsBatch(source, ['Images'])
+        listings = data.results || []
+      } catch (err: any) {
+        payload.logger.warn(`Batch fetch failed, attempting individual fetches: ${err.message}`)
+        // Fallback: try each ID individually
+        for (const id of source) {
+          try {
+            const data = await fetchEtsy(`/listings/${id}`, { params: { includes: 'Images' } })
+            if (data) listings.push(data)
+          } catch (individualErr: any) {
+            payload.logger.error(`Failed to fetch individual listing ${id}: ${individualErr.message}`)
+          }
+        }
+      }
+    } else {
+      // 1b. Fetch active listings from shop
+      const data = await fetchEtsy(`/shops/${source}/listings/active`, {
+        params: { limit: 100 }
+      })
+      listings = data.results || []
+    }
 
     payload.logger.info(`Found ${listings.length} listings on Etsy.`)
 
     if (listings.length === 0) {
-      payload.logger.warn('No active listings found for this shop in Etsy API.')
+      payload.logger.warn('No listings found for the provided source in Etsy API.')
       return { success: true, count: 0 }
     }
 
@@ -114,7 +149,7 @@ export async function syncEtsyListings(shopId: number, payload: Payload) {
 
     // 2. Loop through and upsert into Payload
     for (const listing of listings) {
-      const { listing_id, title, description } = listing
+      const { listing_id, title, description, images } = listing
 
       // Simple slug generation
       const baseSlug = title
@@ -124,8 +159,8 @@ export async function syncEtsyListings(shopId: number, payload: Payload) {
 
       const slug = `${baseSlug}-${listing_id}`
 
-      // Fetch and sync the main image
-      const mainImageId = await syncListingImage(listing_id, payload)
+      // Fetch and sync the main image (pass existing images if we have them from batch)
+      const mainImageId = await syncListingImage(listing_id, payload, images)
 
       const productData: Partial<Product> = {
         title,

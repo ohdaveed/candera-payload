@@ -160,17 +160,17 @@ export const createHomeEndpoint: Endpoint = {
           {
             blockType: 'storefrontHero',
             heroTag: 'Hand-Poured in the Studio',
-            headline: 'An invitation to slow down.',
-            subheading: 'Limited Release: Batch 014 now curing in the studio.',
+            headline: 'Breathe. Before the day takes over.',
+            subheading: 'Batch 014 — 50 hours of slow-burn clarity. Cured for two weeks in the studio, ready for your space.',
             media: heroMedia?.id,
-            primaryCtaLabel: 'Explore the Collection',
+            primaryCtaLabel: 'Claim Your Vessel',
             primaryCtaUrl: '#collection',
           },
           {
             blockType: 'archive',
             categories: [],
             introContent: {
-              root: { type: 'root', children: [{ type: 'heading', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'Rooted in Earth, Released in Air.', version: 1 }], direction: 'ltr', format: '', indent: 0, tag: 'h2', version: 1 }, { type: 'paragraph', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.', version: 1 }], direction: 'ltr', format: '', indent: 0, textFormat: 0, version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 },
+              root: { type: 'root', children: [{ type: 'heading', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'Six vessels. One batch. Your space.', version: 1 }], direction: 'ltr', format: '', indent: 0, tag: 'h2', version: 1 }, { type: 'paragraph', children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text: 'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.', version: 1 }], direction: 'ltr', format: '', indent: 0, textFormat: 0, version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 },
             },
             populateBy: 'collection',
             relationTo: 'products',
@@ -178,7 +178,7 @@ export const createHomeEndpoint: Endpoint = {
           },
           {
             blockType: 'testimonials',
-            eyebrow: 'Voices of the Inner Circle',
+            eyebrow: 'From Our Ritualists',
             items: [
               { quote: 'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.', author: 'Elena R.', location: 'Los Angeles', badge: 'Verified Ritualist' },
               { quote: 'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.', author: 'James T.', location: 'Austin', badge: 'Repeat Collector' },
@@ -187,17 +187,17 @@ export const createHomeEndpoint: Endpoint = {
           },
           {
             blockType: 'innerCircleCTA',
-            headline: 'Join the Inner Circle',
-            description: 'Our batches often sell out in days. Join our list to receive early access to new scent drops and personal ritual invitations.',
-            ctaLabel: 'Request Entry',
+            headline: 'Never Miss a Batch',
+            description: 'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.',
+            ctaLabel: 'Get Early Access',
             ctaUrl: '/#collection',
             ...(innerCircleMedia ? { media: innerCircleMedia.id } : {}),
           },
         ],
         meta: {
-          description: 'Cultivating intentional living through scent and micro-batch artisanry.',
+          description: 'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
           image: heroMedia?.id,
-          title: 'Candera — An invitation to slow down.',
+          title: 'Candera Candles | Botanical Scent Studio',
         },
       }
 
