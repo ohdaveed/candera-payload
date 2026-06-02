@@ -74,6 +74,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'etsy-tokens': EtsyToken;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +99,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'etsy-tokens': EtsyTokensSelect<false> | EtsyTokensSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -924,6 +926,19 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "etsy-tokens".
+ */
+export interface EtsyToken {
+  id: number;
+  label?: string | null;
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1139,6 +1154,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'etsy-tokens';
+        value: number | EtsyToken;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1590,6 +1609,18 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "etsy-tokens_select".
+ */
+export interface EtsyTokensSelect<T extends boolean = true> {
+  label?: T;
+  accessToken?: T;
+  refreshToken?: T;
+  expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

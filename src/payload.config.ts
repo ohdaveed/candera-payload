@@ -19,6 +19,8 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { syncEtsyListings } from './utilities/syncEtsy'
 import { createHomeEndpoint } from './endpoints/createHome'
+import { EtsyTokens } from './collections/EtsyTokens'
+import { getAuthorizationUrl, exchangeCode, storeTokens } from './utilities/etsyOAuth'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -90,6 +92,7 @@ export default buildConfig({
     Media,
     Categories,
     Users,
+    EtsyTokens,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
@@ -109,7 +112,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'info@candera.com',
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'info@canderacandles.com',
     defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
     transportOptions: process.env.SMTP_HOST
       ? {
@@ -140,6 +143,55 @@ export default buildConfig({
         } catch (error) {
           req.payload.logger.error({ err: error, msg: 'Error in /sync-etsy endpoint' })
           return Response.json({ error: 'Error syncing Etsy listings' }, { status: 500 })
+        }
+      },
+    },
+    {
+      path: "/etsy/oauth/init",
+      method: "get",
+      handler: async () => {
+        const url = getAuthorizationUrl();
+        return Response.redirect(url);
+      },
+    },
+    {
+      path: "/etsy/set-vacation",
+      method: "get",
+      handler: async (req) => {
+        if (!req.user) {
+          return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        try {
+          const { fetchEtsyWithAuth } = await import("./utilities/etsyOAuth");
+          const res = await fetchEtsyWithAuth("/shops/25894791", {
+            method: "PUT",
+            body: JSON.stringify({ is_vacation: false }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            return Response.json({ error: data }, { status: res.status });
+          }
+          return Response.json({ success: true, shop: data });
+        } catch (error) {
+          return Response.json({ error: String(error) }, { status: 500 });
+        }
+      },
+    },
+    {
+      path: "/etsy/oauth/callback",
+      method: "get",
+      handler: async (req) => {
+        const url = new URL(req.url);
+        const code = url.searchParams.get("code");
+        if (!code) {
+          return Response.json({ error: "Missing authorization code" }, { status: 400 });
+        }
+        try {
+          const token = await exchangeCode(code);
+          await storeTokens(token.access_token, token.refresh_token, token.expires_in);
+          return Response.redirect("/admin");
+        } catch (error) {
+          return Response.json({ error: String(error) }, { status: 500 });
         }
       },
     },
