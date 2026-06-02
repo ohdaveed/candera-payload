@@ -265,19 +265,24 @@ export class EtsyClient {
 
     const token = await this.getOrRefreshToken()
 
-    const headers: Record<string, string> = {
-      Accept: 'application/json',
-      ...options.headers,
+    const headers = new Headers()
+    headers.set('Accept', 'application/json')
+
+    if (options.headers) {
+      const inputHeaders = new Headers(options.headers)
+      inputHeaders.forEach((value, key) => {
+        headers.set(key, value)
+      })
     }
 
     if (token) {
-      headers.Authorization = `Bearer ${token}`
-      if (fetchOptions.body && !headers['Content-Type']) {
-        headers['Content-Type'] = 'application/json'
+      headers.set('Authorization', `Bearer ${token}`)
+      if (fetchOptions.body && !headers.has('Content-Type')) {
+        headers.set('Content-Type', 'application/json')
       }
     } else {
       // Fallback: use application API key and secret header signature
-      headers['x-api-key'] = `${this.config.apiKey}:${this.config.sharedSecret}`
+      headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
     }
 
     const res = await fetch(url.toString(), {
