@@ -106,7 +106,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             )}
 
             {product.price != null && (
-              <p className="text-[22px] font-semibold text-candera-obsidian">
+              <p className="price text-[22px] font-semibold">
                 ${Number(product.price).toFixed(2)}
               </p>
             )}
