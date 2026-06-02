@@ -131,14 +131,8 @@ export const createHomeEndpoint: Endpoint = {
         } else {
           await payload.create({ collection: 'products', data })
         }
-      const heroMedia = mediaByKey['seashell-garden']
-      if (!heroMedia) {
-        return Response.json(
-          { error: 'Required hero media "seashell-garden" is missing. Please ensure the image exists in public/candera/ and was successfully uploaded.' },
-          { status: 400 }
-        )
       }
-      const innerCircleMedia = mediaByKey['crimson-noir']
+
       // Upsert home page
       const heroMedia = mediaByKey['seashell-garden']
       if (!heroMedia) {
