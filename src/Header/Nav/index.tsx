@@ -12,14 +12,14 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   const navItems = data?.navItems || []
 
   const linkClass = [
-    'text-[11px] font-semibold uppercase tracking-[.2em] transition-colors hover:text-candera-ember',
-    transparent ? 'text-white/80' : 'text-candera-sage',
+    'text-[10px] font-bold uppercase tracking-[.3em] transition-colors hover:text-candera-ember',
+    transparent ? 'text-white/90' : 'text-candera-sage',
   ].join(' ')
 
   return (
     <nav
       aria-label="Main Navigation"
-      className="flex items-center gap-6"
+      className="flex items-center gap-10"
     >
       {navItems.map(({ link }, i) => {
         return (

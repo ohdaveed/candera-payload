@@ -19,32 +19,32 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <section className="py-20 px-6 bg-candera-linen">
+    <section className="py-32 px-6 bg-white border-t border-candera-stone/20">
       <div className="max-w-[1280px] mx-auto">
         {eyebrow && (
-          <p className="text-center text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-12">
+          <p className="text-center text-[10px] font-bold uppercase tracking-[.4em] text-candera-sage mb-20">
             {eyebrow}
           </p>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
           {items.map((t, i) => (
             <div
               key={i}
-              className="border border-candera-stone/40 bg-white p-8 flex flex-col gap-4"
+              className="flex flex-col items-center text-center gap-6 group"
             >
-              <div className="flex gap-1 text-candera-ember">
+              <div className="flex gap-1 text-candera-ember/60 transition-colors group-hover:text-candera-ember">
                 {[...Array(5)].map((_, j) => <StarIcon key={j} />)}
               </div>
-              <p className="font-editorial italic text-[17px] leading-[1.7] text-candera-obsidian flex-1">
+              <p className="editorial text-[18px] text-candera-obsidian leading-[1.8]">
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div className="flex flex-col gap-1 mt-2">
-                <p className="text-[12px] text-candera-sage-text font-medium">
-                  — {t.author}{t.location ? `, ${t.location}` : ''}
+              <div className="flex flex-col gap-1.5 items-center mt-2">
+                <p className="text-[11px] text-candera-obsidian font-bold uppercase tracking-[.2em]">
+                  {t.author}
                 </p>
                 {t.badge && (
-                  <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
-                    <CheckIcon />
+                  <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[.18em] text-candera-sage">
+                    <span className="w-1 h-1 rounded-full bg-candera-stone" />
                     {t.badge}
                   </span>
                 )}

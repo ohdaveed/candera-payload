@@ -16,13 +16,13 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   primaryCtaUrl,
 }) => {
   return (
-    <section className="relative flex min-h-[760px] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[800px] items-center justify-center overflow-hidden bg-candera-obsidian">
       {/* Background image */}
       {media && typeof media === 'object' && (
         <div className="absolute inset-0">
           <Media
             fill
-            imgClassName="object-cover brightness-[0.58]"
+            imgClassName="object-cover brightness-[0.55] transition-transform duration-[5s] hover:scale-105"
             priority
             resource={media}
           />
@@ -33,11 +33,11 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at center, rgba(20,20,18,.15), rgba(20,20,18,.55))',
+          background: 'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
         }}
       />
 
-      {/* Film grain */}
+      {/* Film grain texture */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.04] mix-blend-overlay"
         style={{
@@ -46,38 +46,35 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center text-white max-w-[760px] px-6 pt-32 pb-16">
+      <div className="relative z-10 flex flex-col items-center text-center max-w-[800px] px-6 pt-32 pb-16">
         {heroTag && (
           <span
-            className="block mb-7 text-[11px] font-bold uppercase tracking-[.42em]"
-            style={{ color: 'rgba(245,242,237,.85)' }}
+            className="eyebrow block mb-8 text-white/90"
           >
             {heroTag}
           </span>
         )}
 
         <h1
-          className="font-display font-thin italic m-0 leading-[1.05] tracking-tight text-white"
-          style={{ fontSize: 'clamp(3rem, 8vw, 6.5rem)' }}
+          className="hero-heading text-white m-0"
         >
           {headline}
         </h1>
 
         {subheading && (
           <p
-            className="font-editorial italic mt-5 max-w-[30rem] leading-[1.7] text-[18px]"
-            style={{ color: 'rgba(245,242,237,.8)' }}
+            className="editorial mt-8 max-w-[32rem] text-white/80"
           >
             {subheading}
           </p>
         )}
 
-        <div className="flex flex-wrap items-center justify-center gap-6 mt-10">
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-12">
           {primaryCtaLabel && primaryCtaUrl && (
             <Link
               href={primaryCtaUrl}
-              className="inline-flex items-center justify-center gap-2 h-[46px] px-7 text-[11px] font-bold uppercase tracking-[.2em] bg-white text-candera-obsidian transition-colors hover:bg-candera-vellum"
-              style={{ borderRadius: 0, boxShadow: '0 18px 40px -12px rgba(0,0,0,.4)' }}
+              className="inline-flex items-center justify-center gap-3 h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian transition-all duration-300 hover:bg-candera-vellum shadow-2xl"
+              style={{ borderRadius: 0 }}
             >
               {primaryCtaLabel}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

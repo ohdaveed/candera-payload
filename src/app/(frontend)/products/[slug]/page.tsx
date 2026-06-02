@@ -41,36 +41,36 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       : null
 
   return (
-    <article className="pt-16 pb-24 bg-candera-linen min-h-screen">
+    <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
       <PayloadRedirects disableNotFound url={url} />
 
-      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+      <div className="container">
         {/* Back link */}
         <Link
-          href="/#collection"
-          className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[.2em] text-candera-sage hover:text-candera-ember transition-colors mt-8 mb-12"
+          href="/products"
+          className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage hover:text-candera-ember transition-colors mb-16 group"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-1">
             <path d="M19 12H5M12 5l-7 7 7 7" />
           </svg>
-          Back to Collection
+          Return to Collection
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           {/* Left: image */}
-          <div className="relative aspect-square overflow-hidden bg-candera-ash">
+          <div className="lg:col-span-7 relative aspect-[4/5] overflow-hidden bg-candera-ash shadow-sm">
             {heroImage && typeof heroImage !== 'string' ? (
               <Media fill imgClassName="object-cover" resource={heroImage} priority />
             ) : (
-              <div className="flex h-full items-center justify-center text-candera-sage text-sm">
+              <div className="flex h-full items-center justify-center text-candera-sage text-sm italic">
                 Image unavailable
               </div>
             )}
             {product.productTag && (
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-6 left-6 z-10">
                 <span
                   className={[
-                    'text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1.5',
+                    'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl',
                     product.productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
                     product.productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
                     product.productTag === 'New Release' && 'bg-candera-rose text-white',
@@ -85,28 +85,27 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </div>
 
           {/* Right: details */}
-          <div className="flex flex-col gap-6 py-4">
-            {product.vessel && (
-              <span className="text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage">
-                Vessel {product.vessel}
-              </span>
-            )}
+          <div className="lg:col-span-5 flex flex-col gap-10 py-4">
+            <div className="flex flex-col gap-4">
+               {product.vessel && (
+                <span className="eyebrow">
+                  Vessel {product.vessel}
+                </span>
+              )}
 
-            <h1
-              className="font-display font-thin italic text-candera-obsidian leading-[1.08] m-0"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
-            >
-              {product.title}
-            </h1>
+              <h1 className="hero-heading text-candera-obsidian">
+                {product.title}
+              </h1>
 
-            {product.tagline && (
-              <p className="font-editorial italic text-[18px] leading-[1.7] text-candera-sage-text">
-                {product.tagline}
-              </p>
-            )}
+              {product.tagline && (
+                <p className="editorial text-[20px] leading-[1.7] text-candera-sage-text">
+                  {product.tagline}
+                </p>
+              )}
+            </div>
 
             {product.price != null && (
-              <p className="price text-[22px] font-semibold">
+              <p className="price text-[28px] font-medium border-y border-candera-stone/20 py-6">
                 ${Number(product.price).toFixed(2)}
               </p>
             )}
@@ -117,34 +116,35 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               atmosphere={product.atmosphere}
             />
 
-            {product.etsyListingId && (
-              <a
-                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[46px] px-8 text-[11px] font-bold uppercase tracking-[.2em] bg-candera-obsidian text-white hover:bg-candera-ember transition-colors mt-2"
-                style={{ borderRadius: 0 }}
-              >
-                Add to the Ritual
-              </a>
-            )}
+            <div className="flex flex-col gap-6">
+              {product.etsyListingId && (
+                <a
+                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember transition-all duration-300 shadow-xl !rounded-none"
+                >
+                  Add to the Ritual
+                </a>
+              )}
 
-            {/* Product details list */}
-            {product.scentProfile && (
-              <div className="border-t border-candera-stone/40 pt-6 mt-2">
-                <p className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage mb-3">
-                  Details
-                </p>
-                <ul className="flex flex-col gap-1.5">
-                  {['15 oz · Soy & beeswax blend', 'Numbered vessel', 'Micro-batch cured', 'Ships from California'].map((detail) => (
-                    <li key={detail} className="text-[13px] text-candera-sage-text flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-candera-stone inline-block shrink-0" />
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              {/* Product details list */}
+              {product.scentProfile && (
+                <div className="border-t border-candera-stone/20 pt-10">
+                  <p className="eyebrow mb-6">
+                    Specifications
+                  </p>
+                  <ul className="flex flex-col gap-4 p-0 list-none">
+                    {['15 oz · Soy & beeswax blend', 'Numbered vessel', 'Micro-batch cured', 'Ships from California'].map((detail) => (
+                      <li key={detail} className="editorial text-[14px] text-candera-sage-text flex items-center gap-3">
+                        <span className="w-1.5 h-[1px] bg-candera-stone inline-block shrink-0" />
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

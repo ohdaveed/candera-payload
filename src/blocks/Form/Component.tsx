@@ -108,24 +108,32 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
+    <div className="container lg:max-w-[50rem] py-32">
       {enableIntro && introContent && !hasSubmitted ? (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+        <RichText 
+          className="mb-16 
+            [&_h1]:hero-heading [&_h1]:mb-8
+            [&_p]:editorial [&_p]:text-candera-sage-text [&_p]:max-w-[420px]" 
+          data={introContent} 
+          enableGutter={false} 
+        />
       ) : null}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
+      <div className="p-0 border-t border-candera-stone/20 pt-16">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <RichText data={confirmationMessage} />
+            <div className="py-12 text-center">
+               <RichText className="editorial" data={confirmationMessage} />
+            </div>
           ) : null}
-          {isLoading && !hasSubmitted ? <p aria-live="polite">Loading, please wait…</p> : null}
+          {isLoading && !hasSubmitted ? <p className="editorial animate-pulse" aria-live="polite">Preparing correspondence…</p> : null}
           {error ? (
-            <div aria-live="polite" role="alert">
+            <div className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium" aria-live="polite" role="alert">
               {`${error.status || '500'}: ${error.message || ''}`}
             </div>
           ) : null}
           {!hasSubmitted ? (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
+              <div className="mb-10 last:mb-0">
                 {formFromProps &&
                 formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
@@ -134,7 +142,7 @@ export const FormBlock: React.FC<
                       ] as React.ElementType
                       if (Field) {
                         return (
-                          <div className="mb-6 last:mb-0" key={index}>
+                          <div className="mb-8 last:mb-0" key={index}>
                             <Field
                               form={formFromProps}
                               {...field}
@@ -151,8 +159,14 @@ export const FormBlock: React.FC<
                   : null}
               </div>
 
-              <Button disabled={isLoading} form={formID} type="submit" variant="default">
-                {isLoading ? 'Submitting…' : submitButtonLabel}
+              <Button 
+                disabled={isLoading} 
+                form={formID} 
+                type="submit" 
+                variant="default"
+                className="h-[52px] px-12 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember !rounded-none shadow-lg w-full md:w-auto"
+              >
+                {isLoading ? 'Sending…' : (submitButtonLabel || 'Send Correspondence')}
               </Button>
             </form>
           ) : null}
