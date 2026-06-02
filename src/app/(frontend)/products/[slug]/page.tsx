@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import Link from 'next/link'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -45,7 +46,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         {/* Back link */}
-        <a
+        <Link
           href="/#collection"
           className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[.2em] text-candera-sage hover:text-candera-ember transition-colors mt-8 mb-12"
         >
@@ -53,7 +54,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <path d="M19 12H5M12 5l-7 7 7 7" />
           </svg>
           Back to Collection
-        </a>
+        </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           {/* Left: image */}

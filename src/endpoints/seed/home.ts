@@ -92,6 +92,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
             location: 'Brooklyn',
             badge: 'Verified Ritualist',
           },
+        ],
         richText: createRichText([
           createHeading(CTA_HEADING, 'h3'),
           createParagraph(CTA_BODY),
