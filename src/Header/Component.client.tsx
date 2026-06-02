@@ -43,7 +43,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header
       className={[
-        'fixed top-0 left-0 right-0 z-[120] transition-all duration-500',
+        'fixed top-0 left-0 right-0 z-[120] transition-[background-color,padding,box-shadow,border-color,backdrop-filter] duration-500',
         isTransparent
           ? 'bg-transparent py-[18px]'
           : 'bg-white/95 backdrop-blur-[10px] py-0 shadow-[0_1px_2px_rgba(20,20,18,.04)] border-b border-[#f0ede7]',
