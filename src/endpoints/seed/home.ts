@@ -8,12 +8,12 @@ type HomeArgs = {
 
 const BRAND_NAME = 'Candera Candles'
 const TAGLINE = 'Handcrafted luxury candles for your home. Experience the essence of tranquility with our signature scents.'
-const COLLECTION_HEADING = 'Our Collection'
-const COLLECTION_BODY = 'Explore our range of artisanal candles, each designed to create a unique atmosphere in your space.'
-const CTA_HEADING = 'Find Your Perfect Scent'
-const CTA_BODY = 'Need help choosing? Contact us for personalized recommendations.'
-const META_TITLE = 'Candera Candles'
-const META_DESCRIPTION = 'Handcrafted luxury candles for your home.'
+const COLLECTION_HEADING = 'Rooted in Earth, Released in Air.'
+const COLLECTION_BODY = 'Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.'
+const CTA_HEADING = 'An Invitation to the Ritual'
+const CTA_BODY = 'Discover the scent that speaks to your space. Take our curated scent quiz for a personalized sensory recommendation.'
+const META_TITLE = 'Candera Candles | Luxury Botanical Studio'
+const META_DESCRIPTION = 'Hand-poured luxury botanical candles. Cultivating intentional living through scent.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
@@ -28,7 +28,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           link: {
             type: 'custom',
             appearance: 'default',
-            label: 'Shop All',
+            label: 'Explore the Collection',
             url: '/products',
           },
         },
@@ -36,32 +36,35 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           link: {
             type: 'custom',
             appearance: 'outline',
-            label: 'Contact',
-            url: '/contact',
+            label: 'Our Story',
+            url: '/posts',
           },
         },
       ],
       media: heroImage.id,
-      richText: createRichText([createHeading(BRAND_NAME, 'h1'), createParagraph(TAGLINE)]),
+      richText: createRichText([
+        createHeading('An invitation to slow down.', 'h1'), 
+        createParagraph('Hand-poured luxury botanical candles. Cultivating intentional living through scent and micro-batch artisanry.')
+      ]),
     },
     layout: [
       {
         blockName: 'Storefront Hero',
         blockType: 'storefrontHero',
         heroTag: 'Hand-Poured in the Studio',
-        headline: 'An invitation to slow down.',
+        headline: 'A Practice in Stillness.',
         subheading: 'Limited Release: Batch 014 now curing in the studio.',
         media: heroImage.id,
-        primaryCtaLabel: 'Explore the Collection',
-        primaryCtaUrl: '#collection',
+        primaryCtaLabel: 'Shop the Batch',
+        primaryCtaUrl: '/products',
       } as any,
       {
         blockName: 'Product Archive',
         blockType: 'archive',
         categories: [],
         introContent: createRichText([
-          createHeading(COLLECTION_HEADING, 'h3'),
-          createParagraph(COLLECTION_BODY),
+          createHeading('The Current Batch.', 'h2'),
+          createParagraph('Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity. Cured for two weeks in the studio stillness.'),
         ]),
         populateBy: 'collection',
         relationTo: 'products',

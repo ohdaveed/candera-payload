@@ -52,7 +52,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pt-32 pb-32 bg-white min-h-screen">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -62,14 +62,24 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
+      <div className="flex flex-col items-center gap-12 pt-16">
         <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
+          <RichText 
+            className="max-w-[680px] mx-auto 
+              [&_p]:editorial [&_p]:text-candera-obsidian [&_p]:mb-8
+              [&_h2]:h2 [&_h2]:mb-6
+              [&_blockquote]:editorial [&_blockquote]:text-[24px] [&_blockquote]:border-l-0 [&_blockquote]:text-center [&_blockquote]:my-16 [&_blockquote]:text-candera-rose" 
+            data={post.content} 
+            enableGutter={false} 
+          />
           {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
+            <div className="mt-32 border-t border-candera-stone/20 pt-20">
+               <h4 className="eyebrow text-center mb-16">Further Reflections</h4>
+               <RelatedPosts
+                className="max-w-[1280px] mx-auto"
+                docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+              />
+            </div>
           )}
         </div>
       </div>

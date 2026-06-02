@@ -48,7 +48,7 @@
   /* Display headings — Fraunces italic */
   h1,
   .h1 {
-    @apply font-display font-normal italic text-candera-obsidian;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: 3rem;
     line-height: 1.08;
@@ -57,7 +57,7 @@
   }
 
   .hero-heading {
-    @apply font-display font-normal italic text-candera-obsidian;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: clamp(3rem, 9vw, 7.25rem);
     line-height: 1.08;
@@ -67,7 +67,7 @@
 
   h2,
   .h2 {
-    @apply font-display font-normal italic text-candera-obsidian;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: 1.953rem;
     line-height: 1.3;
@@ -76,7 +76,7 @@
 
   h3,
   .h3 {
-    @apply font-display font-normal italic text-candera-obsidian;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-size: 1.563rem;
     line-height: 1.3;
     margin: 0;
@@ -84,7 +84,7 @@
 
   h4,
   .h4 {
-    @apply font-display font-normal italic text-candera-obsidian;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-size: 1.25rem;
     line-height: 1.3;
     margin: 0;
@@ -98,11 +98,26 @@
     margin: 0;
   }
 
-  .label {
-    @apply font-sans font-semibold text-candera-sage uppercase;
+  /* Form Elements */
+  label, .label {
+    @apply font-sans font-bold text-candera-sage uppercase block mb-2;
     font-size: 0.64rem;
-    letter-spacing: 0.2em;
-    margin: 0;
+    letter-spacing: 0.25em;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea,
+  select {
+    @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-[15px] transition-all duration-300;
+    border-radius: 0;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply outline-none border-candera-ember/50 bg-white shadow-sm;
   }
 
   /* Body text */

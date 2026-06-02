@@ -328,14 +328,14 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Products',
+              label: 'Collection',
               url: '/products',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Posts',
+              label: 'Journal',
               url: '/posts',
             },
           },

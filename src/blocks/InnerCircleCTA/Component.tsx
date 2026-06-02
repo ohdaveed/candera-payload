@@ -20,37 +20,37 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
   media,
 }) => {
   return (
-    <section className="flex flex-col md:flex-row min-h-[480px]">
+    <section className="flex flex-col md:flex-row min-h-[600px] border-t border-candera-stone/20">
       {/* Left editorial photo */}
       {media && typeof media === 'object' && (
-        <div className="relative w-full md:w-1/2 min-h-[300px] md:min-h-full overflow-hidden">
-          <Media fill imgClassName="object-cover" resource={media} />
+        <div className="relative w-full md:w-1/2 min-h-[400px] md:min-h-full overflow-hidden bg-candera-ash">
+          <Media fill imgClassName="object-cover transition-transform duration-[3s] hover:scale-110" resource={media} />
         </div>
       )}
 
       {/* Right content */}
       <div
-        className="w-full md:w-1/2 flex flex-col items-start justify-center gap-6 px-12 py-16"
-        style={{ background: '#f5f2ed' }}
+        className="w-full md:w-1/2 flex flex-col items-start justify-center gap-8 px-12 md:px-24 py-20"
+        style={{ background: 'var(--candera-vellum)' }}
       >
-        <div className="text-candera-rose">
+        <div className="text-candera-rose/80">
           <MailIcon />
         </div>
-        <h2
-          className="font-display font-thin italic text-candera-obsidian leading-[1.1] m-0"
-          style={{ fontSize: 'clamp(1.75rem, 3vw, 2.75rem)' }}
-        >
-          {headline}
-        </h2>
+        <div className="flex flex-col gap-4">
+           <span className="eyebrow">The Inner Circle</span>
+           <h2 className="h2 text-candera-obsidian">
+            {headline}
+          </h2>
+        </div>
         {description && (
-          <p className="font-editorial text-[17px] leading-[1.7] text-candera-sage-text max-w-[380px]">
+          <p className="editorial text-[17px] leading-[1.8] text-candera-sage-text max-w-[400px]">
             {description}
           </p>
         )}
         {ctaLabel && ctaUrl && (
           <Link
             href={ctaUrl}
-            className="inline-flex items-center justify-center h-[46px] px-7 text-[11px] font-bold uppercase tracking-[.2em] bg-candera-ember-strong text-white transition-colors hover:bg-candera-obsidian"
+            className="inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember shadow-lg"
             style={{ borderRadius: 0 }}
           >
             {ctaLabel}
