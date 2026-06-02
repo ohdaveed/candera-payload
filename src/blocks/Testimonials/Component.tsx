@@ -22,7 +22,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
     <section className="py-32 px-6 bg-white border-t border-candera-stone/20">
       <div className="max-w-[1280px] mx-auto">
         {eyebrow && (
-          <p className="text-center text-[10px] font-bold uppercase tracking-[.4em] text-candera-sage mb-20">
+          <p className="text-center text-[10px] font-bold uppercase tracking-[.4em] text-candera-sage-text mb-20">
             {eyebrow}
           </p>
         )}
@@ -32,7 +32,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
               key={i}
               className="flex flex-col items-center text-center gap-6 group"
             >
-              <div className="flex gap-1 text-candera-ember/60 transition-colors group-hover:text-candera-ember">
+              <div className="flex gap-1 text-candera-ember-strong/60 transition-colors group-hover:text-candera-ember-strong">
                 {[...Array(5)].map((_, j) => <StarIcon key={j} />)}
               </div>
               <p className="editorial text-[18px] text-candera-obsidian leading-[1.8]">
@@ -43,7 +43,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
                   {t.author}
                 </p>
                 {t.badge && (
-                  <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[.18em] text-candera-sage">
+                  <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
                     <span className="w-1 h-1 rounded-full bg-candera-stone" />
                     {t.badge}
                   </span>

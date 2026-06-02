@@ -92,15 +92,22 @@
 
   /* Eyebrow / kicker — uppercase, wide tracking */
   .eyebrow {
-    @apply font-sans font-bold text-candera-ember uppercase;
+    @apply font-sans font-bold text-candera-ember-strong uppercase;
     font-size: 0.64rem;
     letter-spacing: 0.3em;
     margin: 0;
   }
 
+  .label {
+    @apply font-sans font-semibold text-candera-sage-text uppercase;
+    font-size: 0.64rem;
+    letter-spacing: 0.2em;
+    margin: 0;
+  }
+
   /* Form Elements */
   label, .label {
-    @apply font-sans font-bold text-candera-sage uppercase block mb-2;
+    @apply font-sans font-bold text-candera-sage-text uppercase block mb-2;
     font-size: 0.64rem;
     letter-spacing: 0.25em;
   }
@@ -117,7 +124,7 @@
   input:focus,
   textarea:focus,
   select:focus {
-    @apply outline-none border-candera-ember/50 bg-white shadow-sm;
+    @apply outline-none border-candera-ember-strong/50 bg-white shadow-sm;
   }
 
   /* Body text */
@@ -131,7 +138,7 @@
   }
 
   .lead {
-    @apply font-sans text-candera-sage font-light;
+    @apply font-sans text-candera-sage-text font-light;
     font-size: 1.25rem;
     line-height: 1.7;
     margin: 0;
@@ -139,7 +146,7 @@
 
   /* Editorial / pull-quote — EB Garamond italic */
   .editorial {
-    @apply font-editorial font-normal italic text-candera-sage;
+    @apply font-editorial font-normal italic text-candera-sage-text;
     font-size: 1.25rem;
     line-height: 1.6;
     margin: 0;
@@ -164,7 +171,7 @@
   /* Small text / caption */
   .caption,
   .small {
-    @apply font-sans text-candera-sage font-light;
+    @apply font-sans text-candera-sage-text font-light;
     font-size: 0.8rem;
     line-height: 1.5;
     margin: 0;
@@ -247,7 +254,7 @@
   --secondary: oklch(97% 0 0deg);
   --secondary-foreground: oklch(20.5% 0 0deg);
   --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
+  --muted-foreground: oklch(40% 0 0deg);
   --accent: oklch(97% 0 0deg);
   --accent-foreground: oklch(20.5% 0 0deg);
   --destructive: oklch(57.7% 0.245 27.325deg);

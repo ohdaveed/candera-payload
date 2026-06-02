@@ -37,14 +37,14 @@ export async function Footer() {
 
           {/* Navigation */}
           <div>
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Navigation
             </h5>
             <nav className="flex flex-col gap-3">
               {navItems.map(({ link }, i) => (
                 <CMSLink 
                   {...link} 
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember transition-colors" 
+                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors" 
                   key={i} 
                 />
               ))}
@@ -53,14 +53,14 @@ export async function Footer() {
 
           {/* Assistance */}
           <div>
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Assistance
             </h5>
             <ul className="flex flex-col gap-3 list-none p-0 m-0">
               <li className="font-sans text-[14px] font-light text-candera-sage-text">Shipping & Returns</li>
               <li className="font-sans text-[14px] font-light text-candera-sage-text">Wholesale</li>
               <li>
-                <Link href="/contact" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember transition-colors">
+                <Link href="/contact" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors">
                   Contact
                 </Link>
               </li>
@@ -69,7 +69,7 @@ export async function Footer() {
 
           {/* Settings / Theme */}
           <div>
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Settings
             </h5>
             <ThemeSelector />
@@ -78,15 +78,15 @@ export async function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-candera-stone/20 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-sans text-[11px] font-light text-candera-sage">
+          <p className="font-sans text-[11px] font-light text-candera-sage-text">
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage no-underline hover:text-candera-obsidian">
+            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
               Privacy Policy
             </Link>
             <span className="text-candera-stone">·</span>
-            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage no-underline hover:text-candera-obsidian">
+            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
               Terms of Service
             </Link>
           </div>

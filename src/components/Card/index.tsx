@@ -51,7 +51,7 @@ export const Card: React.FC<{
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden bg-candera-ash">
         {!imageToUse ? (
-          <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage">
+          <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage-text italic">
             Image unavailable
           </div>
         ) : null}
@@ -72,7 +72,7 @@ export const Card: React.FC<{
                 'text-[9px] font-bold uppercase tracking-[.25em] px-3 py-1.5',
                 productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
                 productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                productTag === 'New Release' && 'bg-candera-rose text-white',
+                productTag === 'New Release' && 'bg-candera-rose-strong text-white',
               )}
             >
               {productTag}
@@ -93,7 +93,7 @@ export const Card: React.FC<{
            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
              <Link
                 href={href}
-                className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl"
+                className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
                 style={{ borderRadius: 0 }}
               >
                 View Details
@@ -107,12 +107,12 @@ export const Card: React.FC<{
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex flex-col gap-1.5">
             {vessel ? (
-              <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage">
+              <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage-text">
                 Vessel {vessel}
               </span>
             ) : null}
             {titleToUse ? (
-              <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember">
+              <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong">
                 <Link href={href} ref={linkRef}>
                   {titleToUse}
                 </Link>
@@ -128,7 +128,7 @@ export const Card: React.FC<{
 
         {/* Categories fallback for posts */}
         {showCategories && hasCategories && !scentProfile && (
-          <div className="uppercase text-[10px] font-bold tracking-widest text-candera-sage mt-auto">
+          <div className="uppercase text-[10px] font-bold tracking-widest text-candera-sage-text mt-auto">
             {categories?.map((category, index) => {
               if (category && typeof category === 'object') {
                 const { title: titleFromCategory } = category

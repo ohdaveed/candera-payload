@@ -33,7 +33,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
         className="w-full md:w-1/2 flex flex-col items-start justify-center gap-8 px-12 md:px-24 py-20"
         style={{ background: 'var(--candera-vellum)' }}
       >
-        <div className="text-candera-rose/80">
+        <div className="text-candera-rose-strong/80">
           <MailIcon />
         </div>
         <div className="flex flex-col gap-4">
@@ -50,7 +50,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
         {ctaLabel && ctaUrl && (
           <Link
             href={ctaUrl}
-            className="inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember shadow-lg"
+            className="inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember-strong shadow-lg"
             style={{ borderRadius: 0 }}
           >
             {ctaLabel}

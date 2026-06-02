@@ -68,7 +68,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             className="max-w-[680px] mx-auto 
               [&_p]:editorial [&_p]:text-candera-obsidian [&_p]:mb-8
               [&_h2]:h2 [&_h2]:mb-6
-              [&_blockquote]:editorial [&_blockquote]:text-[24px] [&_blockquote]:border-l-0 [&_blockquote]:text-center [&_blockquote]:my-16 [&_blockquote]:text-candera-rose" 
+              [&_blockquote]:editorial [&_blockquote]:text-[24px] [&_blockquote]:border-l-0 [&_blockquote]:text-center [&_blockquote]:my-16 [&_blockquote]:text-candera-rose-strong" 
             data={post.content} 
             enableGutter={false} 
           />
