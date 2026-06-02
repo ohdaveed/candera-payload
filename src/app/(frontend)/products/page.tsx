@@ -51,7 +51,7 @@ export default async function ProductsPage() {
               price,
             } = product
 
-            const minimizedDoc = {
+            const minimizedDoc: any = {
               slug,
               categories: categories?.map((cat) =>
                 typeof cat === 'object' ? { title: cat.title } : cat,
@@ -69,7 +69,7 @@ export default async function ProductsPage() {
             return (
               <Card
                 key={product.id}
-                doc={minimizedDoc as any}
+                doc={minimizedDoc}
                 relationTo="products"
               />
             )
