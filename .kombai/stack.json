@@ -1,0 +1,26 @@
+// Kombai Tech Stack Configuration
+// Each value must be a string or an array of strings.
+// Example: "Framework": "Vite" or "Project Type": ["React", "Vue"]
+{
+  "React Version": "19",
+  "Tailwind Version": "v4",
+  "Build Tool": "Turbopack",
+  "Server Runtime": "Node.js v24",
+  "Component Library": "shadcn v4 (Radix UI)",
+  "Router": "App Router",
+  "Deployment Platform": "Vercel",
+  "ORM/Client Library": "Drizzle",
+  "Testing Framework": "Vitest",
+  "Icon Set": "Lucide",
+  "Package Manager": "pnpm",
+  "TS/JS": "TS",
+  "Project Type": "React",
+  "Framework": "NextJS 16",
+  "context_graphs": [
+    {
+      "type": "local",
+      "path": "Candera Design System",
+      "name": "Candera Design System"
+    }
+  ]
+}
