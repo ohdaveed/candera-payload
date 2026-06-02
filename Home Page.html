@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <meta name="kombai-design-canvas" content="true">
+  <base href="http://localhost:19124/">
+  
+  
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..500;1,9..40,300..500&display=swap">
+  <style>html, body { margin: 0; padding: 0; } #root { display: contents; }</style>
+</head><body>
+  <div id="root">
+<style data-kid="0">
+  /* EB Garamond — not in theme fonts list, import manually */
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&display=swap');
+
+  .font-display { font-family: var(--k-font-family-heading); }
+  .font-editorial { font-family: 'EB Garamond', Georgia, serif; }
+  .font-sans { font-family: var(--k-font-family-body); }
+
+  .hero-bg {
+    background-image: url('/api/local/images/Candera Design System/assets/images/seashell-garden.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .grain-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+  }
+  .nav-link {
+    font-family: var(--k-font-family-body);
+    font-size: var(--k-font-size-sm);
+    font-weight: var(--k-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--k-color-text-secondary);
+    text-decoration: none;
+    transition: color 150ms;
+  }
+  .nav-link:hover { color: var(--k-color-primary); }
+  .eyebrow {
+    font-family: var(--k-font-family-body);
+    font-size: var(--k-font-size-sm);
+    font-weight: var(--k-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--k-color-primary-hover);
+  }
+  .section-label {
+    font-family: var(--k-font-family-body);
+    font-size: var(--k-font-size-sm);
+    font-weight: var(--k-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--k-color-text-secondary);
+  }
+  .card-cta {
+    font-family: var(--k-font-family-body);
+    font-size: var(--k-font-size-sm);
+    font-weight: var(--k-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    border: var(--k-border-width-default) solid var(--k-color-text-primary);
+    color: var(--k-color-text-primary);
+    background: transparent;
+    width: 100%;
+    padding: var(--k-spacing-sm);
+    cursor: pointer;
+    transition: background 200ms, color 200ms;
+  }
+  .card-cta:hover { background: var(--k-color-text-primary); color: var(--k-color-bg-page); }
+  .btn-primary {
+    font-family: var(--k-font-family-body);
+    font-size: 11px;
+    font-weight: var(--k-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    background: var(--k-color-primary);
+    color: #fff;
+    padding: var(--k-spacing-md) 32px;
+    border: none;
+    cursor: pointer;
+    transition: background 150ms;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--k-color-primary-hover); }
+</style>
+
+
+<div style="background: rgba(253,251,247,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(218,204,184,0.35); position: relative; z-index: 50;" data-kid="1">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--k-spacing-xl); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 64px;" data-kid="2">
+    <div data-kid="3"></div>
+    <a href="#" style="font-family: var(--k-font-family-heading); font-weight: var(--k-font-weight-bold); font-size: 22px; letter-spacing: -0.02em; color: var(--k-color-text-primary); text-decoration: none; justify-self: center;" data-kid="4">CANDERA</a>
+    <div style="display: flex; align-items: center; gap: var(--k-spacing-lg); justify-self: end;" data-kid="5">
+      <a href="#" class="nav-link" data-kid="6">Collection</a>
+      <span style="color: var(--k-color-border); font-size: 12px;" aria-hidden="true" data-kid="7">|</span>
+      <a href="#" class="nav-link" data-kid="8">The Craft</a>
+      <span style="color: var(--k-color-border); font-size: 12px;" aria-hidden="true" data-kid="9">|</span>
+      <a href="#" class="nav-link" data-kid="10">Scent Quiz</a>
+      <a href="#" aria-label="Search" style="color: var(--k-color-text-secondary); display: inline-flex; align-items: center; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-secondary)'" data-kid="11">
+        <i data-lucide="search" aria-hidden="true" style="width: 16px; height: 16px; stroke-width: 1.5;" data-kid="12"></i>
+      </a>
+      <a href="#" aria-label="Shopping bag" style="color: var(--k-color-text-secondary); display: inline-flex; align-items: center; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-secondary)'" data-kid="13">
+        <i data-lucide="shopping-bag" aria-hidden="true" style="width: 18px; height: 18px; stroke-width: 1.5;" data-kid="14"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="hero-bg" style="height: 720px; position: relative; overflow: hidden; display: flex; align-items: flex-end;" data-kid="15">
+  <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.55);" data-kid="16"></div>
+  <div class="grain-overlay" style="position: absolute; inset: 0;" aria-hidden="true" data-kid="17"></div>
+  <div style="position: relative; z-index: 10; max-width: 680px; padding: 0 80px 80px 80px;" data-kid="18">
+    <p class="eyebrow" style="margin-bottom: var(--k-spacing-xl); color: var(--k-color-primary);" data-kid="19">Hand-Poured in the Studio</p>
+    <h1 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: clamp(56px, 6vw, 88px); line-height: 1.05; letter-spacing: -0.01em; color: #fff; margin: 0 0 var(--k-spacing-xl) 0; font-optical-sizing: auto;" data-kid="20">An invitation<br data-kid="21">to slow down.</h1>
+    <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-lg); font-weight: var(--k-font-weight-normal); color: rgba(255,255,255,0.70); margin: 0 0 36px 0; line-height: 1.6;" data-kid="22">Limited Release: Batch 014 now curing in the studio.</p>
+    <div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap;" data-kid="23">
+      <a href="#" class="btn-primary" data-kid="24">Explore the Collection</a>
+      <a href="#" style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-base); color: rgba(255,255,255,0.70); text-decoration: none; letter-spacing: 0.05em; transition: color 150ms;" onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.70)'" data-kid="25">Take the Scent Quiz →</a>
+    </div>
+  </div>
+</div>
+
+
+<div style="background: var(--k-color-bg-surface); padding: var(--k-spacing-3xl) 0;" data-kid="26">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--k-spacing-xl);" data-kid="27">
+    <div style="margin-bottom: var(--k-spacing-2xl);" data-kid="28">
+      <p class="eyebrow" style="margin-bottom: 14px;" data-kid="29">The Current Batch</p>
+      <h2 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: var(--k-font-size-4xl); line-height: 1.1; letter-spacing: -0.01em; color: var(--k-color-text-primary); margin: 0 0 var(--k-spacing-md) 0; font-optical-sizing: auto;" data-kid="30">Rooted in Earth, Released in Air.</h2>
+      <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 17px; color: var(--k-color-text-secondary); line-height: 1.7; max-width: 560px; margin: 0;" data-kid="31">Each vessel is part of a numbered micro-batch, hand-labeled and inspected for peak botanical clarity.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--k-spacing-2xl);" data-kid="32">
+
+      
+      <div style="background: #fff; box-shadow: var(--k-shadow-sm);" data-kid="33">
+        <div style="position: relative; aspect-ratio: 4/5; overflow: hidden;" data-kid="34">
+          <img src="/api/local/images/Candera Design System/assets/images/seashell-garden.jpg" alt="Seashell Garden Glow" decoding="async" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" data-kid="35">
+          <div style="position: absolute; top: var(--k-spacing-sm); left: var(--k-spacing-sm); background: #fff; color: var(--k-color-text-primary); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-bold); text-transform: uppercase; letter-spacing: 0.15em; padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="36">Bestseller</div>
+          <div style="position: absolute; top: var(--k-spacing-sm); right: var(--k-spacing-sm); color: rgba(255,255,255,0.80); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: 500; letter-spacing: 0.12em;" data-kid="37">Batch 001</div>
+        </div>
+        <div style="padding: var(--k-spacing-md); border-top: var(--k-border-width-default) solid var(--k-color-border);" data-kid="38">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid rgba(218,204,184,0.40); padding-bottom: var(--k-spacing-sm); margin-bottom: var(--k-spacing-sm);" data-kid="39">
+            <a href="#" style="text-decoration: none;" onmouseover="this.querySelector('h3').style.color='var(--k-color-primary)'" onmouseout="this.querySelector('h3').style.color='var(--k-color-text-primary)'" data-kid="40"><h3 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: var(--k-font-size-2xl); line-height: 1.2; color: var(--k-color-text-primary); margin: 0; transition: color 200ms; font-optical-sizing: auto;" data-kid="41">Seashell Garden Glow</h3></a>
+            <span style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); font-variant-numeric: tabular-nums; color: var(--k-color-text-primary); white-space: nowrap; margin-left: var(--k-spacing-sm);" data-kid="42">$38.00</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--k-spacing-xs); margin-bottom: 14px;" data-kid="43">
+            <div data-kid="44"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="45">Top</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="46">Sea Breeze</div></div>
+            <div data-kid="47"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="48">Heart</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="49">Driftwood</div></div>
+            <div data-kid="50"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="51">Base</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="52">Salt Air</div></div>
+          </div>
+          <button class="card-cta" data-kid="53">Add to the Ritual</button>
+        </div>
+      </div>
+
+      
+      <div style="background: #fff; box-shadow: var(--k-shadow-sm);" data-kid="54">
+        <div style="position: relative; aspect-ratio: 4/5; overflow: hidden;" data-kid="55">
+          <img src="/api/local/images/Candera Design System/assets/images/meadowlight-botanical.jpg" alt="Meadowlight Botanical" decoding="async" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" data-kid="56">
+          <div style="position: absolute; top: var(--k-spacing-sm); left: var(--k-spacing-sm); background: #fff; color: var(--k-color-text-primary); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-bold); text-transform: uppercase; letter-spacing: 0.15em; padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="57">New Release</div>
+          <div style="position: absolute; top: var(--k-spacing-sm); right: var(--k-spacing-sm); color: rgba(255,255,255,0.80); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: 500; letter-spacing: 0.12em;" data-kid="58">Batch 002</div>
+        </div>
+        <div style="padding: var(--k-spacing-md); border-top: var(--k-border-width-default) solid var(--k-color-border);" data-kid="59">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid rgba(218,204,184,0.40); padding-bottom: var(--k-spacing-sm); margin-bottom: var(--k-spacing-sm);" data-kid="60">
+            <a href="#" style="text-decoration: none;" onmouseover="this.querySelector('h3').style.color='var(--k-color-primary)'" onmouseout="this.querySelector('h3').style.color='var(--k-color-text-primary)'" data-kid="61"><h3 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: var(--k-font-size-2xl); line-height: 1.2; color: var(--k-color-text-primary); margin: 0; transition: color 200ms; font-optical-sizing: auto;" data-kid="62">Meadowlight Botanical</h3></a>
+            <span style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); font-variant-numeric: tabular-nums; color: var(--k-color-text-primary); white-space: nowrap; margin-left: var(--k-spacing-sm);" data-kid="63">$38.00</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--k-spacing-xs); margin-bottom: 14px;" data-kid="64">
+            <div data-kid="65"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="66">Top</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="67">Fresh Green</div></div>
+            <div data-kid="68"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="69">Heart</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="70">Lily of Valley</div></div>
+            <div data-kid="71"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="72">Base</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="73">Morning Dew</div></div>
+          </div>
+          <button class="card-cta" data-kid="74">Add to the Ritual</button>
+        </div>
+      </div>
+
+      
+      <div style="background: #fff; box-shadow: var(--k-shadow-sm);" data-kid="75">
+        <div style="position: relative; aspect-ratio: 4/5; overflow: hidden;" data-kid="76">
+          <img src="/api/local/images/Candera Design System/assets/images/crimson-noir.jpg" alt="Crimson Noir" decoding="async" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" data-kid="77">
+          <div style="position: absolute; top: var(--k-spacing-sm); left: var(--k-spacing-sm); background: #fff; color: var(--k-color-text-primary); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-bold); text-transform: uppercase; letter-spacing: 0.15em; padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="78">Limited Batch</div>
+          <div style="position: absolute; top: var(--k-spacing-sm); right: var(--k-spacing-sm); color: rgba(255,255,255,0.80); font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: 500; letter-spacing: 0.12em;" data-kid="79">Batch 003</div>
+        </div>
+        <div style="padding: var(--k-spacing-md); border-top: var(--k-border-width-default) solid var(--k-color-border);" data-kid="80">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid rgba(218,204,184,0.40); padding-bottom: var(--k-spacing-sm); margin-bottom: var(--k-spacing-sm);" data-kid="81">
+            <a href="#" style="text-decoration: none;" onmouseover="this.querySelector('h3').style.color='var(--k-color-primary)'" onmouseout="this.querySelector('h3').style.color='var(--k-color-text-primary)'" data-kid="82"><h3 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: var(--k-font-size-2xl); line-height: 1.2; color: var(--k-color-text-primary); margin: 0; transition: color 200ms; font-optical-sizing: auto;" data-kid="83">Crimson Noir</h3></a>
+            <span style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); font-variant-numeric: tabular-nums; color: var(--k-color-text-primary); white-space: nowrap; margin-left: var(--k-spacing-sm);" data-kid="84">$38.00</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--k-spacing-xs); margin-bottom: 14px;" data-kid="85">
+            <div data-kid="86"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="87">Top</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="88">Dark Berry</div></div>
+            <div data-kid="89"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="90">Heart</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="91">Merlot</div></div>
+            <div data-kid="92"><div style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.15em; color: var(--k-color-text-muted); margin-bottom: 3px;" data-kid="93">Base</div><div style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-text-primary); font-weight: var(--k-font-weight-normal);" data-kid="94">Vetiver</div></div>
+          </div>
+          <button class="card-cta" data-kid="95">Add to the Ritual</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div style="background: var(--k-color-bg-surface-hover); padding: 96px 0;" data-kid="96">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--k-spacing-xl);" data-kid="97">
+    <p class="eyebrow" style="text-align: center; margin-bottom: 56px;" data-kid="98">Voices of the Inner Circle</p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px;" data-kid="99">
+      <div data-kid="100">
+        <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: var(--k-font-size-xl); line-height: 1.65; color: var(--k-color-text-primary); margin: 0 0 var(--k-spacing-md) 0;" data-kid="101">"The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses."</p>
+        <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-base); font-weight: var(--k-font-weight-normal); color: var(--k-color-text-secondary); margin: 0 0 var(--k-spacing-sm) 0;" data-kid="102">— Elena R., Los Angeles</p>
+        <span style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.2em; background: rgba(255,255,255,0.6); color: var(--k-color-text-secondary); padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="103">Verified Ritualist</span>
+      </div>
+      <div data-kid="104">
+        <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: var(--k-font-size-xl); line-height: 1.65; color: var(--k-color-text-primary); margin: 0 0 var(--k-spacing-md) 0;" data-kid="105">"I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn."</p>
+        <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-base); font-weight: var(--k-font-weight-normal); color: var(--k-color-text-secondary); margin: 0 0 var(--k-spacing-sm) 0;" data-kid="106">— James T., Austin</p>
+        <span style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.2em; background: rgba(255,255,255,0.6); color: var(--k-color-text-secondary); padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="107">Repeat Collector</span>
+      </div>
+      <div data-kid="108">
+        <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: var(--k-font-size-xl); line-height: 1.65; color: var(--k-color-text-primary); margin: 0 0 var(--k-spacing-md) 0;" data-kid="109">"A ritual I look forward to every evening. This is the soul of my living room."</p>
+        <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-base); font-weight: var(--k-font-weight-normal); color: var(--k-color-text-secondary); margin: 0 0 var(--k-spacing-sm) 0;" data-kid="110">— Sarah L., Brooklyn</p>
+        <span style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-xs); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.2em; background: rgba(255,255,255,0.6); color: var(--k-color-text-secondary); padding: 3px var(--k-spacing-xs); border-radius: var(--k-radius-sm);" data-kid="111">Verified Ritualist</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="background: var(--k-color-accent); padding: var(--k-spacing-3xl) 0;" data-kid="112">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--k-spacing-xl); text-align: center;" data-kid="113">
+    <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-sm); font-weight: var(--k-font-weight-bold); text-transform: uppercase; letter-spacing: 0.3em; color: var(--k-color-secondary); margin: 0 0 var(--k-spacing-md) 0;" data-kid="114">The Inner Circle</p>
+    <h2 style="font-family: var(--k-font-family-heading); font-style: italic; font-weight: var(--k-font-weight-medium); font-size: var(--k-font-size-3xl); line-height: 1.15; letter-spacing: -0.01em; color: #fff; margin: 0 0 var(--k-spacing-xl) 0; font-optical-sizing: auto;" data-kid="115">Join the Inner Circle.</h2>
+    <p style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-lg); font-weight: var(--k-font-weight-normal); color: rgba(255,255,255,0.68); line-height: 1.75; max-width: 480px; margin: 0 auto 40px auto;" data-kid="116">Our batches often sell out in days. Join our list to receive early access to new scent drops and personal ritual invitations.</p>
+    <div style="max-width: 400px; margin: 0 auto var(--k-spacing-md) auto; display: flex; border-bottom: var(--k-border-width-default) solid rgba(255,255,255,0.30);" data-kid="117">
+      <input type="email" placeholder="Your email address" style="flex: 1; background: transparent; border: none; outline: none; font-family: var(--k-font-family-body); font-size: var(--k-font-size-base); font-weight: var(--k-font-weight-normal); color: #fff; padding: var(--k-spacing-sm) 0; caret-color: var(--k-color-secondary);" data-kid="118">
+      <button style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-sm); font-weight: var(--k-font-weight-bold); text-transform: uppercase; letter-spacing: 0.25em; background: var(--k-color-secondary); color: #fff; border: none; padding: var(--k-spacing-sm) var(--k-spacing-xl); cursor: pointer; white-space: nowrap; transition: background 150ms;" onmouseover="this.style.background='#8a5e72'" onmouseout="this.style.background='var(--k-color-secondary)'" data-kid="119">Request Entry</button>
+    </div>
+    <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: var(--k-font-size-base); color: rgba(255,255,255,0.38); margin: 0;" data-kid="120">This is not a newsletter. It is a correspondence.</p>
+  </div>
+</div>
+
+
+<footer style="background: var(--k-color-bg-page); padding: 80px 0 48px 0; border-top: var(--k-border-width-default) solid rgba(218,204,184,0.45);" data-kid="121">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 var(--k-spacing-xl);" data-kid="122">
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--k-spacing-2xl);" data-kid="123">
+      <div data-kid="124">
+        <a href="#" style="font-family: var(--k-font-family-heading); font-weight: var(--k-font-weight-bold); font-size: var(--k-font-size-2xl); letter-spacing: -0.02em; color: var(--k-color-text-primary); text-decoration: none; display: block; margin-bottom: var(--k-spacing-sm);" data-kid="125">CANDERA</a>
+        <p style="font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: var(--k-font-size-base); color: var(--k-color-text-muted); line-height: 1.7; margin: 0 0 var(--k-spacing-lg) 0; max-width: 280px;" data-kid="126">Cultivating intentional living through scent and micro-batch artisanry. Based in the studio, shared everywhere.</p>
+        <div style="display: flex; gap: var(--k-spacing-md);" data-kid="127">
+          <a href="#" style="color: var(--k-color-text-muted); display: inline-flex; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-muted)'" data-kid="128"><i data-lucide="camera" style="width: 18px; height: 18px; stroke-width: 1.5;" data-kid="129"></i></a>
+          <a href="#" style="color: var(--k-color-text-muted); display: inline-flex; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-muted)'" data-kid="130"><i data-lucide="message-square" style="width: 18px; height: 18px; stroke-width: 1.5;" data-kid="131"></i></a>
+          <a href="#" style="color: var(--k-color-text-muted); display: inline-flex; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-muted)'" data-kid="132"><i data-lucide="globe" style="width: 18px; height: 18px; stroke-width: 1.5;" data-kid="133"></i></a>
+        </div>
+      </div>
+      <div data-kid="134">
+        <h5 style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-sm); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.25em; color: var(--k-color-text-muted); margin: 0 0 var(--k-spacing-md) 0;" data-kid="135">Navigation</h5>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--k-spacing-sm);" data-kid="136">
+          <li data-kid="137"><a href="#" style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-primary); text-decoration: none; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-primary)'" data-kid="138">Current Batch</a></li>
+          <li data-kid="139"><a href="#" style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-primary); text-decoration: none; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-primary)'" data-kid="140">The Craft</a></li>
+          <li data-kid="141"><a href="#" style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-primary); text-decoration: none; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-primary)'" data-kid="142">Inner Circle</a></li>
+          <li data-kid="143"><a href="#" style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-primary)'" data-kid="144">View on Etsy <span style="font-size: 11px;" data-kid="145">↗</span></a></li>
+        </ul>
+      </div>
+      <div data-kid="146">
+        <h5 style="font-family: var(--k-font-family-body); font-size: var(--k-font-size-sm); font-weight: var(--k-font-weight-semibold); text-transform: uppercase; letter-spacing: 0.25em; color: var(--k-color-text-muted); margin: 0 0 var(--k-spacing-md) 0;" data-kid="147">Assistance</h5>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--k-spacing-sm);" data-kid="148">
+          <li data-kid="149"><span style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-muted);" data-kid="150">Shipping &amp; Returns</span></li>
+          <li data-kid="151"><span style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-muted);" data-kid="152">Wholesale</span></li>
+          <li data-kid="153"><a href="#" style="font-family: var(--k-font-family-body); font-size: 14px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-primary); text-decoration: none; transition: color 150ms;" onmouseover="this.style.color='var(--k-color-primary)'" onmouseout="this.style.color='var(--k-color-text-primary)'" data-kid="154">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: var(--k-border-width-default) solid rgba(218,204,184,0.35); margin-top: 48px; padding-top: var(--k-spacing-lg); display: flex; justify-content: space-between; align-items: center;" data-kid="155">
+      <p style="font-family: var(--k-font-family-body); font-size: 11px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-muted); margin: 0;" data-kid="156">© 2026 Candera Studio. All rights reserved.</p>
+      <div style="display: flex; gap: var(--k-spacing-md);" data-kid="157">
+        <span style="font-family: var(--k-font-family-body); font-size: 11px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-muted); cursor: pointer;" data-kid="158">Privacy Policy</span>
+        <span style="font-family: var(--k-font-family-body); font-size: 11px; color: var(--k-color-border);" data-kid="159">·</span>
+        <span style="font-family: var(--k-font-family-body); font-size: 11px; font-weight: var(--k-font-weight-normal); color: var(--k-color-text-muted); cursor: pointer;" data-kid="160">Terms of Service</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest" data-kid="161"></script>
+<script data-kid="162">if (typeof lucide !== 'undefined') { lucide.createIcons(); }</script>
+</div>
+  
+  <style>
+  :root {
+    --k-color-primary: #dd7d52;
+    --k-color-primary-hover: #a8502b;
+    --k-color-secondary: #b28c9c;
+    --k-color-bg-page: #fdfbf7;
+    --k-color-bg-surface: #f5f2ed;
+    --k-color-bg-surface-hover: #e2ddd6;
+    --k-color-text-primary: #141412;
+    --k-color-text-secondary: #5f6459;
+    --k-color-text-muted: #7a8174;
+    --k-color-border: #dacbb8;
+    --k-color-border-hover: #c4b09a;
+    --k-color-accent: #141412;
+    --k-color-success: #4a7c59;
+    --k-color-warning: #c8882a;
+    --k-color-error: #b94040;
+    --k-font-family-heading: 'Fraunces', Georgia, serif;
+    --k-font-family-body: 'DM Sans', system-ui, sans-serif;
+    --k-font-size-xs: 8px;
+    --k-font-size-sm: 10px;
+    --k-font-size-base: 13px;
+    --k-font-size-lg: 15px;
+    --k-font-size-xl: 18px;
+    --k-font-size-2xl: 20px;
+    --k-font-size-3xl: 40px;
+    --k-font-size-4xl: 48px;
+    --k-font-size-5xl: 88px;
+    --k-font-weight-normal: 300;
+    --k-font-weight-medium: 400;
+    --k-font-weight-semibold: 600;
+    --k-font-weight-bold: 700;
+    --k-spacing-xs: 8px;
+    --k-spacing-sm: 12px;
+    --k-spacing-md: 16px;
+    --k-spacing-lg: 24px;
+    --k-spacing-xl: 40px;
+    --k-spacing-2xl: 64px;
+    --k-spacing-3xl: 120px;
+    --k-radius-sm: 2px;
+    --k-radius-md: 4px;
+    --k-radius-lg: 8px;
+    --k-radius-xl: 12px;
+    --k-radius-full: 9999px;
+    --k-shadow-sm: 0 1px 3px rgba(20,20,18,0.06), 0 0 0 1px rgba(20,20,18,0.04);
+    --k-shadow-md: 0 4px 12px rgba(20,20,18,0.10);
+    --k-shadow-lg: 0 16px 40px rgba(20,20,18,0.14);
+    --k-border-width-default: 1px;
+    --k-border-width-thick: 2px;
+  }
+</style>
+</body></html>

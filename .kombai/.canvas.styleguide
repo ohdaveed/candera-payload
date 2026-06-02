@@ -1,0 +1,84 @@
+{
+  "guides": [
+    {
+      "id": "style_ba58cba2fe36",
+      "name": "Candera",
+      "tokens": {
+        "colors": {
+          "brand-ink": "#141412",
+          "brand-primary": "#dd7d52",
+          "brand-primary-deep": "#a8502b",
+          "brand-rose": "#b28c9c",
+          "brand-rose-deep": "#8a5e72",
+          "brand-sage": "#5f6459",
+          "brand-sage-light": "#7a8174",
+          "brand-parchment": "#fdfbf7",
+          "brand-linen": "#f5f2ed",
+          "brand-greige": "#e2ddd6",
+          "brand-sand": "#dacbb8"
+        },
+        "typography": {
+          "display": {
+            "family": "Fraunces",
+            "size": "clamp(56px, 6vw, 88px)",
+            "url": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+          },
+          "h2": {
+            "family": "Fraunces",
+            "size": "48px",
+            "url": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+          },
+          "h3": {
+            "family": "Fraunces",
+            "size": "40px",
+            "url": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+          },
+          "card-title": {
+            "family": "Fraunces",
+            "size": "20px",
+            "url": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+          },
+          "editorial": {
+            "family": "EB Garamond",
+            "size": "18px",
+            "url": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&display=swap"
+          },
+          "body": {
+            "family": "DM Sans",
+            "size": "15px",
+            "url": "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..500;1,9..40,300..500&display=swap"
+          },
+          "ui-label": {
+            "family": "DM Sans",
+            "size": "10px",
+            "url": "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..500;1,9..40,300..500&display=swap"
+          },
+          "small": {
+            "family": "DM Sans",
+            "size": "11px",
+            "url": "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..500;1,9..40,300..500&display=swap"
+          }
+        },
+        "spacing": {
+          "xs": "8px",
+          "sm": "12px",
+          "md": "16px",
+          "lg": "24px",
+          "xl": "40px",
+          "2xl": "64px",
+          "3xl": "96px",
+          "4xl": "120px"
+        },
+        "radius": {
+          "tag": "2px",
+          "sm": "4px",
+          "md": "8px",
+          "none": "0px"
+        }
+      },
+      "designInstructions": "## Brand Identity\n\nCandera is a micro-batch luxury candle studio. The aesthetic is **editorial-organic** — a collision of high-fashion magazine restraint and botanical tactility. Every layout decision communicates slowness, intentionality, and rarity. The palette is drawn entirely from organic matter: ink-stained clay, dried parchment, sand-bleached linen, terracotta embers, and dusty pale roses.\n\n---\n\n## Typography System\n\nThree typefaces form a strict hierarchy with zero substitution:\n\n- **Fraunces** — all headings, the wordmark, and product names. Always set in `font-style: italic`, `font-weight: 400`, with `font-optical-sizing: auto` enabled. Letter-spacing tightened to `-0.01em`. Headings breathe at `line-height: 1.05–1.15`. The italic serif gives an immediate sense of bespoke craft — it feels handwritten at display scale.\n- **EB Garamond** — editorial body copy, customer testimonials, and footer taglines. Always italic (`font-style: italic`), weight 400. Used at 17–18px with `line-height: 1.65–1.7`. It reads like journal-margin annotations — intimate and unhurried.\n- **DM Sans** — all UI chrome: navigation, eyebrows, price tags, card CTA buttons, badges, footer nav, input labels. Weight 300 for body text, 600–700 for labels and buttons. Never italic. All-caps for eyebrows and buttons with `letter-spacing: 0.2–0.3em`.\n\n**Eyebrow labels** are the brand's voice: `DM Sans`, 10px, weight 700, all-caps, `letter-spacing: 0.3em`, colored in (brand-primary-deep) `#a8502b`. Used before every section heading to orient context (\"The Current Batch\", \"Voices of the Inner Circle\").\n\n**Scent note micro-labels** (Top / Heart / Base in product cards): 8px, `DM Sans` 600, uppercase, `letter-spacing: 0.15em`, colored in (brand-sage-light) `#7a8174`.\n\n---\n\n## Color Philosophy\n\nThe palette evokes a coastal studio at dusk — never digital, never synthetic.\n\n- **(brand-ink) `#141412`** — near-black with a warm undertone. Used for primary text, the Inner Circle dark section background, and `card-cta` hover fill. Not pure black — the warmth prevents harshness.\n- **(brand-primary) `#dd7d52`** — burnt sienna / terracotta ember. The single chromatic accent. Used for the primary CTA button fill, all interactive hover states (nav links, product titles, footer links, social icons), and the scent-journey timeline dots. On hover it deepens to (brand-primary-deep) `#a8502b`.\n- **(brand-rose) `#b28c9c`** — dusty muted rose. The Inner Circle's accent color only — used for the \"Request Entry\" button and the \"THE INNER CIRCLE\" eyebrow label on the dark section. On hover deepens to (brand-rose-deep) `#8a5e72`. Never used in the light sections.\n- **(brand-sage) `#5f6459`** — desaturated olive sage. Default nav link color, secondary body text, testimonial attribution lines.\n- **(brand-sage-light) `#7a8174`** — lighter sage for muted/supporting text: footer descriptions, product note category labels, footer nav headings.\n- **(brand-parchment) `#fdfbf7`** — warm off-white. Page background and card surfaces. Never pure white.\n- **(brand-linen) `#f5f2ed`** — slightly deeper warm linen. Collection section background.\n- **(brand-greige) `#e2ddd6`** — warm greige. Testimonials section background. Creates subtle depth between sections without hard edges.\n- **(brand-sand) `#dacbb8`** — warm sand. All hairline borders: card tops, nav bottom, footer dividers. Always used at partial opacity (35–45%) to feel whisper-thin rather than structural.\n\n---\n\n## Layout & Grid\n\nThe page uses a `max-width: 1280px` centered container with `40px` horizontal gutters on all sections. No full-bleed content except the hero image and section backgrounds.\n\n**Navigation:** A 3-column grid (`1fr auto 1fr`). The wordmark `CANDERA` is truly centered via `justify-self: center`. Left column is intentionally empty — the asymmetry creates a refined negative-space signature. Nav links are separated by hairline `|` dividers in (brand-sand). Search and bag icons sit at the far right as icon-only links.\n\n**Hero:** Full-bleed cinematic image at `height: 720px`. Content anchors **bottom-left** at `padding: 0 80px 80px 80px`, creating a magazine-editorial feel. A `rgba(0,0,0,0.55)` dark scrim overlays the image. A SVG fractalNoise grain texture at `opacity: 0.04` and `mix-blend-mode: overlay` adds film-grain tactility without noise.\n\n**Product Grid:** Strict 3-column equal grid at `gap: 64px` (--spacing-2xl). Cards have **no border-radius** and a whisper shadow `0 1px 3px rgba(20,20,18,0.06), 0 0 0 1px rgba(20,20,18,0.04)` — a tight halo rather than a drop shadow. Product images are `aspect-ratio: 4/5` — tall portrait framing that mimics editorial fashion photography.\n\n**Section rhythm:** All content sections use `120px` vertical padding (--spacing-4xl), creating extreme airy breathing room between zones. The collection section drops to `96px` for testimonials — a subtle de-emphasis.\n\n**Footer:** `2fr / 1fr / 1fr` grid with `64px` column gap. The brand column has a tagline in EB Garamond italic and three social icon links.\n\n---\n\n## Components & Interaction Patterns\n\n**Product Card:** White surface, no radius. Badge top-left (2px radius pill in white, (brand-ink) text, 9px DM Sans 700 uppercase). Batch number top-right in `rgba(255,255,255,0.80)` — fades into the image rather than sitting on top. Card title in Fraunces italic 20px, transitions to (brand-primary) on hover at 200ms. Price right-aligned, `font-variant-numeric: tabular-nums`, DM Sans weight 300. A scent notes grid below (3 columns: Top / Heart / Base). Full-width CTA button is borderline, transparent, uppercase — fills with (brand-ink) and reverses to (brand-parchment) text on hover at 200ms.\n\n**Image hover:** All product images scale `1.07` on hover with a slow `2s cubic-bezier(0.4,0,0.2,1)` transition — almost imperceptible at first, then you notice the gentle zoom.\n\n**Primary CTA Button:** (brand-primary) fill, no radius, all-caps DM Sans 700, `letter-spacing: 0.3em`, `16px 32px` padding. Transitions to (brand-primary-deep) on hover at 150ms.\n\n**Inner Circle email input:** Borderless with only a bottom hairline `rgba(255,255,255,0.30)`. Input text white DM Sans 300. Submit button in (brand-rose) fills to (brand-rose-deep) on hover.\n\n**Testimonials:** No card containers. Quotes in EB Garamond italic 18px on (brand-greige) background. Attribution in DM Sans 12px weight 300 (brand-sage). A small `background: rgba(255,255,255,0.6)` tag indicates \"Verified Ritualist\" or \"Repeat Collector\" — a ghost pill at 2px radius.\n\n---\n\n## Texture & Atmosphere\n\nThe **grain overlay** on the hero is a defining character detail: an SVG `<feTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"4\">` rendered as a full-cover rect at 4% opacity with `mix-blend-mode: overlay`. It reads as analog film grain and immediately signals artisan photography over digital polish.\n\nAll section backgrounds are **warm neutrals** — never cool grays, never pure white. The temperature drift from parchment → linen → greige creates a slow tonal descent down the page.\n\n---\n\n## Spacing & Density\n\nThe layout is **ultra-airy**. The dominant rhythm is: section heading eyebrow → 14px gap → H2 → 16px gap → EB Garamond lead → 64px gap → content grid. No crowding. Every element has visual silence around it. This deliberate spacing communicates scarcity and premium positioning — the same language used by luxury fragrance brands.\n",
+      "created": "2026-06-02T03:21:02.137211+00:00",
+      "modified": "2026-06-02T03:21:02.137211+00:00"
+    }
+  ]
+}
