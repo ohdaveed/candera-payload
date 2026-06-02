@@ -1,67 +1,92 @@
-import { Banner } from '@payloadcms/ui/elements/Banner'
 import React from 'react'
+import { Package, Tags, Inbox } from 'lucide-react'
 
-import { SeedButton } from './SeedButton'
+import { DashboardHeader } from './DashboardHeader'
+import { QuickAccessCard } from './QuickAccessCard'
+import { MetricCard } from './MetricCard'
 import './index.scss'
 
-const baseClass = 'before-dashboard'
+type PayloadType = {
+  find: (args: {
+    collection: string
+    limit?: number
+    depth?: number
+    sort?: string
+    where?: Record<string, unknown>
+  }) => Promise<{ totalDocs: number; docs: unknown[] }>
+}
 
-const BeforeDashboard: React.FC = () => {
+const BeforeDashboard: React.FC<{ payload: PayloadType; user: { email?: string; name?: string } }> = async ({
+  payload,
+  user,
+}) => {
+  const [{ totalDocs: productCount }, { totalDocs: categoryCount }, { totalDocs: formSubmissionsCount }] =
+    await Promise.all([
+      payload.find({ collection: 'products', limit: 0, depth: 0 }),
+      payload.find({ collection: 'categories', limit: 0, depth: 0 }),
+      payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
+    ])
+
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const { totalDocs: newSubmissions } = await payload.find({
+    collection: 'form-submissions',
+    where: { createdAt: { greater_than: sevenDaysAgo } },
+    limit: 0,
+    depth: 0,
+  })
+
   return (
-    <div className={baseClass}>
-      <Banner className={`${baseClass}__banner`} type="success">
-        <h4 className="text-balance">Welcome to your dashboard!</h4>
-      </Banner>
-      Here&apos;s what to do next:
-      <ul className={`${baseClass}__instructions`}>
-        <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
-        </li>
-        <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
-        </li>
-        <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
-        </li>
-      </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/custom-components/overview"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+    <div className="candera-dashboard">
+      <DashboardHeader user={user} />
+
+      <section className="candera-dashboard__quick-access">
+        <h2 className="candera-dashboard__section-title">Quick Access</h2>
+        <div className="candera-dashboard__cards">
+          <QuickAccessCard
+            label="Products"
+            icon={Package}
+            count={productCount}
+            href="/admin/collections/products"
+            createHref="/admin/collections/products/create"
+          />
+          <QuickAccessCard
+            label="Categories"
+            icon={Tags}
+            count={categoryCount}
+            href="/admin/collections/categories"
+            createHref="/admin/collections/categories/create"
+          />
+          <QuickAccessCard
+            label="Form Submissions"
+            icon={Inbox}
+            count={formSubmissionsCount}
+            href="/admin/collections/form-submissions"
+            createHref="/admin/collections/form-submissions/create"
+          />
+        </div>
+      </section>
+
+      <section className="candera-dashboard__metrics">
+        <h2 className="candera-dashboard__section-title">Store Overview</h2>
+        <div className="candera-dashboard__metric-cards">
+          <MetricCard label="Total Products" value={productCount} />
+          <MetricCard label="Categories" value={categoryCount} />
+          <MetricCard label="New This Week" value={newSubmissions} />
+          <MetricCard label="Total Inquiries" value={formSubmissionsCount} />
+        </div>
+      </section>
+
+      <div className="candera-dashboard__footer">
+        <a href="/admin/collections/pages" className="candera-dashboard__footer-link">
+          Pages &amp; Content
+        </a>
+        <a href="/admin/collections/media" className="candera-dashboard__footer-link">
+          Media
+        </a>
+        <a href="/admin/collections/posts" className="candera-dashboard__footer-link">
+          Posts
+        </a>
+      </div>
     </div>
   )
 }

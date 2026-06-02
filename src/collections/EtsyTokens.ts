@@ -4,7 +4,7 @@ export const EtsyTokens: CollectionConfig = {
   slug: 'etsy-tokens',
   admin: {
     useAsTitle: 'label',
-    group: 'Etsy',
+    group: 'System',
     hidden: true,
   },
   access: {

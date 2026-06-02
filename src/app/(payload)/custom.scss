@@ -1,0 +1,122 @@
+:root {
+  --color-base-0: #fdfbf7;
+  --color-base-50: #f5f2ed;
+  --color-base-100: #ece7e0;
+  --color-base-150: #e2ddd6;
+  --color-base-200: #d8d5cc;
+  --color-base-250: #dacbb8;
+  --color-base-300: #cfc6b0;
+  --color-base-350: #c4b8a0;
+  --color-base-400: #afa18a;
+  --color-base-450: #9a8c74;
+  --color-base-500: #8a7d65;
+  --color-base-550: #7a6d56;
+  --color-base-600: #6a5d47;
+  --color-base-650: #5a4e39;
+  --color-base-700: #4a3f2b;
+  --color-base-750: #3a301e;
+  --color-base-800: #2a2212;
+  --color-base-850: #1d1a10;
+  --color-base-900: #141412;
+  --color-base-950: #0d0d0b;
+  --color-base-1000: #050504;
+
+  --color-success-50: #f2f6f0;
+  --color-success-100: #e0e9db;
+  --color-success-150: #cdd9c4;
+  --color-success-200: #b9c9ae;
+  --color-success-250: #a6ba97;
+  --color-success-300: #92aa81;
+  --color-success-350: #7f9a6a;
+  --color-success-400: #6b8a54;
+  --color-success-450: #587a3e;
+  --color-success-500: #7a8174;
+  --color-success-550: #6a7165;
+  --color-success-600: #5f6459;
+  --color-success-650: #50554b;
+  --color-success-700: #41453d;
+  --color-success-750: #32352f;
+  --color-success-800: #232621;
+  --color-success-850: #181a16;
+  --color-success-900: #0d0e0b;
+  --color-success-950: #050504;
+
+  --color-warning-50: #fcf5ee;
+  --color-warning-100: #fae8d9;
+  --color-warning-150: #f6d7be;
+  --color-warning-200: #f2c4a3;
+  --color-warning-250: #edb088;
+  --color-warning-300: #e99d6d;
+  --color-warning-350: #e48a52;
+  --color-warning-400: #dd7d52;
+  --color-warning-450: #d06e48;
+  --color-warning-500: #c2613e;
+  --color-warning-550: #b35534;
+  --color-warning-600: #a8502b;
+  --color-warning-650: #964526;
+  --color-warning-700: #833b21;
+  --color-warning-750: #70311c;
+  --color-warning-800: #5e2717;
+  --color-warning-850: #4b1d12;
+  --color-warning-900: #38140d;
+  --color-warning-950: #1f0a06;
+
+  --color-error-50: #fcf6f8;
+  --color-error-100: #f9eaef;
+  --color-error-150: #f3d7e1;
+  --color-error-200: #edc4d3;
+  --color-error-250: #e7b0c4;
+  --color-error-300: #e19db6;
+  --color-error-350: #db89a8;
+  --color-error-400: #d4769a;
+  --color-error-450: #b28c9c;
+  --color-error-500: #a87c8d;
+  --color-error-550: #9e6c7f;
+  --color-error-600: #8a5e72;
+  --color-error-650: #7b5164;
+  --color-error-700: #6c4456;
+  --color-error-750: #5d3748;
+  --color-error-800: #4e2a3a;
+  --color-error-850: #3f1d2c;
+  --color-error-900: #30101e;
+  --color-error-950: #1a0810;
+
+  --style-radius-s: 2px;
+  --style-radius-m: 3px;
+  --style-radius-l: 6px;
+  --gutter-h: 24px;
+  --nav-width: 260px;
+
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', Menlo, Consolas, Monaco, monospace;
+}
+
+.nav__link-indicator {
+  background: #a38a81 !important;
+}
+
+.btn--style-primary {
+  --bg-color: #a38a81 !important;
+  --hover-bg: #8a5e72 !important;
+  --hover-color: #ffffff !important;
+}
+
+.btn--style-primary.btn--disabled {
+  --bg-color: #d8d5cc !important;
+  --color: #8a7d65 !important;
+}
+
+.select__indicator {
+  background: #a38a81;
+}
+
+.card {
+  border-radius: 3px;
+}
+
+.dashboard__wrap {
+  .btn--style-primary {
+    --bg-color: #7a8174 !important;
+    --hover-bg: #5f6459 !important;
+  }
+}

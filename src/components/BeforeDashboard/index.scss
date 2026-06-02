@@ -1,24 +1,172 @@
-@import '@payloadcms/ui/scss';
+.candera-dashboard {
+  margin-bottom: 2rem;
 
-.dashboard .before-dashboard {
-  margin-bottom: base(1.5);
-
-  &__banner {
-    & h4 {
-      margin: 0;
-    }
+  &__header {
+    margin-bottom: 2rem;
   }
 
-  &__instructions {
-    list-style: decimal;
-    margin-bottom: base(0.5);
-
-    & li {
-      width: 100%;
-    }
+  &__greeting {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.75rem;
+    color: var(--theme-text);
+    margin: 0 0 0.25rem;
+    line-height: 1.2;
   }
 
-  & a:hover {
-    opacity: 0.85;
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--theme-elevation-500);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  &__section-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--theme-elevation-500);
+    margin: 0 0 0.75rem;
+  }
+
+  &__quick-access {
+    margin-bottom: 2rem;
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  &__metrics {
+    margin-bottom: 2rem;
+  }
+
+  &__metric-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  &__footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--theme-elevation-100);
+  }
+
+  &__footer-link {
+    font-size: 0.8125rem;
+    color: var(--theme-elevation-500);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--theme-text);
+      text-decoration: underline;
+    }
+  }
+}
+
+.candera-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--theme-elevation-0);
+  border: 1px solid var(--theme-elevation-100);
+  border-radius: var(--style-radius-m);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+
+  &:hover {
+    border-color: var(--theme-elevation-250);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--style-radius-s);
+    background: var(--theme-elevation-50);
+    color: var(--theme-elevation-600);
+    flex-shrink: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--theme-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__count {
+    font-size: 0.75rem;
+    color: var(--theme-elevation-500);
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    flex-shrink: 0;
+    color: var(--theme-elevation-400);
+    border-left: 1px solid var(--theme-elevation-100);
+    transition: color 150ms ease, background-color 150ms ease;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--theme-elevation-800);
+      background: var(--theme-elevation-50);
+    }
+  }
+}
+
+.candera-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--theme-elevation-0);
+  border: 1px solid var(--theme-elevation-100);
+  border-radius: var(--style-radius-m);
+
+  &__value {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--theme-text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: var(--theme-elevation-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 }
