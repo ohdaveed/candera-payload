@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Frontend', () => {
   test('can load homepage with readable navigation and product imagery', async ({ page }) => {
     await page.goto('http://localhost:3000')
-    await expect(page).toHaveTitle(/Payload Website Template/)
+    await expect(page).toHaveTitle(/Candera/)
     const heading = page.locator('h1').first()
     await expect(heading).toHaveText('An invitation to slow down.')
 
