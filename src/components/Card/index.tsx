@@ -91,7 +91,7 @@ export const Card: React.FC<{
               </span>
             )}
             {titleToUse && (
-              <h3 className="text-[15px] font-medium leading-snug text-candera-obsidian m-0">
+              <h3 className="m-0 text-balance text-[15px] font-medium leading-snug text-candera-obsidian">
                 <Link className="hover:text-candera-ember transition-colors" href={href} ref={linkRef}>
                   {titleToUse}
                 </Link>
