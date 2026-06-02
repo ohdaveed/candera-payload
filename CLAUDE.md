@@ -59,7 +59,7 @@ Pages and posts use a layout builder defined in `src/blocks/`. Each block has a 
 
 - `src/utilities/etsy.ts` — Base `fetchEtsy()` using `ETSY_API_KEY` + `ETSY_SHARED_SECRET` headers against `https://openapi.etsy.com/v3/application`.
 - `src/utilities/syncEtsy.ts` — Upserts Etsy listings into the `products` collection and downloads listing images into `media` (idempotent via `etsyImageId`).
-- Triggered via the authenticated GET endpoint `/api/sync-etsy` defined in `payload.config.ts`.
+- Triggered via the authenticated POST endpoint `/api/sync-etsy` defined in `payload.config.ts`.
 
 ### Database & Migrations
 

@@ -10,8 +10,8 @@ import React, { cache } from 'react'
 import type { Product } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
-import { generateMeta } from '@/utilities/generateMeta'
 import { Card } from '@/components/Card'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -208,7 +208,47 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
-  return generateMeta({ doc: product as any })
+
+  if (!product) return {}
+
+  const serverUrl = getServerSideURL()
+  const title = `${product.title} | Candera`
+  const description =
+    product.tagline ||
+    `${product.title} — a hand-poured, small-batch botanical candle from Candera Candles.`
+
+  // Use the first extraPhoto's OG size if available, otherwise fall back to thumbnail
+  const firstPhoto =
+    product.extraPhotos && product.extraPhotos.length > 0
+      ? product.extraPhotos[0]
+      : null
+  const ogImageUrl =
+    firstPhoto && typeof firstPhoto !== 'number' && typeof firstPhoto !== 'string'
+      ? firstPhoto.sizes?.og?.url
+        ? serverUrl + firstPhoto.sizes.og.url
+        : firstPhoto.url
+          ? serverUrl + firstPhoto.url
+          : undefined
+      : undefined
+
+  return {
+    title,
+    description,
+    openGraph: {
+      type: 'website',
+      siteName: 'Candera Candles',
+      title,
+      description,
+      url: `${serverUrl}/products/${slug}`,
+      ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
+    },
+  }
 }
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
