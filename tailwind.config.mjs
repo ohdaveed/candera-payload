@@ -4,6 +4,11 @@ const config = {
     extend: {
       /* ---- CANDERA Color Palette ---- */
       colors: {
+        // Flat aliases for convenience
+        vellum: '#E1DBD3',
+        linen: '#F9F8F6',
+        obsidian: '#1A1A1A',
+        duskRose: '#A38A81',
         candera: {
           vellum: '#f5f2ed',
           field: '#d8d5cc',
@@ -22,6 +27,7 @@ const config = {
 
       /* ---- CANDERA Fonts ---- */
       fontFamily: {
+        serif: ['var(--font-fraunces)', 'EB Garamond', 'serif'],
         display: ['Fraunces', 'Georgia', 'serif'],
         editorial: ['EB Garamond', 'Georgia', 'serif'],
         sans: ['DM Sans', 'system-ui', 'sans-serif'],
