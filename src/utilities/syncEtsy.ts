@@ -146,19 +146,21 @@ export class EtsySyncEngine {
         const slug = `${baseSlug}-${listing_id}`
 
         // Download and sync main image if available
-        let mainImageId: string | undefined = undefined
+        let mainImageId: string | number | undefined = undefined
         if (images && images.length > 0) {
           const mainImage = images[0]
           try {
-            const existingMediaId = await ports.mediaStorage.findMediaByEtsyImageId(mainImage.listing_image_id)
-            if (existingMediaId) {
+            const existingMediaId = await ports.mediaStorage.findMediaByEtsyImageId(
+              mainImage.listing_image_id,
+            )
+            if (existingMediaId !== null) {
               mainImageId = existingMediaId
             } else {
               mainImageId = await ports.mediaStorage.downloadAndRegisterMedia(
                 listing_id,
                 mainImage.listing_image_id,
                 mainImage.url_fullxfull,
-                mainImage.alt_text || ''
+                mainImage.alt_text || '',
               )
             }
           } catch (err) {

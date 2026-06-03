@@ -111,7 +111,7 @@ describe('Standard Revalidation Rules', () => {
     const revalidator = new FlexibleRevalidator(cacheBuster)
 
     // Re-import rules or redefine them locally for isolated testing
-    const pagesRule: RevalidationRule = {
+    const pagesRule: RevalidationRule<any> = {
       name: 'pages-revalidation',
       collections: ['pages'],
       condition: (ctx) => !ctx.req.context.disableRevalidate,
