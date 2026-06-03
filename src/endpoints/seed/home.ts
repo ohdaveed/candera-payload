@@ -22,30 +22,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
     slug: 'home',
     _status: 'published',
     hero: {
-      type: 'highImpact',
-      links: [
-        {
-          link: {
-            type: 'custom',
-            appearance: 'default',
-            label: 'Shop the Batch',
-            url: '/products',
-          },
-        },
-        {
-          link: {
-            type: 'custom',
-            appearance: 'outline',
-            label: 'The Studio',
-            url: '/posts',
-          },
-        },
-      ],
-      media: heroImage.id,
-      richText: createRichText([
-        createHeading('Breathe. Before the day takes over.', 'h1'), 
-        createParagraph('Hand-poured botanical candles. Numbered micro-batches. Scent as a practice in stilling the noise.')
-      ]),
+      type: 'none',
     },
     layout: [
       {
