@@ -74,7 +74,11 @@ export default async function ProductsPage() {
 
         <div className="mt-16">
           {products.totalPages > 1 && products.page && (
-            <Pagination page={products.page} totalPages={products.totalPages} />
+            <Pagination
+              basePath="/products"
+              page={products.page}
+              totalPages={products.totalPages}
+            />
           )}
         </div>
       </div>

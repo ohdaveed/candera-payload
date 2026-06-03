@@ -15,8 +15,9 @@ export const Pagination: React.FC<{
   className?: string
   page: number
   totalPages: number
+  basePath?: string
 }> = (props) => {
-  const { className, page, totalPages } = props
+  const { className, page, totalPages, basePath = '/posts' } = props
   const hasNextPage = page < totalPages
   const hasPrevPage = page > 1
 
@@ -31,7 +32,7 @@ export const Pagination: React.FC<{
             <PaginationPrevious
               aria-disabled={!hasPrevPage}
               className={!hasPrevPage ? 'pointer-events-none opacity-50' : undefined}
-              href={hasPrevPage ? `/posts/page/${page - 1}` : '#'}
+              href={hasPrevPage ? `${basePath}/page/${page - 1}` : '#'}
             />
           </PaginationItem>
 
@@ -45,7 +46,7 @@ export const Pagination: React.FC<{
             <PaginationItem>
               <PaginationLink
                 aria-label={`Go to page ${page - 1}`}
-                href={`/posts/page/${page - 1}`}
+                href={`${basePath}/page/${page - 1}`}
               >
                 {page - 1}
               </PaginationLink>
@@ -55,7 +56,7 @@ export const Pagination: React.FC<{
           <PaginationItem>
             <PaginationLink
               aria-label={`Current page, page ${page}`}
-              href={`/posts/page/${page}`}
+              href={`${basePath}/page/${page}`}
               isActive
             >
               {page}
@@ -66,7 +67,7 @@ export const Pagination: React.FC<{
             <PaginationItem>
               <PaginationLink
                 aria-label={`Go to page ${page + 1}`}
-                href={`/posts/page/${page + 1}`}
+                href={`${basePath}/page/${page + 1}`}
               >
                 {page + 1}
               </PaginationLink>
@@ -83,7 +84,7 @@ export const Pagination: React.FC<{
             <PaginationNext
               aria-disabled={!hasNextPage}
               className={!hasNextPage ? 'pointer-events-none opacity-50' : undefined}
-              href={hasNextPage ? `/posts/page/${page + 1}` : '#'}
+              href={hasNextPage ? `${basePath}/page/${page + 1}` : '#'}
             />
           </PaginationItem>
         </PaginationContent>
