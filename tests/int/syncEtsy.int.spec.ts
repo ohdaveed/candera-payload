@@ -24,13 +24,13 @@ class InMemoryProductStoreAdapter implements ProductStorePort {
   public findCalls = 0
   public txCalls = 0
 
-  async findProductByEtsyId(etsyListingId: number): Promise<{ id: string } | null> {
+  async findProductByEtsyId(etsyListingId: number): Promise<{ id: number | string } | null> {
     this.findCalls++
     const existing = this.products.get(etsyListingId)
     return existing ? { id: `prod-${etsyListingId}` } : null
   }
 
-  async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<string> {
+  async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string> {
     this.upsertCalls++
     this.products.set(etsyListingId, data)
     return `prod-${etsyListingId}`
@@ -43,11 +43,11 @@ class InMemoryProductStoreAdapter implements ProductStorePort {
 }
 
 class InMemoryMediaStorageAdapter implements MediaStoragePort {
-  public media = new Map<number, string>()
+  public media = new Map<number, number | string>()
   public findCalls = 0
   public downloadCalls = 0
 
-  async findMediaByEtsyImageId(etsyImageId: number): Promise<string | null> {
+  async findMediaByEtsyImageId(etsyImageId: number): Promise<number | string | null> {
     this.findCalls++
     return this.media.get(etsyImageId) || null
   }
@@ -57,7 +57,7 @@ class InMemoryMediaStorageAdapter implements MediaStoragePort {
     etsyImageId: number,
     _imageUrl: string,
     _altText: string
-  ): Promise<string> {
+  ): Promise<number | string> {
     this.downloadCalls++
     const id = `media-${etsyImageId}`
     this.media.set(etsyImageId, id)

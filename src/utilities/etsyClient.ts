@@ -114,9 +114,9 @@ export class EtsyClient {
     tokenRepository?: TokenRepository
   ) {
     this.config = {
-      apiKey: config?.apiKey || process.env.ETSY_API_KEY || '',
-      sharedSecret: config?.sharedSecret || process.env.ETSY_SHARED_SECRET || '',
-      redirectUri: config?.redirectUri || process.env.ETSY_REDIRECT_URI || '',
+      apiKey: config?.apiKey !== undefined ? config.apiKey : (process.env.ETSY_API_KEY || ''),
+      sharedSecret: config?.sharedSecret !== undefined ? config.sharedSecret : (process.env.ETSY_SHARED_SECRET || ''),
+      redirectUri: config?.redirectUri !== undefined ? config.redirectUri : (process.env.ETSY_REDIRECT_URI || ''),
     }
 
     if (!this.config.apiKey || !this.config.sharedSecret) {
@@ -267,6 +267,7 @@ export class EtsyClient {
 
     const headers = new Headers()
     headers.set('Accept', 'application/json')
+    headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
 
     if (options.headers) {
       const inputHeaders = new Headers(options.headers)
@@ -280,9 +281,6 @@ export class EtsyClient {
       if (fetchOptions.body && !headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json')
       }
-    } else {
-      // Fallback: use application API key and secret header signature
-      headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
     }
 
     const res = await fetch(url.toString(), {
