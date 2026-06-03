@@ -1,4 +1,10 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+
+if (!process.env.PAYLOAD_SECRET) {
+  console.warn('⚠️ WARNING: PAYLOAD_SECRET is not set! Authentication will fail.')
+} else {
+  console.log('✅ PAYLOAD_SECRET is successfully loaded.')
+}
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'

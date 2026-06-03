@@ -67,7 +67,8 @@
     "remark-parse": "^11.0.0",
     "sharp": "0.34.5",
     "tailwind-merge": "^3.6.0",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.0",

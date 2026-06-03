@@ -1,0 +1,350 @@
+- generic [active] [ref=e1]:
+  - link "Skip to Main Content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Candera Home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - text: CANDERA
+      - navigation "Main Navigation" [ref=e7]:
+        - link "Posts" [ref=e8] [cursor=pointer]:
+          - /url: /posts
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - generic [ref=e10]:
+          - link "Search" [ref=e11] [cursor=pointer]:
+            - /url: /search
+            - generic [ref=e12]: Search
+            - img [ref=e13]
+          - link "Shopping bag" [ref=e16] [cursor=pointer]:
+            - /url: /products
+            - generic [ref=e17]: Shopping bag
+            - img [ref=e18]
+            - generic [ref=e21]: "0"
+  - main [ref=e22]:
+    - article [ref=e23]:
+      - generic [ref=e24]:
+        - img "seashell garden" [ref=e26]
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - heading "Breathe. Before the day takes over." [level=1] [ref=e31]
+            - paragraph [ref=e32]: Hand-poured botanical candles. Numbered micro-batches. Scent as a practice in stilling the noise.
+          - list [ref=e33]:
+            - listitem [ref=e34]:
+              - link "Shop the Batch" [ref=e35] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=e36]:
+              - link "The Studio" [ref=e37] [cursor=pointer]:
+                - /url: /posts
+      - generic [ref=e39]:
+        - img "seashell garden" [ref=e41]
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]: Hand-Poured in the Studio
+            - heading "An invitation to slow down." [level=1] [ref=e46]
+            - paragraph [ref=e47]: "Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals."
+            - generic [ref=e48]:
+              - link "Explore the Collection" [ref=e49] [cursor=pointer]:
+                - /url: "#collection"
+                - text: Explore the Collection
+                - img [ref=e50]
+              - link "Take the Scent Quiz →" [ref=e52] [cursor=pointer]:
+                - /url: "#scent-quiz"
+          - generic [ref=e53]:
+            - paragraph [ref=e56]: Current Release
+            - paragraph [ref=e57]: Batch 014
+            - paragraph [ref=e58]: 47 units · hand-poured
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e61]: Status
+                - generic [ref=e62]: Curing
+              - generic [ref=e63]:
+                - generic [ref=e64]: Ships
+                - generic [ref=e65]: ~3 weeks
+      - generic [ref=e67]:
+        - generic [ref=e69]:
+          - heading "Six vessels. One batch. Your space." [level=2] [ref=e70]
+          - paragraph [ref=e71]: Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.
+        - generic [ref=e74]:
+          - article [ref=e76]:
+            - generic [ref=e77]:
+              - generic [ref=e78]: Image unavailable
+              - generic [ref=e79]: New Release
+              - generic [ref=e81]: Batch 006
+              - link "View Details" [ref=e84] [cursor=pointer]:
+                - /url: /products/scarlet-bloom
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - generic [ref=e87]:
+                  - generic [ref=e88]: Vessel 006
+                  - heading "Scarlet Bloom" [level=3] [ref=e89]:
+                    - link "Scarlet Bloom" [ref=e90] [cursor=pointer]:
+                      - /url: /products/scarlet-bloom
+                - generic [ref=e91]: $38.00
+              - generic [ref=e93]:
+                - paragraph [ref=e94]: Fragrance Profile
+                - generic [ref=e95]:
+                  - generic [ref=e96]:
+                    - generic [ref=e97]: Top
+                    - generic [ref=e98]: Fresh Florals
+                  - generic [ref=e99]:
+                    - generic [ref=e100]: Heart
+                    - generic [ref=e101]: Botanical Rose
+                  - generic [ref=e102]:
+                    - generic [ref=e103]: Base
+                    - generic [ref=e104]: Green Stem
+                - generic [ref=e105]:
+                  - generic [ref=e106]:
+                    - generic [ref=e107]: Burn Time
+                    - generic [ref=e108]: 50 Hours
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: Atmosphere
+                    - generic [ref=e111]: Bold & Floral
+          - article [ref=e113]:
+            - generic [ref=e114]:
+              - img "ever after glow" [ref=e115]
+              - generic [ref=e116]: Bestseller
+              - generic [ref=e118]: Batch 004
+              - link "View Details" [ref=e121] [cursor=pointer]:
+                - /url: /products/ever-after-glow
+            - generic [ref=e122]:
+              - generic [ref=e123]:
+                - generic [ref=e124]:
+                  - generic [ref=e125]: Vessel 004
+                  - heading "Ever After Glow" [level=3] [ref=e126]:
+                    - link "Ever After Glow" [ref=e127] [cursor=pointer]:
+                      - /url: /products/ever-after-glow
+                - generic [ref=e128]: $38.00
+              - generic [ref=e130]:
+                - paragraph [ref=e131]: Fragrance Profile
+                - generic [ref=e132]:
+                  - generic [ref=e133]:
+                    - generic [ref=e134]: Top
+                    - generic [ref=e135]: White Lilac
+                  - generic [ref=e136]:
+                    - generic [ref=e137]: Heart
+                    - generic [ref=e138]: Blue Hydrangea
+                  - generic [ref=e139]:
+                    - generic [ref=e140]: Base
+                    - generic [ref=e141]: Soft Musk
+                - generic [ref=e142]:
+                  - generic [ref=e143]:
+                    - generic [ref=e144]: Burn Time
+                    - generic [ref=e145]: 50 Hours
+                  - generic [ref=e146]:
+                    - generic [ref=e147]: Atmosphere
+                    - generic [ref=e148]: Romantic & Soft
+          - article [ref=e150]:
+            - generic [ref=e151]:
+              - img "anyas eyes" [ref=e152]
+              - generic [ref=e153]: Limited Batch
+              - generic [ref=e155]: Batch 005
+              - link "View Details" [ref=e158] [cursor=pointer]:
+                - /url: /products/anyas-eyes
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - generic [ref=e161]:
+                  - generic [ref=e162]: Vessel 005
+                  - heading "Anya's Eyes" [level=3] [ref=e163]:
+                    - link "Anya's Eyes" [ref=e164] [cursor=pointer]:
+                      - /url: /products/anyas-eyes
+                - generic [ref=e165]: $38.00
+              - generic [ref=e167]:
+                - paragraph [ref=e168]: Fragrance Profile
+                - generic [ref=e169]:
+                  - generic [ref=e170]:
+                    - generic [ref=e171]: Top
+                    - generic [ref=e172]: Lilac
+                  - generic [ref=e173]:
+                    - generic [ref=e174]: Heart
+                    - generic [ref=e175]: Pressed Pansy
+                  - generic [ref=e176]:
+                    - generic [ref=e177]: Base
+                    - generic [ref=e178]: Soft Powder
+                - generic [ref=e179]:
+                  - generic [ref=e180]:
+                    - generic [ref=e181]: Burn Time
+                    - generic [ref=e182]: 50 Hours
+                  - generic [ref=e183]:
+                    - generic [ref=e184]: Atmosphere
+                    - generic [ref=e185]: Gentle & Contemplative
+          - article [ref=e187]:
+            - generic [ref=e188]:
+              - img "meadowlight botanical" [ref=e189]
+              - generic [ref=e190]: New Release
+              - generic [ref=e192]: Batch 002
+              - link "View Details" [ref=e195] [cursor=pointer]:
+                - /url: /products/meadowlight-botanical
+            - generic [ref=e196]:
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - generic [ref=e199]: Vessel 002
+                  - heading "Meadowlight Botanical" [level=3] [ref=e200]:
+                    - link "Meadowlight Botanical" [ref=e201] [cursor=pointer]:
+                      - /url: /products/meadowlight-botanical
+                - generic [ref=e202]: $38.00
+              - generic [ref=e204]:
+                - paragraph [ref=e205]: Fragrance Profile
+                - generic [ref=e206]:
+                  - generic [ref=e207]:
+                    - generic [ref=e208]: Top
+                    - generic [ref=e209]: Fresh Green
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: Heart
+                    - generic [ref=e212]: Lily of the Valley
+                  - generic [ref=e213]:
+                    - generic [ref=e214]: Base
+                    - generic [ref=e215]: Morning Dew
+                - generic [ref=e216]:
+                  - generic [ref=e217]:
+                    - generic [ref=e218]: Burn Time
+                    - generic [ref=e219]: 50 Hours
+                  - generic [ref=e220]:
+                    - generic [ref=e221]: Atmosphere
+                    - generic [ref=e222]: Fresh & Botanical
+          - article [ref=e224]:
+            - generic [ref=e225]:
+              - generic [ref=e226]: Image unavailable
+              - generic [ref=e227]: Limited Batch
+              - generic [ref=e229]: Batch 003
+              - link "View Details" [ref=e232] [cursor=pointer]:
+                - /url: /products/crimson-noir
+            - generic [ref=e233]:
+              - generic [ref=e234]:
+                - generic [ref=e235]:
+                  - generic [ref=e236]: Vessel 003
+                  - heading "Crimson Noir" [level=3] [ref=e237]:
+                    - link "Crimson Noir" [ref=e238] [cursor=pointer]:
+                      - /url: /products/crimson-noir
+                - generic [ref=e239]: $38.00
+              - generic [ref=e241]:
+                - paragraph [ref=e242]: Fragrance Profile
+                - generic [ref=e243]:
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: Top
+                    - generic [ref=e246]: Dark Berry
+                  - generic [ref=e247]:
+                    - generic [ref=e248]: Heart
+                    - generic [ref=e249]: Merlot
+                  - generic [ref=e250]:
+                    - generic [ref=e251]: Base
+                    - generic [ref=e252]: Vetiver
+                - generic [ref=e253]:
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: Burn Time
+                    - generic [ref=e256]: 50 Hours
+                  - generic [ref=e257]:
+                    - generic [ref=e258]: Atmosphere
+                    - generic [ref=e259]: Moody & Intimate
+          - article [ref=e261]:
+            - generic [ref=e262]:
+              - img "seashell garden" [ref=e263]
+              - generic [ref=e264]: Bestseller
+              - generic [ref=e266]: Batch 001
+              - link "View Details" [ref=e269] [cursor=pointer]:
+                - /url: /products/seashell-garden-glow
+            - generic [ref=e270]:
+              - generic [ref=e271]:
+                - generic [ref=e272]:
+                  - generic [ref=e273]: Vessel 001
+                  - heading "Seashell Garden Glow" [level=3] [ref=e274]:
+                    - link "Seashell Garden Glow" [ref=e275] [cursor=pointer]:
+                      - /url: /products/seashell-garden-glow
+                - generic [ref=e276]: $38.00
+              - generic [ref=e278]:
+                - paragraph [ref=e279]: Fragrance Profile
+                - generic [ref=e280]:
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: Top
+                    - generic [ref=e283]: Sea Breeze
+                  - generic [ref=e284]:
+                    - generic [ref=e285]: Heart
+                    - generic [ref=e286]: Driftwood
+                  - generic [ref=e287]:
+                    - generic [ref=e288]: Base
+                    - generic [ref=e289]: Salt Air
+                - generic [ref=e290]:
+                  - generic [ref=e291]:
+                    - generic [ref=e292]: Burn Time
+                    - generic [ref=e293]: 50 Hours
+                  - generic [ref=e294]:
+                    - generic [ref=e295]: Atmosphere
+                    - generic [ref=e296]: Coastal & Airy
+      - generic [ref=e299]:
+        - paragraph [ref=e300]: From Our Ritualists
+        - generic [ref=e301]:
+          - generic [ref=e302]:
+            - generic [ref=e303]:
+              - img [ref=e304]
+              - img [ref=e306]
+              - img [ref=e308]
+              - img [ref=e310]
+              - img [ref=e312]
+            - paragraph [ref=e314]: “The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.”
+            - generic [ref=e315]:
+              - paragraph [ref=e316]: Elena R.
+              - generic [ref=e317]: Verified Ritualist
+          - generic [ref=e319]:
+            - generic [ref=e320]:
+              - img [ref=e321]
+              - img [ref=e323]
+              - img [ref=e325]
+              - img [ref=e327]
+              - img [ref=e329]
+            - paragraph [ref=e331]: “I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.”
+            - generic [ref=e332]:
+              - paragraph [ref=e333]: James T.
+              - generic [ref=e334]: Repeat Collector
+          - generic [ref=e336]:
+            - generic [ref=e337]:
+              - img [ref=e338]
+              - img [ref=e340]
+              - img [ref=e342]
+              - img [ref=e344]
+              - img [ref=e346]
+            - paragraph [ref=e348]: “A ritual I look forward to every evening. This is the soul of my living room.”
+            - generic [ref=e349]:
+              - paragraph [ref=e350]: Sarah L.
+              - generic [ref=e351]: Verified Ritualist
+  - contentinfo [ref=e353]:
+    - generic: CANDERA
+    - generic [ref=e354]:
+      - generic [ref=e355]:
+        - generic [ref=e356]:
+          - link "Candera Home" [ref=e357] [cursor=pointer]:
+            - /url: /
+            - text: CANDERA
+          - paragraph [ref=e358]: Cultivating intentional living through scent and micro-batch artisanry. Based in the studio, shared everywhere.
+        - generic [ref=e359]:
+          - heading "Navigation" [level=5] [ref=e360]
+          - navigation [ref=e361]:
+            - link "Admin" [ref=e362] [cursor=pointer]:
+              - /url: /admin
+            - link "Source Code" [ref=e363] [cursor=pointer]:
+              - /url: https://github.com/payloadcms/payload/tree/main/templates/website
+            - link "Payload" [ref=e364] [cursor=pointer]:
+              - /url: https://payloadcms.com/
+        - generic [ref=e365]:
+          - heading "Assistance" [level=5] [ref=e366]
+          - list [ref=e367]:
+            - listitem [ref=e368]: Shipping & Returns
+            - listitem [ref=e369]: Wholesale
+            - listitem [ref=e370]:
+              - link "Contact" [ref=e371] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e372]:
+          - heading "Settings" [level=5] [ref=e373]
+          - combobox "Select a theme" [ref=e374]:
+            - generic: Theme
+            - img
+          - combobox [ref=e375]
+      - generic [ref=e376]:
+        - paragraph [ref=e377]: © 2026 Candera Studio. All rights reserved.
+        - generic [ref=e378]:
+          - link "Privacy Policy" [ref=e379] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e380]: ·
+          - link "Terms of Service" [ref=e381] [cursor=pointer]:
+            - /url: /
+  - button "Open Next.js Dev Tools" [ref=e387] [cursor=pointer]:
+    - img [ref=e388]

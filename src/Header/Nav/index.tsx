@@ -17,7 +17,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   ].join(' ')
 
   const iconBtnClass = [
-    'inline-flex items-center justify-center p-2 rounded-full transition-colors hover:text-candera-ember-strong hover:bg-black/5',
+    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-full transition-colors hover:text-candera-ember-strong hover:bg-black/5',
     transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
   ].join(' ')
 
@@ -52,8 +52,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
           <span
             aria-hidden="true"
             className={[
-              'absolute -top-0.5 -right-0.5 flex h-[14px] w-[14px] items-center justify-center rounded-full text-[8px] font-bold leading-none',
-              transparent ? 'bg-white text-candera-obsidian' : 'bg-candera-obsidian text-white',
+              'absolute top-1 right-1 flex h-[14px] w-[14px] items-center justify-center rounded-full text-[8px] font-bold leading-none bg-red-500 text-white shadow-sm',
             ].join(' ')}
           >
             0

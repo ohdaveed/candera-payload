@@ -12,6 +12,7 @@ import type { Product } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { generateMeta } from '@/utilities/generateMeta'
+import PageClient from './page.client'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -43,6 +44,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   return (
     <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
       <PayloadRedirects disableNotFound url={url} />
+      <PageClient />
 
       <div className="container">
         {/* Back link */}
