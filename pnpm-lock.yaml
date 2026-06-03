@@ -94,6 +94,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
@@ -2481,6 +2484,10 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  consola@3.4.2:
+    resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
+    engines: {node: ^14.18.0 || >=16.10.0}
 
   console-table-printer@2.12.1:
     resolution: {integrity: sha512-wKGOQRRvdnd89pCeH96e2Fn4wkbenSP6LMHfjfyNLMbGuHEFbMqQNuxXqd0oXG9caIOQ1FTvc5Uijp9/4jujnQ==}
@@ -7313,6 +7320,8 @@ snapshots:
   commander@2.20.3: {}
 
   concat-map@0.0.1: {}
+
+  consola@3.4.2: {}
 
   console-table-printer@2.12.1:
     dependencies:

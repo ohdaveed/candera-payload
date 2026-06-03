@@ -1,9 +1,10 @@
 import { createLocalReq, getPayload } from 'payload'
 import config from '../src/payload.config'
 import { seed } from '../src/endpoints/seed'
+import { seedLogger } from '@/utilities/logger'
 
 async function main(): Promise<void> {
-  console.log('🌱 Starting database seed...')
+  seedLogger.info('Starting database seed...')
 
   const payload = await getPayload({ config })
 
@@ -15,7 +16,7 @@ async function main(): Promise<void> {
   })
 
   if (users.length === 0) {
-    console.error('❌ No admin users found. Run `pnpm tsx scripts/seed-admin.ts` first.')
+    seedLogger.error('No admin users found. Run `pnpm tsx scripts/seed-admin.ts` first.')
     process.exit(1)
   }
 
@@ -23,11 +24,11 @@ async function main(): Promise<void> {
 
   await seed({ payload, req })
 
-  console.log('✅ Database seeded successfully (photos uploaded to Vercel Blob)')
+  seedLogger.success('Database seeded successfully (photos uploaded to Vercel Blob)')
   process.exit(0)
 }
 
 main().catch((err) => {
-  console.error('❌ Seed failed:', err)
+  seedLogger.error('Seed failed:', err)
   process.exit(1)
 })

@@ -1,4 +1,5 @@
 import { BeforeSync, DocToSync } from '@payloadcms/plugin-search/types'
+import { payloadLogger } from '@/utilities/logger'
 
 export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searchDoc }) => {
   const {
@@ -44,7 +45,7 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
       populatedCategories.push(...(fetchedCategories as { id: string | number; title: string }[]))
 
       if (fetchedCategories.length < categoryIds.length) {
-        console.error(
+        payloadLogger.error(
           `Failed. Some categories not found when syncing collection '${collection}' with id: '${id}' to search.`,
         )
       }

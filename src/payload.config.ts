@@ -1,9 +1,11 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
+import { payloadLogger } from './utilities/logger'
+
 if (!process.env.PAYLOAD_SECRET) {
-  console.warn('⚠️ WARNING: PAYLOAD_SECRET is not set! Authentication will fail.')
+  payloadLogger.warn('PAYLOAD_SECRET is not set! Authentication will fail.')
 } else {
-  console.log('✅ PAYLOAD_SECRET is successfully loaded.')
+  payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 }
 import sharp from 'sharp'
 import path from 'path'
@@ -162,7 +164,7 @@ export default buildConfig({
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
         try {
-          const shopId = 25894791
+          const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
           const result = await syncEtsyListings(shopId, req.payload)
           return Response.json(result)
         } catch (error) {
@@ -189,9 +191,10 @@ export default buildConfig({
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
         try {
+          const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
           const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
           const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
-          const data = await client.request<any>('/shops/25894791', {
+          const data = await client.request<any>(`/shops/${shopId}`, {
             method: 'PUT',
             body: JSON.stringify({ is_vacation: false }),
           })

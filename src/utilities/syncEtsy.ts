@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { type Payload } from 'payload'
 import { EtsyClient, DefaultPayloadTokenRepository } from './etsyClient'
 import type { Product } from '@/payload-types'
+import { syncLogger } from './logger'
 
 // Validation schema for candle listings
 const CandleListingSchema = z.object({
@@ -49,30 +50,31 @@ export interface ProductUpsertInput {
   title: string
   slug: string
   description: Product['description']
-  extraPhotos?: string[]
+  extraPhotos?: (number | string)[]
   etsyListingId: number
 }
 
 export interface ProductStorePort {
-  findProductByEtsyId(etsyListingId: number): Promise<{ id: string } | null>
-  upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<string>
+  findProductByEtsyId(etsyListingId: number): Promise<{ id: number | string } | null>
+  upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string>
   transaction<T>(operation: (txStore: ProductStorePort) => Promise<T>): Promise<T>
 }
 
 export interface MediaStoragePort {
-  findMediaByEtsyImageId(etsyImageId: number): Promise<string | null>
+  findMediaByEtsyImageId(etsyImageId: number): Promise<number | string | null>
   downloadAndRegisterMedia(
     listingId: number,
     etsyImageId: number,
     imageUrl: string,
     altText: string
-  ): Promise<string>
+  ): Promise<number | string>
 }
 
 export interface LoggerPort {
   info(message: string): void
   warn(message: string): void
-  error(message: string): void
+  error(message: string | Error, ...args: any[]): void
+  debug?(message: string, ...args: any[]): void
 }
 
 // -------------------------------------------------------------
@@ -122,10 +124,17 @@ export class EtsySyncEngine {
         // Validation Layer: Ensure listing is a candle
         const validation = CandleListingSchema.safeParse(listing)
         if (!validation.success) {
-          ports.logger.warn(
-            `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`
-          )
-          continue
+          // If this is a manual list sync, we allow non-candle titles for testing/forced sync
+          if (source.type === 'listings') {
+            ports.logger.info(
+              `Manual sync for ${listing_id} ("${title}"): allowing through despite validation failure.`
+            )
+          } else {
+            ports.logger.warn(
+              `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`
+            )
+            continue
+          }
         }
 
         // Simple slug generation logic
@@ -258,7 +267,7 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
 export class ProductionProductStoreAdapter implements ProductStorePort {
   constructor(private payload: Payload) {}
 
-  async findProductByEtsyId(etsyListingId: number): Promise<{ id: string } | null> {
+  async findProductByEtsyId(etsyListingId: number): Promise<{ id: number | string } | null> {
     const res = await this.payload.find({
       collection: 'products',
       where: {
@@ -267,10 +276,10 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
         },
       },
     })
-    return res.docs.length > 0 ? { id: String(res.docs[0].id) } : null
+    return res.docs.length > 0 ? { id: res.docs[0].id } : null
   }
 
-  async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<string> {
+  async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string> {
     const existing = await this.findProductByEtsyId(etsyListingId)
     if (existing) {
       const doc = await this.payload.update({
@@ -278,13 +287,13 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
         id: existing.id,
         data: data as unknown as Product,
       })
-      return String(doc.id)
+      return doc.id
     } else {
       const doc = await this.payload.create({
         collection: 'products',
         data: data as unknown as Product,
       })
-      return String(doc.id)
+      return doc.id
     }
   }
 
@@ -312,7 +321,7 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
 export class ProductionMediaStorageAdapter implements MediaStoragePort {
   constructor(private payload: Payload) {}
 
-  async findMediaByEtsyImageId(etsyImageId: number): Promise<string | null> {
+  async findMediaByEtsyImageId(etsyImageId: number): Promise<number | string | null> {
     const res = await this.payload.find({
       collection: 'media',
       where: {
@@ -321,7 +330,7 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
         },
       },
     })
-    return res.docs.length > 0 ? String(res.docs[0].id) : null
+    return res.docs.length > 0 ? res.docs[0].id : null
   }
 
   async downloadAndRegisterMedia(
@@ -329,7 +338,7 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
     etsyImageId: number,
     imageUrl: string,
     altText: string
-  ): Promise<string> {
+  ): Promise<number | string> {
     const existingId = await this.findMediaByEtsyImageId(etsyImageId)
     if (existingId) return existingId
 
@@ -353,7 +362,7 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
       },
     })
 
-    return String(media.id)
+    return media.id
   }
 }
 
@@ -378,11 +387,7 @@ export async function syncEtsyListings(
     etsySource: new ProductionEtsySourceAdapter(client),
     productStore: new ProductionProductStoreAdapter(payload),
     mediaStorage: new ProductionMediaStorageAdapter(payload),
-    logger: {
-      info: (msg: string) => payload.logger.info(msg),
-      warn: (msg: string) => payload.logger.warn(msg),
-      error: (msg: string) => payload.logger.error(msg),
-    },
+    logger: syncLogger,
   }
 
   const result = await engine.sync(syncSource, ports)
