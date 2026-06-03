@@ -17,7 +17,11 @@
       "mcp__plugin_playwright_playwright__browser_evaluate",
       "mcp__plugin_playwright_playwright__browser_wait_for",
       "Bash(pnpm tsc *)",
-      "mcp__claude_ai_Supabase__execute_sql"
+      "mcp__claude_ai_Supabase__execute_sql",
+      "mcp__9749faf4-be7a-4273-b36c-a78ecd4981ec__get_project_url",
+      "mcp__9749faf4-be7a-4273-b36c-a78ecd4981ec__confirm_cost",
+      "mcp__9749faf4-be7a-4273-b36c-a78ecd4981ec__create_project",
+      "mcp__9749faf4-be7a-4273-b36c-a78ecd4981ec__apply_migration"
     ]
   }
 }
