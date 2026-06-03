@@ -1,5 +1,5 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
-import type { Media } from '@/payload-types'
+import type { Media, StorefrontHeroBlock } from '@/payload-types'
 import { createRichText, createHeading, createParagraph } from '@/utilities/lexicalHelpers'
 
 type HomeArgs = {
@@ -22,30 +22,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
     slug: 'home',
     _status: 'published',
     hero: {
-      type: 'highImpact',
-      links: [
-        {
-          link: {
-            type: 'custom',
-            appearance: 'default',
-            label: 'Shop the Batch',
-            url: '/products',
-          },
-        },
-        {
-          link: {
-            type: 'custom',
-            appearance: 'outline',
-            label: 'The Studio',
-            url: '/posts',
-          },
-        },
-      ],
-      media: heroImage.id,
-      richText: createRichText([
-        createHeading('Breathe. Before the day takes over.', 'h1'), 
-        createParagraph('Hand-poured botanical candles. Numbered micro-batches. Scent as a practice in stilling the noise.')
-      ]),
+      type: 'none',
     },
     layout: [
       {
@@ -56,15 +33,15 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         subheading: 'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
         media: heroImage.id,
         primaryCtaLabel: 'Explore the Collection',
-        primaryCtaUrl: '#collection',
-        secondaryCtaLabel: 'Take the Scent Quiz →',
-        secondaryCtaUrl: '#scent-quiz',
+        primaryCtaUrl: '/products',
+        secondaryCtaLabel: 'Read the Journal →',
+        secondaryCtaUrl: '/posts',
         showStatusCard: true,
         statusCardTitle: 'Batch 014',
         statusCardSubtitle: '47 units · hand-poured',
         statusCardStatus: 'Curing',
         statusCardShips: '~3 weeks',
-      } as any,
+      } satisfies StorefrontHeroBlock & { blockType: 'storefrontHero'; blockName?: string },
       {
         blockName: 'Product Archive',
         blockType: 'archive',

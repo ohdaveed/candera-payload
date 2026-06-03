@@ -152,7 +152,7 @@ export const seed = async ({
           file,
         })
       } catch (_e) {
-        // skip if already exists
+        payload.logger.warn(`— Skipping image '${key}': upload failed (${_e instanceof Error ? _e.message : _e})`)
       }
     }
   }
