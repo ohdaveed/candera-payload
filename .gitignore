@@ -25,3 +25,6 @@ tsconfig.tsbuildinfo
 
 # Added by ggshield
 .cache_ggshield
+
+# npm lockfile (project uses pnpm)
+package-lock.json
