@@ -78,7 +78,6 @@ export const Products: CollectionConfig = {
     {
       name: 'burnTime',
       type: 'text',
-      defaultValue: '50 Hours',
       admin: {
         description: 'Expected burn time e.g. "50 Hours".',
       },

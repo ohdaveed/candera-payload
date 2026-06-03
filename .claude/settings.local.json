@@ -16,7 +16,8 @@
       "mcp__plugin_playwright_playwright__browser_snapshot",
       "mcp__plugin_playwright_playwright__browser_evaluate",
       "mcp__plugin_playwright_playwright__browser_wait_for",
-      "Bash(pnpm tsc *)"
+      "Bash(pnpm tsc *)",
+      "mcp__claude_ai_Supabase__execute_sql"
     ]
   }
 }

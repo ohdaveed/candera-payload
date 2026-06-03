@@ -1,6 +1,17 @@
+import { z } from 'zod'
 import { type Payload } from 'payload'
 import { EtsyClient, DefaultPayloadTokenRepository } from './etsyClient'
 import type { Product } from '@/payload-types'
+
+// Validation schema for candle listings
+const CandleListingSchema = z.object({
+  listing_id: z.number(),
+  title: z.string().refine((val) => val.toLowerCase().includes('candle'), {
+    message: "Listing title must contain the word 'candle' to be processed as a candle product.",
+  }),
+  description: z.string(),
+  images: z.array(z.any()).optional(),
+})
 
 // Raw schemas matching platform fields
 export interface RawEtsyImage {
@@ -108,6 +119,15 @@ export class EtsySyncEngine {
       const { listing_id, title, description, images } = listing
 
       try {
+        // Validation Layer: Ensure listing is a candle
+        const validation = CandleListingSchema.safeParse(listing)
+        if (!validation.success) {
+          ports.logger.warn(
+            `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`
+          )
+          continue
+        }
+
         // Simple slug generation logic
         const baseSlug = title
           .toLowerCase()

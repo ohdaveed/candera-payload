@@ -6,8 +6,7 @@ import { Fraunces, DM_Sans, EB_Garamond } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
+import { GlobalLayout } from '@/components/GlobalLayout'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -50,6 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         ebGaramond.variable,
         'scroll-smooth',
       )}
+      data-scroll-behavior="smooth"
       lang="en"
       suppressHydrationWarning
     >
@@ -72,9 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           >
             Skip to Main Content
           </a>
-          <Header />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <GlobalLayout>{children}</GlobalLayout>
         </Providers>
         <Analytics />
       </body>

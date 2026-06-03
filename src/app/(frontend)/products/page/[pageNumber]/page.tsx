@@ -25,8 +25,8 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   if (!Number.isInteger(sanitizedPageNumber)) notFound()
 
-  const posts = await payload.find({
-    collection: 'posts',
+  const products = await payload.find({
+    collection: 'products',
     depth: 1,
     limit: 12,
     page: sanitizedPageNumber,
@@ -34,28 +34,29 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+      <div className="container mb-20">
+        <div className="max-w-[600px]">
+          <span className="eyebrow block mb-4">Limited Release</span>
+          <h1 className="hero-heading text-candera-obsidian">The Collection</h1>
         </div>
       </div>
 
       <div className="container mb-8">
         <PageRange
-          collection="posts"
-          currentPage={posts.page}
+          collection="products"
+          currentPage={products.page}
           limit={12}
-          totalDocs={posts.totalDocs}
+          totalDocs={products.totalDocs}
         />
       </div>
 
-      <CollectionArchive posts={posts.docs} />
+      <CollectionArchive posts={products.docs} relationTo="products" />
 
-      <div className="container">
-        {posts?.page && posts?.totalPages > 1 && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
+      <div className="container mt-16">
+        {products?.page && products?.totalPages > 1 && (
+          <Pagination page={products.page} totalPages={products.totalPages} />
         )}
       </div>
     </div>
@@ -65,14 +66,14 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
-    title: `The Journal — Page ${pageNumber} | Candera Candles`,
+    title: `The Collection — Page ${pageNumber} | Candera Candles`,
   }
 }
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const { totalDocs } = await payload.count({
-    collection: 'posts',
+    collection: 'products',
     overrideAccess: false,
   })
 

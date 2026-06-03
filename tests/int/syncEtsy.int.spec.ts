@@ -137,7 +137,7 @@ describe('EtsySyncEngine', () => {
     etsySource.mockListings = [
       {
         listing_id: 101,
-        title: 'Amber Forest',
+        title: 'Amber Forest Candle',
         description: 'Desc',
         images: [
           {
@@ -166,7 +166,7 @@ describe('EtsySyncEngine', () => {
     etsySource.mockListings = [
       {
         listing_id: 201,
-        title: 'Good Product',
+        title: 'Good Candle',
         description: 'Test description',
         images: [{ listing_image_id: 555, url_fullxfull: 'https://etsy.com/bad.jpg' }],
       },
@@ -195,12 +195,12 @@ describe('EtsySyncEngine', () => {
     etsySource.mockListings = [
       {
         listing_id: 301,
-        title: 'Failing Product',
+        title: 'Failing Candle',
         description: 'Will fail database commit',
       },
       {
         listing_id: 302,
-        title: 'Successful Product',
+        title: 'Successful Candle',
         description: 'Will pass database commit',
       },
     ]
@@ -222,5 +222,35 @@ describe('EtsySyncEngine', () => {
     expect(result.failures[0].error).toContain('DB Constraint Violation')
 
     expect(logger.error).toHaveBeenCalled()
+  })
+
+  it('skips non-candle listings during sync', async () => {
+    const engine = new EtsySyncEngine()
+
+    etsySource.mockListings = [
+      {
+        listing_id: 401,
+        title: 'Nuova Fontebasso Italy Salad Plate',
+        description: 'Not a candle.',
+      },
+      {
+        listing_id: 402,
+        title: 'Botanical Garden Candle',
+        description: 'Valid candle.',
+      },
+    ]
+
+    const result = await engine.sync(
+      { type: 'shop', shopId: 123 },
+      { etsySource, productStore, mediaStorage, logger }
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.count).toBe(1) // Only the candle should be synced
+    expect(productStore.products.has(401)).toBe(false)
+    expect(productStore.products.has(402)).toBe(true)
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining('Skipping listing 401')
+    )
   })
 })

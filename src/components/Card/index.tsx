@@ -112,7 +112,7 @@ export const Card: React.FC<{
               </span>
             ) : null}
             {titleToUse ? (
-              <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong">
+              <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem]">
                 <Link href={href} ref={linkRef}>
                   {titleToUse}
                 </Link>
@@ -146,8 +146,8 @@ export const Card: React.FC<{
           </div>
         )}
 
-        {/* Fragrance profile for products */}
-        {scentProfile && (
+        {/* Fragrance profile for products - Strict conditional check */}
+        {relationTo === 'products' && scentProfile && (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
           <div className="mt-auto">
             <FragranceProfile
               profile={scentProfile}

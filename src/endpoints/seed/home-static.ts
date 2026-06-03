@@ -45,7 +45,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Six vessels. One batch. Your space.',
+                  text: 'Six vessels. One numbered batch. Your sanctuary.',
                   version: 1,
                 },
               ],
@@ -112,7 +112,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockType: 'innerCircleCTA',
       headline: 'Never Miss a Batch.',
-      description: 'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.',
+      description: 'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
       ctaLabel: 'Get Early Access',
     } as any,
   ],
