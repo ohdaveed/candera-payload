@@ -18,6 +18,9 @@ public/sitemap*.xml
 node_modules/
 /test-results/
 /playwright-report/
+
+# Claude Code local settings (session-specific, not for version control)
+.claude/settings.local.json
 /blob-report/
 /playwright/.cache/
 .env*
