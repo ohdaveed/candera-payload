@@ -76,7 +76,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
           <div className="flex flex-wrap items-center gap-8 mt-10">
             {primaryCtaLabel && primaryCtaUrl && (
-              <Button asChild variant="cta-ember">
+              <Button asChild variant="cta-ember" size="cta">
                 <Link href={primaryCtaUrl}>
                   {primaryCtaLabel}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -86,7 +86,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
               </Button>
             )}
             {secondaryCtaLabel && secondaryCtaUrl && (
-              <Button asChild variant="cta-ghost-dark">
+              <Button asChild variant="cta-ghost-dark" size="cta">
                 <Link href={secondaryCtaUrl}>
                   {secondaryCtaLabel}
                 </Link>

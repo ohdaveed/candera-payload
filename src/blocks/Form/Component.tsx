@@ -166,6 +166,7 @@ export const FormBlock: React.FC<
                 form={formID}
                 type="submit"
                 variant="cta"
+                size="cta"
               >
                 {isLoading ? 'Sending…' : (submitButtonLabel || 'Send Correspondence')}
               </Button>
