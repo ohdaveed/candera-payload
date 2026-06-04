@@ -28,3 +28,8 @@ tsconfig.tsbuildinfo
 
 # Added by ggshield
 .cache_ggshield
+
+# belt / inference.sh CLI skills (installed on-demand, not for version control)
+.agents/
+.claude/skills/belt
+skills-lock.json
