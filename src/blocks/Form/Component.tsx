@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
@@ -118,7 +119,8 @@ export const FormBlock: React.FC<
           enableGutter={false} 
         />
       ) : null}
-      <div className="p-0 border-t border-candera-stone/20 pt-16">
+      <Separator className="bg-candera-stone/20 mb-16" />
+      <div className="p-0">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
             <div className="py-12 text-center">

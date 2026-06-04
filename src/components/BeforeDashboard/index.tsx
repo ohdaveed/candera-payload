@@ -7,7 +7,6 @@ import config from '@payload-config'
 import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
 import { MetricCard } from './MetricCard'
-import './index.scss'
 
 const BeforeDashboard: React.FC = async () => {
   const payload = await getPayload({ config })
@@ -29,12 +28,14 @@ const BeforeDashboard: React.FC = async () => {
   })
 
   return (
-    <div className="candera-dashboard">
+    <div className="mb-8">
       <DashboardHeader />
 
-      <section className="candera-dashboard__quick-access">
-        <h2 className="candera-dashboard__section-title">Quick Access</h2>
-        <div className="candera-dashboard__cards">
+      <section className="mb-8">
+        <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-3">
+          Quick Access
+        </h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3">
           <QuickAccessCard
             label="Products"
             icon={Package}
@@ -59,9 +60,11 @@ const BeforeDashboard: React.FC = async () => {
         </div>
       </section>
 
-      <section className="candera-dashboard__metrics">
-        <h2 className="candera-dashboard__section-title">Store Overview</h2>
-        <div className="candera-dashboard__metric-cards">
+      <section className="mb-8">
+        <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground mb-3">
+          Store Overview
+        </h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3">
           <MetricCard label="Total Products" value={productCount} />
           <MetricCard label="Categories" value={categoryCount} />
           <MetricCard label="New This Week" value={newSubmissions} />
@@ -69,14 +72,14 @@ const BeforeDashboard: React.FC = async () => {
         </div>
       </section>
 
-      <div className="candera-dashboard__footer">
-        <Link href="/admin/collections/pages" className="candera-dashboard__footer-link">
+      <div className="flex gap-3 pt-5 border-t border-border">
+        <Link href="/admin/collections/pages" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
           Pages &amp; Content
         </Link>
-        <Link href="/admin/collections/media" className="candera-dashboard__footer-link">
+        <Link href="/admin/collections/media" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
           Media
         </Link>
-        <Link href="/admin/collections/posts" className="candera-dashboard__footer-link">
+        <Link href="/admin/collections/posts" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
           Posts
         </Link>
       </div>
