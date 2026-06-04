@@ -1,6 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
+import { Button } from '@/components/ui/button'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import type { StorefrontHeroBlock as StorefrontHeroBlockType } from '@/payload-types'
 
 type Props = StorefrontHeroBlockType & {
@@ -57,9 +59,9 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
         {/* Left Side Content */}
         <div className="flex flex-col items-start text-left max-w-[580px]">
           {heroTag && (
-            <span className="eyebrow block mb-6 text-candera-ember">
+            <Eyebrow className="block mb-6 text-candera-ember">
               {heroTag}
-            </span>
+            </Eyebrow>
           )}
 
           <h1 className="hero-heading text-white m-0 text-left font-display font-normal italic leading-none">
@@ -74,24 +76,21 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
           <div className="flex flex-wrap items-center gap-8 mt-10">
             {primaryCtaLabel && primaryCtaUrl && (
-              <Link
-                href={primaryCtaUrl}
-                className="inline-flex items-center justify-center gap-3 h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-ember text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-2xl"
-                style={{ borderRadius: 0 }}
-              >
-                {primaryCtaLabel}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
+              <Button asChild variant="cta-ember">
+                <Link href={primaryCtaUrl}>
+                  {primaryCtaLabel}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </Button>
             )}
             {secondaryCtaLabel && secondaryCtaUrl && (
-              <Link
-                href={secondaryCtaUrl}
-                className="font-sans text-[12px] font-medium uppercase tracking-[.2em] text-white/70 hover:text-white transition-colors duration-200"
-              >
-                {secondaryCtaLabel}
-              </Link>
+              <Button asChild variant="cta-ghost-dark">
+                <Link href={secondaryCtaUrl}>
+                  {secondaryCtaLabel}
+                </Link>
+              </Button>
             )}
           </div>
         </div>
