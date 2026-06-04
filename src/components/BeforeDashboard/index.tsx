@@ -1,26 +1,17 @@
 import React from 'react'
 import Link from 'next/link'
 import { Package, Tags, Inbox } from 'lucide-react'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
 import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
 import { MetricCard } from './MetricCard'
 import './index.scss'
 
-type PayloadType = {
-  find: (args: {
-    collection: string
-    limit?: number
-    depth?: number
-    sort?: string
-    where?: Record<string, unknown>
-  }) => Promise<{ totalDocs: number; docs: unknown[] }>
-}
+const BeforeDashboard: React.FC = async () => {
+  const payload = await getPayload({ config })
 
-const BeforeDashboard: React.FC<{ payload: PayloadType; user: { email?: string; name?: string } }> = async ({
-  payload,
-  user,
-}) => {
   const [{ totalDocs: productCount }, { totalDocs: categoryCount }, { totalDocs: formSubmissionsCount }] =
     await Promise.all([
       payload.find({ collection: 'products', limit: 0, depth: 0 }),
@@ -39,7 +30,7 @@ const BeforeDashboard: React.FC<{ payload: PayloadType; user: { email?: string; 
 
   return (
     <div className="candera-dashboard">
-      <DashboardHeader user={user} />
+      <DashboardHeader />
 
       <section className="candera-dashboard__quick-access">
         <h2 className="candera-dashboard__section-title">Quick Access</h2>
