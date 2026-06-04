@@ -9,6 +9,7 @@ export const defaultTheme = 'light'
  * Returns 'dark' or 'light', or null if the preference cannot be determined.
  */
 export const getImplicitPreference = (): Theme | null => {
+  if (typeof window === 'undefined') return null
   const mediaQuery = '(prefers-color-scheme: dark)'
   const mql = window.matchMedia(mediaQuery)
   const hasImplicitPreference = typeof mql.matches === 'boolean'

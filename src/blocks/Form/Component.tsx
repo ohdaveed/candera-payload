@@ -48,7 +48,6 @@ export const FormBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      /** Submits collected form data to the Payload form-submissions API and handles confirmation or redirect on success. */
       const submitForm = async () => {
         setError(undefined)
 
