@@ -7,12 +7,10 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
-import type { Product } from '@/payload-types'
-
-import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import { ImageGallery } from './ImageGallery'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -36,11 +34,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
   if (!product) return <PayloadRedirects url={url} />
 
-  const heroImage =
-    product.extraPhotos && product.extraPhotos.length > 0
-      ? product.extraPhotos[0]
-      : null
-
   return (
     <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
       <PayloadRedirects disableNotFound url={url} />
@@ -59,15 +52,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-          {/* Left: image */}
-          <div className="lg:col-span-7 relative aspect-[4/5] overflow-hidden bg-candera-ash shadow-sm">
-            {heroImage && typeof heroImage !== 'string' ? (
-              <Media fill imgClassName="object-cover" resource={heroImage} priority />
-            ) : (
-              <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
-                Image unavailable
-              </div>
-            )}
+          {/* Left: image gallery */}
+          <div className="lg:col-span-7 relative">
             {product.productTag && (
               <div className="absolute top-6 left-6 z-10">
                 <span
@@ -84,6 +70,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                 </span>
               </div>
             )}
+            <ImageGallery
+              mainImage={product.extraPhotos?.[0]}
+              extraPhotos={product.extraPhotos ?? undefined}
+            />
           </div>
 
           {/* Right: details */}

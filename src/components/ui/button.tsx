@@ -15,6 +15,7 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        cta: 'bg-candera-obsidian text-white hover:bg-candera-ember-strong shadow-xl transition-all duration-300 rounded-none',
       },
       size: {
         clear: '',
@@ -22,6 +23,7 @@ const buttonVariants = cva(
         sm: 'h-9 rounded-md px-3 has-[>svg]:px-2.5',
         lg: 'h-11 rounded-md px-8 has-[>svg]:px-4',
         icon: 'size-10',
+        cta: 'h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em]',
       },
     },
     defaultVariants: {
