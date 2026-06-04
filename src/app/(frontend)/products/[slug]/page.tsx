@@ -14,6 +14,7 @@ import { FragranceProfile } from '@/components/FragranceProfile'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
+import { Separator } from '@/components/ui/separator'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
@@ -81,7 +82,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           {/* Right: details */}
           <div className="lg:col-span-5 flex flex-col gap-10 py-4">
             {/* Header zone */}
-            <div className="flex flex-col gap-4 border-b border-candera-stone/20 pb-8">
+            <div className="flex flex-col gap-4 pb-8">
               {product.vessel && (
                 <Eyebrow>
                   Vessel {product.vessel}
@@ -98,6 +99,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                 </p>
               )}
             </div>
+            <Separator className="bg-candera-stone/20" />
 
             {product.price != null && (
               <p className="price text-[28px] font-medium">

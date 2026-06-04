@@ -4,6 +4,7 @@ import React from 'react'
 
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
+import { Separator } from '@/components/ui/separator'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
@@ -77,7 +78,8 @@ export async function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-candera-stone/20 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <Separator className="bg-candera-stone/20 mt-20" />
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-sans text-[11px] font-light text-candera-sage-text">
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
