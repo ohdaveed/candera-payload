@@ -11,6 +11,7 @@ import RichText from '@/components/RichText'
 import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -74,7 +75,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           />
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <div className="mt-32 border-t border-candera-stone/20 pt-20">
-               <h4 className="eyebrow text-center mb-16">Further Reflections</h4>
+               <Eyebrow as="h4" className="text-center mb-16">Further Reflections</Eyebrow>
                <RelatedPosts
                 className="max-w-[1280px] mx-auto"
                 docs={post.relatedPosts.filter((post) => typeof post === 'object')}

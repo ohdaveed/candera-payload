@@ -159,12 +159,11 @@ export const FormBlock: React.FC<
                   : null}
               </div>
 
-              <Button 
-                disabled={isLoading} 
-                form={formID} 
-                type="submit" 
-                variant="default"
-                className="h-[52px] px-12 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember !rounded-none shadow-lg w-full md:w-auto"
+              <Button
+                disabled={isLoading}
+                form={formID}
+                type="submit"
+                variant="cta"
               >
                 {isLoading ? 'Sending…' : (submitButtonLabel || 'Send Correspondence')}
               </Button>

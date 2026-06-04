@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import { Card } from '@/components/Card'
 import { Pagination } from '@/components/Pagination'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import PageClient from './page.client'
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default async function ProductsPage() {
       <PageClient />
       <div className="container">
         <div className="mb-20 max-w-[600px]">
-          <span className="eyebrow block mb-4">Limited Release</span>
+          <Eyebrow className="block mb-4">Limited Release</Eyebrow>
           <h1 className="hero-heading text-candera-obsidian">The Collection</h1>
           <p className="editorial mt-6 text-candera-sage-text">
             Small-batch botanical candles, hand-poured in the studio and numbered for authenticity. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment.

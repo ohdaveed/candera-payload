@@ -3,6 +3,7 @@ import type { Metadata } from 'next/types'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -32,7 +33,7 @@ export default async function Page() {
       <PageClient />
       <div className="container mb-20">
         <div className="max-w-[560px]">
-          <span className="eyebrow block mb-4">Candera Stories</span>
+          <Eyebrow className="block mb-4">Candera Stories</Eyebrow>
           <h1 className="hero-heading text-candera-obsidian">The Journal</h1>
           <p className="editorial mt-6 text-candera-sage-text">
             Reflections on intentional living, the art of scent, and the stories behind our seasonal batches.

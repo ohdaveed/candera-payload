@@ -8,6 +8,7 @@ import type { Post, Product } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
+import { ProductTagBadge } from './ProductTagBadge'
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
   extraPhotos?: Product['extraPhotos']
@@ -67,16 +68,7 @@ export const Card: React.FC<{
         {/* Product tag badge */}
         {productTag ? (
           <div className="absolute top-4 left-4 z-10">
-            <span
-              className={cn(
-                'text-[9px] font-bold uppercase tracking-[.25em] px-3 py-1.5',
-                productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
-                productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                productTag === 'New Release' && 'bg-candera-rose-strong text-white',
-              )}
-            >
-              {productTag}
-            </span>
+            <ProductTagBadge tag={productTag} />
           </div>
         ) : null}
         

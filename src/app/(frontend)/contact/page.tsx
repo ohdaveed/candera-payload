@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
+import { Eyebrow } from '@/components/ui/eyebrow'
 
 export const metadata: Metadata = {
   title: 'Contact — Candera',
@@ -11,7 +12,7 @@ export default function ContactPage() {
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <div className="container">
         <div className="max-w-[800px] mx-auto">
-          <span className="eyebrow block mb-4 text-center">Get in Touch</span>
+          <Eyebrow className="block mb-4 text-center">Get in Touch</Eyebrow>
           <h1 className="hero-heading text-candera-obsidian text-center mb-12">
             Connect with the Studio
           </h1>

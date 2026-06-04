@@ -11,6 +11,9 @@ import type { Product } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
+import { Button } from '@/components/ui/button'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
@@ -70,18 +73,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             )}
             {product.productTag && (
               <div className="absolute top-6 left-6 z-10">
-                <span
-                  className={[
-                    'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl',
-                    product.productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
-                    product.productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                    product.productTag === 'New Release' && 'bg-candera-rose-strong text-white',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                >
-                  {product.productTag}
-                </span>
+                <ProductTagBadge tag={product.productTag} />
               </div>
             )}
           </div>
@@ -91,9 +83,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Header zone */}
             <div className="flex flex-col gap-4 border-b border-candera-stone/20 pb-8">
               {product.vessel && (
-                <span className="eyebrow">
+                <Eyebrow>
                   Vessel {product.vessel}
-                </span>
+                </Eyebrow>
               )}
 
               <h1 className="hero-heading text-candera-obsidian">
@@ -115,9 +107,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* Specifications — above CTA per standard e-commerce hierarchy */}
             <div className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 px-6 py-6">
-              <p className="eyebrow mb-5">
+              <Eyebrow as="p" className="mb-5">
                 Specifications
-              </p>
+              </Eyebrow>
               <ul className="flex flex-col gap-3.5 p-0 list-none">
                 {[
                   { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
@@ -140,14 +132,15 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* CTA — below specifications */}
             {product.etsyListingId && (
-              <a
-                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
-              >
-                Add to Cart — Add to the Ritual
-              </a>
+              <Button asChild variant="cta">
+                <a
+                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Add to Cart — Add to the Ritual
+                </a>
+              </Button>
             )}
           </div>
         </div>

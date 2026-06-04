@@ -1,5 +1,6 @@
 import React from 'react'
 import type { TestimonialsBlock as TestimonialsBlockType } from '@/payload-types'
+import { Eyebrow } from '@/components/ui/eyebrow'
 
 type Props = TestimonialsBlockType & { disableInnerContainer?: boolean }
 
@@ -22,9 +23,9 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
     <section className="py-32 px-6 bg-white border-t border-candera-stone/20">
       <div className="max-w-[1280px] mx-auto">
         {eyebrow && (
-          <p className="text-center text-[10px] font-bold uppercase tracking-[.4em] text-candera-sage-text mb-20">
+          <Eyebrow as="p" className="text-center mb-20">
             {eyebrow}
-          </p>
+          </Eyebrow>
         )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
           {items.map((t, i) => (

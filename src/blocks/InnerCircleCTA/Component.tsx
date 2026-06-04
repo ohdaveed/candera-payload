@@ -1,6 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
+import { Button } from '@/components/ui/button'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import type { InnerCircleCTABlock as InnerCircleCTABlockType } from '@/payload-types'
 
 type Props = InnerCircleCTABlockType & { disableInnerContainer?: boolean }
@@ -37,7 +39,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
           <MailIcon />
         </div>
         <div className="flex flex-col gap-4">
-           <span className="eyebrow">The Inner Circle</span>
+           <Eyebrow>The Inner Circle</Eyebrow>
            <h2 className="h2 text-candera-obsidian">
             {headline}
           </h2>
@@ -48,13 +50,11 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
           </p>
         )}
         {ctaLabel && ctaUrl && (
-          <Link
-            href={ctaUrl}
-            className="inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember-strong shadow-lg"
-            style={{ borderRadius: 0 }}
-          >
-            {ctaLabel}
-          </Link>
+          <Button asChild variant="cta">
+            <Link href={ctaUrl}>
+              {ctaLabel}
+            </Link>
+          </Button>
         )}
       </div>
     </section>
