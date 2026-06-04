@@ -1,4 +1,5 @@
 import React from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 
 type ScentProfile = {
   top?: string | null
@@ -31,17 +32,19 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
       {tiers.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-5">
           {tiers.map(({ label, value }) => (
-            <div
+            <Card
               key={label}
-              className="rounded-lg bg-candera-ash/60 border border-candera-stone/20 px-3 py-3 flex flex-col gap-1 text-center"
+              className="bg-candera-ash/60 border-candera-stone/20 rounded-sm"
             >
-              <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
-                {label}
-              </span>
-              <span className="text-[12px] font-medium text-candera-obsidian leading-tight">
-                {value}
-              </span>
-            </div>
+              <CardContent className="px-3 py-3 flex flex-col gap-1 text-center p-0">
+                <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
+                  {label}
+                </span>
+                <span className="text-[12px] font-medium text-candera-obsidian leading-tight">
+                  {value}
+                </span>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
@@ -49,24 +52,28 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
       {/* Meta row: burn time + atmosphere */}
       <div className="flex items-center gap-3">
         {burnTime && (
-          <div className="flex-1 rounded-lg bg-candera-ash/60 border border-candera-stone/20 px-3 py-3 flex flex-col gap-1 text-center">
-            <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
-              Burn Time
-            </span>
-            <span className="text-[12px] font-medium text-candera-obsidian">
-              {burnTime}
-            </span>
-          </div>
+          <Card className="flex-1 bg-candera-ash/60 border-candera-stone/20 rounded-sm">
+            <CardContent className="px-3 py-3 flex flex-col gap-1 text-center p-0">
+              <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
+                Burn Time
+              </span>
+              <span className="text-[12px] font-medium text-candera-obsidian">
+                {burnTime}
+              </span>
+            </CardContent>
+          </Card>
         )}
         {atmosphere && (
-          <div className="flex-1 rounded-lg bg-candera-ash/60 border border-candera-stone/20 px-3 py-3 flex flex-col gap-1 text-center">
-            <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
-              Atmosphere
-            </span>
-            <span className="text-[12px] font-medium text-candera-obsidian leading-tight">
-              {atmosphere}
-            </span>
-          </div>
+          <Card className="flex-1 bg-candera-ash/60 border-candera-stone/20 rounded-sm">
+            <CardContent className="px-3 py-3 flex flex-col gap-1 text-center p-0">
+              <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
+                Atmosphere
+              </span>
+              <span className="text-[12px] font-medium text-candera-obsidian leading-tight">
+                {atmosphere}
+              </span>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
