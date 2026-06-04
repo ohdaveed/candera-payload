@@ -6,6 +6,10 @@ import { unstable_cache } from 'next/cache'
 
 type Collection = keyof Config['collections']
 
+/**
+ * Fetches the first matching Payload document by slug within a given collection.
+ * @param depth - Relationship population depth.
+ */
 async function getDocument(collection: Collection, slug: string, depth = 0) {
   const payload = await getPayload({ config: configPromise })
 

@@ -15,6 +15,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
+/** Pre-generates static paths for all published blog posts. */
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
@@ -41,6 +42,10 @@ type Args = {
   }>
 }
 
+/**
+ * Renders a single blog post by slug, including the post hero and rich text body.
+ * Supports Next.js draft mode for content preview.
+ */
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
@@ -87,6 +92,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   )
 }
 
+/** Generates Open Graph and title metadata for the post at the given slug. */
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
@@ -96,6 +102,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return generateMeta({ doc: post })
 }
 
+/** Cached query that fetches a single post by slug, respecting the current draft mode state. */
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 

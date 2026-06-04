@@ -7,6 +7,10 @@ import { consola } from 'consola'
 // Ensure we load .env.local with override for the new database URL
 dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
 
+/**
+ * Runs the full database initialization sequence: schema migrations, admin seeding,
+ * content seeding, and initial Etsy synchronization.
+ */
 async function initNewDb() {
   const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
 

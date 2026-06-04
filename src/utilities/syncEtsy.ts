@@ -82,6 +82,11 @@ export interface LoggerPort {
 // -------------------------------------------------------------
 
 export class EtsySyncEngine {
+  /**
+   * Fetches listings from the Etsy source, validates them, downloads media, and upserts
+   * each listing as a product via the provided port adapters.
+   * @returns A SyncResult with the count of synced listings and any per-listing failures.
+   */
   async sync(
     source: SyncSource,
     ports: {

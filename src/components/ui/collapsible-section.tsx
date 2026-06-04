@@ -13,6 +13,10 @@ export interface CollapsibleSectionProps extends React.HTMLAttributes<HTMLDivEle
   isActive?: boolean
 }
 
+/**
+ * A collapsible card section with an icon, label, and animated chevron toggle.
+ * Highlights its border when isActive is true to indicate a selected state.
+ */
 export function CollapsibleSection({
   icon,
   label,

@@ -9,6 +9,10 @@ import { etsyLogger, syncLogger } from '@/utilities/logger'
 // Load .env.local
 dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
 
+/**
+ * Fetches listings from Etsy and syncs them into the Payload CMS database.
+ * Falls back to a hardcoded list of known listing IDs if the shop ID returns no active results.
+ */
 async function runSync(): Promise<void> {
   const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
   

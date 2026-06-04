@@ -12,6 +12,10 @@ interface HeaderClientProps {
   data: Header
 }
 
+/**
+ * Client component that renders the sticky site header with scroll-aware transparency transitions.
+ * Applies a transparent dark style at the top of the page and a frosted-glass style when scrolled.
+ */
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)

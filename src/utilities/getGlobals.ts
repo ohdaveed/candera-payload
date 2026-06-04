@@ -6,6 +6,10 @@ import { unstable_cache } from 'next/cache'
 
 type Global = keyof Config['globals']
 
+/**
+ * Fetches a Payload global document by slug using the local Payload API.
+ * @param depth - Relationship population depth.
+ */
 async function getGlobal<T extends Global>(slug: T, depth = 0): Promise<DataFromGlobalSlug<T>> {
   const payload = await getPayload({ config: configPromise })
 

@@ -26,6 +26,10 @@ type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
 
+/**
+ * Resolves the href for an internal Payload link node based on its document relation.
+ * Posts resolve to /posts/:slug; all other relations resolve to /:slug.
+ */
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
   if (typeof value !== 'object') {
@@ -35,6 +39,10 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+/**
+ * Extends the default Lexical JSX converters with custom block renderers for
+ * banner, media, code, and CTA blocks embedded in rich text content.
+ */
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
@@ -61,6 +69,10 @@ type Props = {
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
+/**
+ * Renders Payload Lexical rich text content with custom block converters.
+ * Supports optional prose styling and container gutter alignment.
+ */
 export default function RichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, ...rest } = props
   return (

@@ -3,6 +3,10 @@
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 
+/**
+ * Displays the validation error message for a named form field.
+ * Reads the error state from the enclosing react-hook-form context.
+ */
 export const Error = ({ name }: { name: string }) => {
   const {
     formState: { errors },

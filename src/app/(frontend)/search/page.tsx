@@ -13,6 +13,10 @@ type Args = {
     q: string
   }>
 }
+/**
+ * Search results page that queries the Payload search collection by title, slug, and meta fields.
+ * Renders up to 12 matching results, or a "No results found" message.
+ */
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise
   const payload = await getPayload({ config: configPromise })
@@ -81,6 +85,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   )
 }
 
+/** Returns static metadata for the search results page. */
 export function generateMetadata(): Metadata {
   return {
     title: `Search — Candera`,

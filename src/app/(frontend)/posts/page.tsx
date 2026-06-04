@@ -11,6 +11,10 @@ import PageClient from './page.client'
 export const dynamic = 'force-static'
 export const revalidate = 600
 
+/**
+ * Statically rendered index page listing the 12 most recent published posts.
+ * Revalidates every 600 seconds.
+ */
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
@@ -60,6 +64,7 @@ export default async function Page() {
   )
 }
 
+/** Returns static metadata for the posts index page. */
 export function generateMetadata(): Metadata {
   return {
     title: `The Journal | Candera Candles`,

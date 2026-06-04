@@ -7,6 +7,11 @@ interface Props {
   priority?: 'auto' | 'high' | 'low'
 }
 
+/**
+ * Renders the Candera wordmark as an inline SVG.
+ * @param loading - Image loading hint forwarded to downstream consumers.
+ * @param priority - Fetch priority hint forwarded to downstream consumers.
+ */
 export const Logo = (props: Props) => {
   const { loading: loadingFromProps, priority: priorityFromProps, className } = props
 
@@ -39,6 +44,7 @@ export const Logo = (props: Props) => {
   )
 }
 
+/** Renders the compact Candera 'C' icon as an inline SVG for use in small contexts. */
 export const LogoIcon = () => (
   <svg
     width="24"

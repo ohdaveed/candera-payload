@@ -5,6 +5,7 @@ import { cn } from '@/utilities/ui'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import * as React from 'react'
 
+/** Accessible navigation wrapper for a pagination control set. */
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
     aria-label="pagination"
@@ -29,6 +30,10 @@ type PaginationLinkProps = {
 } & Pick<ButtonProps, 'size'> &
   React.ComponentProps<'a'>
 
+/**
+ * A single pagination link rendered as an anchor element.
+ * Marks the active page with aria-current="page" and adjusts its visual variant accordingly.
+ */
 const PaginationLink = ({ className, isActive, size = 'icon', ...props }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? 'page' : undefined}
@@ -43,6 +48,7 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
   />
 )
 
+/** Renders the "Previous page" pagination link with a left chevron icon. */
 const PaginationPrevious = ({
   className,
   ...props
@@ -58,6 +64,7 @@ const PaginationPrevious = ({
   </PaginationLink>
 )
 
+/** Renders the "Next page" pagination link with a right chevron icon. */
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
@@ -70,6 +77,7 @@ const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof Pag
   </PaginationLink>
 )
 
+/** Renders a visually hidden ellipsis indicator for truncated page ranges. */
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
   <span
     aria-hidden

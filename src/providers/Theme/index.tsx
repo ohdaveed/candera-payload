@@ -15,6 +15,10 @@ const initialContext: ThemeContextType = {
 
 const ThemeContext = createContext(initialContext)
 
+/**
+ * Manages the global color theme (light/dark) and persists the user's preference to localStorage.
+ * Syncs the chosen theme to the data-theme attribute on the document element.
+ */
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<Theme | undefined>(
     canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
@@ -56,4 +60,5 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
 }
 
+/** Returns the current theme context, including the active theme and the setter function. */
 export const useTheme = (): ThemeContextType => use(ThemeContext)

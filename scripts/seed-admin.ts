@@ -7,6 +7,10 @@ const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@candera.com'
 const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'password'
 const ADMIN_NAME = process.env.SEED_ADMIN_NAME || 'Admin'
 
+/**
+ * Creates the initial admin user if no users exist in the database.
+ * Reads credentials from SEED_ADMIN_EMAIL, SEED_ADMIN_PASSWORD, and SEED_ADMIN_NAME env vars.
+ */
 async function seedAdmin(): Promise<void> {
   seedLogger.info('Checking for existing admin user...')
 

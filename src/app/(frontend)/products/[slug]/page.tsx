@@ -14,6 +14,7 @@ import { FragranceProfile } from '@/components/FragranceProfile'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
+/** Pre-generates static paths for all products in the CMS. */
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const products = await payload.find({
@@ -28,6 +29,10 @@ export async function generateStaticParams() {
 
 type Args = { params: Promise<{ slug?: string }> }
 
+/**
+ * Renders the product detail page for a single candle by slug.
+ * Displays the hero image, scent profile, specifications, and an Etsy CTA.
+ */
 export default async function ProductPage({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const decodedSlug = decodeURIComponent(slug)
@@ -156,12 +161,14 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   )
 }
 
+/** Generates Open Graph and title metadata for the product at the given slug. */
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
   return generateMeta({ doc: product as any })
 }
 
+/** Cached query that fetches a single product by slug, respecting the current draft mode state. */
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })

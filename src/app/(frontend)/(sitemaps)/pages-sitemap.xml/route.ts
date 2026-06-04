@@ -61,6 +61,7 @@ const getPagesSitemap = unstable_cache(
   },
 )
 
+/** Returns the XML sitemap for all published pages plus the static /search and /posts routes. */
 export async function GET() {
   const sitemap = await getPagesSitemap()
 

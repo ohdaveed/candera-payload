@@ -16,6 +16,10 @@ export interface ZoomableImageProps
   zoomMargin?: number
 }
 
+/**
+ * Renders an image with optional zoom-on-click behavior powered by react-medium-image-zoom.
+ * Falls back to a placeholder icon if the image fails to load.
+ */
 export default function ZoomableImage({
   src,
   alt,

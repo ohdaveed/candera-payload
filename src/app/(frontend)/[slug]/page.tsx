@@ -13,6 +13,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
+/** Pre-generates static paths for all published pages, excluding the home slug. */
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const pages = await payload.find({
@@ -43,6 +44,10 @@ type Args = {
   }>
 }
 
+/**
+ * Renders a CMS page by slug, falling back to a static home page document when no CMS entry is found.
+ * Supports Next.js draft mode for content preview.
+ */
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
@@ -80,6 +85,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   )
 }
 
+/** Generates Open Graph and title metadata for the page at the given slug. */
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
   // Decode to support slugs with special characters
@@ -91,6 +97,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return generateMeta({ doc: page })
 }
 
+/** Cached query that fetches a single page document by slug, respecting the current draft mode state. */
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 

@@ -390,6 +390,10 @@ export const seed = async ({
   payload.logger.info('Seeded database successfully!')
 }
 
+/**
+ * Reads all Candera candle images from the public/candera directory.
+ * Returns a map of image name to Payload File, or null if the file was not found.
+ */
 async function loadCandleraImages(): Promise<Record<string, File | null>> {
   const fs = await import('fs')
   const path = await import('path')
@@ -423,6 +427,10 @@ async function loadCandleraImages(): Promise<Record<string, File | null>> {
   return result
 }
 
+/**
+ * Fetches a remote file by URL and returns it as a Payload File object.
+ * @throws If the HTTP response is not OK.
+ */
 async function fetchFileByURL(url: string): Promise<File> {
   const res = await fetch(url, {
     credentials: 'include',

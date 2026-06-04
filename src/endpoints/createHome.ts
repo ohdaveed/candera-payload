@@ -12,6 +12,10 @@ const CANDLE_IMAGES = [
   { key: 'scarlet-bloom', file: 'scarlet-bloom.jpg' },
 ]
 
+/**
+ * Reads a JPEG image from the public/candera directory and returns it as a Payload File object.
+ * Returns null if the file does not exist or cannot be read.
+ */
 function readLocalImage(filename: string): File | null {
   const filePath = path.join(process.cwd(), 'public', 'candera', filename)
   try {

@@ -3,6 +3,10 @@ import config from '../src/payload.config'
 import { seed } from '../src/endpoints/seed'
 import { seedLogger } from '@/utilities/logger'
 
+/**
+ * Seeds the database with initial content using an existing admin user for authentication.
+ * Requires at least one admin user to exist — run `seed-admin.ts` first.
+ */
 async function main(): Promise<void> {
   seedLogger.info('Starting database seed...')
 

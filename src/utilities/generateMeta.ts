@@ -5,6 +5,10 @@ import type { Media, Page, Post, Config } from '../payload-types'
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
 
+/**
+ * Resolves the absolute OG image URL from a Media document.
+ * Falls back to the default website template OG image when no media is provided.
+ */
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
 

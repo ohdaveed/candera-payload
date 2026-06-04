@@ -48,6 +48,7 @@ const getPostsSitemap = unstable_cache(
   },
 )
 
+/** Returns the XML sitemap for all published blog posts. */
 export async function GET() {
   const sitemap = await getPostsSitemap()
 

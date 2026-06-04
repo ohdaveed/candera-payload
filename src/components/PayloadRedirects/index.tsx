@@ -10,7 +10,10 @@ interface Props {
   url: string
 }
 
-/* This component helps us with SSR based dynamic redirects */
+/**
+ * Handles SSR-based dynamic redirects defined in the Payload CMS.
+ * Calls notFound() if no matching redirect is found and disableNotFound is not set.
+ */
 export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }) => {
   const redirects = await getCachedRedirects()()
 

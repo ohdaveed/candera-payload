@@ -20,6 +20,10 @@ class InMemoryCacheBusterAdapter implements CacheBusterPort {
   }
 }
 
+/**
+ * Creates a minimal mock PayloadRequest for use in revalidation tests.
+ * @param disableRevalidate - When true, sets the context flag that suppresses revalidation.
+ */
 function createMockRequest(disableRevalidate = false): PayloadRequest {
   return {
     payload: {

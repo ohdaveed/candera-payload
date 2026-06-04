@@ -12,6 +12,10 @@ export type PreviewSearchParams = {
   previewSecret: string
 }
 
+/**
+ * Enables Next.js draft mode for authenticated Payload users.
+ * Validates the previewSecret query param and the user's Payload auth token, then redirects to the requested path.
+ */
 export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
 

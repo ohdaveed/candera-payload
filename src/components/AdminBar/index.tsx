@@ -29,8 +29,13 @@ const collectionLabels = {
   },
 }
 
+/** Renders the Payload admin bar logo label. */
 const Title: React.FC = () => <span>Dashboard</span>
 
+/**
+ * Renders the Payload admin bar overlay for authenticated CMS users in preview mode.
+ * Automatically shows or hides based on the current Payload authentication state.
+ */
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps
 }> = (props) => {
