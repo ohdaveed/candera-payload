@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
@@ -20,6 +21,11 @@ interface MobileNavProps {
 export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
   const navItems = data?.navItems || []
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   return (
     <div className="md:hidden">
@@ -47,7 +53,6 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
                 {...link}
                 appearance="inline"
                 className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-3 border-b border-candera-stone/20 last:border-0"
-                onClick={() => setOpen(false)}
               />
             ))}
           </nav>
