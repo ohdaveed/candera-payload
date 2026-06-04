@@ -42,6 +42,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
           </button>
         </SheetTrigger>
         <SheetContent
+          aria-describedby={undefined}
           side="right"
           className="bg-candera-linen border-candera-stone/30 w-[280px] pt-12"
         >

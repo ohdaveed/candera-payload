@@ -50,7 +50,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
           </p>
         )}
         {ctaLabel && ctaUrl && (
-          <Button asChild variant="cta">
+          <Button asChild variant="cta" size="cta">
             <Link href={ctaUrl}>
               {ctaLabel}
             </Link>

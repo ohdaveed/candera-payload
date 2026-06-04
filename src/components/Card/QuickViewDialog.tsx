@@ -50,7 +50,7 @@ export function QuickViewDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[860px] p-0 bg-candera-vellum border-candera-stone/30 rounded-none overflow-hidden">
+      <DialogContent aria-describedby={undefined} className="max-w-[860px] p-0 bg-candera-vellum border-candera-stone/30 rounded-none overflow-hidden">
         <DialogTitle className="sr-only">{title ?? 'Product Quick View'}</DialogTitle>
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left: image */}
@@ -96,7 +96,7 @@ export function QuickViewDialog({
 
             <div className="flex flex-col gap-3 mt-auto pt-4">
               {etsyListingId && (
-                <Button asChild variant="cta">
+                <Button asChild variant="cta" size="cta">
                   <a
                     href={`https://www.etsy.com/listing/${etsyListingId}`}
                     target="_blank"

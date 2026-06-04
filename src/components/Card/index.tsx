@@ -13,6 +13,7 @@ import { QuickViewDialog } from './QuickViewDialog'
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
   extraPhotos?: Product['extraPhotos']
+  etsyListingId?: Product['etsyListingId']
   scentProfile?: Product['scentProfile']
   burnTime?: Product['burnTime']
   atmosphere?: Product['atmosphere']
@@ -32,7 +33,7 @@ export const Card: React.FC<{
   const { cardRef, linkRef } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title, extraPhotos, scentProfile, burnTime, atmosphere, productTag, vessel, price } = doc || {}
+  const { slug, categories, meta, title, extraPhotos, etsyListingId, scentProfile, burnTime, atmosphere, productTag, vessel, price } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -95,6 +96,7 @@ export const Card: React.FC<{
                 burnTime={burnTime}
                 atmosphere={atmosphere}
                 productTag={productTag}
+                etsyListingId={etsyListingId}
               >
                 <button
                   className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none"

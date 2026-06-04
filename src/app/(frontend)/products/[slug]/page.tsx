@@ -116,7 +116,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* CTA — below specifications */}
             {product.etsyListingId && (
-              <Button asChild variant="cta">
+              <Button asChild variant="cta" size="cta">
                 <a
                   href={`https://www.etsy.com/listing/${product.etsyListingId}`}
                   target="_blank"
