@@ -5,11 +5,13 @@ export const DashboardHeader: React.FC = () => {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
   return (
-    <div className="candera-dashboard__header">
-      <h1 className="candera-dashboard__greeting">
+    <div className="mb-8">
+      <h1 suppressHydrationWarning className="font-serif italic font-normal text-[1.75rem] text-foreground m-0 mb-1 leading-[1.2]">
         {greeting}
       </h1>
-      <p className="candera-dashboard__subtitle">Candera Candles — Store Dashboard</p>
+      <p className="text-[0.875rem] text-muted-foreground m-0 tracking-[0.02em]">
+        Candera Candles — Store Dashboard
+      </p>
     </div>
   )
 }

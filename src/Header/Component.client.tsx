@@ -7,6 +7,7 @@ import React, { useEffect, useState, startTransition } from 'react'
 import type { Header } from '@/payload-types'
 
 import { HeaderNav } from './Nav'
+import { MobileNav } from './Nav/MobileNav'
 
 interface HeaderClientProps {
   data: Header
@@ -67,8 +68,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
 
         {/* Right nav */}
-        <div className="justify-self-end">
+        <div className="justify-self-end flex items-center">
           <HeaderNav data={data} transparent={isTransparent} />
+          <MobileNav data={data} transparent={isTransparent} />
         </div>
       </div>
     </header>

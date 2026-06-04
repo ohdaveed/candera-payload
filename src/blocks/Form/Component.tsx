@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
@@ -118,7 +119,8 @@ export const FormBlock: React.FC<
           enableGutter={false} 
         />
       ) : null}
-      <div className="p-0 border-t border-candera-stone/20 pt-16">
+      <Separator className="bg-candera-stone/20 mb-16" />
+      <div className="p-0">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
             <div className="py-12 text-center">
@@ -159,12 +161,12 @@ export const FormBlock: React.FC<
                   : null}
               </div>
 
-              <Button 
-                disabled={isLoading} 
-                form={formID} 
-                type="submit" 
-                variant="default"
-                className="h-[52px] px-12 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white transition-all duration-300 hover:bg-candera-ember !rounded-none shadow-lg w-full md:w-auto"
+              <Button
+                disabled={isLoading}
+                form={formID}
+                type="submit"
+                variant="cta"
+                size="cta"
               >
                 {isLoading ? 'Sending…' : (submitButtonLabel || 'Send Correspondence')}
               </Button>

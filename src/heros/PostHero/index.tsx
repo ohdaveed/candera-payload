@@ -5,6 +5,7 @@ import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+import { Eyebrow } from '@/components/ui/eyebrow'
 
 export const PostHero: React.FC<{
   post: Post
@@ -54,10 +55,10 @@ export const PostHero: React.FC<{
                 const titleToUse = categoryTitle || 'Untitled category'
                 const isLast = index === categories.length - 1
                 return (
-                  <span key={index} className="eyebrow text-white/90">
+                  <Eyebrow key={index} className="text-white/90">
                     {titleToUse}
                     {!isLast && <span className="mx-3 opacity-40">·</span>}
-                  </span>
+                  </Eyebrow>
                 )
               }
               return null

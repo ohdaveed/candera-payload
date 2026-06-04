@@ -70,10 +70,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
                   <li key={i}>
                     <CMSLink
                       {...link}
-                      className={i === 0 
-                        ? "inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian hover:bg-candera-vellum transition-all duration-300 !rounded-none shadow-lg"
-                        : "inline-flex items-center justify-center h-[52px] px-10 text-[11px] font-bold uppercase tracking-[.3em] border border-white/40 text-white hover:bg-white hover:text-candera-obsidian transition-all duration-300 !rounded-none"
-                      }
+                      appearance={i === 0 ? 'cta-inverse' : 'cta-ghost-dark'}
                     />
                   </li>
                 )
