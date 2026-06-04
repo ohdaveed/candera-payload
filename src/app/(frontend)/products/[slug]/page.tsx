@@ -10,9 +10,14 @@ import React, { cache } from 'react'
 import type { Product } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { FragranceProfile } from '@/components/FragranceProfile'
+import { Button } from '@/components/ui/button'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
+import { Separator } from '@/components/ui/separator'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import { ProductDetailTabs } from './ProductDetailTabs'
+import { ImageGallery } from './ImageGallery'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -36,11 +41,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
   if (!product) return <PayloadRedirects url={url} />
 
-  const heroImage =
-    product.extraPhotos && product.extraPhotos.length > 0
-      ? product.extraPhotos[0]
-      : null
-
   return (
     <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
       <PayloadRedirects disableNotFound url={url} />
@@ -59,41 +59,27 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-          {/* Left: image */}
-          <div className="lg:col-span-7 relative aspect-[4/5] overflow-hidden bg-candera-ash shadow-sm">
-            {heroImage && typeof heroImage !== 'string' ? (
-              <Media fill imgClassName="object-cover" resource={heroImage} priority />
-            ) : (
-              <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
-                Image unavailable
-              </div>
-            )}
+          {/* Left: image gallery */}
+          <div className="lg:col-span-7 relative">
             {product.productTag && (
               <div className="absolute top-6 left-6 z-10">
-                <span
-                  className={[
-                    'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl',
-                    product.productTag === 'Limited Batch' && 'bg-candera-ember-strong text-white',
-                    product.productTag === 'Bestseller' && 'bg-candera-obsidian text-white',
-                    product.productTag === 'New Release' && 'bg-candera-rose-strong text-white',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                >
-                  {product.productTag}
-                </span>
+                <ProductTagBadge tag={product.productTag} />
               </div>
             )}
+            <ImageGallery
+              mainImage={product.extraPhotos?.[0]}
+              extraPhotos={product.extraPhotos ?? undefined}
+            />
           </div>
 
           {/* Right: details */}
           <div className="lg:col-span-5 flex flex-col gap-10 py-4">
             {/* Header zone */}
-            <div className="flex flex-col gap-4 border-b border-candera-stone/20 pb-8">
+            <div className="flex flex-col gap-4 pb-8">
               {product.vessel && (
-                <span className="eyebrow">
+                <Eyebrow>
                   Vessel {product.vessel}
-                </span>
+                </Eyebrow>
               )}
 
               <h1 className="hero-heading text-candera-obsidian">
@@ -106,6 +92,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                 </p>
               )}
             </div>
+            <Separator className="bg-candera-stone/20" />
 
             {product.price != null && (
               <p className="price text-[28px] font-medium">
@@ -113,41 +100,24 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               </p>
             )}
 
-            {/* Specifications — above CTA per standard e-commerce hierarchy */}
-            <div className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 px-6 py-6">
-              <p className="eyebrow mb-5">
-                Specifications
-              </p>
-              <ul className="flex flex-col gap-3.5 p-0 list-none">
-                {[
-                  { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
-                  { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
-                  { label: 'Origin', value: 'Ships from California' },
-                ].map(({ label, value }) => (
-                  <li key={label} className="flex justify-between items-baseline gap-4 text-[13px]">
-                    <span className="font-semibold text-candera-obsidian shrink-0">{label}</span>
-                    <span className="text-candera-sage-text text-right">{value}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <FragranceProfile
-              profile={product.scentProfile}
+            {/* Specifications + Scent Profile Tabs */}
+            <ProductDetailTabs
+              scentProfile={product.scentProfile}
               burnTime={product.burnTime}
               atmosphere={product.atmosphere}
             />
 
             {/* CTA — below specifications */}
             {product.etsyListingId && (
-              <a
-                href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[56px] px-10 text-[11px] font-bold uppercase tracking-[.3em] bg-candera-obsidian text-white hover:bg-candera-ember-strong transition-all duration-300 shadow-xl !rounded-none"
-              >
-                Add to Cart — Add to the Ritual
-              </a>
+              <Button asChild variant="cta" size="cta">
+                <a
+                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Add to Cart — Add to the Ritual
+                </a>
+              </Button>
             )}
           </div>
         </div>

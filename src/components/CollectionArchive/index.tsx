@@ -13,8 +13,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
 
   return (
     <div className={cn('container')}>
-      <div>
-        <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
+      <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
           {posts?.map((result, index) => {
             if (typeof result === 'object' && result !== null) {
               const {
@@ -64,7 +63,6 @@ export const CollectionArchive: React.FC<Props> = (props) => {
 
             return null
           })}
-        </div>
       </div>
     </div>
   )
