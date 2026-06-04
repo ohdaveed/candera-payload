@@ -24,7 +24,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   return (
     <nav
       aria-label="Main Navigation"
-      className="flex items-center gap-1"
+      className="hidden md:flex items-center gap-1"
     >
       {navItems.map(({ link }, i) => {
         return (

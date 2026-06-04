@@ -10,13 +10,13 @@ import React, { cache } from 'react'
 import type { Product } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { FragranceProfile } from '@/components/FragranceProfile'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
 import { Separator } from '@/components/ui/separator'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import { ProductDetailTabs } from './ProductDetailTabs'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -107,27 +107,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               </p>
             )}
 
-            {/* Specifications — above CTA per standard e-commerce hierarchy */}
-            <div className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 px-6 py-6">
-              <Eyebrow as="p" className="mb-5">
-                Specifications
-              </Eyebrow>
-              <ul className="flex flex-col gap-3.5 p-0 list-none">
-                {[
-                  { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
-                  { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
-                  { label: 'Origin', value: 'Ships from California' },
-                ].map(({ label, value }) => (
-                  <li key={label} className="flex justify-between items-baseline gap-4 text-[13px]">
-                    <span className="font-semibold text-candera-obsidian shrink-0">{label}</span>
-                    <span className="text-candera-sage-text text-right">{value}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <FragranceProfile
-              profile={product.scentProfile}
+            {/* Specifications + Scent Profile Tabs */}
+            <ProductDetailTabs
+              scentProfile={product.scentProfile}
               burnTime={product.burnTime}
               atmosphere={product.atmosphere}
             />

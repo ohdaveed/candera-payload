@@ -9,6 +9,7 @@ import type { Post, Product } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { ProductTagBadge } from './ProductTagBadge'
+import { QuickViewDialog } from './QuickViewDialog'
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
   extraPhotos?: Product['extraPhotos']
@@ -80,18 +81,48 @@ export const Card: React.FC<{
           </div>
         ) : null}
 
-        {/* Hover overlay for button */}
-        <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
-           <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
-             <Link
+        {/* Hover overlay for Quick View */}
+        {relationTo === 'products' ? (
+          <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
+            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none flex flex-col gap-2">
+              <QuickViewDialog
+                title={titleToUse}
+                slug={slug}
+                extraPhotos={extraPhotos}
+                price={price}
+                vessel={vessel}
+                scentProfile={scentProfile}
+                burnTime={burnTime}
+                atmosphere={atmosphere}
+                productTag={productTag}
+              >
+                <button
+                  className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none"
+                >
+                  Quick View
+                </button>
+              </QuickViewDialog>
+              <Link
+                href={href}
+                className="text-center text-[10px] font-bold uppercase tracking-[.25em] text-white hover:text-candera-ember transition-colors"
+              >
+                View Details →
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
+            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
+              <Link
                 href={href}
                 className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
                 style={{ borderRadius: 0 }}
               >
                 View Details
               </Link>
-           </div>
-        </div>
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="pt-6 pb-2 flex flex-col flex-grow">
