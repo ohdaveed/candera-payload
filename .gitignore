@@ -33,3 +33,4 @@ tsconfig.tsbuildinfo
 .agents/
 .claude/skills/belt
 skills-lock.json
+.claude/worktrees/
