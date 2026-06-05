@@ -836,6 +836,39 @@ export interface Product {
   } | null;
   extraPhotos?: (number | Media)[] | null;
   categories?: (number | Category)[] | null;
+  /**
+   * Display price in USD (e.g. 48)
+   */
+  price?: number | null;
+  /**
+   * e.g. "15 oz"
+   */
+  size?: string | null;
+  /**
+   * e.g. "Soy & beeswax blend"
+   */
+  waxBlend?: string | null;
+  /**
+   * e.g. "Numbered vessel · Micro-batch cured"
+   */
+  craftsmanship?: string | null;
+  /**
+   * e.g. "Ships from California"
+   */
+  origin?: string | null;
+  fragranceNotes?: {
+    top?: string | null;
+    heart?: string | null;
+    base?: string | null;
+  };
+  /**
+   * e.g. "50 Hours"
+   */
+  burnTime?: string | null;
+  /**
+   * e.g. "Bold & Floral"
+   */
+  atmosphere?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1306,6 +1339,20 @@ export interface ProductsSelect<T extends boolean = true> {
   description?: T;
   extraPhotos?: T;
   categories?: T;
+  price?: T;
+  size?: T;
+  waxBlend?: T;
+  craftsmanship?: T;
+  origin?: T;
+  fragranceNotes?:
+    | T
+    | {
+        top?: T;
+        heart?: T;
+        base?: T;
+      };
+  burnTime?: T;
+  atmosphere?: T;
   updatedAt?: T;
   createdAt?: T;
 }

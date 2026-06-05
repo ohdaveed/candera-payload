@@ -58,5 +58,49 @@ export const Products: CollectionConfig = {
       relationTo: 'categories',
       hasMany: true,
     },
+    {
+      name: 'price',
+      type: 'number',
+      admin: { description: 'Display price in USD (e.g. 48)' },
+    },
+    {
+      name: 'size',
+      type: 'text',
+      admin: { description: 'e.g. "15 oz"' },
+    },
+    {
+      name: 'waxBlend',
+      type: 'text',
+      admin: { description: 'e.g. "Soy & beeswax blend"' },
+    },
+    {
+      name: 'craftsmanship',
+      type: 'text',
+      admin: { description: 'e.g. "Numbered vessel · Micro-batch cured"' },
+    },
+    {
+      name: 'origin',
+      type: 'text',
+      admin: { description: 'e.g. "Ships from California"' },
+    },
+    {
+      name: 'fragranceNotes',
+      type: 'group',
+      fields: [
+        { name: 'top', type: 'text' },
+        { name: 'heart', type: 'text' },
+        { name: 'base', type: 'text' },
+      ],
+    },
+    {
+      name: 'burnTime',
+      type: 'text',
+      admin: { description: 'e.g. "50 Hours"' },
+    },
+    {
+      name: 'atmosphere',
+      type: 'text',
+      admin: { description: 'e.g. "Bold & Floral"' },
+    },
   ],
 }
