@@ -8,6 +8,7 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
 import { generateMeta } from '@/utilities/generateMeta'
+import RichText from '@/components/RichText'
 import ProductPageClient from './page.client'
 
 export async function generateStaticParams() {
@@ -232,19 +233,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* Rich text description */}
             {description && (
-              <div className="border-t border-candera-field pt-8 prose prose-sm max-w-none text-candera-obsidian/80">
-                {/* Description rendered as plain text paragraphs from Lexical root */}
-                {(
-                  description as {
-                    root?: { children?: { children?: { text?: string }[] }[] }
-                  }
-                )?.root?.children?.map((node, i) =>
-                  node.children?.[0]?.text ? (
-                    <p key={i} className="font-light leading-relaxed">
-                      {node.children.map((c) => c.text).join('')}
-                    </p>
-                  ) : null,
-                )}
+              <div className="border-t border-candera-field pt-8">
+                <RichText
+                  data={description}
+                  enableGutter={false}
+                  className="text-sm text-candera-obsidian/80 font-light leading-relaxed"
+                />
               </div>
             )}
           </div>
