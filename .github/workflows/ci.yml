@@ -24,6 +24,7 @@ jobs:
           cache: pnpm
 
       - name: Install pass-cli
+        if: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN != '' }}
         run: |
           curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -32,9 +33,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run CI (migrate + build)
+        if: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN != '' }}
         env:
           PROTON_PASS_PERSONAL_ACCESS_TOKEN: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
           POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
         run: pass-cli run --env-file .env.ci -- pnpm run ci
 
+      - name: Skip pass-cli CI command when Proton token is unavailable
+        if: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN == '' }}
+        run: |
+          echo "PROTON_PASS_PERSONAL_ACCESS_TOKEN is not available in this workflow context."
+          echo "Skipping pass-cli based CI command to avoid authentication failures."
