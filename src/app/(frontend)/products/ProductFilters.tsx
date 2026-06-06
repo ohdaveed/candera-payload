@@ -52,7 +52,9 @@ export function ProductFilters() {
         className="text-[10px] font-bold uppercase tracking-[.2em] border border-candera-stone/40 bg-transparent text-candera-obsidian px-3 py-2 cursor-pointer focus:outline-none focus:border-candera-obsidian"
       >
         {SORTS.map((s) => (
-          <option key={s.value} value={s.value}>{s.label}</option>
+          <option key={s.value} value={s.value}>
+            {s.label}
+          </option>
         ))}
       </select>
     </div>

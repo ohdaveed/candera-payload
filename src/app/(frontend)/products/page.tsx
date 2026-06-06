@@ -21,8 +21,7 @@ export default async function ProductsPage({
 }) {
   const { tag, sort } = await searchParams
 
-  const sortField =
-    sort === 'price-asc' ? 'price' : sort === 'price-desc' ? '-price' : '-createdAt'
+  const sortField = sort === 'price-asc' ? 'price' : sort === 'price-desc' ? '-price' : '-createdAt'
 
   const payload = await getPayload({ config: configPromise })
   const products = await payload.find({
@@ -74,11 +73,11 @@ export default async function ProductsPage({
               price,
             } = product
 
-            const minimizedDoc: any = {
+            const minimizedDoc: Partial<Product> = {
               slug,
               categories: categories?.map((cat) =>
                 typeof cat === 'object' ? { title: cat.title } : cat,
-              ),
+              ) as Product['categories'],
               title,
               extraPhotos,
               scentProfile,
@@ -89,7 +88,7 @@ export default async function ProductsPage({
               price,
             }
 
-            return <Card key={product.id} doc={minimizedDoc} relationTo="products" />
+            return <Card key={product.id} doc={minimizedDoc as any} relationTo="products" />
           })}
         </div>
 
@@ -109,7 +108,11 @@ export default async function ProductsPage({
 
         <div className="mt-16">
           {products.totalPages > 1 && products.page && (
-            <Pagination basePath="/products" page={products.page} totalPages={products.totalPages} />
+            <Pagination
+              basePath="/products"
+              page={products.page}
+              totalPages={products.totalPages}
+            />
           )}
         </div>
       </div>

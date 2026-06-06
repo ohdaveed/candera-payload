@@ -35,7 +35,6 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    
     meta: {
       titleSuffix: 'Candera Candles',
       icons: [
@@ -179,7 +178,10 @@ export default buildConfig({
       method: 'get',
       handler: async (req) => {
         const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-        const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
+        const client = new EtsyClient(
+          { redirectUri },
+          new DefaultPayloadTokenRepository(req.payload),
+        )
         const url = client.generateAuthUrl()
         return Response.redirect(url)
       },
@@ -194,8 +196,11 @@ export default buildConfig({
         try {
           const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
           const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-          const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
-          const data = await client.request<any>(`/shops/${shopId}`, {
+          const client = new EtsyClient(
+            { redirectUri },
+            new DefaultPayloadTokenRepository(req.payload),
+          )
+          const data = await client.request<unknown>(`/shops/${shopId}`, {
             method: 'PUT',
             body: JSON.stringify({ is_vacation: false }),
           })
@@ -219,7 +224,10 @@ export default buildConfig({
         }
         try {
           const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-          const client = new EtsyClient({ redirectUri }, new DefaultPayloadTokenRepository(req.payload))
+          const client = new EtsyClient(
+            { redirectUri },
+            new DefaultPayloadTokenRepository(req.payload),
+          )
           await client.completeAuthFlow(code)
           return Response.redirect('/admin')
         } catch (error) {

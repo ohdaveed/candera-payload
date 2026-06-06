@@ -42,7 +42,7 @@ export interface RevalidationRule<TDoc = unknown> {
 }
 
 export class FlexibleRevalidator {
-  private rules: RevalidationRule<any>[] = []
+  private rules: RevalidationRule<unknown>[] = []
   private cacheBuster: CacheBusterPort
 
   constructor(cacheBuster: CacheBusterPort) {
@@ -105,14 +105,14 @@ export class FlexibleRevalidator {
  * High-leverage factory for slug-based revalidation rules.
  * Automatically handles published status checks, slug transitions, and group tags.
  */
-export function createSlugRevalidationRule<TDoc extends { slug?: string | null; _status?: string }>(
-  options: {
-    name: string
-    collections: string[]
-    formatPaths: (slug: string, doc: TDoc) => string[]
-    groupTag?: string
-  },
-): RevalidationRule<TDoc> {
+export function createSlugRevalidationRule<
+  TDoc extends { slug?: string | null; _status?: string },
+>(options: {
+  name: string
+  collections: string[]
+  formatPaths: (slug: string, doc: TDoc) => string[]
+  groupTag?: string
+}): RevalidationRule<TDoc> {
   return {
     name: options.name,
     collections: options.collections,
@@ -128,7 +128,7 @@ export function createSlugRevalidationRule<TDoc extends { slug?: string | null; 
       }
 
       const isPublished = !doc._status || doc._status === 'published'
-      const wasPublished = prevDoc ? (!prevDoc._status || prevDoc._status === 'published') : false
+      const wasPublished = prevDoc ? !prevDoc._status || prevDoc._status === 'published' : false
 
       if (ctx.operation === 'change') {
         if (isPublished && doc.slug) {
@@ -163,7 +163,7 @@ export const globalRevalidator = new FlexibleRevalidator(nextCacheBuster)
 
 // 1. Pages Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<any>({
+  createSlugRevalidationRule<unknown>({
     name: 'pages-revalidation',
     collections: ['pages'],
     groupTag: 'pages-sitemap',
@@ -173,7 +173,7 @@ globalRevalidator.registerRule(
 
 // 2. Posts Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<any>({
+  createSlugRevalidationRule<unknown>({
     name: 'posts-revalidation',
     collections: ['posts'],
     groupTag: 'posts-sitemap',
@@ -183,7 +183,7 @@ globalRevalidator.registerRule(
 
 // 3. Products Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<any>({
+  createSlugRevalidationRule<unknown>({
     name: 'products-revalidation',
     collections: ['products'],
     groupTag: 'products-sitemap',
@@ -234,4 +234,3 @@ export const pageRevalidateHooks = createCollectionHooks('pages')
 export const postRevalidateHooks = createCollectionHooks('posts')
 export const productRevalidateHooks = createCollectionHooks('products')
 export const redirectRevalidateHooks = createCollectionHooks('redirects')
-

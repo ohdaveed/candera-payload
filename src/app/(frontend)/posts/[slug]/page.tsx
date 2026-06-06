@@ -128,7 +128,9 @@ export default async function Post({ params: paramsPromise }: Args) {
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <div className="mt-32">
               <Separator className="bg-candera-stone/20 mt-32 mb-20" aria-hidden="true" />
-              <Eyebrow as="h4" className="text-center mb-16">Further Reflections</Eyebrow>
+              <Eyebrow as="h4" className="text-center mb-16">
+                Further Reflections
+              </Eyebrow>
               <RelatedPosts
                 className="max-w-[1280px] mx-auto"
                 docs={post.relatedPosts.filter((post) => typeof post === 'object')}

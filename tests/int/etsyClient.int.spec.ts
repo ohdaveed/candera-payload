@@ -41,7 +41,7 @@ describe('EtsyClient', () => {
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ results: [{ id: 1, title: 'Test Product' }] }),
-      })
+      }),
     )
     vi.stubGlobal('fetch', mockFetch)
   })
@@ -52,7 +52,7 @@ describe('EtsyClient', () => {
 
   it('throws error if API credentials are not provided', () => {
     expect(() => new EtsyClient({ apiKey: '', sharedSecret: '' }, tokenRepo)).toThrow(
-      /Etsy API credentials missing/
+      /Etsy API credentials missing/,
     )
   })
 
@@ -63,7 +63,7 @@ describe('EtsyClient', () => {
         sharedSecret: 'test-secret',
         redirectUri: 'http://localhost/callback',
       },
-      tokenRepo
+      tokenRepo,
     )
 
     const urlString = client.generateAuthUrl()
@@ -85,7 +85,7 @@ describe('EtsyClient', () => {
         sharedSecret: 'test-secret',
         redirectUri: 'http://localhost/callback',
       },
-      tokenRepo
+      tokenRepo,
     )
 
     mockFetch.mockResolvedValueOnce({
@@ -108,7 +108,7 @@ describe('EtsyClient', () => {
           Authorization: expect.stringContaining('Basic'),
           'Content-Type': 'application/x-www-form-urlencoded',
         }),
-      })
+      }),
     )
     expect(tokenRepo.saveCalls).toBe(1)
     expect(tokenRepo.token?.accessToken).toBe('initial-access')
@@ -122,7 +122,7 @@ describe('EtsyClient', () => {
         sharedSecret: 'test-secret',
         redirectUri: 'http://localhost/callback',
       },
-      tokenRepo
+      tokenRepo,
     )
 
     await client.request('/shops/123/listings/active')
@@ -133,7 +133,7 @@ describe('EtsyClient', () => {
         headers: expect.objectContaining({
           'x-api-key': 'test-key:test-secret',
         }),
-      })
+      }),
     )
     // Verify bearer auth was not injected
     const fetchArgs = mockFetch.mock.calls[0][1]
@@ -147,7 +147,7 @@ describe('EtsyClient', () => {
         sharedSecret: 'test-secret',
         redirectUri: 'http://localhost/callback',
       },
-      tokenRepo
+      tokenRepo,
     )
 
     tokenRepo.token = {
@@ -165,11 +165,11 @@ describe('EtsyClient', () => {
         headers: expect.objectContaining({
           authorization: 'Bearer valid-access-token',
         }),
-      })
+      }),
     )
     expect(mockFetch).not.toHaveBeenCalledWith(
       expect.stringContaining('/oauth/token'),
-      expect.any(Object)
+      expect.any(Object),
     )
   })
 
@@ -180,7 +180,7 @@ describe('EtsyClient', () => {
         sharedSecret: 'test-secret',
         redirectUri: 'http://localhost/callback',
       },
-      tokenRepo
+      tokenRepo,
     )
 
     tokenRepo.token = {
@@ -217,7 +217,7 @@ describe('EtsyClient', () => {
       expect.objectContaining({
         method: 'POST',
         body: expect.any(URLSearchParams),
-      })
+      }),
     )
 
     // 2. Verify resource query was called with the refreshed Bearer token
@@ -228,7 +228,7 @@ describe('EtsyClient', () => {
         headers: expect.objectContaining({
           authorization: 'Bearer new-access-token',
         }),
-      })
+      }),
     )
 
     // 3. Verify the updated token details were saved in database

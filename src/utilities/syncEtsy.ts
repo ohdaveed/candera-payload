@@ -73,15 +73,15 @@ export interface MediaStoragePort {
     listingId: number,
     etsyImageId: number,
     imageUrl: string,
-    altText: string
+    altText: string,
   ): Promise<number | string>
 }
 
 export interface LoggerPort {
   info(message: string): void
   warn(message: string): void
-  error(message: string | Error, ...args: any[]): void
-  debug?(message: string, ...args: any[]): void
+  error(message: string | Error, ...args: unknown[]): void
+  debug?(message: string, ...args: unknown[]): void
 }
 
 // -------------------------------------------------------------
@@ -96,12 +96,12 @@ export class EtsySyncEngine {
       productStore: ProductStorePort
       mediaStorage: MediaStoragePort
       logger: LoggerPort
-    }
+    },
   ): Promise<SyncResult> {
     ports.logger.info(
       source.type === 'listings'
         ? `Starting Etsy sync for ${source.listingIds.length} listing IDs...`
-        : `Starting Etsy sync for shop ${source.shopId}...`
+        : `Starting Etsy sync for shop ${source.shopId}...`,
     )
 
     const failures: Array<{ listingId: number; error: string }> = []
@@ -136,12 +136,12 @@ export class EtsySyncEngine {
           // If this is a manual list sync, we allow non-candle titles for testing/forced sync
           if (source.type === 'listings') {
             ports.logger.info(
-              `Manual sync for ${listing_id} ("${title}"): allowing through as vintage product.`
+              `Manual sync for ${listing_id} ("${title}"): allowing through as vintage product.`,
             )
             productType = 'vintage'
           } else {
             ports.logger.warn(
-              `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`
+              `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`,
             )
             continue
           }
@@ -176,7 +176,7 @@ export class EtsySyncEngine {
           } catch (err) {
             const msg = err instanceof Error ? err.message : String(err)
             ports.logger.warn(
-              `Failed to sync image for listing ${listing_id}: ${msg}. Continuing sync.`
+              `Failed to sync image for listing ${listing_id}: ${msg}. Continuing sync.`,
             )
           }
         }
@@ -364,12 +364,20 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
       try {
         const transactionalStore = new ProductionProductStoreAdapter(this.payload)
         const result = await operation(transactionalStore)
-        if (this.payload.db.commitTransaction && transactionID !== undefined && transactionID !== null) {
+        if (
+          this.payload.db.commitTransaction &&
+          transactionID !== undefined &&
+          transactionID !== null
+        ) {
           await this.payload.db.commitTransaction(transactionID)
         }
         return result
       } catch (error) {
-        if (this.payload.db.rollbackTransaction && transactionID !== undefined && transactionID !== null) {
+        if (
+          this.payload.db.rollbackTransaction &&
+          transactionID !== undefined &&
+          transactionID !== null
+        ) {
           await this.payload.db.rollbackTransaction(transactionID)
         }
         throw error
@@ -398,7 +406,7 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
     listingId: number,
     etsyImageId: number,
     imageUrl: string,
-    altText: string
+    altText: string,
   ): Promise<number | string> {
     const existingId = await this.findMediaByEtsyImageId(etsyImageId)
     if (existingId) return existingId
@@ -431,10 +439,7 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
 // ORIGINAL SHALLOW ENTRY POINT
 // -------------------------------------------------------------
 
-export async function syncEtsyListings(
-  source: number | number[],
-  payload: Payload
-) {
+export async function syncEtsyListings(source: number | number[], payload: Payload) {
   const tokenRepository = new DefaultPayloadTokenRepository(payload)
   const client = new EtsyClient(undefined, tokenRepository)
 

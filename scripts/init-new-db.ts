@@ -11,9 +11,11 @@ async function initNewDb() {
   const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
 
   consola.info('🚀 Starting Candera Database Initialization...')
-  
+
   if (!dbUrl) {
-    consola.error('DATABASE_URL is not set. Please update your .env.local file with the new database connection string.')
+    consola.error(
+      'DATABASE_URL is not set. Please update your .env.local file with the new database connection string.',
+    )
     process.exit(1)
   }
 
@@ -42,14 +44,14 @@ async function initNewDb() {
 
     consola.box({
       title: 'Initialization Complete!',
-      message: 'The new Candera database is now fully configured and synchronized.\nYou can now run "pnpm dev" to start the application.',
+      message:
+        'The new Candera database is now fully configured and synchronized.\nYou can now run "pnpm dev" to start the application.',
       style: {
         padding: 1,
         borderColor: 'green',
         borderStyle: 'double',
-      }
+      },
     })
-
   } catch (err) {
     consola.error('Initialization failed during one of the steps.')
     consola.error(err)

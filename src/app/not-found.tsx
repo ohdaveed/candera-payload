@@ -9,9 +9,7 @@ export default function NotFound() {
         <span className="eyebrow">404</span>
 
         {/* Hero heading */}
-        <h1 className="hero-heading text-candera-obsidian">
-          The vessel you seek has burned out.
-        </h1>
+        <h1 className="hero-heading text-candera-obsidian">The vessel you seek has burned out.</h1>
 
         {/* Editorial subtext */}
         <p className="editorial text-candera-sage-text max-w-md">

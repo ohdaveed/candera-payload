@@ -49,17 +49,22 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   if (appearance === 'inline') {
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
+        {label}
+        {children}
       </Link>
     )
   }
 
   return (
-    <Button asChild className={className} size={size || (appearance?.startsWith('cta') ? 'cta' : undefined)} variant={appearance}>
+    <Button
+      asChild
+      className={className}
+      size={size || (appearance?.startsWith('cta') ? 'cta' : undefined)}
+      variant={appearance}
+    >
       <Link href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
+        {label}
+        {children}
       </Link>
     </Button>
   )

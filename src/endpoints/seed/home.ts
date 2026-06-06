@@ -7,13 +7,17 @@ type HomeArgs = {
 }
 
 const BRAND_NAME = 'Candera Candles'
-const TAGLINE = 'Hand-poured botanical candles for the moments that ask you to slow down. Numbered micro-batches, stoneware vessels, two weeks of studio stillness.'
+const TAGLINE =
+  'Hand-poured botanical candles for the moments that ask you to slow down. Numbered micro-batches, stoneware vessels, two weeks of studio stillness.'
 const COLLECTION_HEADING = 'Six vessels. One batch. Your space.'
-const COLLECTION_BODY = 'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'
+const COLLECTION_BODY =
+  'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'
 const CTA_HEADING = 'Never Miss a Batch'
-const CTA_BODY = 'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.'
+const CTA_BODY =
+  'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.'
 const META_TITLE = 'Candera Candles | Botanical Scent Studio'
-const META_DESCRIPTION = 'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.'
+const META_DESCRIPTION =
+  'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
@@ -30,7 +34,8 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockType: 'storefrontHero',
         heroTag: 'Hand-Poured in the Studio',
         headline: 'An invitation to slow down.',
-        subheading: 'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+        subheading:
+          'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
         media: heroImage.id,
         primaryCtaLabel: 'Explore the Collection',
         primaryCtaUrl: '/products',
@@ -48,7 +53,9 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         categories: [],
         introContent: createRichText([
           createHeading('Six vessels. One batch. Your space.', 'h2'),
-          createParagraph('Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'),
+          createParagraph(
+            'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.',
+          ),
         ]),
         populateBy: 'collection',
         relationTo: 'products',
@@ -80,10 +87,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
             badge: 'Verified Ritualist',
           },
         ],
-        richText: createRichText([
-          createHeading(CTA_HEADING, 'h3'),
-          createParagraph(CTA_BODY),
-        ]),
+        richText: createRichText([createHeading(CTA_HEADING, 'h3'), createParagraph(CTA_BODY)]),
       },
     ],
     meta: {

@@ -31,7 +31,9 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
             >
               <CardContent className="p-0 flex flex-col items-center gap-6">
                 <div className="flex gap-1 text-candera-ember-strong/60 transition-colors group-hover:text-candera-ember-strong">
-                  {[...Array(5)].map((_, j) => <StarIcon key={j} />)}
+                  {[...Array(5)].map((_, j) => (
+                    <StarIcon key={j} />
+                  ))}
                 </div>
                 <p className="editorial text-[18px] text-candera-obsidian leading-[1.8]">
                   &ldquo;{t.quote}&rdquo;

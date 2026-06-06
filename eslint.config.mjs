@@ -60,7 +60,12 @@ function fixCircular(configs) {
 // If we find that TypeScript rules are missing, we can add nextTsConfig back.
 const eslintConfig = fixCircular([
   {
-    ignores: ['.next/', 'src/payload-types.ts', 'src/payload-generated-schema.ts', 'Candera Design System/**'],
+    ignores: [
+      '.next/',
+      'src/payload-types.ts',
+      'src/payload-generated-schema.ts',
+      'Candera Design System/**',
+    ],
   },
   ...nextVitalsConfig,
   ...nextTsConfig,

@@ -8,7 +8,10 @@ import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { SearchIcon, ShoppingBag } from 'lucide-react'
 
-export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({ data, transparent }) => {
+export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({
+  data,
+  transparent,
+}) => {
   const navItems = data?.navItems || []
 
   const linkClass = [
@@ -22,31 +25,18 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   ].join(' ')
 
   return (
-    <nav
-      aria-label="Main Navigation"
-      className="hidden md:flex items-center gap-1"
-    >
+    <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-1">
       {navItems.map(({ link }, i) => {
-        return (
-          <CMSLink key={i} {...link} appearance="link" className={linkClass} />
-        )
+        return <CMSLink key={i} {...link} appearance="link" className={linkClass} />
       })}
 
       <div className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10">
-        <Link
-          aria-label="Search"
-          className={iconBtnClass}
-          href="/search"
-        >
+        <Link aria-label="Search" className={iconBtnClass} href="/search">
           <span className="sr-only">Search</span>
           <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
         </Link>
 
-        <Link
-          aria-label="Shopping bag"
-          className={`${iconBtnClass} relative`}
-          href="/cart"
-        >
+        <Link aria-label="Shopping bag" className={`${iconBtnClass} relative`} href="/cart">
           <span className="sr-only">Shopping bag</span>
           <ShoppingBag aria-hidden="true" className="w-[18px] h-[18px]" />
           <span

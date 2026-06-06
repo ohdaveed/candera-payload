@@ -111,12 +111,12 @@ export const FormBlock: React.FC<
   return (
     <div className="container lg:max-w-[50rem] py-32">
       {enableIntro && introContent && !hasSubmitted ? (
-        <RichText 
+        <RichText
           className="mb-16 
             [&_h1]:hero-heading [&_h1]:mb-8
-            [&_p]:editorial [&_p]:text-candera-sage-text [&_p]:max-w-[420px]" 
-          data={introContent} 
-          enableGutter={false} 
+            [&_p]:editorial [&_p]:text-candera-sage-text [&_p]:max-w-[420px]"
+          data={introContent}
+          enableGutter={false}
         />
       ) : null}
       <Separator className="bg-candera-stone/20 mb-16" />
@@ -124,20 +124,27 @@ export const FormBlock: React.FC<
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
             <div className="py-12 text-center">
-               <RichText className="editorial" data={confirmationMessage} />
+              <RichText className="editorial" data={confirmationMessage} />
             </div>
           ) : null}
-          {isLoading && !hasSubmitted ? <p className="editorial animate-pulse" aria-live="polite">Preparing correspondence…</p> : null}
+          {isLoading && !hasSubmitted ? (
+            <p className="editorial animate-pulse" aria-live="polite">
+              Preparing correspondence…
+            </p>
+          ) : null}
           {error ? (
-            <div className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium" aria-live="polite" role="alert">
+            <div
+              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
+              aria-live="polite"
+              role="alert"
+            >
               {`${error.status || '500'}: ${error.message || ''}`}
             </div>
           ) : null}
           {!hasSubmitted ? (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-10 last:mb-0">
-                {formFromProps &&
-                formFromProps.fields
+                {formFromProps && formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
                       const Field = fields?.[
                         field.blockType as keyof typeof fields
@@ -161,14 +168,8 @@ export const FormBlock: React.FC<
                   : null}
               </div>
 
-              <Button
-                disabled={isLoading}
-                form={formID}
-                type="submit"
-                variant="cta"
-                size="cta"
-              >
-                {isLoading ? 'Sending…' : (submitButtonLabel || 'Send Correspondence')}
+              <Button disabled={isLoading} form={formID} type="submit" variant="cta" size="cta">
+                {isLoading ? 'Sending…' : submitButtonLabel || 'Send Correspondence'}
               </Button>
             </form>
           ) : null}

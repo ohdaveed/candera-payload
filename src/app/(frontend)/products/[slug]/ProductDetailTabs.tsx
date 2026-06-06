@@ -5,11 +5,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { Eyebrow } from '@/components/ui/eyebrow'
 
-type ScentProfile = {
-  top?: string | null
-  heart?: string | null
-  base?: string | null
-} | null | undefined
+type ScentProfile =
+  | {
+      top?: string | null
+      heart?: string | null
+      base?: string | null
+    }
+  | null
+  | undefined
 
 type ProductDetailTabsProps = {
   scentProfile?: ScentProfile
@@ -18,7 +21,12 @@ type ProductDetailTabsProps = {
   productType?: 'candle' | 'vintage'
 }
 
-export function ProductDetailTabs({ scentProfile, burnTime, atmosphere, productType = 'candle' }: ProductDetailTabsProps) {
+export function ProductDetailTabs({
+  scentProfile,
+  burnTime,
+  atmosphere,
+  productType = 'candle',
+}: ProductDetailTabsProps) {
   const isCandle = productType === 'candle'
   const hasScent = scentProfile?.top || scentProfile?.heart || scentProfile?.base
 
@@ -47,7 +55,7 @@ export function ProductDetailTabs({ scentProfile, burnTime, atmosphere, productT
             Specifications
           </Eyebrow>
           <ul className="flex flex-col gap-3.5 p-0 list-none">
-            {(isCandle 
+            {(isCandle
               ? [
                   { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
                   { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
@@ -70,11 +78,7 @@ export function ProductDetailTabs({ scentProfile, burnTime, atmosphere, productT
 
       {isCandle && hasScent && (
         <TabsContent value="scent" className="pt-4">
-          <FragranceProfile
-            profile={scentProfile}
-            burnTime={burnTime}
-            atmosphere={atmosphere}
-          />
+          <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
         </TabsContent>
       )}
     </Tabs>

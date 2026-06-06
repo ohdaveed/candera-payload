@@ -42,7 +42,8 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
+          background:
+            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
         }}
       />
 
@@ -58,20 +59,14 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end w-full max-w-[1280px] mx-auto px-10 pb-20 pt-32 md:pt-40 gap-12">
         {/* Left Side Content */}
         <div className="flex flex-col items-start text-left max-w-[580px]">
-          {heroTag && (
-            <Eyebrow className="block mb-6 text-candera-ember">
-              {heroTag}
-            </Eyebrow>
-          )}
+          {heroTag && <Eyebrow className="block mb-6 text-candera-ember">{heroTag}</Eyebrow>}
 
           <h1 className="hero-heading text-white m-0 text-left font-display font-normal italic leading-none">
             {headline}
           </h1>
 
           {subheading && (
-            <p className="editorial mt-6 text-left max-w-[32rem] text-white/70">
-              {subheading}
-            </p>
+            <p className="editorial mt-6 text-left max-w-[32rem] text-white/70">{subheading}</p>
           )}
 
           <div className="flex flex-wrap items-center gap-8 mt-10">
@@ -79,7 +74,16 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
               <Button asChild variant="cta-ember" size="cta">
                 <Link href={primaryCtaUrl}>
                   {primaryCtaLabel}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </Link>
@@ -87,9 +91,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             )}
             {secondaryCtaLabel && secondaryCtaUrl && (
               <Button asChild variant="cta-ghost-dark" size="cta">
-                <Link href={secondaryCtaUrl}>
-                  {secondaryCtaLabel}
-                </Link>
+                <Link href={secondaryCtaUrl}>{secondaryCtaLabel}</Link>
               </Button>
             )}
           </div>
@@ -134,4 +136,3 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
     </section>
   )
 }
-

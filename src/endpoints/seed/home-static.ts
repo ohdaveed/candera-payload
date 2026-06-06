@@ -8,7 +8,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     type: 'none',
   },
   meta: {
-    description: 'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
+    description:
+      'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
     title: 'Candera Candles | Botanical Scent Studio',
   },
   title: 'Home',
@@ -17,7 +18,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       blockType: 'storefrontHero',
       heroTag: 'Hand-Poured in the Studio',
       headline: 'An invitation to slow down.',
-      subheading: 'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+      subheading:
+        'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
       primaryCtaLabel: 'Explore the Collection',
       primaryCtaUrl: '#collection',
       secondaryCtaLabel: 'Take the Scent Quiz →',
@@ -90,13 +92,15 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       eyebrow: 'From Our Ritualists',
       items: [
         {
-          quote: 'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
+          quote:
+            'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
           author: 'Elena R.',
           location: 'Los Angeles',
           badge: 'Verified Ritualist',
         },
         {
-          quote: 'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
+          quote:
+            'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
           author: 'James T.',
           location: 'Austin',
           badge: 'Repeat Collector',
@@ -112,7 +116,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockType: 'innerCircleCTA',
       headline: 'Never Miss a Batch.',
-      description: 'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
+      description:
+        'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
       ctaLabel: 'Get Early Access',
     } as any,
   ],
