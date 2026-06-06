@@ -1,23 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Media } from '@/components/Media'
+import type { Media } from '@/payload-types'
+import { Media as MediaComponent } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
 type Props = {
-  mainImage: any
-  extraPhotos?: any[]
+  mainImage: Media | string | null | undefined
+  extraPhotos?: (Media | string)[] | null
 }
 
 export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
   // extraPhotos already contains mainImage as its first entry,
   // so use extraPhotos as the full list when available; otherwise fall back to mainImage alone.
-  const allImages: any[] =
-    extraPhotos && extraPhotos.length > 0
-      ? extraPhotos
-      : mainImage
-        ? [mainImage]
-        : []
+  const allImages: (Media | string)[] =
+    extraPhotos && extraPhotos.length > 0 ? extraPhotos : mainImage ? [mainImage] : []
 
   const [activeIndex, setActiveIndex] = useState(0)
   const activeImage = allImages[activeIndex] ?? null
@@ -27,7 +23,7 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
       {/* Large image */}
       <div className="relative aspect-square overflow-hidden bg-candera-ash shadow-sm">
         {activeImage && typeof activeImage !== 'string' ? (
-          <Media fill imgClassName="object-cover" resource={activeImage} priority />
+          <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
           <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
             Image unavailable
@@ -51,7 +47,7 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
               aria-label={`View image ${index + 1}`}
             >
               {photo && typeof photo !== 'string' && (
-                <Media fill imgClassName="object-cover" resource={photo} />
+                <MediaComponent fill imgClassName="object-cover" resource={photo} />
               )}
             </button>
           ))}

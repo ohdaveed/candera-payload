@@ -16,9 +16,12 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         cta: 'bg-candera-obsidian text-white hover:bg-candera-ember-strong text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300 shadow-lg',
-        'cta-ember': 'bg-candera-ember text-white hover:bg-candera-ember-strong text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300 shadow-lg',
-        'cta-inverse': 'bg-white text-candera-obsidian hover:bg-candera-vellum text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300 shadow-lg',
-        'cta-ghost-dark': 'border border-white/40 text-white hover:bg-white hover:text-candera-obsidian text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300',
+        'cta-ember':
+          'bg-candera-ember text-white hover:bg-candera-ember-strong text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300 shadow-lg',
+        'cta-inverse':
+          'bg-white text-candera-obsidian hover:bg-candera-vellum text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300 shadow-lg',
+        'cta-ghost-dark':
+          'border border-white/40 text-white hover:bg-white hover:text-candera-obsidian text-[11px] font-bold uppercase tracking-[.3em] rounded-none transition-all duration-300',
       },
       size: {
         clear: '',
@@ -37,8 +40,7 @@ const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends React.ComponentProps<'button'>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 

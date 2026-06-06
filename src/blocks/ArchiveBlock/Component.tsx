@@ -65,12 +65,12 @@ export const ArchiveBlock: React.FC<
     <div className="my-32" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-12">
-          <RichText 
+          <RichText
             className="ms-0 max-w-[560px] 
               [&_h3]:h2 [&_h3]:mb-4
-              [&_p]:editorial [&_p]:text-candera-sage-text" 
-            data={introContent} 
-            enableGutter={false} 
+              [&_p]:editorial [&_p]:text-candera-sage-text"
+            data={introContent}
+            enableGutter={false}
           />
         </div>
       )}

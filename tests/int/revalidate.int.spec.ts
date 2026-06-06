@@ -111,7 +111,7 @@ describe('Standard Revalidation Rules', () => {
     const revalidator = new FlexibleRevalidator(cacheBuster)
 
     // Re-import rules or redefine them locally for isolated testing
-    const pagesRule: RevalidationRule<any> = {
+    const pagesRule: RevalidationRule<unknown> = {
       name: 'pages-revalidation',
       collections: ['pages'],
       condition: (ctx) => !ctx.req.context.disableRevalidate,
@@ -119,11 +119,13 @@ describe('Standard Revalidation Rules', () => {
         const paths: string[] = []
         const tags = ['pages-sitemap']
         if (ctx.operation === 'change') {
-          if (ctx.doc._status === 'published') {
-            paths.push(ctx.doc.slug === 'home' ? '/' : `/${ctx.doc.slug}`)
+          const doc = ctx.doc as { _status?: string; slug?: string }
+          if (doc._status === 'published') {
+            paths.push(doc.slug === 'home' ? '/' : `/${doc.slug}`)
           }
-          if (ctx.previousDoc?._status === 'published' && ctx.doc._status !== 'published') {
-            paths.push(ctx.previousDoc.slug === 'home' ? '/' : `/${ctx.previousDoc.slug}`)
+          const prevDoc = ctx.previousDoc as { _status?: string; slug?: string }
+          if (prevDoc?._status === 'published' && doc._status !== 'published') {
+            paths.push(prevDoc.slug === 'home' ? '/' : `/${prevDoc.slug}`)
           }
         }
         return { paths, tags }

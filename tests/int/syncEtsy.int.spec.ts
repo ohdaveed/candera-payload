@@ -56,7 +56,7 @@ class InMemoryMediaStorageAdapter implements MediaStoragePort {
     listingId: number,
     etsyImageId: number,
     _imageUrl: string,
-    _altText: string
+    _altText: string,
   ): Promise<number | string> {
     this.downloadCalls++
     const id = `media-${etsyImageId}`
@@ -102,7 +102,7 @@ describe('EtsySyncEngine', () => {
 
     const result = await engine.sync(
       { type: 'shop', shopId: 12345 },
-      { etsySource, productStore, mediaStorage, logger }
+      { etsySource, productStore, mediaStorage, logger },
     )
 
     expect(result.success).toBe(true)
@@ -122,7 +122,7 @@ describe('EtsySyncEngine', () => {
 
     // Verify Lexical rich text transformation
     expect(savedProduct?.description).toBeDefined()
-    const description = savedProduct?.description as any
+    const description = savedProduct?.description as Record<string, unknown>
     expect(description?.root?.children?.length).toBe(2)
     expect(description?.root?.children?.[0]?.children?.[0]?.text).toBe(
       'Smells like pine and cedar.',
@@ -151,7 +151,7 @@ describe('EtsySyncEngine', () => {
 
     await engine.sync(
       { type: 'listings', listingIds: [101] },
-      { etsySource, productStore, mediaStorage, logger }
+      { etsySource, productStore, mediaStorage, logger },
     )
 
     // downloadAndRegisterMedia should not have been called because it was resolved in-memory
@@ -175,7 +175,7 @@ describe('EtsySyncEngine', () => {
 
     const result = await engine.sync(
       { type: 'shop', shopId: 123 },
-      { etsySource, productStore, mediaStorage, logger }
+      { etsySource, productStore, mediaStorage, logger },
     )
 
     // The sync should succeed and count should be 1
@@ -213,7 +213,7 @@ describe('EtsySyncEngine', () => {
 
     const result = await engine.sync(
       { type: 'shop', shopId: 123 },
-      { etsySource, productStore, mediaStorage, logger }
+      { etsySource, productStore, mediaStorage, logger },
     )
 
     expect(result.success).toBe(true)
@@ -243,15 +243,13 @@ describe('EtsySyncEngine', () => {
 
     const result = await engine.sync(
       { type: 'shop', shopId: 123 },
-      { etsySource, productStore, mediaStorage, logger }
+      { etsySource, productStore, mediaStorage, logger },
     )
 
     expect(result.success).toBe(true)
     expect(result.count).toBe(1) // Only the candle should be synced
     expect(productStore.products.has(401)).toBe(false)
     expect(productStore.products.has(402)).toBe(true)
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining('Skipping listing 401')
-    )
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Skipping listing 401'))
   })
 })

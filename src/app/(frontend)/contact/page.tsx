@@ -4,7 +4,8 @@ import { Eyebrow } from '@/components/ui/eyebrow'
 
 export const metadata: Metadata = {
   title: 'Contact — Candera',
-  description: 'Reach out to Candera Studio for inquiries, wholesale, or just to share a moment of ritual.',
+  description:
+    'Reach out to Candera Studio for inquiries, wholesale, or just to share a moment of ritual.',
 }
 
 export const dynamic = 'force-static'
@@ -24,7 +25,9 @@ export default function ContactPage() {
             <div>
               <h2 className="font-display text-2xl mb-6">Inquiries</h2>
               <p className="editorial text-candera-sage-text leading-relaxed mb-10">
-                For questions regarding your order, wholesale opportunities, or press inquiries, please reach out to us. We strive to respond within 48 hours, though we favor a slower pace in the studio.
+                For questions regarding your order, wholesale opportunities, or press inquiries,
+                please reach out to us. We strive to respond within 48 hours, though we favor a
+                slower pace in the studio.
               </p>
 
               <div className="flex flex-col gap-6">
@@ -69,7 +72,8 @@ export default function ContactPage() {
             <div className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember">
               <h2 className="font-display text-2xl mb-6">Send a Note</h2>
               <p className="editorial text-sm text-candera-sage-text mb-10">
-                The contact form is currently being cured in the studio. In the meantime, please reach out via email — we read every note.
+                The contact form is currently being cured in the studio. In the meantime, please
+                reach out via email — we read every note.
               </p>
 
               {/* Wax-seal decorative element */}

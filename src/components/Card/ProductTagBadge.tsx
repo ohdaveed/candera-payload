@@ -3,7 +3,7 @@ import { cn } from '@/utilities/ui'
 
 const tagClassMap: Record<string, string> = {
   'Limited Batch': 'bg-candera-ember-strong text-white border-transparent',
-  'Bestseller': 'bg-candera-obsidian text-white border-transparent',
+  Bestseller: 'bg-candera-obsidian text-white border-transparent',
   'New Release': 'bg-candera-rose-strong text-white border-transparent',
 }
 

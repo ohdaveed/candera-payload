@@ -34,7 +34,8 @@ export const PostHero: React.FC<{
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background: 'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
+          background:
+            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
         }}
       />
 
@@ -71,13 +72,17 @@ export const PostHero: React.FC<{
             {hasAuthors && (
               <div className="flex items-center gap-3">
                 <span className="text-[10px] font-bold uppercase tracking-[.25em]">Written By</span>
-                <span className="editorial text-[15px] italic">{formatAuthors(populatedAuthors)}</span>
+                <span className="editorial text-[15px] italic">
+                  {formatAuthors(populatedAuthors)}
+                </span>
               </div>
             )}
             {publishedAt && (
               <div className="flex items-center gap-3 border-l border-white/20 pl-8">
                 <span className="text-[10px] font-bold uppercase tracking-[.25em]">Published</span>
-                <time className="editorial text-[15px] italic" dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+                <time className="editorial text-[15px] italic" dateTime={publishedAt}>
+                  {formatDateTime(publishedAt)}
+                </time>
               </div>
             )}
           </div>

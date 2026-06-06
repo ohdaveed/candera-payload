@@ -106,15 +106,16 @@
   }
 
   /* Form Elements */
-  label, .label {
+  label,
+  .label {
     @apply font-sans font-bold text-candera-sage-text uppercase block mb-2;
     font-size: 0.64rem;
     letter-spacing: 0.25em;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="number"],
+  input[type='text'],
+  input[type='email'],
+  input[type='number'],
   textarea,
   select {
     @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-[15px] transition-all duration-300;

@@ -14,55 +14,55 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   return (
     <div className={cn('container')}>
       <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
-          {posts?.map((result, index) => {
-            if (typeof result === 'object' && result !== null) {
-              const {
-                slug,
-                categories,
-                meta,
-                title,
-                extraPhotos,
-                scentProfile,
-                burnTime,
-                atmosphere,
-                productTag,
-                vessel,
-                price,
-              } = result
+        {posts?.map((result, index) => {
+          if (typeof result === 'object' && result !== null) {
+            const {
+              slug,
+              categories,
+              meta,
+              title,
+              extraPhotos,
+              scentProfile,
+              burnTime,
+              atmosphere,
+              productTag,
+              vessel,
+              price,
+            } = result
 
-              const minimizedDoc = {
-                slug,
-                categories: categories?.map((cat) =>
-                  typeof cat === 'object' ? { title: cat.title } : cat,
-                ),
-                meta: {
-                  description: meta?.description,
-                  image: meta?.image,
-                },
-                title,
-                extraPhotos,
-                scentProfile,
-                burnTime,
-                atmosphere,
-                productTag,
-                vessel,
-                price,
-              }
-
-              return (
-                <div className="col-span-4" key={index}>
-                  <Card
-                    className="h-full"
-                    doc={minimizedDoc as CardPostData}
-                    relationTo={relationTo}
-                    showCategories
-                  />
-                </div>
-              )
+            const minimizedDoc = {
+              slug,
+              categories: categories?.map((cat) =>
+                typeof cat === 'object' ? { title: cat.title } : cat,
+              ),
+              meta: {
+                description: meta?.description,
+                image: meta?.image,
+              },
+              title,
+              extraPhotos,
+              scentProfile,
+              burnTime,
+              atmosphere,
+              productTag,
+              vessel,
+              price,
             }
 
-            return null
-          })}
+            return (
+              <div className="col-span-4" key={index}>
+                <Card
+                  className="h-full"
+                  doc={minimizedDoc as CardPostData}
+                  relationTo={relationTo}
+                  showCategories
+                />
+              </div>
+            )
+          }
+
+          return null
+        })}
       </div>
     </div>
   )

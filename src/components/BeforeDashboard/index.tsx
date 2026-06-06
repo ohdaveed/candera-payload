@@ -11,12 +11,15 @@ import { MetricCard } from './MetricCard'
 const BeforeDashboard: React.FC = async () => {
   const payload = await getPayload({ config })
 
-  const [{ totalDocs: productCount }, { totalDocs: categoryCount }, { totalDocs: formSubmissionsCount }] =
-    await Promise.all([
-      payload.find({ collection: 'products', limit: 0, depth: 0 }),
-      payload.find({ collection: 'categories', limit: 0, depth: 0 }),
-      payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
-    ])
+  const [
+    { totalDocs: productCount },
+    { totalDocs: categoryCount },
+    { totalDocs: formSubmissionsCount },
+  ] = await Promise.all([
+    payload.find({ collection: 'products', limit: 0, depth: 0 }),
+    payload.find({ collection: 'categories', limit: 0, depth: 0 }),
+    payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
+  ])
 
   const now = new Date()
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString()
@@ -73,13 +76,22 @@ const BeforeDashboard: React.FC = async () => {
       </section>
 
       <div className="flex gap-3 pt-5 border-t border-border">
-        <Link href="/admin/collections/pages" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
+        <Link
+          href="/admin/collections/pages"
+          className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline"
+        >
           Pages &amp; Content
         </Link>
-        <Link href="/admin/collections/media" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
+        <Link
+          href="/admin/collections/media"
+          className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline"
+        >
           Media
         </Link>
-        <Link href="/admin/collections/posts" className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline">
+        <Link
+          href="/admin/collections/posts"
+          className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline"
+        >
           Posts
         </Link>
       </div>

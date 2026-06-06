@@ -37,4 +37,3 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
           POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
         run: pass-cli run --env-file .env.ci -- pnpm run ci
-

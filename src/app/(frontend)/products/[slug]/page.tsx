@@ -9,7 +9,6 @@ import React, { cache } from 'react'
 
 import type { Product } from '@/payload-types'
 
-import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
@@ -52,7 +51,17 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           href="/products"
           className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-1">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="transition-transform group-hover:-translate-x-1"
+          >
             <path d="M19 12H5M12 5l-7 7 7 7" />
           </svg>
           Return to Collection
@@ -76,15 +85,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <div className="lg:col-span-5 flex flex-col gap-10 py-4">
             {/* Header zone */}
             <div className="flex flex-col gap-4 pb-8">
-              {product.vessel && (
-                <Eyebrow>
-                  Vessel {product.vessel}
-                </Eyebrow>
-              )}
+              {product.vessel && <Eyebrow>Vessel {product.vessel}</Eyebrow>}
 
-              <h1 className="hero-heading text-candera-obsidian">
-                {product.title}
-              </h1>
+              <h1 className="hero-heading text-candera-obsidian">{product.title}</h1>
 
               {product.tagline && (
                 <p className="editorial text-[20px] leading-[1.7] text-candera-sage-text">
@@ -95,9 +98,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <Separator className="bg-candera-stone/20" />
 
             {product.price != null && (
-              <p className="price text-[28px] font-medium">
-                ${Number(product.price).toFixed(2)}
-              </p>
+              <p className="price text-[28px] font-medium">${Number(product.price).toFixed(2)}</p>
             )}
 
             {/* Specifications + Scent Profile Tabs */}
@@ -130,7 +131,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
-  return generateMeta({ doc: product as any })
+  return generateMeta({ doc: product as unknown as Product })
 }
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {

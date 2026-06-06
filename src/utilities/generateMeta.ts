@@ -28,11 +28,11 @@ export const generateMeta = async (args: {
 
   const title = doc?.meta?.title
     ? doc?.meta?.title + ' | Candera'
-    : (doc as any)?.title 
-      ? (doc as any)?.title + ' | Candera'
+    : (doc as { title?: string })?.title
+      ? (doc as { title?: string })?.title + ' | Candera'
       : 'Candera | Botanical Scent Studio'
 
-  const description = doc?.meta?.description || (doc as any)?.tagline
+  const description = doc?.meta?.description || (doc as { tagline?: string })?.tagline
 
   return {
     description,

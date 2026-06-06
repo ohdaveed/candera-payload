@@ -6,12 +6,7 @@ import { Menu } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 interface MobileNavProps {
   data: Header
@@ -60,11 +55,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
 
           <div className="mt-auto pb-10 px-6">
             <CMSLink
-              link={{
-                type: 'custom',
-                url: '/cart',
-                label: 'Shopping Bag (0)',
-              }}
+              type="custom"
+              url="/cart"
+              label="Shopping Bag (0)"
               appearance="inline"
               className="flex items-center justify-between w-full py-4 text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian border-t border-candera-stone/20"
             />

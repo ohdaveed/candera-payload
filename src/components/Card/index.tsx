@@ -33,7 +33,20 @@ export const Card: React.FC<{
   const { cardRef, linkRef } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title, extraPhotos, etsyListingId, scentProfile, burnTime, atmosphere, productTag, vessel, price } = doc || {}
+  const {
+    slug,
+    categories,
+    meta,
+    title,
+    extraPhotos,
+    etsyListingId,
+    scentProfile,
+    burnTime,
+    atmosphere,
+    productTag,
+    vessel,
+    price,
+  } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -59,21 +72,21 @@ export const Card: React.FC<{
           </div>
         ) : null}
         {imageToUse && typeof imageToUse !== 'string' ? (
-          <Media 
-            fill 
-            imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100" 
-            resource={imageToUse} 
-            size="33vw" 
+          <Media
+            fill
+            imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+            resource={imageToUse}
+            size="33vw"
           />
         ) : null}
-        
+
         {/* Product tag badge */}
         {productTag ? (
           <div className="absolute top-4 left-4 z-10">
             <ProductTagBadge tag={productTag} />
           </div>
         ) : null}
-        
+
         {vessel ? (
           <div className="absolute top-4 right-4 z-10">
             <span className="text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1 bg-white/90 text-candera-obsidian backdrop-blur-sm">
@@ -98,9 +111,7 @@ export const Card: React.FC<{
                 productTag={productTag}
                 etsyListingId={etsyListingId}
               >
-                <button
-                  className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none"
-                >
+                <button className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none">
                   Quick View
                 </button>
               </QuickViewDialog>
@@ -126,7 +137,7 @@ export const Card: React.FC<{
           </div>
         )}
       </div>
-      
+
       <div className="pt-6 pb-2 flex flex-col flex-grow">
         {/* Product header row */}
         <div className="flex items-start justify-between gap-4 mb-3">
@@ -146,7 +157,9 @@ export const Card: React.FC<{
           </div>
           {price != null && (
             <span className="price text-[15px] font-medium shrink-0 pt-4">
-              {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price))}
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                Number(price),
+              )}
             </span>
           )}
         </div>
@@ -172,19 +185,23 @@ export const Card: React.FC<{
         )}
 
         {/* Fragrance profile for products - Strict conditional check */}
-        {relationTo === 'products' && scentProfile && (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
-          <div className="mt-auto">
-            <FragranceProfile
-              profile={scentProfile}
-              burnTime={burnTime}
-              atmosphere={atmosphere}
-            />
-          </div>
-        )}
+        {relationTo === 'products' &&
+          scentProfile &&
+          (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
+            <div className="mt-auto">
+              <FragranceProfile
+                profile={scentProfile}
+                burnTime={burnTime}
+                atmosphere={atmosphere}
+              />
+            </div>
+          )}
 
         {/* Description for posts */}
         {description && !scentProfile && (
-          <p className="text-[14px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2">{sanitizedDescription}</p>
+          <p className="text-[14px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2">
+            {sanitizedDescription}
+          </p>
         )}
       </div>
     </article>

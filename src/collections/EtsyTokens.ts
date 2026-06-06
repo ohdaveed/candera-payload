@@ -9,7 +9,7 @@ export const EtsyTokens: CollectionConfig = {
   },
   access: {
     create: () => false, // Only server-side
-    read: () => false,   // Only server-side
+    read: () => false, // Only server-side
     update: () => false,
     delete: () => false,
   },

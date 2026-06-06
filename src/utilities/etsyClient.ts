@@ -3,7 +3,14 @@ import configPromise from '@payload-config'
 
 const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
 const ETSY_OAUTH_URL = 'https://api.etsy.com/v3/public/oauth'
-const SCOPES = ['listings_r', 'listings_w', 'shops_r', 'shops_w', 'transactions_r', 'transactions_w']
+const SCOPES = [
+  'listings_r',
+  'listings_w',
+  'shops_r',
+  'shops_w',
+  'transactions_r',
+  'transactions_w',
+]
 
 export interface EtsyConfig {
   apiKey: string
@@ -52,10 +59,10 @@ export class DefaultPayloadTokenRepository implements TokenRepository {
       limit: 1,
       sort: '-updatedAt',
     })
-    
+
     if (!tokens.docs.length) return null
     const doc = tokens.docs[0]
-    
+
     return {
       id: doc.id,
       accessToken: doc.accessToken,
@@ -66,7 +73,7 @@ export class DefaultPayloadTokenRepository implements TokenRepository {
 
   async saveToken(accessToken: string, refreshToken: string, expiresIn: number): Promise<void> {
     const payload = await this.getPayload()
-    
+
     // Purge any existing tokens to maintain single-token locality
     const existing = await payload.find({
       collection: 'etsy-tokens',
@@ -109,18 +116,23 @@ export class EtsyClient {
   private config: EtsyConfig
   private tokenRepository: TokenRepository
 
-  constructor(
-    config?: Partial<EtsyConfig>,
-    tokenRepository?: TokenRepository
-  ) {
+  constructor(config?: Partial<EtsyConfig>, tokenRepository?: TokenRepository) {
     this.config = {
-      apiKey: config?.apiKey !== undefined ? config.apiKey : (process.env.ETSY_API_KEY || ''),
-      sharedSecret: config?.sharedSecret !== undefined ? config.sharedSecret : (process.env.ETSY_SHARED_SECRET || ''),
-      redirectUri: config?.redirectUri !== undefined ? config.redirectUri : (process.env.ETSY_REDIRECT_URI || ''),
+      apiKey: config?.apiKey !== undefined ? config.apiKey : process.env.ETSY_API_KEY || '',
+      sharedSecret:
+        config?.sharedSecret !== undefined
+          ? config.sharedSecret
+          : process.env.ETSY_SHARED_SECRET || '',
+      redirectUri:
+        config?.redirectUri !== undefined
+          ? config.redirectUri
+          : process.env.ETSY_REDIRECT_URI || '',
     }
 
     if (!this.config.apiKey || !this.config.sharedSecret) {
-      throw new Error('Etsy API credentials missing. Please set ETSY_API_KEY and ETSY_SHARED_SECRET.')
+      throw new Error(
+        'Etsy API credentials missing. Please set ETSY_API_KEY and ETSY_SHARED_SECRET.',
+      )
     }
 
     this.tokenRepository = tokenRepository || new DefaultPayloadTokenRepository()
@@ -145,7 +157,9 @@ export class EtsyClient {
    * Exchanges an authorization callback code for initial tokens and registers them.
    */
   async completeAuthFlow(code: string): Promise<void> {
-    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString('base64')
+    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString(
+      'base64',
+    )
 
     const res = await fetch(`${ETSY_OAUTH_URL}/token`, {
       method: 'POST',
@@ -171,7 +185,7 @@ export class EtsyClient {
     await this.tokenRepository.saveToken(
       tokenData.access_token,
       tokenData.refresh_token,
-      tokenData.expires_in
+      tokenData.expires_in,
     )
   }
 
@@ -183,7 +197,9 @@ export class EtsyClient {
     refresh_token: string
     expires_in: number
   }> {
-    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString('base64')
+    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString(
+      'base64',
+    )
 
     const res = await fetch(`${ETSY_OAUTH_URL}/token`, {
       method: 'POST',
@@ -222,7 +238,7 @@ export class EtsyClient {
       try {
         const refreshed = await this.refreshAccessToken(tokenDetails.refreshToken)
         const newExpiresAt = new Date(Date.now() + refreshed.expires_in * 1000).toISOString()
-        
+
         const updatedToken: TokenDetails = {
           accessToken: refreshed.access_token,
           refreshToken: refreshed.refresh_token || tokenDetails.refreshToken,
@@ -236,7 +252,7 @@ export class EtsyClient {
           await this.tokenRepository.saveToken(
             updatedToken.accessToken,
             updatedToken.refreshToken,
-            refreshed.expires_in
+            refreshed.expires_in,
           )
         }
 
@@ -319,7 +335,10 @@ export class EtsyClient {
   /**
    * Retrieves multiple listings in a batch request.
    */
-  async getListingsBatch(listingIds: number[], includes?: string[]): Promise<{ results: unknown[] }> {
+  async getListingsBatch(
+    listingIds: number[],
+    includes?: string[],
+  ): Promise<{ results: unknown[] }> {
     const params: Record<string, string> = {
       listing_ids: listingIds.join(','),
     }

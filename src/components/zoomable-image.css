@@ -1,8 +1,8 @@
-.zoomable-image-dialog [data-rmiz-modal-overlay="hidden"] {
+.zoomable-image-dialog [data-rmiz-modal-overlay='hidden'] {
   background-color: transparent;
 }
 
-.zoomable-image-dialog [data-rmiz-modal-overlay="visible"] {
+.zoomable-image-dialog [data-rmiz-modal-overlay='visible'] {
   background-color: var(--background);
 }
 

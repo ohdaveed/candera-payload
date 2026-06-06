@@ -39,7 +39,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background: 'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
+          background:
+            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
         }}
       />
 
@@ -68,10 +69,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
               {links.map(({ link }, i) => {
                 return (
                   <li key={i}>
-                    <CMSLink
-                      {...link}
-                      appearance={i === 0 ? 'cta-inverse' : 'cta-ghost-dark'}
-                    />
+                    <CMSLink {...link} appearance={i === 0 ? 'cta-inverse' : 'cta-ghost-dark'} />
                   </li>
                 )
               })}
@@ -82,4 +80,3 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
     </div>
   )
 }
-

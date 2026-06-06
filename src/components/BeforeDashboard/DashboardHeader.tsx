@@ -6,7 +6,10 @@ export const DashboardHeader: React.FC = () => {
 
   return (
     <div className="mb-8">
-      <h1 suppressHydrationWarning className="font-serif italic font-normal text-[1.75rem] text-foreground m-0 mb-1 leading-[1.2]">
+      <h1
+        suppressHydrationWarning
+        className="font-serif italic font-normal text-[1.75rem] text-foreground m-0 mb-1 leading-[1.2]"
+      >
         {greeting}
       </h1>
       <p className="text-[0.875rem] text-muted-foreground m-0 tracking-[0.02em]">

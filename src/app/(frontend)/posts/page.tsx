@@ -43,7 +43,8 @@ export default async function Page() {
             <Eyebrow className="block mb-4">Candera Stories</Eyebrow>
             <h1 className="hero-heading text-candera-obsidian">The Journal</h1>
             <p className="editorial mt-6 text-candera-sage-text">
-              Reflections on intentional living, the art of scent, and the stories behind our seasonal batches.
+              Reflections on intentional living, the art of scent, and the stories behind our
+              seasonal batches.
             </p>
           </div>
         </div>

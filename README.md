@@ -7,6 +7,7 @@ This repository powers the Candera ecosystem, featuring a deep [Etsy-to-Payload]
 ## The Ritual
 
 Candera is more than a candle shop; it's an invitation to slow down. Our platform is built to reflect the stillness of the studio:
+
 - **Micro-Batch Exclusivity:** Every vessel is numbered and tracked.
 - **Botanical Clarity:** Scent profiles are derived from real pressed botanicals.
 - **Real-Time Studio Status:** Integrated batch-tracking shows exactly when a collection is curing, pouring, or shipping.
@@ -18,12 +19,15 @@ Candera is more than a candle shop; it's an invitation to slow down. Our platfor
 Built on [Payload CMS](https://payloadcms.com) and [Next.js](https://nextjs.org), this project utilizes a headless architecture to manage commerce and content with extreme precision.
 
 ### Etsy Integration
+
 At the heart of Candera is a custom synchronization engine (`src/utilities/syncEtsy.ts`) that bridges our Etsy inventory with our local Payload database.
+
 - **Automated Ingestion:** Fetches active listings, media, and metadata from the Etsy API.
 - **Zod Validation:** Strictly filters incoming data to ensure only botanical products enter the collection.
 - **Transactional Upserts:** Ensures data integrity between Etsy and the local storefront.
 
 ### Core Features
+
 - **Next.js App Router:** High-performance, server-side rendered storefront.
 - **Live Preview:** Real-time editing of pages and product descriptions.
 - **On-demand Revalidation:** Instant frontend updates when content or batches change.
@@ -36,20 +40,24 @@ At the heart of Candera is a custom synchronization engine (`src/utilities/syncE
 To spin up the Candera studio locally, follow these steps:
 
 ### Prerequisites
+
 - Node.js (>=24.15.0)
 - pnpm
 
 ### Setup
+
 1. `git clone` this repo.
 2. `cp .env.example .env` and configure your `POSTGRES_URL` and `BLOB_READ_WRITE_TOKEN`.
 3. `pnpm install && pnpm dev`.
 4. Open `http://localhost:3000` to view the storefront.
 
 ### Database Seeding
+
 To populate the studio with Batch 014 and our botanical archives:
+
 - Access the admin panel at `/admin`.
 - Navigate to the dashboard and select **Seed Database**.
-- *Note: Seeding is destructive and will overwrite existing local data.*
+- _Note: Seeding is destructive and will overwrite existing local data._
 
 ---
 

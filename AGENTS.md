@@ -15,17 +15,17 @@ pass-cli run --env-file .env -- pnpm start  # Serve production build
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm lint` / `pnpm lint:fix` | ESLint (flat config in `eslint.config.mjs`) |
-| `pnpm test:int` | Vitest integration tests (`tests/int/**/*.int.spec.ts`) — requires DB |
-| `pnpm test:e2e` | Playwright E2E (`tests/e2e/`) — spawns dev server automatically |
-| `pnpm test` | Int then E2E sequentially |
-| `pnpm payload migrate:create` | Generate DB migration after schema change |
-| `pnpm payload migrate` | Run pending migrations (required before prod deploy) |
-| `pnpm generate:types` | Regenerate `src/payload-types.ts` from collections |
-| `pnpm generate:importmap` | Regenerate Payload admin import map |
-| `pnpm run ci` | CI deploy: `payload migrate && pnpm build` |
+| Command                       | Purpose                                                               |
+| ----------------------------- | --------------------------------------------------------------------- |
+| `pnpm lint` / `pnpm lint:fix` | ESLint (flat config in `eslint.config.mjs`)                           |
+| `pnpm test:int`               | Vitest integration tests (`tests/int/**/*.int.spec.ts`) — requires DB |
+| `pnpm test:e2e`               | Playwright E2E (`tests/e2e/`) — spawns dev server automatically       |
+| `pnpm test`                   | Int then E2E sequentially                                             |
+| `pnpm payload migrate:create` | Generate DB migration after schema change                             |
+| `pnpm payload migrate`        | Run pending migrations (required before prod deploy)                  |
+| `pnpm generate:types`         | Regenerate `src/payload-types.ts` from collections                    |
+| `pnpm generate:importmap`     | Regenerate Payload admin import map                                   |
+| `pnpm run ci`                 | CI deploy: `payload migrate && pnpm build`                            |
 
 Run everything via `pnpm`. Node >=24.15.0 required.
 
@@ -63,6 +63,7 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 **Local:** Docker Compose Postgres (port 54320). Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Localhost URLs bypass the Vercel adapter and use standard `@payloadcms/db-postgres` directly.
 
 **Neon quirks:**
+
 - Compute suspends after 5 min idle; first query after suspend has a cold-start penalty (~hundreds of ms)
 - Pooled connections: append `-pooler` to the endpoint hostname in the connection string
 - ILIKE queries use `pg_trgm`; ensure the extension is enabled if doing case-insensitive search at scale
@@ -77,15 +78,15 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 
 ## Key env vars
 
-| Variable | Purpose |
-|----------|---------|
-| `DATABASE_URL` / `POSTGRES_URL` | Neon Postgres connection string |
-| `BLOB_READ_WRITE_TOKEN` | Vercel Blob storage |
-| `PAYLOAD_SECRET` | JWT signing |
-| `PREVIEW_SECRET` | Live preview URL signing |
-| `CRON_SECRET` | Bearer token for Vercel cron jobs |
-| `ETSY_API_KEY` / `ETSY_SHARED_SECRET` | Etsy Open API v3 |
-| `SMTP_HOST/PORT/USER/PASS` | Optional email transport (falls back to `jsonTransport`) |
+| Variable                              | Purpose                                                  |
+| ------------------------------------- | -------------------------------------------------------- |
+| `DATABASE_URL` / `POSTGRES_URL`       | Neon Postgres connection string                          |
+| `BLOB_READ_WRITE_TOKEN`               | Vercel Blob storage                                      |
+| `PAYLOAD_SECRET`                      | JWT signing                                              |
+| `PREVIEW_SECRET`                      | Live preview URL signing                                 |
+| `CRON_SECRET`                         | Bearer token for Vercel cron jobs                        |
+| `ETSY_API_KEY` / `ETSY_SHARED_SECRET` | Etsy Open API v3                                         |
+| `SMTP_HOST/PORT/USER/PASS`            | Optional email transport (falls back to `jsonTransport`) |
 
 ## Codegen & generated files
 

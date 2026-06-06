@@ -8,13 +8,12 @@ interface Props {
 }
 
 export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
+  const { className } = props
 
   return (
-    <span className={clsx('font-display font-bold text-[24px] tracking-[-0.04em] uppercase', className)}>
+    <span
+      className={clsx('font-display font-bold text-[24px] tracking-[-0.04em] uppercase', className)}
+    >
       CANDERA
     </span>
   )
@@ -30,6 +29,11 @@ export const LogoIcon = () => (
     aria-label="C"
   >
     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
-    <path d="M12 7V17M12 7L9 10M12 7L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M12 7V17M12 7L9 10M12 7L15 10"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 )
