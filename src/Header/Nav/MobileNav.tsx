@@ -48,20 +48,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
                 key={i}
                 {...link}
                 appearance="inline"
-                className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-3 border-b border-candera-stone/20 last:border-0"
+                className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-4 border-b border-candera-stone/20 last:border-0"
               />
             ))}
           </nav>
-
-          <div className="mt-auto pb-10 px-6">
-            <CMSLink
-              type="custom"
-              url="/cart"
-              label="Shopping Bag (0)"
-              appearance="inline"
-              className="flex items-center justify-between w-full py-4 text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian border-t border-candera-stone/20"
-            />
-          </div>
         </SheetContent>
       </Sheet>
     </div>

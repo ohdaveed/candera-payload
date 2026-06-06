@@ -35,7 +35,7 @@ export function ProductFilters() {
             key={tag}
             onClick={() => update('tag', tag)}
             className={cn(
-              'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 transition-colors',
+              'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center',
               activeTag === tag
                 ? 'bg-candera-obsidian text-white'
                 : 'border border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
@@ -49,7 +49,7 @@ export function ProductFilters() {
       <select
         value={activeSort}
         onChange={(e) => update('sort', e.target.value)}
-        className="text-[10px] font-bold uppercase tracking-[.2em] border border-candera-stone/40 bg-transparent text-candera-obsidian px-3 py-2 cursor-pointer focus:outline-none focus:border-candera-obsidian"
+        className="text-[10px] font-bold uppercase tracking-[.2em] border border-candera-stone/40 bg-transparent text-candera-obsidian px-3 py-2 cursor-pointer focus:outline-none focus:border-candera-obsidian h-[44px]"
       >
         {SORTS.map((s) => (
           <option key={s.value} value={s.value}>

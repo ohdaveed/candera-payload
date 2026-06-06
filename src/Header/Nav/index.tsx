@@ -6,7 +6,7 @@ import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-import { SearchIcon, ShoppingBag } from 'lucide-react'
+import { SearchIcon } from 'lucide-react'
 
 export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({
   data,
@@ -15,7 +15,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   const navItems = data?.navItems || []
 
   const linkClass = [
-    'text-[10px] font-bold uppercase tracking-[.3em] transition-colors hover:text-candera-ember-strong px-3 py-2 rounded-md hover:bg-black/5',
+    'text-[10px] font-bold uppercase tracking-[.3em] transition-all duration-200 hover:text-candera-ember-strong px-4 py-2 rounded-md hover:bg-black/5 min-h-[44px] inline-flex items-center',
     transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
   ].join(' ')
 
@@ -34,19 +34,6 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
         <Link aria-label="Search" className={iconBtnClass} href="/search">
           <span className="sr-only">Search</span>
           <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
-        </Link>
-
-        <Link aria-label="Shopping bag" className={`${iconBtnClass} relative`} href="/cart">
-          <span className="sr-only">Shopping bag</span>
-          <ShoppingBag aria-hidden="true" className="w-[18px] h-[18px]" />
-          <span
-            aria-hidden="true"
-            className={[
-              'absolute top-1 right-1 flex h-[14px] w-[14px] items-center justify-center rounded-full text-[8px] font-bold leading-none bg-red-500 text-white shadow-sm',
-            ].join(' ')}
-          >
-            0
-          </span>
         </Link>
       </div>
     </nav>
