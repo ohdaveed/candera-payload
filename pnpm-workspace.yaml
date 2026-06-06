@@ -3,3 +3,21 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+
+overrides:
+  postcss: ^8.5.15
+  dompurify: ^3.4.7
+  esbuild: ^0.28.0
+  vite: 'catalog:'
+  vitest: 'catalog:'
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite-plus: latest
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'

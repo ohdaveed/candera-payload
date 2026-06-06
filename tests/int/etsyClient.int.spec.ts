@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test'
 import { EtsyClient, TokenRepository, TokenDetails } from '@/utilities/etsyClient'
 
 class InMemoryTokenRepository implements TokenRepository {

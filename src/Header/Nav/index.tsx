@@ -45,7 +45,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
         <Link
           aria-label="Shopping bag"
           className={`${iconBtnClass} relative`}
-          href="/products"
+          href="/cart"
         >
           <span className="sr-only">Shopping bag</span>
           <ShoppingBag aria-hidden="true" className="w-[18px] h-[18px]" />

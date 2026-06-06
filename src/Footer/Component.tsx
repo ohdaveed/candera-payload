@@ -8,7 +8,13 @@ import { Separator } from '@/components/ui/separator'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
-  const navItems = footerData?.navItems || []
+  const allNavItems = footerData?.navItems || []
+
+  // Filter out developer-oriented links from public navigation
+  const navItems = allNavItems.filter(({ link }) => {
+    const label = link.label?.toLowerCase()
+    return !['admin', 'source code', 'payload'].includes(label)
+  })
 
   return (
     <footer className="mt-auto bg-candera-linen border-t border-candera-stone/30 relative overflow-hidden">
@@ -31,7 +37,7 @@ export async function Footer() {
             >
               CANDERA
             </Link>
-            <p className="editorial text-[13px] text-candera-sage-text leading-relaxed max-w-[280px]">
+            <p className="editorial text-[13px] text-candera-sage-text leading-relaxed max-w-[320px] text-pretty">
               Cultivating intentional living through scent and micro-batch artisanry. Based in the studio, shared everywhere.
             </p>
           </div>
@@ -45,7 +51,7 @@ export async function Footer() {
               {navItems.map(({ link }, i) => (
                 <CMSLink 
                   {...link} 
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors" 
+                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm" 
                   key={i} 
                 />
               ))}
@@ -58,10 +64,18 @@ export async function Footer() {
               Assistance
             </h5>
             <ul className="flex flex-col gap-3 list-none p-0 m-0">
-              <li className="font-sans text-[14px] font-light text-candera-sage-text">Shipping & Returns</li>
-              <li className="font-sans text-[14px] font-light text-candera-sage-text">Wholesale</li>
               <li>
-                <Link href="/contact" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors">
+                <Link href="/shipping-and-returns" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm">
+                  Shipping & Returns
+                </Link>
+              </li>
+              <li>
+                <Link href="/wholesale" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm">
+                  Wholesale
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm">
                   Contact
                 </Link>
               </li>
@@ -84,11 +98,11 @@ export async function Footer() {
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
+            <Link href="/privacy-policy" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
               Privacy Policy
             </Link>
             <span className="text-candera-stone">·</span>
-            <Link href="/" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
+            <Link href="/terms-of-service" className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian">
               Terms of Service
             </Link>
           </div>

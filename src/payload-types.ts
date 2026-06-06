@@ -877,13 +877,13 @@ export interface InnerCircleCTABlock {
 export interface Product {
   id: number;
   title: string;
+  productType: 'candle' | 'vintage';
   /**
-   * The numeric ID from Etsy (e.g. 123456789)
+   * Short poetic tagline shown on product cards.
    */
-  etsyListingId: number;
-  slug: string;
+  tagline?: string | null;
   /**
-   * Extra content to show on your site beyond the Etsy description.
+   * The story and details of this piece.
    */
   description?: {
     root: {
@@ -902,14 +902,6 @@ export interface Product {
   } | null;
   extraPhotos?: (number | Media)[] | null;
   /**
-   * Short poetic tagline shown on product cards.
-   */
-  tagline?: string | null;
-  /**
-   * Badge shown on product cards.
-   */
-  productTag?: ('Bestseller' | 'New Release' | 'Limited Batch') | null;
-  /**
    * Mood descriptor e.g. "Coastal & Airy".
    */
   atmosphere?: string | null;
@@ -922,6 +914,23 @@ export interface Product {
     heart?: string | null;
     base?: string | null;
   };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * The numeric ID from Etsy (e.g. 123456789)
+   */
+  etsyListingId: number;
+  slug: string;
+  /**
+   * Badge shown on product cards.
+   */
+  productTag?: ('Bestseller' | 'New Release' | 'Limited Batch') | null;
   /**
    * Vessel number e.g. "001".
    */
@@ -930,6 +939,7 @@ export interface Product {
   categories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1465,12 +1475,10 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  etsyListingId?: T;
-  slug?: T;
+  productType?: T;
+  tagline?: T;
   description?: T;
   extraPhotos?: T;
-  tagline?: T;
-  productTag?: T;
   atmosphere?: T;
   burnTime?: T;
   scentProfile?:
@@ -1480,11 +1488,22 @@ export interface ProductsSelect<T extends boolean = true> {
         heart?: T;
         base?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  etsyListingId?: T;
+  slug?: T;
+  productTag?: T;
   vessel?: T;
   price?: T;
   categories?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2041,6 +2060,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
