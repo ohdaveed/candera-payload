@@ -28,12 +28,16 @@ export const generateMeta = async (args: {
 
   const title = doc?.meta?.title
     ? doc?.meta?.title + ' | Candera'
-    : 'Candera | Botanical Scent Studio'
+    : (doc as any)?.title 
+      ? (doc as any)?.title + ' | Candera'
+      : 'Candera | Botanical Scent Studio'
+
+  const description = doc?.meta?.description || (doc as any)?.tagline
 
   return {
-    description: doc?.meta?.description,
+    description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: description || '',
       images: ogImage
         ? [
             {

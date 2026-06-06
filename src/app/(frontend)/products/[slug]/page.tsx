@@ -102,6 +102,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* Specifications + Scent Profile Tabs */}
             <ProductDetailTabs
+              productType={product.productType}
               scentProfile={product.scentProfile}
               burnTime={product.burnTime}
               atmosphere={product.atmosphere}

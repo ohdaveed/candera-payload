@@ -49,7 +49,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const [imageError, setImageError] = useState(false)
   const {
     alt: altFromProps,
-    fallbackLabel = 'Image unavailable',
+    fallbackLabel = 'Studio imagery incoming',
     fill,
     pictureClassName,
     imgClassName,
@@ -72,9 +72,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     height = fullHeight!
     alt = altFromResource || ''
 
-    const cacheTag = resource.updatedAt
-
-    src = getMediaUrl(url, cacheTag)
+    src = getMediaUrl(url)
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
@@ -93,12 +91,15 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
               'aria-hidden': true,
             })}
         className={cn(
-          'flex h-full min-h-48 w-full items-center justify-center bg-candera-ash px-4 text-center text-sm text-candera-sage',
+          'flex h-full min-h-48 w-full flex-col items-center justify-center bg-candera-ash px-4 text-center text-candera-sage-text italic',
           fill && 'absolute inset-0',
           imgClassName,
         )}
       >
-        {fallbackText}
+        <>
+          <svg className="w-8 h-8 text-candera-stone/40 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">{fallbackText}</span>
+        </>
       </div>
     )
   }
@@ -111,7 +112,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .join(', ')
 
   return (
-    <picture className={cn(fill && 'relative', pictureClassName)}>
+    <picture className={cn(fill && 'absolute inset-0', pictureClassName)}>
       <NextImage
         alt={alt || ''}
         className={cn(imgClassName)}

@@ -55,7 +55,7 @@ export class FlexibleRevalidator {
 
   async revalidate(ctx: RevalidationContext): Promise<void> {
     const matchedRules = this.rules.filter((rule) => rule.collections.includes(ctx.collection))
-    
+
     const pathsToRevalidate = new Set<string>()
     const tagsToRevalidate = new Set<string>()
 
@@ -64,15 +64,15 @@ export class FlexibleRevalidator {
         if (rule.condition && !(await rule.condition(ctx))) {
           continue
         }
-        
+
         const { paths, tags } = await rule.resolve(ctx)
-        
+
         paths.forEach((p) => {
           // Normalize paths to ensure leading slash
           const normalized = p.startsWith('/') ? p : `/${p}`
           pathsToRevalidate.add(normalized)
         })
-        
+
         tags.forEach((t) => tagsToRevalidate.add(t))
       } catch (err) {
         ctx.req.payload.logger.error({ err, msg: `Revalidation rule "${rule.name}" failed` })
@@ -101,6 +101,59 @@ export class FlexibleRevalidator {
   }
 }
 
+/**
+ * High-leverage factory for slug-based revalidation rules.
+ * Automatically handles published status checks, slug transitions, and group tags.
+ */
+export function createSlugRevalidationRule<TDoc extends { slug?: string | null; _status?: string }>(
+  options: {
+    name: string
+    collections: string[]
+    formatPaths: (slug: string, doc: TDoc) => string[]
+    groupTag?: string
+  },
+): RevalidationRule<TDoc> {
+  return {
+    name: options.name,
+    collections: options.collections,
+    condition: (ctx) => !ctx.req.context.disableRevalidate,
+    resolve: (ctx) => {
+      const doc = ctx.doc as TDoc
+      const prevDoc = ctx.previousDoc as TDoc
+      const paths = new Set<string>()
+      const tags = new Set<string>()
+
+      if (options.groupTag) {
+        tags.add(options.groupTag)
+      }
+
+      const isPublished = !doc._status || doc._status === 'published'
+      const wasPublished = prevDoc ? (!prevDoc._status || prevDoc._status === 'published') : false
+
+      if (ctx.operation === 'change') {
+        if (isPublished && doc.slug) {
+          options.formatPaths(doc.slug, doc).forEach((p) => paths.add(p))
+        }
+        // Handle transitions: unpublishing or slug changes
+        if (wasPublished && prevDoc?.slug) {
+          if (!isPublished || doc.slug !== prevDoc.slug) {
+            options.formatPaths(prevDoc.slug, prevDoc).forEach((p) => paths.add(p))
+          }
+        }
+      } else if (ctx.operation === 'delete') {
+        if (isPublished && doc.slug) {
+          options.formatPaths(doc.slug, doc).forEach((p) => paths.add(p))
+        }
+      }
+
+      return {
+        paths: Array.from(paths),
+        tags: Array.from(tags),
+      }
+    },
+  }
+}
+
 // -------------------------------------------------------------
 // DEFAULT PRODUCTION INSTANCE & STANDARD RULES
 // -------------------------------------------------------------
@@ -108,56 +161,38 @@ export class FlexibleRevalidator {
 export const nextCacheBuster = new NextCacheBusterAdapter()
 export const globalRevalidator = new FlexibleRevalidator(nextCacheBuster)
 
-// 1. Pages Revalidation Rule
-globalRevalidator.registerRule<any>({
-  name: 'pages-revalidation',
-  collections: ['pages'],
-  condition: (ctx) => !ctx.req.context.disableRevalidate,
-  resolve: (ctx) => {
-    const paths: string[] = []
-    const tags = ['pages-sitemap']
+// 1. Pages Rule
+globalRevalidator.registerRule(
+  createSlugRevalidationRule<any>({
+    name: 'pages-revalidation',
+    collections: ['pages'],
+    groupTag: 'pages-sitemap',
+    formatPaths: (slug) => [slug === 'home' ? '/' : `/${slug}`],
+  }),
+)
 
-    if (ctx.operation === 'change') {
-      if (ctx.doc._status === 'published') {
-        paths.push(ctx.doc.slug === 'home' ? '/' : `/${ctx.doc.slug}`)
-      }
-      if (ctx.previousDoc?._status === 'published' && ctx.doc._status !== 'published') {
-        paths.push(ctx.previousDoc.slug === 'home' ? '/' : `/${ctx.previousDoc.slug}`)
-      }
-    } else if (ctx.operation === 'delete') {
-      paths.push(ctx.doc?.slug === 'home' ? '/' : `/${ctx.doc?.slug}`)
-    }
+// 2. Posts Rule
+globalRevalidator.registerRule(
+  createSlugRevalidationRule<any>({
+    name: 'posts-revalidation',
+    collections: ['posts'],
+    groupTag: 'posts-sitemap',
+    formatPaths: (slug) => [`/posts/${slug}`],
+  }),
+)
 
-    return { paths, tags }
-  },
-})
+// 3. Products Rule
+globalRevalidator.registerRule(
+  createSlugRevalidationRule<any>({
+    name: 'products-revalidation',
+    collections: ['products'],
+    groupTag: 'products-sitemap',
+    formatPaths: (slug) => [`/products/${slug}`],
+  }),
+)
 
-// 2. Posts Revalidation Rule
-globalRevalidator.registerRule<any>({
-  name: 'posts-revalidation',
-  collections: ['posts'],
-  condition: (ctx) => !ctx.req.context.disableRevalidate,
-  resolve: (ctx) => {
-    const paths: string[] = []
-    const tags = ['posts-sitemap']
-
-    if (ctx.operation === 'change') {
-      if (ctx.doc._status === 'published') {
-        paths.push(`/posts/${ctx.doc.slug}`)
-      }
-      if (ctx.previousDoc?._status === 'published' && ctx.doc._status !== 'published') {
-        paths.push(`/posts/${ctx.previousDoc.slug}`)
-      }
-    } else if (ctx.operation === 'delete') {
-      paths.push(`/posts/${ctx.doc?.slug}`)
-    }
-
-    return { paths, tags }
-  },
-})
-
-// 3. Redirects Revalidation Rule
-globalRevalidator.registerRule<any>({
+// 4. Redirects Revalidation Rule (Manual)
+globalRevalidator.registerRule({
   name: 'redirects-revalidation',
   collections: ['redirects'],
   resolve: () => ({
@@ -167,7 +202,10 @@ globalRevalidator.registerRule<any>({
 })
 
 // Helper factory to create standard change/delete hooks for Payload config
-export function createCollectionHooks(collection: string, revalidator: FlexibleRevalidator = globalRevalidator) {
+export function createCollectionHooks(
+  collection: string,
+  revalidator: FlexibleRevalidator = globalRevalidator,
+) {
   const afterChange: CollectionAfterChangeHook = async ({ doc, previousDoc, req }) => {
     await revalidator.revalidate({
       collection,
@@ -194,4 +232,6 @@ export function createCollectionHooks(collection: string, revalidator: FlexibleR
 
 export const pageRevalidateHooks = createCollectionHooks('pages')
 export const postRevalidateHooks = createCollectionHooks('posts')
+export const productRevalidateHooks = createCollectionHooks('products')
 export const redirectRevalidateHooks = createCollectionHooks('redirects')
+

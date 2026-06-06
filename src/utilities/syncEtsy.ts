@@ -25,6 +25,11 @@ export interface RawEtsyListing {
   listing_id: number
   title: string
   description: string
+  price?: {
+    amount: number
+    divisor: number
+    currency_code: string
+  }
   images?: RawEtsyImage[]
 }
 
@@ -52,6 +57,8 @@ export interface ProductUpsertInput {
   description: Product['description']
   extraPhotos?: (number | string)[]
   etsyListingId: number
+  price?: number
+  productType?: Product['productType']
 }
 
 export interface ProductStorePort {
@@ -118,17 +125,20 @@ export class EtsySyncEngine {
     let syncedCount = 0
 
     for (const listing of listings) {
-      const { listing_id, title, description, images } = listing
+      const { listing_id, title, description, images, price: etsyPrice } = listing
 
       try {
         // Validation Layer: Ensure listing is a candle
         const validation = CandleListingSchema.safeParse(listing)
+        let productType: Product['productType'] = 'candle'
+
         if (!validation.success) {
           // If this is a manual list sync, we allow non-candle titles for testing/forced sync
           if (source.type === 'listings') {
             ports.logger.info(
-              `Manual sync for ${listing_id} ("${title}"): allowing through despite validation failure.`
+              `Manual sync for ${listing_id} ("${title}"): allowing through as vintage product.`
             )
+            productType = 'vintage'
           } else {
             ports.logger.warn(
               `Skipping listing ${listing_id} ("${title}"): ${validation.error.issues[0].message}`
@@ -174,8 +184,13 @@ export class EtsySyncEngine {
         const productData: ProductUpsertInput = {
           title,
           slug,
-          description: this.textToRichText(description),
+          description: this.textToRichText(this.cleanEtsyDescription(description)),
           etsyListingId: listing_id,
+          productType,
+        }
+
+        if (etsyPrice) {
+          productData.price = etsyPrice.amount / etsyPrice.divisor
         }
 
         if (mainImageId) {
@@ -196,6 +211,50 @@ export class EtsySyncEngine {
     }
 
     return { success: true, count: syncedCount, failures }
+  }
+
+  /**
+   * Unescapes common HTML entities.
+   */
+  private unescapeHtml(text: string): string {
+    const entities: Record<string, string> = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#39;': "'",
+      '&nbsp;': ' ',
+    }
+    return text.replace(/&[#\w]+;/g, (match) => entities[match] || match)
+  }
+
+  /**
+   * Cleans up raw Etsy listing descriptions by removing promotional fluff,
+   * unescaping HTML entities, and stripping external shop links.
+   */
+  private cleanEtsyDescription(text: string): string {
+    if (!text) return ''
+
+    let cleaned = this.unescapeHtml(text)
+
+    // Remove dash separators
+    cleaned = cleaned.replace(/-{3,}/g, '')
+
+    // Remove common Etsy-specific promotional phrases
+    const promoPhrases = [
+      /Please visit my store for more fantastic items to buy!/gi,
+      /Click the heart in the Favorite Shop box at the top of this page/gi,
+      /Thank you for visiting and purchase!/gi,
+      /Visit my shop at: https:\/\/www.etsy.com\/ca\/shop\/[a-z0-9-]+/gi,
+      /https:\/\/www.etsy.com\/ca\/shop\/[a-z0-9-]+/gi,
+    ]
+
+    promoPhrases.forEach((phrase) => {
+      cleaned = cleaned.replace(phrase, '')
+    })
+
+    // Trim whitespace and double newlines
+    return cleaned.trim().replace(/\n{3,}/g, '\n\n')
   }
 
   /**

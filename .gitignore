@@ -26,6 +26,15 @@ node_modules/
 .env*
 tsconfig.tsbuildinfo
 
+# Verification & Temporary Scripts
+verify-fix.ts
+scripts/verify-*.png
+
+# Tool Logs & Agent Data
+.playwright-mcp/
+.serena/
+.gemini/
+
 # Added by ggshield
 .cache_ggshield
 

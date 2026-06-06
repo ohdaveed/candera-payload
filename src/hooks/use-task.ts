@@ -183,7 +183,7 @@ export function useTask({
     return () => {
       stopStream();
     };
-  }, [taskId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [taskId]); // oxlint-disable-line react-hooks/exhaustive-deps
 
   return {
     task,

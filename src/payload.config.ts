@@ -35,6 +35,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    
     meta: {
       titleSuffix: 'Candera Candles',
       icons: [

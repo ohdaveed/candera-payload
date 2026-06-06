@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vite-plus/test'
 import { FlexibleRevalidator, CacheBusterPort, RevalidationRule } from '@/utilities/revalidate'
 import type { PayloadRequest } from 'payload'
 
