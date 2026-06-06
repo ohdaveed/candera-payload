@@ -122,7 +122,9 @@ describe('EtsySyncEngine', () => {
 
     // Verify Lexical rich text transformation
     expect(savedProduct?.description).toBeDefined()
-    const description = savedProduct?.description as Record<string, unknown>
+    const description = savedProduct?.description as unknown as {
+      root: { children: { children: { text: string }[] }[] }
+    }
     expect(description?.root?.children?.length).toBe(2)
     expect(description?.root?.children?.[0]?.children?.[0]?.text).toBe(
       'Smells like pine and cedar.',

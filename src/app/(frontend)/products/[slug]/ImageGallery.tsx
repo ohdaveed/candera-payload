@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useState } from 'react'
 import type { Media } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
 import { cn } from '@/utilities/ui'

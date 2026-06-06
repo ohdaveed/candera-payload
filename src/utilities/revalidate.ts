@@ -50,7 +50,7 @@ export class FlexibleRevalidator {
   }
 
   registerRule<TDoc = unknown>(rule: RevalidationRule<TDoc>): void {
-    this.rules.push(rule)
+    this.rules.push(rule as RevalidationRule<unknown>)
   }
 
   async revalidate(ctx: RevalidationContext): Promise<void> {
@@ -163,7 +163,7 @@ export const globalRevalidator = new FlexibleRevalidator(nextCacheBuster)
 
 // 1. Pages Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<unknown>({
+  createSlugRevalidationRule<{ slug?: string | null; _status?: string }>({
     name: 'pages-revalidation',
     collections: ['pages'],
     groupTag: 'pages-sitemap',
@@ -173,7 +173,7 @@ globalRevalidator.registerRule(
 
 // 2. Posts Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<unknown>({
+  createSlugRevalidationRule<{ slug?: string | null; _status?: string }>({
     name: 'posts-revalidation',
     collections: ['posts'],
     groupTag: 'posts-sitemap',
@@ -183,7 +183,7 @@ globalRevalidator.registerRule(
 
 // 3. Products Rule
 globalRevalidator.registerRule(
-  createSlugRevalidationRule<unknown>({
+  createSlugRevalidationRule<{ slug?: string | null; _status?: string }>({
     name: 'products-revalidation',
     collections: ['products'],
     groupTag: 'products-sitemap',

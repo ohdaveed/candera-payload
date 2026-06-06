@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
-import { Card } from '@/components/Card'
 import { Pagination } from '@/components/Pagination'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import PageClient from './page.client'
 import { ProductFilters } from './ProductFilters'
+import { ProductGrid } from './ProductGrid'
+import type { Product } from '@/payload-types'
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
@@ -58,9 +60,10 @@ export default async function ProductsPage({
 
         <Eyebrow className="block mb-8">{resultLabel}</Eyebrow>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
-          {products.docs.map((product) => {
+        <ProductGrid
+          products={products.docs.map((product) => {
             const {
+              id,
               slug,
               categories,
               title,
@@ -73,7 +76,8 @@ export default async function ProductsPage({
               price,
             } = product
 
-            const minimizedDoc: Partial<Product> = {
+            return {
+              id,
               slug,
               categories: categories?.map((cat) =>
                 typeof cat === 'object' ? { title: cat.title } : cat,
@@ -87,22 +91,20 @@ export default async function ProductsPage({
               vessel,
               price,
             }
-
-            return <Card key={product.id} doc={minimizedDoc as any} relationTo="products" />
           })}
-        </div>
+        />
 
         {products.docs.length === 0 && (
           <div className="text-center py-24">
             <p className="editorial text-[20px] italic text-candera-sage-text mb-6">
               No vessels found in this category.
             </p>
-            <a
+            <Link
               href="/products"
               className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
             >
               View all vessels →
-            </a>
+            </Link>
           </div>
         )}
 

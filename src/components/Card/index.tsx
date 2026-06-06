@@ -6,6 +6,7 @@ import React, { Fragment } from 'react'
 
 import type { Post, Product } from '@/payload-types'
 
+import { motion } from 'framer-motion'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { ProductTagBadge } from './ProductTagBadge'
@@ -58,7 +59,13 @@ export const Card: React.FC<{
   const imageToUse = metaImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
 
   return (
-    <article
+    <motion.article
+      initial="initial"
+      whileHover="hover"
+      whileTap="tap"
+      variants={{
+        tap: { scale: 0.98 },
+      }}
       className={cn(
         'group flex flex-col h-full bg-white transition-[color,opacity,transform] duration-500 motion-reduce:transition-none',
         className,
@@ -188,13 +195,24 @@ export const Card: React.FC<{
         {relationTo === 'products' &&
           scentProfile &&
           (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
-            <div className="mt-auto">
+            <motion.div
+              variants={{
+                initial: { height: 0, opacity: 0, marginTop: 0 },
+                hover: { height: 'auto', opacity: 1, marginTop: 8 },
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+              }}
+              className="mt-auto overflow-hidden pointer-events-none group-hover:pointer-events-auto"
+            >
               <FragranceProfile
                 profile={scentProfile}
                 burnTime={burnTime}
                 atmosphere={atmosphere}
               />
-            </div>
+            </motion.div>
           )}
 
         {/* Description for posts */}
@@ -204,6 +222,6 @@ export const Card: React.FC<{
           </p>
         )}
       </div>
-    </article>
+    </motion.article>
   )
 }

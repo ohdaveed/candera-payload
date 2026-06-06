@@ -7,16 +7,18 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
-import type { Product } from '@/payload-types'
+import type { Media, Product } from '@/payload-types'
 
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
 import { Separator } from '@/components/ui/separator'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getServerSideURL } from '@/utilities/getURL'
 import PageClient from './page.client'
 import { ProductDetailTabs } from './ProductDetailTabs'
 import { ImageGallery } from './ImageGallery'
+import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -40,8 +42,57 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
   if (!product) return <PayloadRedirects url={url} />
 
+  const serverUrl = getServerSideURL()
+  const productImageUrl =
+    product.meta?.image && typeof product.meta.image === 'object' && 'url' in product.meta.image
+      ? serverUrl + (product.meta.image as Media).url
+      : undefined
+
+  const productSchema = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: product.title,
+    image: productImageUrl,
+    description: product.meta?.description || product.tagline,
+    sku: product.vessel || undefined,
+    offers: {
+      '@type': 'Offer',
+      url: `${serverUrl}/products/${product.slug}`,
+      priceCurrency: 'USD',
+      price: product.price,
+      availability: 'https://schema.org/InStock',
+    },
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Collection',
+        item: `${serverUrl}/products`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: product.title,
+        item: `${serverUrl}/products/${product.slug}`,
+      },
+    ],
+  }
+
   return (
     <article className="pt-32 pb-32 bg-candera-vellum min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <PayloadRedirects disableNotFound url={url} />
       <PageClient />
 
@@ -76,8 +127,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               </div>
             )}
             <ImageGallery
-              mainImage={product.extraPhotos?.[0]}
-              extraPhotos={product.extraPhotos ?? undefined}
+              mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
+              extraPhotos={product.extraPhotos as (Media | string)[] | null}
             />
           </div>
 
@@ -112,13 +163,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* CTA — below specifications */}
             {product.etsyListingId && (
               <Button asChild variant="cta" size="cta">
-                <a
-                  href={`https://www.etsy.com/listing/${product.etsyListingId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Add to Cart — Add to the Ritual
-                </a>
+                <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
+                  Join the Ritual on Etsy
+                </BoutiqueLink>
               </Button>
             )}
           </div>
