@@ -12,6 +12,7 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from '@/components/ui/sonner'
 
 import './globals.css'
@@ -77,6 +78,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Providers>
         <Toaster position="bottom-right" richColors />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
