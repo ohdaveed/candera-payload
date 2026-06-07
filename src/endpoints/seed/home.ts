@@ -6,9 +6,6 @@ type HomeArgs = {
   heroImage: Media
 }
 
-const BRAND_NAME = 'Candera Candles'
-const TAGLINE =
-  'Hand-poured botanical candles for the moments that ask you to slow down. Numbered micro-batches, stoneware vessels, two weeks of studio stillness.'
 const COLLECTION_HEADING = 'Six vessels. One batch. Your space.'
 const COLLECTION_BODY =
   'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'
@@ -52,10 +49,8 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockType: 'archive',
         categories: [],
         introContent: createRichText([
-          createHeading('Six vessels. One batch. Your space.', 'h2'),
-          createParagraph(
-            'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.',
-          ),
+          createHeading(COLLECTION_HEADING, 'h2'),
+          createParagraph(COLLECTION_BODY),
         ]),
         populateBy: 'collection',
         relationTo: 'products',

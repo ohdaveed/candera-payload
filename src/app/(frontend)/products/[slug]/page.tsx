@@ -133,41 +133,75 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </div>
 
           {/* Right: details */}
-          <div className="lg:col-span-5 flex flex-col gap-10 py-4">
-            {/* Header zone */}
-            <div className="flex flex-col gap-4 pb-8">
-              {product.vessel && <Eyebrow>Vessel {product.vessel}</Eyebrow>}
+          <div className="lg:col-span-5 flex flex-col gap-8 py-4">
+            {/* Actionable Cluster */}
+            <div className="flex flex-col gap-6 p-8 rounded-2xl border border-candera-stone/20 bg-white/50 backdrop-blur-sm shadow-sm">
+              <div className="flex flex-col gap-3">
+                {product.vessel && <Eyebrow>Vessel {product.vessel}</Eyebrow>}
+                <h1 className="text-candera-obsidian text-3xl lg:text-4xl font-display italic leading-tight">
+                  {product.title}
+                </h1>
+                {product.tagline && (
+                  <p className="editorial text-[18px] leading-relaxed text-candera-sage-text">
+                    {product.tagline}
+                  </p>
+                )}
+              </div>
 
-              <h1 className="hero-heading text-candera-obsidian">{product.title}</h1>
+              <div className="flex items-baseline gap-4">
+                {product.price != null && (
+                  <p className="price text-[32px] font-semibold text-candera-obsidian">
+                    ${Number(product.price).toFixed(2)}
+                  </p>
+                )}
+                <span className="text-[10px] font-bold uppercase tracking-widest text-candera-stone">
+                  In Stock
+                </span>
+              </div>
 
-              {product.tagline && (
-                <p className="editorial text-[20px] leading-[1.7] text-candera-sage-text">
-                  {product.tagline}
-                </p>
+              <Separator className="bg-candera-stone/10" />
+
+              {/* Customization Field */}
+              {product.isCustomizable && (
+                <div className="flex flex-col gap-3">
+                  <label
+                    htmlFor="customization"
+                    className="text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian"
+                  >
+                    {product.customizationLabel || 'Personalization'}
+                  </label>
+                  <input
+                    type="text"
+                    id="customization"
+                    aria-label={product.customizationLabel || 'Personalization'}
+                    placeholder="Enter your custom text..."
+                    className="w-full px-4 py-3 bg-candera-ash/30 border border-candera-stone/20 rounded-lg focus:outline-none focus:ring-1 focus:ring-candera-obsidian transition-all placeholder:text-candera-stone/60 text-sm"
+                  />
+                  <p className="text-[11px] italic text-candera-sage-text">
+                    This item is made to order. Please double-check your spelling.
+                  </p>
+                </div>
+              )}
+
+              {/* CTA */}
+              {product.etsyListingId && (
+                <Button asChild variant="cta" size="cta" className="w-full py-7 text-base">
+                  <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
+                    Join the Ritual on Etsy
+                  </BoutiqueLink>
+                </Button>
               )}
             </div>
-            <Separator className="bg-candera-stone/20" />
-
-            {product.price != null && (
-              <p className="price text-[28px] font-medium">${Number(product.price).toFixed(2)}</p>
-            )}
 
             {/* Specifications + Scent Profile Tabs */}
             <ProductDetailTabs
+              title={product.title}
               productType={product.productType}
               scentProfile={product.scentProfile}
               burnTime={product.burnTime}
               atmosphere={product.atmosphere}
+              specifications={product.specifications}
             />
-
-            {/* CTA — below specifications */}
-            {product.etsyListingId && (
-              <Button asChild variant="cta" size="cta">
-                <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
-                  Join the Ritual on Etsy
-                </BoutiqueLink>
-              </Button>
-            )}
           </div>
         </div>
       </div>

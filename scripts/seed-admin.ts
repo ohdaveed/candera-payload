@@ -8,6 +8,12 @@ const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'password'
 const ADMIN_NAME = process.env.SEED_ADMIN_NAME || 'Admin'
 
 async function seedAdmin(): Promise<void> {
+  const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
+  if (!dbUrl) {
+    seedLogger.error('POSTGRES_URL or DATABASE_URL is not set. Skipping admin seed.')
+    process.exit(1)
+  }
+
   seedLogger.info('Checking for existing admin user...')
 
   const payload = await getPayload({ config })

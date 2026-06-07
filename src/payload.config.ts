@@ -1,4 +1,4 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import { payloadLogger } from './utilities/logger'
 
@@ -18,6 +18,7 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Products } from './collections/Products'
 import { Users } from './collections/Users'
+import { Briefs } from './collections/Briefs'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -90,9 +91,9 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: postgresAdapter({
+  db: vercelPostgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || process.env.POSTGRES_URL || '',
+      connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL || '',
     },
     push: false,
   }),
@@ -120,6 +121,7 @@ export default buildConfig({
     Categories,
     Users,
     EtsyTokens,
+    Briefs,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [

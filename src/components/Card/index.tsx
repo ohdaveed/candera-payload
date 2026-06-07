@@ -21,6 +21,10 @@ export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> 
   productTag?: Product['productTag']
   vessel?: Product['vessel']
   price?: Product['price']
+  productType?: Product['productType']
+  specifications?: Product['specifications']
+  isCustomizable?: Product['isCustomizable']
+  customizationLabel?: Product['customizationLabel']
 }
 
 export const Card: React.FC<{
@@ -47,6 +51,10 @@ export const Card: React.FC<{
     productTag,
     vessel,
     price,
+    productType,
+    specifications,
+    isCustomizable,
+    customizationLabel,
   } = doc || {}
   const { description, image: metaImage } = meta || {}
 
@@ -117,6 +125,10 @@ export const Card: React.FC<{
                 atmosphere={atmosphere}
                 productTag={productTag}
                 etsyListingId={etsyListingId}
+                productType={productType}
+                specifications={specifications}
+                isCustomizable={isCustomizable}
+                customizationLabel={customizationLabel}
               >
                 <button className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none">
                   Quick View

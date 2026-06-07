@@ -1,7 +1,8 @@
-import type { Endpoint } from 'payload'
+import type { Endpoint, RequiredDataFromCollectionSlug } from 'payload'
 import fs from 'fs'
 import path from 'path'
 import type { File } from 'payload'
+import type { Media } from '@/payload-types'
 
 const CANDLE_IMAGES = [
   { key: 'seashell-garden', file: 'seashell-garden.jpg' },
@@ -135,7 +136,7 @@ export const createHomeEndpoint: Endpoint = {
               data: { alt: key.replace(/-/g, ' ') },
               file: imageFile,
             })
-          } catch (_e) {
+          } catch {
             // ignore duplicate
           }
         } else {
@@ -151,19 +152,26 @@ export const createHomeEndpoint: Endpoint = {
           limit: 1,
         })
         const mediaDoc = mediaByKey[imageKey]
-        const data: any = {
+        const data: unknown = {
           ...product,
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         }
         if (existing.docs.length > 0) {
-          await payload.update({ collection: 'products', id: existing.docs[0].id, data })
+          await payload.update({
+            collection: 'products',
+            id: existing.docs[0].id,
+            data: data as RequiredDataFromCollectionSlug<'products'>,
+          })
         } else {
-          await payload.create({ collection: 'products', data })
+          await payload.create({
+            collection: 'products',
+            data: data as RequiredDataFromCollectionSlug<'products'>,
+          })
         }
       }
 
       // Upsert home page
-      const heroMedia = mediaByKey['seashell-garden']
+      const heroMedia = mediaByKey['seashell-garden'] as Media | undefined
       if (!heroMedia) {
         return Response.json(
           {
@@ -173,14 +181,14 @@ export const createHomeEndpoint: Endpoint = {
           { status: 400 },
         )
       }
-      const innerCircleMedia = mediaByKey['crimson-noir']
+      const innerCircleMedia = mediaByKey['crimson-noir'] as Media | undefined
       const existing = await payload.find({
         collection: 'pages',
         where: { slug: { equals: 'home' } },
         limit: 1,
       })
 
-      const pageData: any = {
+      const pageData: unknown = {
         slug: 'home',
         _status: 'published',
         title: 'Home',
@@ -330,21 +338,24 @@ export const createHomeEndpoint: Endpoint = {
         await payload.update({
           collection: 'pages',
           id: existing.docs[0].id,
-          data: pageData,
+          data: pageData as RequiredDataFromCollectionSlug<'pages'>,
           context: { disableRevalidate: true },
         })
       } else {
         await payload.create({
           collection: 'pages',
-          data: pageData,
+          data: pageData as RequiredDataFromCollectionSlug<'pages'>,
           context: { disableRevalidate: true },
         })
       }
 
       return Response.json({ success: true, message: 'Home page and products created/updated.' })
-    } catch (error: any) {
+    } catch (error: unknown) {
       payload.logger.error({ err: error, msg: 'Error in /create-home endpoint' })
-      return Response.json({ error: error?.message || 'Unknown error' }, { status: 500 })
+      return Response.json(
+        { error: error instanceof Error ? error.message : 'Unknown error' },
+        { status: 500 },
+      )
     }
   },
 }

@@ -94,6 +94,12 @@ const BeforeDashboard: React.FC = async () => {
         >
           Posts
         </Link>
+        <Link
+          href="/admin/collections/briefs"
+          className="text-[0.8125rem] text-muted-foreground no-underline hover:text-foreground hover:underline"
+        >
+          SEO Briefs
+        </Link>
       </div>
     </div>
   )

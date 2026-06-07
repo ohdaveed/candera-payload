@@ -23,6 +23,10 @@ type QuickViewDialogProps = {
   atmosphere?: Product['atmosphere']
   etsyListingId?: Product['etsyListingId']
   productTag?: Product['productTag']
+  productType?: Product['productType']
+  specifications?: Product['specifications']
+  isCustomizable?: Product['isCustomizable']
+  customizationLabel?: Product['customizationLabel']
   children: React.ReactNode
 }
 

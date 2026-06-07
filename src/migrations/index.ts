@@ -7,6 +7,8 @@ import * as migration_20260602_125324 from './20260602_125324'
 import * as migration_20260602_134834_add_storefront_hero_fields from './20260602_134834_add_storefront_hero_fields'
 import * as migration_20260603_205647_add_status_to_products from './20260603_205647_add_status_to_products'
 import * as migration_20260604_023044_add_product_type_and_seo from './20260604_023044_add_product_type_and_seo'
+import * as migration_20260606_235002_add_footer_fields from './20260606_235002_add_footer_fields'
+import * as migration_20260607_033421_add_briefs_collection from './20260607_033421_add_briefs_collection'
 
 export const migrations = [
   {
@@ -53,5 +55,15 @@ export const migrations = [
     up: migration_20260604_023044_add_product_type_and_seo.up,
     down: migration_20260604_023044_add_product_type_and_seo.down,
     name: '20260604_023044_add_product_type_and_seo',
+  },
+  {
+    up: migration_20260606_235002_add_footer_fields.up,
+    down: migration_20260606_235002_add_footer_fields.down,
+    name: '20260606_235002_add_footer_fields',
+  },
+  {
+    up: migration_20260607_033421_add_briefs_collection.up,
+    down: migration_20260607_033421_add_briefs_collection.down,
+    name: '20260607_033421_add_briefs_collection',
   },
 ]

@@ -1,6 +1,6 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "pages_blocks_storefront_hero" ADD COLUMN "secondary_cta_label" varchar DEFAULT 'Take the Scent Quiz →';
   ALTER TABLE "pages_blocks_storefront_hero" ADD COLUMN "secondary_cta_url" varchar DEFAULT '#scent-quiz';
@@ -18,7 +18,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_pages_v_blocks_storefront_hero" ADD COLUMN "status_card_ships" varchar DEFAULT '~3 weeks';`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "pages_blocks_storefront_hero" DROP COLUMN "secondary_cta_label";
   ALTER TABLE "pages_blocks_storefront_hero" DROP COLUMN "secondary_cta_url";
