@@ -58,6 +58,7 @@ export const Products: CollectionConfig = {
               options: [
                 { label: 'Candle', value: 'candle' },
                 { label: 'Vintage / Home', value: 'vintage' },
+                { label: 'Custom Decor', value: 'custom' },
               ],
               required: true,
             },
@@ -66,6 +67,22 @@ export const Products: CollectionConfig = {
               type: 'text',
               admin: {
                 description: 'Short poetic tagline shown on product cards.',
+              },
+            },
+            {
+              name: 'isCustomizable',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description: 'Whether this product requires custom text input.',
+              },
+            },
+            {
+              name: 'customizationLabel',
+              type: 'text',
+              admin: {
+                condition: (data) => data?.isCustomizable,
+                description: 'Label for the customization field (e.g. "Family Name").',
               },
             },
             {
@@ -80,6 +97,22 @@ export const Products: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               hasMany: true,
+            },
+            {
+              name: 'specifications',
+              type: 'array',
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', type: 'text', required: true },
+                    { name: 'value', type: 'text', required: true },
+                  ],
+                },
+              ],
+              admin: {
+                description: 'Product specifications shown in the details tab.',
+              },
             },
             {
               type: 'row',

@@ -75,6 +75,7 @@ export interface Config {
     categories: Category;
     users: User;
     'etsy-tokens': EtsyToken;
+    briefs: Brief;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -100,6 +101,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'etsy-tokens': EtsyTokensSelect<false> | EtsyTokensSelect<true>;
+    briefs: BriefsSelect<false> | BriefsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -877,11 +879,19 @@ export interface InnerCircleCTABlock {
 export interface Product {
   id: number;
   title: string;
-  productType: 'candle' | 'vintage';
+  productType: 'candle' | 'vintage' | 'custom';
   /**
    * Short poetic tagline shown on product cards.
    */
   tagline?: string | null;
+  /**
+   * Whether this product requires custom text input.
+   */
+  isCustomizable?: boolean | null;
+  /**
+   * Label for the customization field (e.g. "Family Name").
+   */
+  customizationLabel?: string | null;
   /**
    * The story and details of this piece.
    */
@@ -901,6 +911,16 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   extraPhotos?: (number | Media)[] | null;
+  /**
+   * Product specifications shown in the details tab.
+   */
+  specifications?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Mood descriptor e.g. "Coastal & Airy".
    */
@@ -951,6 +971,17 @@ export interface EtsyToken {
   accessToken: string;
   refreshToken: string;
   expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "briefs".
+ */
+export interface Brief {
+  id: number;
+  title: string;
+  content: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1175,6 +1206,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'etsy-tokens';
         value: number | EtsyToken;
+      } | null)
+    | ({
+        relationTo: 'briefs';
+        value: number | Brief;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1477,8 +1512,17 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   productType?: T;
   tagline?: T;
+  isCustomizable?: T;
+  customizationLabel?: T;
   description?: T;
   extraPhotos?: T;
+  specifications?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   atmosphere?: T;
   burnTime?: T;
   scentProfile?:
@@ -1652,6 +1696,16 @@ export interface EtsyTokensSelect<T extends boolean = true> {
   accessToken?: T;
   refreshToken?: T;
   expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "briefs_select".
+ */
+export interface BriefsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1985,6 +2039,46 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  assistanceItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  footerLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2017,6 +2111,34 @@ export interface HeaderSelect<T extends boolean = true> {
  */
 export interface FooterSelect<T extends boolean = true> {
   navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  assistanceItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  footerLinks?:
     | T
     | {
         link?:

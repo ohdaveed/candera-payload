@@ -21,13 +21,19 @@ const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className,
   )
 }
 
-const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({ className, ...props }) => {
+const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <h3
       data-slot="card-title"
       className={cn('text-2xl leading-none font-semibold tracking-tight', className)}
       {...props}
-    />
+    >
+      {children}
+    </h3>
   )
 }
 

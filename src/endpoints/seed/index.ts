@@ -1,14 +1,23 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type {
+  CollectionSlug,
+  GlobalSlug,
+  Payload,
+  PayloadRequest,
+  File,
+  RequiredDataFromCollectionSlug,
+} from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
+import { legalPage } from './legal-pages'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import type { Media } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -130,14 +139,16 @@ export const seed = async ({
       data: imageHero1,
       file: hero1Buffer,
     }),
-    categories.map((category) =>
-      payload.create({
-        collection: 'categories',
-        data: {
-          title: category,
-          slug: category,
-        },
-      }),
+    Promise.all(
+      categories.map((category) =>
+        payload.create({
+          collection: 'categories',
+          data: {
+            title: category,
+            slug: category,
+          },
+        }),
+      ),
     ),
   ])
 
@@ -151,9 +162,9 @@ export const seed = async ({
           data: { alt: key.replace(/-/g, ' ') },
           file,
         })
-      } catch (_e) {
+      } catch (error) {
         payload.logger.warn(
-          `— Skipping image '${key}': upload failed (${_e instanceof Error ? _e.message : _e})`,
+          `— Skipping image '${key}': upload failed (${error instanceof Error ? error.message : String(error)})`,
         )
       }
     }
@@ -313,7 +324,7 @@ export const seed = async ({
         data: {
           ...product,
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
-        } as any,
+        } as unknown as RequiredDataFromCollectionSlug<'products'>,
       })
     }),
   )
@@ -335,7 +346,9 @@ export const seed = async ({
       context: {
         disableRevalidate: true,
       },
-      data: home({ heroImage: (candleraMediaDocs['seashell-garden'] as any) || imageHomeDoc }),
+      data: home({
+        heroImage: (candleraMediaDocs['seashell-garden'] as unknown as Media) || imageHomeDoc,
+      }),
     }),
     payload.create({
       collection: 'pages',
@@ -344,6 +357,38 @@ export const seed = async ({
         disableRevalidate: true,
       },
       data: contactPageData({ contactForm: contactForm }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: legalPage('Shipping & Returns') as RequiredDataFromCollectionSlug<'pages'>,
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: legalPage('Wholesale') as RequiredDataFromCollectionSlug<'pages'>,
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: legalPage('Privacy Policy') as RequiredDataFromCollectionSlug<'pages'>,
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: legalPage('Terms of Service') as RequiredDataFromCollectionSlug<'pages'>,
     }),
   ])
 
@@ -412,6 +457,48 @@ export const seed = async ({
               label: 'Payload',
               newTab: true,
               url: 'https://payloadcms.com/',
+            },
+          },
+        ],
+        assistanceItems: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Shipping & Returns',
+              url: '/shipping-and-returns',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Wholesale',
+              url: '/wholesale',
+            },
+          },
+          {
+            link: {
+              type: 'reference',
+              label: 'Contact',
+              reference: {
+                relationTo: 'pages',
+                value: contactPage.id,
+              },
+            },
+          },
+        ],
+        footerLinks: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Privacy Policy',
+              url: '/privacy-policy',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Terms of Service',
+              url: '/terms-of-service',
             },
           },
         ],

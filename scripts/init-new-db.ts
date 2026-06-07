@@ -59,4 +59,4 @@ async function initNewDb() {
   }
 }
 
-initNewDb()
+await initNewDb()

@@ -12,8 +12,6 @@ import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 import Link from 'next/link'
 
-import type { Post } from '@/payload-types'
-
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'

@@ -49,6 +49,7 @@ export default function ZoomableImage({
   }
 
   const image = (
+    /* eslint-disable-next-line @next/next/no-img-element */
     <img
       src={src}
       alt={alt || ''}

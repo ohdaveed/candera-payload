@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator'
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
   const allNavItems = footerData?.navItems || []
+  const assistanceItems = footerData?.assistanceItems || []
+  const footerLinks = footerData?.footerLinks || []
 
   // Filter out developer-oriented links from public navigation
   const navItems = allNavItems.filter(({ link }) => {
@@ -64,32 +66,43 @@ export async function Footer() {
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Assistance
             </h5>
-            <ul className="flex flex-col gap-1 list-none p-0 m-0">
-              <li>
-                <Link
-                  href="/shipping-and-returns"
+            <nav className="flex flex-col gap-1">
+              {assistanceItems.map(({ link }, i) => (
+                <CMSLink
+                  {...link}
                   className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                >
-                  Shipping & Returns
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wholesale"
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                >
-                  Wholesale
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
+                  key={i}
+                />
+              ))}
+              {assistanceItems.length === 0 && (
+                <ul className="flex flex-col gap-1 list-none p-0 m-0">
+                  <li>
+                    <Link
+                      href="/shipping-and-returns"
+                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                    >
+                      Shipping & Returns
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/wholesale"
+                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                    >
+                      Wholesale
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/contact"
+                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                    >
+                      Contact
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </nav>
           </div>
 
           {/* Settings / Theme */}
@@ -108,19 +121,30 @@ export async function Footer() {
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link
-              href="/privacy-policy"
-              className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-            >
-              Privacy Policy
-            </Link>
-            <span className="text-candera-stone self-center">·</span>
-            <Link
-              href="/terms-of-service"
-              className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-            >
-              Terms of Service
-            </Link>
+            {footerLinks.map(({ link }, i) => (
+              <CMSLink
+                {...link}
+                className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
+                key={i}
+              />
+            ))}
+            {footerLinks.length === 0 && (
+              <>
+                <Link
+                  href="/privacy-policy"
+                  className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
+                >
+                  Privacy Policy
+                </Link>
+                <span className="text-candera-stone self-center">·</span>
+                <Link
+                  href="/terms-of-service"
+                  className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
+                >
+                  Terms of Service
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,8 +1,18 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload, req: _req }: MigrateUpArgs): Promise<void> {
+  try {
+    await db.execute(
+      sql`ALTER TYPE "public"."enum_payload_folders_folder_type" ADD VALUE 'folders' BEFORE 'media';`,
+    )
+  } catch (e) {
+    payload.logger.warn(
+      'Value "folders" already exists in enum_payload_folders_folder_type or other error: ' +
+        (e instanceof Error ? e.message : String(e)),
+    )
+  }
+
   await db.execute(sql`
-   ALTER TYPE "public"."enum_payload_folders_folder_type" ADD VALUE 'folders' BEFORE 'media';
   CREATE TABLE "folders" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"name" varchar NOT NULL,

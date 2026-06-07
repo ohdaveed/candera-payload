@@ -189,7 +189,8 @@ describe('EtsySyncEngine', () => {
     const saved = productStore.products.get(201)
     expect(saved).toBeDefined()
     expect(saved?.extraPhotos).toBeUndefined()
-    expect(logger.warn).toHaveBeenCalled()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(vi.mocked(logger.warn)).toHaveBeenCalled()
   })
 
   it('recovers from single item DB failures and records errors in results without crashing', async () => {
@@ -224,7 +225,8 @@ describe('EtsySyncEngine', () => {
     expect(result.failures[0].listingId).toBe(301)
     expect(result.failures[0].error).toContain('DB Constraint Violation')
 
-    expect(logger.error).toHaveBeenCalled()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(vi.mocked(logger.error)).toHaveBeenCalled()
   })
 
   it('skips non-candle listings during sync', async () => {
@@ -252,6 +254,9 @@ describe('EtsySyncEngine', () => {
     expect(result.count).toBe(1) // Only the candle should be synced
     expect(productStore.products.has(401)).toBe(false)
     expect(productStore.products.has(402)).toBe(true)
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Skipping listing 401'))
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
+      expect.stringContaining('Skipping listing 401'),
+    )
   })
 })

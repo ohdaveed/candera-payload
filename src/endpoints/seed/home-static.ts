@@ -1,4 +1,10 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
+import type {
+  StorefrontHeroBlock,
+  ArchiveBlock,
+  TestimonialsBlock,
+  InnerCircleCTABlock,
+} from '@/payload-types'
 
 // Used for pre-seeded content so that the homepage is not empty
 export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
@@ -29,7 +35,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       statusCardSubtitle: '47 units · hand-poured',
       statusCardStatus: 'Curing',
       statusCardShips: '~3 weeks',
-    } as any,
+    } as unknown as StorefrontHeroBlock,
 
     {
       blockType: 'archive',
@@ -86,7 +92,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       populateBy: 'collection',
       relationTo: 'products',
       limit: 6,
-    } as any,
+    } as unknown as ArchiveBlock,
     {
       blockType: 'testimonials',
       eyebrow: 'From Our Ritualists',
@@ -112,13 +118,13 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
           badge: 'Verified Ritualist',
         },
       ],
-    } as any,
+    } as unknown as TestimonialsBlock,
     {
       blockType: 'innerCircleCTA',
       headline: 'Never Miss a Batch.',
       description:
         'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
       ctaLabel: 'Get Early Access',
-    } as any,
+    } as unknown as InnerCircleCTABlock,
   ],
 }

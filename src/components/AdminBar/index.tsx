@@ -71,7 +71,7 @@ export const AdminBar: React.FC<{
           logo={<Title />}
           onAuthChange={onAuthChange}
           onPreviewExit={() => {
-            fetch('/next/exit-preview').then(() => {
+            void fetch('/next/exit-preview').then(() => {
               router.push('/')
               router.refresh()
             })

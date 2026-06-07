@@ -42,4 +42,4 @@ async function runSync(): Promise<void> {
   process.exit(0)
 }
 
-runSync()
+await runSync()
