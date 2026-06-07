@@ -36,4 +36,10 @@ jobs:
           PROTON_PASS_PERSONAL_ACCESS_TOKEN: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
           POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
-        run: pass-cli run --env-file .env.ci -- pnpm run ci
+        run: |
+          if [ -n "$PROTON_PASS_PERSONAL_ACCESS_TOKEN" ]; then
+            pass-cli login
+            pass-cli run --env-file .env.ci -- pnpm run ci
+          else
+            pnpm run ci
+          fi
