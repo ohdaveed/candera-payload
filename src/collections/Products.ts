@@ -148,6 +148,15 @@ export const Products: CollectionConfig = {
                 { name: 'base', type: 'text', label: 'Base Note' },
               ],
             },
+            {
+              name: 'generateCopy',
+              type: 'ui' as const,
+              admin: {
+                components: {
+                  Field: '@/components/admin/GenerateCopyButton#GenerateCopyButton',
+                },
+              },
+            },
           ],
         },
         {
