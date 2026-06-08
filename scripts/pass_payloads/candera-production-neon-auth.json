@@ -1,0 +1,17 @@
+{
+  "title": "candera-production-neon-auth",
+  "notes": "Optional Neon metadata: project/auth endpoints or API keys used by tooling. Fill placeholders before creating the item.",
+  "fields": [
+    { "label": "neon_project_id", "type": "text", "value": "curly-night-46404757" },
+    {
+      "label": "neon_auth_base_url",
+      "type": "text",
+      "value": "https://ep-spring-water-aqg2ymy6.neonauth.c-8.us-east-1.aws.neon.tech/neondb/auth"
+    },
+    {
+      "label": "neon_api_key",
+      "type": "password",
+      "value": "napi_hb06wwphqpgf4a376yy9ak419eyzh807o7kqmvklx90ilm3ed3xvxyjf0znbbu5v"
+    }
+  ]
+}

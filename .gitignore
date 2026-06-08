@@ -60,3 +60,9 @@ scripts/verify-*.png
 .agents/
 skills-lock.json
 
+# Local Proton Pass payloads (contain secret placeholders / values)
+scripts/pass_payloads/*.json
+
+# Generated pass output (contains resolved secrets)
+.env.pass
+
