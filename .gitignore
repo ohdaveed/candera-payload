@@ -1,29 +1,49 @@
-"build
-dist / media
-node_modules
+# Build outputs
+dist/
+build/
+
+# Node modules
+node_modules/
+
+# OS
 .DS_Store
-.env
-.next
+
+# Next/Vercel
+.next/
+.vercel/
 next-env.d.ts
-.vercel
 
 # Payload default media upload directory
 public/media/
 
+# Public static files
 public/robots.txt
 public/sitemap*.xml
 
-
 # Playwright
-node_modules/
 /test-results/
 /playwright-report/
+/playwright/.cache/
 
 # Claude Code local settings (session-specific, not for version control)
 .claude/settings.local.json
+.claude/skills/
+.claude/worktrees/
+
+# Temporary/blob reports
 /blob-report/
-/playwright/.cache/
-.env*
+
+# Env files: ignore all local/private envs, but keep the example template
+.env
+.env.local
+.env.*.local
+.env.*.bak
+.env.*.secret
+.env.*.key
+.env.*
+!.env.example
+
+# TypeScript build info
 tsconfig.tsbuildinfo
 
 # Verification & Temporary Scripts
@@ -34,12 +54,15 @@ scripts/verify-*.png
 .playwright-mcp/
 .serena/
 .gemini/
-
-# Added by ggshield
 .cache_ggshield
 
-# belt / inference.sh CLI skills (installed on-demand, not for version control)
+# Agents / skills
 .agents/
-.claude/skills/belt
 skills-lock.json
-.claude/worktrees/
+
+# Local Proton Pass payloads (contain secret placeholders / values)
+scripts/pass_payloads/*.json
+
+# Generated pass output (contains resolved secrets)
+.env.pass
+

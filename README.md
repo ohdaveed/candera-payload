@@ -67,6 +67,16 @@ Candera is optimized for Vercel, utilizing Neon (Postgres) and Vercel Blob Stora
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?build-command=pnpm%20run%20ci&env=PAYLOAD_SECRET%2CCRON_SECRET%2CPREVIEW_SECRET&project-name=candera-studio&repository-name=candera-payload)
 
+## Local build helper
+
+We've added a small helper script to reproduce the CI/Vercel build locally: `scripts/local-build.sh`.
+
+- Make it executable: `chmod +x scripts/local-build.sh`
+- Run with defaults (uses `pass-cli` with `.env` if available): `./scripts/local-build.sh`
+- Common options: `--env-file`, `--skip-migrate`, `--skip-tests`, `--skip-lint`, `--build-only`
+
+This script installs dependencies, runs migrations (if available), builds, lints, and can run tests to mirror CI locally.
+
 ## Questions?
 
 Reach out to the studio team or join our ritual on Discord.
