@@ -23,23 +23,11 @@ jobs:
           node-version-file: package.json
           cache: pnpm
 
-      - name: Install pass-cli
-        run: |
-          curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run CI (migrate + build)
         env:
-          PROTON_PASS_PERSONAL_ACCESS_TOKEN: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
           POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
-        run: |
-          if [ -n "$PROTON_PASS_PERSONAL_ACCESS_TOKEN" ]; then
-            pass-cli login
-            pass-cli run --env-file .env.ci -- pnpm run ci
-          else
-            pnpm run ci
-          fi
+        run: pnpm run ci

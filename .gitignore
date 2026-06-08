@@ -46,7 +46,6 @@ ql*
 .env.*.secret
 .env.*.key
 .env.*
-!.env.ci
 !.env.example
 
 # TypeScript build info
