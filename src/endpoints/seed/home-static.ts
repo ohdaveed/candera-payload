@@ -4,6 +4,7 @@ import type {
   ArchiveBlock,
   TestimonialsBlock,
   InnerCircleCTABlock,
+  ScentQuizBlock,
 } from '@/payload-types'
 
 // Used for pre-seeded content so that the homepage is not empty
@@ -120,11 +121,16 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
       ],
     } as unknown as TestimonialsBlock,
     {
+      blockType: 'scentQuiz',
+      eyebrow: 'Find Your Scent',
+      headline: 'Which Candera ritual is calling you?',
+      formId: '',
+    } as unknown as ScentQuizBlock,
+    {
       blockType: 'innerCircleCTA',
       headline: 'Never Miss a Batch.',
       description:
         'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
-      ctaLabel: 'Get Early Access',
     } as unknown as InnerCircleCTABlock,
   ],
 }

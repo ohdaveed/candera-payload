@@ -3,6 +3,9 @@ import fs from 'fs'
 import path from 'path'
 import type { File } from 'payload'
 import type { Media } from '@/payload-types'
+import { contactForm as contactFormData } from './seed/contact-form'
+import { innerCircleForm as innerCircleFormData } from './seed/inner-circle-form'
+import { scentQuizForm as scentQuizFormData } from './seed/scent-quiz-form'
 
 const CANDLE_IMAGES = [
   { key: 'seashell-garden', file: 'seashell-garden.jpg' },
@@ -143,6 +146,26 @@ export const createHomeEndpoint: Endpoint = {
           payload.logger.warn(`[createHome] Local image file not found: ${file}`)
         }
       }
+
+      // Upsert forms
+      const upsertForm = async (formData: typeof contactFormData) => {
+        const existing = await payload.find({
+          collection: 'forms',
+          where: { title: { equals: formData.title } },
+          limit: 1,
+          depth: 0,
+        })
+        if (existing.docs.length > 0) {
+          return existing.docs[0]
+        }
+        return payload.create({ collection: 'forms', depth: 0, data: formData })
+      }
+
+      const [, , scentQuizFormDoc] = await Promise.all([
+        upsertForm(contactFormData),
+        upsertForm(innerCircleFormData),
+        upsertForm(scentQuizFormData),
+      ])
 
       // Upsert products
       for (const { imageKey, ...product } of PRODUCT_DATA) {
@@ -317,12 +340,16 @@ export const createHomeEndpoint: Endpoint = {
             ],
           },
           {
+            blockType: 'scentQuiz',
+            eyebrow: 'Find Your Scent',
+            headline: 'Which Candera ritual is calling you?',
+            formId: scentQuizFormDoc.id.toString(),
+          },
+          {
             blockType: 'innerCircleCTA',
-            headline: 'Never Miss a Batch',
+            headline: 'Never Miss a Batch.',
             description:
-              'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.',
-            ctaLabel: 'Get Early Access',
-            ctaUrl: '/#collection',
+              'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
             ...(innerCircleMedia ? { media: innerCircleMedia.id } : {}),
           },
         ],

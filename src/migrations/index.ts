@@ -9,6 +9,7 @@ import * as migration_20260603_205647_add_status_to_products from './20260603_20
 import * as migration_20260604_023044_add_product_type_and_seo from './20260604_023044_add_product_type_and_seo'
 import * as migration_20260606_235002_add_footer_fields from './20260606_235002_add_footer_fields'
 import * as migration_20260607_033421_add_briefs_collection from './20260607_033421_add_briefs_collection'
+import * as migration_20260607_230627 from './20260607_230627'
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260607_033421_add_briefs_collection.up,
     down: migration_20260607_033421_add_briefs_collection.down,
     name: '20260607_033421_add_briefs_collection',
+  },
+  {
+    up: migration_20260607_230627.up,
+    down: migration_20260607_230627.down,
+    name: '20260607_230627',
   },
 ]

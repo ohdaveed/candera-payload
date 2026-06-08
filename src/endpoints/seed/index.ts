@@ -8,6 +8,8 @@ import type {
 } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
+import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
+import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
 import { legalPage } from './legal-pages'
@@ -17,6 +19,8 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { post4 } from './post-4'
+import { post5 } from './post-5'
 import type { Media } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
@@ -79,16 +83,29 @@ export const seed = async ({
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
-  payload.logger.info(`— Seeding demo author and user...`)
+  payload.logger.info(`— Seeding demo author and admin user...`)
 
-  await payload.delete({
+  await Promise.all([
+    payload.delete({
+      collection: 'users',
+      depth: 0,
+      where: { email: { equals: 'demo-author@example.com' } },
+    }),
+    payload.delete({
+      collection: 'users',
+      depth: 0,
+      where: { email: { equals: 'admin@canderacandles.com' } },
+    }),
+  ])
+
+  await payload.create({
     collection: 'users',
-    depth: 0,
-    where: {
-      email: {
-        equals: 'demo-author@example.com',
-      },
-    },
+    data: {
+      name: 'David Arrizon',
+      email: 'admin@canderacandles.com',
+      password: '[REDACTED]',
+      roles: ['admin'],
+    } as never,
   })
 
   payload.logger.info(`— Seeding media...`)
@@ -201,6 +218,24 @@ export const seed = async ({
     data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
   })
 
+  const post4Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post4({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+  })
+
+  const post5Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post5({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+  })
+
   // update each post with related posts
   await payload.update({
     id: post1Doc.id,
@@ -229,7 +264,27 @@ export const seed = async ({
       disableRevalidate: true,
     },
     data: {
-      relatedPosts: [post1Doc.id, post2Doc.id],
+      relatedPosts: [post4Doc.id, post5Doc.id],
+    },
+  })
+  await payload.update({
+    id: post4Doc.id,
+    collection: 'posts',
+    context: {
+      disableRevalidate: true,
+    },
+    data: {
+      relatedPosts: [post3Doc.id, post5Doc.id],
+    },
+  })
+  await payload.update({
+    id: post5Doc.id,
+    collection: 'posts',
+    context: {
+      disableRevalidate: true,
+    },
+    data: {
+      relatedPosts: [post3Doc.id, post4Doc.id],
     },
   })
 
@@ -329,13 +384,13 @@ export const seed = async ({
     }),
   )
 
-  payload.logger.info(`— Seeding contact form...`)
+  payload.logger.info(`— Seeding forms...`)
 
-  const contactForm = await payload.create({
-    collection: 'forms',
-    depth: 0,
-    data: contactFormData,
-  })
+  const [contactForm, , scentQuizFormDoc] = await Promise.all([
+    payload.create({ collection: 'forms', depth: 0, data: contactFormData }),
+    payload.create({ collection: 'forms', depth: 0, data: innerCircleFormData }),
+    payload.create({ collection: 'forms', depth: 0, data: scentQuizFormData }),
+  ])
 
   payload.logger.info(`— Seeding pages...`)
 
@@ -348,6 +403,7 @@ export const seed = async ({
       },
       data: home({
         heroImage: (candleraMediaDocs['seashell-garden'] as unknown as Media) || imageHomeDoc,
+        scentQuizFormId: scentQuizFormDoc.id.toString(),
       }),
     }),
     payload.create({

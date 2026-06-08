@@ -1,8 +1,9 @@
 import React from 'react'
-import Link from 'next/link'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 import { Media } from '@/components/Media'
-import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { InnerCircleEmailForm } from './EmailForm'
 import type { InnerCircleCTABlock as InnerCircleCTABlockType } from '@/payload-types'
 
 type Props = InnerCircleCTABlockType & { disableInnerContainer?: boolean }
@@ -23,13 +24,18 @@ const MailIcon: React.FC = () => (
   </svg>
 )
 
-export const InnerCircleCTABlock: React.FC<Props> = ({
-  headline,
-  description,
-  ctaLabel,
-  ctaUrl,
-  media,
-}) => {
+export async function InnerCircleCTABlock({ headline, description, media }: Props) {
+  const payload = await getPayload({ config: configPromise })
+
+  const formsResult = await payload.find({
+    collection: 'forms',
+    where: { title: { equals: 'Inner Circle Signup' } },
+    limit: 1,
+    depth: 0,
+  })
+
+  const formId = formsResult.docs[0]?.id?.toString() ?? ''
+
   return (
     <section className="flex flex-col md:flex-row min-h-[600px] border-t border-candera-stone/20">
       {/* Left editorial photo */}
@@ -60,11 +66,7 @@ export const InnerCircleCTABlock: React.FC<Props> = ({
             {description}
           </p>
         )}
-        {ctaLabel && ctaUrl && (
-          <Button asChild variant="cta" size="cta">
-            <Link href={ctaUrl}>{ctaLabel}</Link>
-          </Button>
-        )}
+        <InnerCircleEmailForm formId={formId} />
       </div>
     </section>
   )

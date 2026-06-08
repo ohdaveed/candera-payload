@@ -4,6 +4,7 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
 
 type HomeArgs = {
   heroImage: Media
+  scentQuizFormId?: string
 }
 
 const COLLECTION_HEADING = 'Six vessels. One batch. Your space.'
@@ -18,6 +19,7 @@ const META_DESCRIPTION =
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
+  scentQuizFormId = '',
 }) => {
   return {
     slug: 'home',
@@ -36,8 +38,8 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         media: heroImage.id,
         primaryCtaLabel: 'Explore the Collection',
         primaryCtaUrl: '/products',
-        secondaryCtaLabel: 'Read the Journal →',
-        secondaryCtaUrl: '/posts',
+        secondaryCtaLabel: 'Take the Scent Quiz →',
+        secondaryCtaUrl: '#scent-quiz',
         showStatusCard: true,
         statusCardTitle: 'Batch 014',
         statusCardSubtitle: '47 units · hand-poured',
@@ -84,6 +86,20 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         ],
         richText: createRichText([createHeading(CTA_HEADING, 'h3'), createParagraph(CTA_BODY)]),
       },
+      {
+        blockName: 'Scent Quiz',
+        blockType: 'scentQuiz',
+        eyebrow: 'Find Your Scent',
+        headline: 'Which Candera ritual is calling you?',
+        formId: scentQuizFormId,
+      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
+      {
+        blockName: 'Inner Circle CTA',
+        blockType: 'innerCircleCTA',
+        headline: 'Never Miss a Batch.',
+        description:
+          'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
+      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
     ],
     meta: {
       description: META_DESCRIPTION,

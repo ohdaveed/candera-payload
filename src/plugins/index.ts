@@ -12,6 +12,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { processFormSubmission } from '@/hooks/formSubmissions/processSubmission'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -88,6 +89,9 @@ export const plugins: Plugin[] = [
     formSubmissionOverrides: {
       admin: {
         group: 'Inquiries',
+      },
+      hooks: {
+        afterChange: [processFormSubmission],
       },
     },
   }),

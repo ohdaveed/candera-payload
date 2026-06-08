@@ -10,6 +10,7 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { StorefrontHero } from '../../blocks/StorefrontHero/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { InnerCircleCTA } from '../../blocks/InnerCircleCTA/config'
+import { ScentQuiz } from '../../blocks/ScentQuiz/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -85,6 +86,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 Testimonials,
                 InnerCircleCTA,
+                ScentQuiz,
               ],
               required: true,
               admin: {

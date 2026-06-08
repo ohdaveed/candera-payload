@@ -356,6 +356,7 @@ export interface Page {
     | FormBlock
     | TestimonialsBlock
     | InnerCircleCTABlock
+    | ScentQuizBlock
   )[];
   meta?: {
     title?: string | null;
@@ -874,6 +875,21 @@ export interface InnerCircleCTABlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScentQuizBlock".
+ */
+export interface ScentQuizBlock {
+  eyebrow?: string | null;
+  headline?: string | null;
+  /**
+   * The ID of the Scent Quiz form (populated by seed).
+   */
+  formId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scentQuiz';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -1322,6 +1338,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         innerCircleCTA?: T | InnerCircleCTABlockSelect<T>;
+        scentQuiz?: T | ScentQuizBlockSelect<T>;
       };
   meta?:
     | T
@@ -1470,6 +1487,17 @@ export interface InnerCircleCTABlockSelect<T extends boolean = true> {
   ctaLabel?: T;
   ctaUrl?: T;
   media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScentQuizBlock_select".
+ */
+export interface ScentQuizBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headline?: T;
+  formId?: T;
   id?: T;
   blockName?: T;
 }

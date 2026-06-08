@@ -19,6 +19,7 @@ import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 }
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { GenerateCopyButton as GenerateCopyButton_47ed734a0ca4546f9177bc8d35cf0416 } from '@/components/admin/GenerateCopyButton'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
@@ -72,6 +73,8 @@ export const importMap = {
     HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   '@payloadcms/richtext-lexical/client#BlocksFeatureClient':
     BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  '@/components/admin/GenerateCopyButton#GenerateCopyButton':
+    GenerateCopyButton_47ed734a0ca4546f9177bc8d35cf0416,
   '@payloadcms/plugin-search/client#LinkToDoc': LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   '@payloadcms/plugin-search/client#ReindexButton': ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   '@payloadcms/next/client#FolderTypeField': FolderTypeField_2b8867833a34864a02ddf429b0728a40,

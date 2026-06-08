@@ -1,6 +1,6 @@
 import { RequiredDataFromCollectionSlug } from 'payload'
 
-export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
+export const innerCircleForm: RequiredDataFromCollectionSlug<'forms'> = {
   confirmationMessage: {
     root: {
       type: 'root',
@@ -14,7 +14,7 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
               format: 0,
               mode: 'normal',
               style: '',
-              text: 'Your correspondence has reached the studio. We respond with intention — expect a reply within 48 hours.',
+              text: "You're in the circle.",
               version: 1,
             },
           ],
@@ -22,6 +22,25 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
           format: '',
           indent: 0,
           tag: 'h2',
+          version: 1,
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'text',
+              detail: 0,
+              format: 0,
+              mode: 'normal',
+              style: '',
+              text: 'First access to every new batch will find you before the public announcement.',
+              version: 1,
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          textFormat: 0,
           version: 1,
         },
       ],
@@ -32,7 +51,7 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
     },
   },
   confirmationType: 'message',
-  createdAt: '2023-01-12T21:47:41.374Z',
+  createdAt: new Date().toISOString(),
   emails: [
     {
       emailFrom: '"Candera Studio" <studio@canderacandles.com>',
@@ -50,7 +69,7 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Your contact form submission was successfully received.',
+                  text: "Welcome to the Inner Circle. You'll receive early access to every new batch before the public announcement. We look forward to sharing our studio work with you.",
                   version: 1,
                 },
               ],
@@ -67,18 +86,10 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
           version: 1,
         },
       },
-      subject: "You've received a new message.",
+      subject: "You've joined the Inner Circle — Candera Studio",
     },
   ],
   fields: [
-    {
-      name: 'full-name',
-      blockName: 'full-name',
-      blockType: 'text',
-      label: 'Full Name',
-      required: true,
-      width: 100,
-    },
     {
       name: 'email',
       blockName: 'email',
@@ -87,25 +98,9 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
       required: true,
       width: 100,
     },
-    {
-      name: 'phone',
-      blockName: 'phone',
-      blockType: 'number',
-      label: 'Phone',
-      required: false,
-      width: 100,
-    },
-    {
-      name: 'message',
-      blockName: 'message',
-      blockType: 'textarea',
-      label: 'Message',
-      required: true,
-      width: 100,
-    },
   ],
   redirect: undefined,
-  submitButtonLabel: 'Send Correspondence',
-  title: 'Contact Form',
-  updatedAt: '2023-01-12T21:47:41.374Z',
+  submitButtonLabel: 'Join the Circle',
+  title: 'Inner Circle Signup',
+  updatedAt: new Date().toISOString(),
 }
