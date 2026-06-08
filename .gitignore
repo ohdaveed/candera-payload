@@ -29,9 +29,14 @@ public/sitemap*.xml
 .claude/settings.local.json
 .claude/skills/
 .claude/worktrees/
+.claude/settings.json
 
 # Temporary/blob reports
 /blob-report/
+
+# Ignore accidental saved query files that sometimes get created at repo root
+# (example: a saved `ql -c SELECT ...` command gets written as a file)
+ql*
 
 # Env files: ignore all local/private envs, but keep the example template
 .env
