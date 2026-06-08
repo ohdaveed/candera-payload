@@ -94,16 +94,20 @@ export const seed = async ({
     payload.delete({
       collection: 'users',
       depth: 0,
-      where: { email: { equals: 'admin@canderacandles.com' } },
+      where: { email: { equals: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com' } },
     }),
   ])
+
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD
+  if (!adminPassword)
+    throw new Error('SEED_ADMIN_PASSWORD env var is required to seed the database')
 
   await payload.create({
     collection: 'users',
     data: {
-      name: 'David Arrizon',
-      email: 'admin@canderacandles.com',
-      password: '[REDACTED]',
+      name: process.env.SEED_ADMIN_NAME || 'Candera Admin',
+      email: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com',
+      password: adminPassword,
       roles: ['admin'],
     } as never,
   })
