@@ -75,7 +75,7 @@ export const Card: React.FC<{
         tap: { scale: 0.98 },
       }}
       className={cn(
-        'group flex flex-col h-full bg-white transition-[color,opacity,transform] duration-500 motion-reduce:transition-none',
+        'group relative flex h-full cursor-pointer flex-col bg-white transition-all duration-300 hover:-translate-y-1 hover:bg-muted/50 hover:shadow-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 motion-reduce:transition-none',
         className,
       )}
       ref={cardRef}
@@ -104,7 +104,7 @@ export const Card: React.FC<{
 
         {vessel ? (
           <div className="absolute top-4 right-4 z-10">
-            <span className="text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1 bg-white/90 text-candera-obsidian backdrop-blur-sm">
+            <span className="relative z-10 text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1 bg-white/90 text-candera-obsidian backdrop-blur-sm">
               Batch {vessel}
             </span>
           </div>
@@ -130,13 +130,13 @@ export const Card: React.FC<{
                 isCustomizable={isCustomizable}
                 customizationLabel={customizationLabel}
               >
-                <button className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none">
+                <button className="relative z-10 flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none">
                   Quick View
                 </button>
               </QuickViewDialog>
               <Link
                 href={href}
-                className="text-center text-[10px] font-bold uppercase tracking-[.25em] text-white hover:text-candera-ember transition-colors"
+                className="relative z-10 text-center text-[10px] font-bold uppercase tracking-[.25em] text-white hover:text-candera-ember transition-colors"
               >
                 View Details →
               </Link>
@@ -147,7 +147,7 @@ export const Card: React.FC<{
             <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
               <Link
                 href={href}
-                className="flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
+                className="relative z-10 flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
                 style={{ borderRadius: 0 }}
               >
                 View Details
@@ -168,7 +168,11 @@ export const Card: React.FC<{
             ) : null}
             {titleToUse ? (
               <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem]">
-                <Link href={href} ref={linkRef}>
+                <Link
+                  href={href}
+                  ref={linkRef}
+                  className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+                >
                   {titleToUse}
                 </Link>
               </h3>

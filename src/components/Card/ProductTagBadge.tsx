@@ -11,7 +11,7 @@ export function ProductTagBadge({ tag, className }: { tag: string; className?: s
   return (
     <Badge
       className={cn(
-        'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl rounded-none',
+        'relative z-10 text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 shadow-xl rounded-none',
         tagClassMap[tag] ?? 'bg-candera-obsidian text-white border-transparent',
         className,
       )}
