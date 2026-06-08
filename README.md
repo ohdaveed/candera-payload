@@ -65,6 +65,8 @@ To populate the studio with Batch 014 and our botanical archives:
 
 Candera is optimized for Vercel, utilizing Neon (Postgres) and Vercel Blob Storage.
 
+Production deploys are triggered from `main`.
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?build-command=pnpm%20run%20ci&env=PAYLOAD_SECRET%2CCRON_SECRET%2CPREVIEW_SECRET&project-name=candera-studio&repository-name=candera-payload)
 
 ## Local build helper
