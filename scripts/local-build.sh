@@ -69,17 +69,30 @@ if ! command -v pnpm >/dev/null 2>&1; then
   exit 2
 fi
 
-# Use pass-cli to inject secrets when available and env file exists. Fallback to running commands directly.
+# Use pass-cli to inject secrets when available and env file exists.
+# If the env file contains pass:// refs, pass-cli is required.
 CMD_PREFIX=""
-if [[ -f "$ENV_FILE" && $(command -v pass-cli || true) ]]; then
-  echo "pass-cli found and $ENV_FILE exists — commands will run through pass-cli to inject secrets."
-  CMD_PREFIX=(pass-cli run --env-file "$ENV_FILE" --)
-else
-  if [[ -f "$ENV_FILE" ]]; then
-    echo "Note: $ENV_FILE exists but pass-cli is not available — ensure required secrets are available in env before running build."
+if [[ -f "$ENV_FILE" ]]; then
+  if grep -q "pass://" "$ENV_FILE"; then
+    if ! command -v pass-cli >/dev/null 2>&1; then
+      echo "Error: $ENV_FILE contains pass:// references but pass-cli is not available." >&2
+      echo "Install/login pass-cli or provide a fully-resolved env file before building." >&2
+      exit 2
+    fi
+    if [[ -z "${PROTON_PASS_AGENT_REASON-}" ]]; then
+      export PROTON_PASS_AGENT_REASON="Secure local production build"
+      echo "Note: PROTON_PASS_AGENT_REASON not set; using default: '${PROTON_PASS_AGENT_REASON}'"
+    fi
+    echo "$ENV_FILE contains pass:// refs — using pass-cli for secure env injection."
+    CMD_PREFIX=(pass-cli run --env-file "$ENV_FILE" --)
+  elif command -v pass-cli >/dev/null 2>&1; then
+    echo "pass-cli found and $ENV_FILE exists — commands will run through pass-cli to inject secrets."
+    CMD_PREFIX=(pass-cli run --env-file "$ENV_FILE" --)
   else
-    echo "Note: $ENV_FILE not found — running without env injection."
+    echo "Note: $ENV_FILE exists but pass-cli is not available — ensure required secrets are available in env before running build."
   fi
+else
+  echo "Note: $ENV_FILE not found — running without env injection."
 fi
 
 run_cmd() {
@@ -103,18 +116,18 @@ fi
 
 if [[ $SKIP_LINT -eq 0 ]]; then
   echo "Running lint..."
-  pnpm lint || echo "Lint returned non-zero exit code (continue)"
+  run_cmd pnpm lint || echo "Lint returned non-zero exit code (continue)"
 fi
 
 if [[ $SKIP_TESTS -eq 0 ]]; then
   echo "Running integration tests (may require DB)..."
-  if [[ -f "$ENV_FILE" && $(command -v pass-cli || true) ]]; then
+  if [[ -f "$ENV_FILE" && ${#CMD_PREFIX[@]} -gt 0 ]]; then
     run_cmd pnpm test:int || echo "Integration tests failed"
   else
     echo "Skipping integration tests: no env injection available or $ENV_FILE missing"
   fi
   echo "Running E2E tests (will spawn dev server)"
-  pnpm test:e2e || echo "E2E tests failed"
+  run_cmd pnpm test:e2e || echo "E2E tests failed"
 fi
 
 echo "Local build script finished. Check output above for errors." 
