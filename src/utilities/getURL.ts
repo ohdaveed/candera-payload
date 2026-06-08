@@ -19,6 +19,7 @@ export const getClientSideURL = () => {
   }
 
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    // Prefer the canonical production host when running outside the browser.
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   }
 
