@@ -46,6 +46,7 @@ ql*
 .env.*.secret
 .env.*.key
 .env.*
+!.env.ci
 !.env.example
 
 # TypeScript build info
@@ -70,4 +71,3 @@ scripts/pass_payloads/*.json
 
 # Generated pass output (contains resolved secrets)
 .env.pass
-
