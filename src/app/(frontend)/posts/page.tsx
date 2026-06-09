@@ -9,6 +9,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import Link from 'next/link'
 import PageClient from './page.client'
+import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -36,19 +37,13 @@ export default async function Page() {
     <div className="bg-candera-vellum">
       <PageClient />
 
-      {/* Page header */}
-      <section className="bg-candera-vellum pt-32 pb-16">
-        <div className="container">
-          <div className="max-w-[560px]">
-            <Eyebrow className="block mb-4">Candera Stories</Eyebrow>
-            <h1 className="hero-heading text-candera-obsidian">The Journal</h1>
-            <p className="editorial mt-6 text-candera-sage-text">
-              Reflections on intentional living, the art of scent, and the stories behind our
-              seasonal batches.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div className="container pt-32 pb-16">
+        <PageHeader
+          eyebrow="Candera Stories"
+          title="The Journal"
+          description="Reflections on intentional living, the art of scent, and the stories behind our seasonal batches."
+        />
+      </div>
 
       {/* Featured hero post */}
       {featuredPost && (

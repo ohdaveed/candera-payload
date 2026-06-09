@@ -7,8 +7,8 @@ import React from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
-import { Eyebrow } from '@/components/ui/eyebrow'
 import Link from 'next/link'
+import { PageHeader } from '@/components/PageHeader'
 
 type Args = {
   searchParams: Promise<{
@@ -65,19 +65,17 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     <div className="min-h-screen bg-candera-vellum">
       <PageClient />
 
-      {/* Header section */}
-      <div className="pt-32 pb-16 container">
-        <Eyebrow className="block mb-4 text-center">Explore</Eyebrow>
-        <h1 className="hero-heading text-candera-obsidian text-center mb-4">
-          Search the Collection
-        </h1>
-        <p className="editorial text-candera-sage-text text-center mb-12">
-          Discover your next ritual scent.
-        </p>
-
-        <div className="max-w-[560px] mx-auto mb-20">
+      <div className="container pt-32 pb-16">
+        <PageHeader
+          align="center"
+          eyebrow="Explore"
+          title="Search the Collection"
+          description="Discover your next ritual scent."
+          maxWidthClassName="max-w-[560px]"
+          className="mb-20"
+        >
           <Search />
-        </div>
+        </PageHeader>
       </div>
 
       {/* Results section */}

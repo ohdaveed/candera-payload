@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { Eyebrow } from '@/components/ui/eyebrow'
 import { ContactForm } from '@/components/ContactForm'
+import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,10 +29,13 @@ export default async function ContactPage() {
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <div className="container">
         <div className="max-w-[800px] mx-auto">
-          <Eyebrow className="block mb-4 text-center">Get in Touch</Eyebrow>
-          <h1 className="hero-heading text-candera-obsidian text-center mb-12">
-            Connect with the Studio
-          </h1>
+          <PageHeader
+            align="center"
+            eyebrow="Get in Touch"
+            title="Connect with the Studio"
+            maxWidthClassName="max-w-[800px]"
+            className="mb-12"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20">
             {/* Left column — contact info */}

@@ -23,7 +23,8 @@ export function ProductFilters() {
     } else {
       params.set(key, value)
     }
-    router.push(`${pathname}?${params.toString()}`)
+    const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    router.replace(nextUrl)
   }
 
   return (

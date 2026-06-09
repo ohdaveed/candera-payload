@@ -9,6 +9,7 @@ import PageClient from './page.client'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
+import { PageHeader } from '@/components/PageHeader'
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
@@ -43,16 +44,14 @@ export default async function ProductsPage({
   return (
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <PageClient />
+
       <div className="container">
-        <div className="mb-20 max-w-[600px]">
-          <Eyebrow className="block mb-4">Limited Release</Eyebrow>
-          <h1 className="hero-heading text-candera-obsidian">The Collection</h1>
-          <p className="editorial mt-6 text-candera-sage-text">
-            Small-batch botanical candles, hand-poured in the studio and numbered for authenticity.
-            Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that
-            transforms your environment.
-          </p>
-        </div>
+        <PageHeader
+          className="mb-20"
+          eyebrow="Limited Release"
+          title="The Collection"
+          description="Small-batch botanical candles, hand-poured in the studio and numbered for authenticity. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
+        />
 
         <Suspense fallback={null}>
           <ProductFilters />
