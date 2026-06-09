@@ -13,6 +13,9 @@ interface MobileNavProps {
   transparent: boolean
 }
 
+import { Section } from '@/components/ui/section'
+import { Button } from '@/components/ui/button'
+
 export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
   const navItems = data?.navItems || []
   const [open, setOpen] = useState(false)
@@ -23,10 +26,12 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
   }, [pathname])
 
   return (
-    <div className="md:hidden">
+    <Section as="div" padding="none" className="md:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             aria-label="Open navigation menu"
             className={[
               'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] transition-colors',
@@ -34,7 +39,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
             ].join(' ')}
           >
             <Menu className="w-5 h-5" aria-hidden="true" />
-          </button>
+          </Button>
         </SheetTrigger>
         <SheetContent
           aria-describedby={undefined}
@@ -42,7 +47,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
           className="bg-candera-linen border-candera-stone/30 w-[280px] pt-12"
         >
           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-          <nav className="flex flex-col gap-2 px-6">
+          <Section as="nav" padding="none" className="flex flex-col gap-2 px-6">
             <CMSLink
               type="custom"
               url="/search"
@@ -60,9 +65,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
                 className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-4 border-b border-candera-stone/20 last:border-0"
               />
             ))}
-          </nav>
+          </Section>
         </SheetContent>
       </Sheet>
-    </div>
+    </Section>
   )
 }

@@ -40,27 +40,26 @@ export function ProductFilters() {
   return (
     <nav className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12 pb-6 border-b border-candera-stone/20">
       {/* Tag pills */}
-      <div className="flex flex-wrap gap-2">
+      <ul className="flex flex-wrap gap-2 list-none p-0 m-0">
         {TAGS.map((tag) => (
-          <Button
-            key={tag}
-            variant={activeTag === tag ? 'cta' : 'outline'}
-            onClick={() => update('tag', tag)}
-            className={cn(
-              'h-auto py-2.5 px-6 min-h-[44px]',
-              activeTag !== tag &&
-                'border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
-            )}
-          >
-            {tag}
-          </Button>
+          <li key={tag}>
+            <Button
+              variant={activeTag === tag ? 'cta' : 'outline'}
+              onClick={() => update('tag', tag)}
+              className={cn(
+                'h-auto py-2.5 px-6 min-h-[44px]',
+                activeTag !== tag &&
+                  'border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
+              )}
+            >
+              {tag}
+            </Button>
+          </li>
         ))}
-      </div>
+      </ul>
       {/* Sort select */}
-      <div className="flex flex-col gap-2 min-w-[200px]">
-        <label htmlFor="product-sort" className="sr-only">
-          Sort products
-        </label>
+      <fieldset className="flex flex-col gap-2 min-w-[200px] border-none p-0 m-0">
+        <legend className="sr-only">Sort products</legend>
         <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
           <SelectTrigger
             id="product-sort"
@@ -80,7 +79,7 @@ export function ProductFilters() {
             ))}
           </SelectContent>
         </Select>
-      </div>
+      </fieldset>
     </nav>
   )
 }

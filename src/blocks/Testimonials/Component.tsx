@@ -18,45 +18,61 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <Section padding="large" className="bg-white border-t border-candera-stone/10">
+    <Section padding="large" className="bg-candera-linen/50 border-t border-candera-stone/10">
       <Container>
         {eyebrow && (
           <Eyebrow as="p" className="text-center mb-24">
             {eyebrow}
           </Eyebrow>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 lg:gap-32">
+        <Section
+          as="ul"
+          padding="none"
+          className="grid grid-cols-1 md:grid-cols-3 gap-20 lg:gap-32 list-none p-0 m-0"
+        >
           {items.map((t, i) => (
             <Card
               key={i}
+              as="li"
               className="flex flex-col items-center text-center gap-8 bg-transparent border-none shadow-none group"
             >
-              <CardContent className="p-0 flex flex-col items-center gap-8">
-                <div className="flex gap-1.5 text-candera-ember-strong/40 transition-colors duration-700 group-hover:text-candera-ember-strong/80">
+              <CardContent as="article" className="p-0 flex flex-col items-center gap-8">
+                <Section
+                  as="header"
+                  padding="none"
+                  className="flex gap-1.5 text-candera-ember-strong/40 transition-colors duration-700 group-hover:text-candera-ember-strong/80"
+                >
                   {[...Array(5)].map((_, j) => (
                     <StarIcon key={j} />
                   ))}
-                </div>
-                <p className="editorial text-[20px] text-candera-obsidian leading-[1.8] italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex flex-col gap-3 items-center mt-4">
+                </Section>
+                <blockquote className="m-0">
+                  <p className="editorial text-[20px] text-candera-obsidian leading-[1.8] italic">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                </blockquote>
+                <Section
+                  as="footer"
+                  padding="none"
+                  className="flex flex-col gap-3 items-center mt-4"
+                >
                   <p className="text-[12px] text-candera-obsidian font-bold uppercase tracking-[.3em]">
                     {t.author}
                   </p>
                   {t.badge && (
                     <Badge
                       variant="outline"
+                      as="span"
                       className="text-[10px] tracking-[.2em] uppercase text-candera-sage-text border-candera-stone/20 rounded-none px-4 py-1"
                     >
                       {t.badge}
                     </Badge>
                   )}
-                </div>
+                </Section>
               </CardContent>
             </Card>
           ))}
-        </div>
+        </Section>
       </Container>
     </Section>
   )

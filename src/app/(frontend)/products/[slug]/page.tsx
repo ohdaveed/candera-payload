@@ -122,7 +122,11 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           Return to Collection
         </Link>
 
-        <article className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+        <Section
+          as="article"
+          padding="none"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-32"
+        >
           {/* Left: image gallery */}
           <Section as="aside" padding="none" className="lg:col-span-7 relative">
             {product.productTag && (
@@ -137,10 +141,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </Section>
 
           {/* Right: details */}
-          <Section as="aside" padding="none" className="lg:col-span-5 flex flex-col gap-8 py-4">
+          <Section as="aside" padding="none" className="lg:col-span-5 flex flex-col gap-16 py-4">
             {/* Actionable Cluster */}
             <Card className="rounded-2xl border border-candera-stone/20 bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden">
-              <CardContent className="flex flex-col gap-6 p-8">
+              <CardContent className="flex flex-col gap-8 p-8">
                 <Section padding="none" className="flex flex-col gap-3">
                   {product.vessel && <Eyebrow>Vessel {product.vessel}</Eyebrow>}
                   <h1 className="text-candera-obsidian text-3xl lg:text-4xl font-display italic leading-tight">
@@ -184,7 +188,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
                 {/* CTA */}
                 {product.etsyListingId && (
-                  <Button asChild variant="cta" size="cta" className="w-full py-7 text-base">
+                  <Button
+                    asChild
+                    variant="cta-ember"
+                    size="cta"
+                    className="w-full py-7 text-base bg-candera-ember-strong hover:bg-candera-obsidian"
+                  >
                     <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
                       Buy on Etsy
                     </BoutiqueLink>
@@ -203,7 +212,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               specifications={product.specifications}
             />
           </Section>
-        </article>
+        </Section>
       </Container>
     </Section>
   )

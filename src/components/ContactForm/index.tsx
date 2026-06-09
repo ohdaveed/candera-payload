@@ -4,8 +4,16 @@ import React, { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Section } from '@/components/ui/section'
 import { getClientSideURL } from '@/utilities/getURL'
 
 type FormValues = {
@@ -24,11 +32,16 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>()
+  const form = useForm<FormValues>({
+    defaultValues: {
+      'full-name': '',
+      email: '',
+      phone: '',
+      message: '',
+    },
+  })
+
+  const { control, handleSubmit } = form
 
   const onSubmit = useCallback(
     (data: FormValues) => {
@@ -73,135 +86,121 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <section className="py-12 text-center">
+      <Section padding="none" className="py-12 text-center">
         <p className="font-display text-2xl text-candera-obsidian mb-3 italic">
           Your note has been received.
         </p>
         <p className="font-sans text-sm text-candera-sage-text">
           We respond with intention — expect a reply within 48 hours.
         </p>
-      </section>
+      </Section>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      {error && (
-        <section
-          className="mb-6 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
-          role="alert"
-          aria-live="polite"
-        >
-          {error}
-        </section>
-      )}
-
-      <section className="flex flex-col gap-6">
-        <section>
-          <Label
-            htmlFor="full-name"
-            className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
+    <Form {...form}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {error && (
+          <Section
+            padding="none"
+            className="mb-6 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
+            role="alert"
+            aria-live="polite"
           >
-            Full Name{' '}
-            <span className="text-candera-ember" aria-hidden="true">
-              *
-            </span>
-          </Label>
-          <Input
-            id="full-name"
-            type="text"
-            autoComplete="name"
-            aria-required="true"
-            aria-invalid={!!errors['full-name']}
-            aria-describedby={errors['full-name'] ? 'full-name-error' : undefined}
-            {...register('full-name', { required: 'Full name is required' })}
+            {error}
+          </Section>
+        )}
+
+        <Section padding="none" className="flex flex-col gap-6">
+          <FormField
+            control={control}
+            name="full-name"
+            rules={{ required: 'Full name is required' }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                  Full Name{' '}
+                  <span className="text-candera-ember" aria-hidden="true">
+                    *
+                  </span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Your Name" autoComplete="name" {...field} />
+                </FormControl>
+                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+              </FormItem>
+            )}
           />
-          {errors['full-name'] && (
-            <p id="full-name-error" className="mt-1.5 text-[12px] text-candera-rose">
-              {errors['full-name'].message}
-            </p>
-          )}
-        </section>
 
-        <section>
-          <Label
-            htmlFor="contact-email"
-            className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
-          >
-            Email{' '}
-            <span className="text-candera-ember" aria-hidden="true">
-              *
-            </span>
-          </Label>
-          <Input
-            id="contact-email"
-            type="email"
-            autoComplete="email"
-            aria-required="true"
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? 'email-error' : undefined}
-            {...register('email', {
+          <FormField
+            control={control}
+            name="email"
+            rules={{
               required: 'Email is required',
               pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
-            })}
+            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                  Email{' '}
+                  <span className="text-candera-ember" aria-hidden="true">
+                    *
+                  </span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="email@example.com" autoComplete="email" {...field} />
+                </FormControl>
+                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+              </FormItem>
+            )}
           />
-          {errors.email && (
-            <p id="email-error" className="mt-1.5 text-[12px] text-candera-rose">
-              {errors.email.message}
-            </p>
-          )}
-        </section>
 
-        <section>
-          <Label
-            htmlFor="phone"
-            className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
-          >
-            Phone{' '}
-            <span className="text-candera-stone/60 text-[10px] normal-case tracking-normal font-normal ml-1">
-              (optional)
-            </span>
-          </Label>
-          <Input
-            id="phone"
-            type="tel"
-            autoComplete="tel"
-            inputMode="numeric"
-            {...register('phone')}
+          <FormField
+            control={control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                  Phone{' '}
+                  <span className="text-candera-stone/60 text-[10px] normal-case tracking-normal font-normal ml-1">
+                    (optional)
+                  </span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="(555) 000-0000" autoComplete="tel" {...field} />
+                </FormControl>
+                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+              </FormItem>
+            )}
           />
-        </section>
 
-        <section>
-          <Label
-            htmlFor="message"
-            className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
-          >
-            Message{' '}
-            <span className="text-candera-ember" aria-hidden="true">
-              *
-            </span>
-          </Label>
-          <Textarea
-            id="message"
-            rows={5}
-            aria-required="true"
-            aria-invalid={!!errors.message}
-            aria-describedby={errors.message ? 'message-error' : undefined}
-            {...register('message', { required: 'Message is required' })}
+          <FormField
+            control={control}
+            name="message"
+            rules={{ required: 'Message is required' }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                  Message{' '}
+                  <span className="text-candera-ember" aria-hidden="true">
+                    *
+                  </span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea placeholder="How can we help?" rows={5} {...field} />
+                </FormControl>
+                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+              </FormItem>
+            )}
           />
-          {errors.message && (
-            <p id="message-error" className="mt-1.5 text-[12px] text-candera-rose">
-              {errors.message.message}
-            </p>
-          )}
-        </section>
-      </section>
+        </Section>
 
-      <section className="mt-8">
-        <Button type="submit" variant="cta" size="cta" disabled={isLoading}>
-          {isLoading ? 'Sending…' : 'Send Correspondence'}
-        </Button>
-      </section>
-    </form>
+        <Section padding="none" className="mt-8">
+          <Button type="submit" variant="cta-ember" size="cta" disabled={isLoading}>
+            {isLoading ? 'Sending…' : 'Send Correspondence'}
+          </Button>
+        </Section>
+      </form>
+    </Form>
   )
 }

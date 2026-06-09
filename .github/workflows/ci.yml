@@ -26,6 +26,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Run linter
+        run: pnpm run lint
+
+      - name: Run tests
+        run: pnpm run test:int
+
       - name: Run CI (migrate + build)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}

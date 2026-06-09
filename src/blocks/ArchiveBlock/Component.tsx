@@ -7,6 +7,8 @@ import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { CardPostData } from '@/components/Card'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -81,9 +83,9 @@ export const ArchiveBlock: React.FC<
   }
 
   return (
-    <div id={`block-${id}`}>
+    <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
       {serializedIntroContent && (
-        <div className="container mb-12">
+        <Container className="mb-12">
           <RichText
             className="ms-0 max-w-[560px] 
               [&_h3]:h2 [&_h3]:mb-4
@@ -91,9 +93,11 @@ export const ArchiveBlock: React.FC<
             data={serializedIntroContent}
             enableGutter={false}
           />
-        </div>
+        </Container>
       )}
-      <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
-    </div>
+      <Container>
+        <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
+      </Container>
+    </Section>
   )
 }

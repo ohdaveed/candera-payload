@@ -10,6 +10,8 @@ import { HeaderNav } from './Nav'
 import { MobileNav } from './Nav/MobileNav'
 import { Container } from '@/components/ui/container'
 
+import { Section } from '@/components/ui/section'
+
 interface HeaderClientProps {
   data: Header
 }
@@ -43,7 +45,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const isTransparent = isDark && !scrolled
 
   return (
-    <header
+    <Section
+      as="header"
+      padding="none"
       className={[
         'fixed top-0 left-0 right-0 z-[120] transition-[background-color,padding,box-shadow,border-color,backdrop-filter] duration-500',
         isTransparent
@@ -66,11 +70,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
 
         {/* Right nav */}
-        <nav className="flex items-center">
+        <Section as="nav" padding="none" className="flex items-center">
           <HeaderNav data={data} transparent={isTransparent} />
           <MobileNav data={data} transparent={isTransparent} />
-        </nav>
+        </Section>
       </Container>
-    </header>
+    </Section>
   )
 }

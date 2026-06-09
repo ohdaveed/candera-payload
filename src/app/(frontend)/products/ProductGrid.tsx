@@ -37,17 +37,17 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   }
 
   return (
-    <motion.section
+    <motion.ul
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 list-none p-0"
     >
       {products.map((product, i) => (
-        <motion.div key={product.slug || i} variants={item}>
+        <motion.li key={product.slug || i} variants={item}>
           <Card doc={product} relationTo="products" />
-        </motion.div>
+        </motion.li>
       ))}
-    </motion.section>
+    </motion.ul>
   )
 }

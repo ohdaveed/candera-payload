@@ -65,7 +65,7 @@ export function ProductDetailTabs({
               ]
 
   return (
-    <Tabs defaultValue="specs">
+    <Tabs defaultValue="specs" className="mt-32">
       <TabsList className="bg-candera-ash/50 rounded-none border border-candera-stone/20 p-0 h-auto w-full">
         <TabsTrigger
           value="specs"

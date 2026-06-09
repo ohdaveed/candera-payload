@@ -20,6 +20,8 @@ type Props = MediaBlockProps & {
   disableInnerContainer?: boolean
 }
 
+import { Separator } from '@/components/ui/separator'
+
 export const MediaBlock: React.FC<Props> = (props) => {
   const {
     captionClassName,
@@ -35,13 +37,15 @@ export const MediaBlock: React.FC<Props> = (props) => {
   if (media && typeof media === 'object') caption = media.caption
 
   return (
-    <Section padding="large" className={cn(className)}>
+    <Section padding="large" className={cn('overflow-hidden', className)}>
       <Container className={cn({ 'px-0 md:px-0 max-w-none': !enableGutter })}>
-        <figure className="m-0">
+        <figure className="m-0 group flex flex-col items-center">
           {(media || staticImage) && (
             <Media
+              className="w-full"
+              htmlElement="span"
               imgClassName={cn(
-                'border border-border rounded-none grayscale hover:grayscale-0 transition-all duration-1000',
+                'border border-border/40 rounded-none grayscale hover:grayscale-0 transition-all duration-1000 ease-candera-enter',
                 imgClassName,
               )}
               resource={media}
@@ -51,13 +55,14 @@ export const MediaBlock: React.FC<Props> = (props) => {
           {caption && (
             <figcaption
               className={cn(
-                'mt-8 max-w-[800px] mx-auto text-center editorial italic text-candera-sage-text',
+                'mt-12 max-w-[700px] mx-auto text-center editorial italic text-candera-sage-text leading-relaxed',
                 {
                   container: !disableInnerContainer,
                 },
                 captionClassName,
               )}
             >
+              <Separator className="w-12 mx-auto mb-8 bg-candera-stone/40" />
               <RichText data={caption} enableGutter={false} />
             </figcaption>
           )}

@@ -28,7 +28,7 @@ export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> 
   customizationLabel?: Product['customizationLabel']
 }
 
-import { Card as ShadcnCard, CardContent } from '@/components/ui/card'
+import { Card as ShadcnCard, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -111,7 +111,7 @@ export const Card: React.FC<{
           {vessel ? (
             <div className="absolute top-4 right-4 z-10">
               <span className="relative z-10 text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1 bg-white/90 text-candera-obsidian backdrop-blur-sm">
-                Batch {vessel}
+                BATCH {vessel}
               </span>
             </div>
           ) : null}
@@ -170,17 +170,16 @@ export const Card: React.FC<{
           )}
         </div>
 
-        <CardContent className="pt-6 pb-2 flex flex-col flex-grow px-0">
-          {/* Product header row */}
-          <div className="flex items-start justify-between gap-4 mb-3">
+        <CardHeader className="pt-6 pb-3 px-0">
+          <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-1.5 px-0">
               {vessel ? (
-                <span className="text-[9px] font-bold uppercase tracking-[.22em] text-candera-sage-text px-0">
-                  Vessel {vessel}
+                <span className="text-[10px] font-bold uppercase tracking-[.22em] text-candera-sage-text px-0">
+                  BATCH {vessel}
                 </span>
               ) : null}
               {titleToUse ? (
-                <h3 className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem]">
+                <CardTitle className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem] border-none p-0 bg-transparent shadow-none">
                   <Link
                     href={href}
                     ref={linkRef}
@@ -188,7 +187,7 @@ export const Card: React.FC<{
                   >
                     {titleToUse}
                   </Link>
-                </h3>
+                </CardTitle>
               ) : null}
             </div>
             {price != null && (
@@ -199,7 +198,9 @@ export const Card: React.FC<{
               </span>
             )}
           </div>
+        </CardHeader>
 
+        <CardContent className="pt-0 pb-2 px-0 flex flex-col flex-grow">
           {/* Categories fallback for posts */}
           {showCategories && hasCategories && !scentProfile && (
             <div className="uppercase text-[10px] font-bold tracking-widest text-candera-sage-text mt-auto px-0">

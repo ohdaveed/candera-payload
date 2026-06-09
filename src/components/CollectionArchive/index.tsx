@@ -12,8 +12,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts, relationTo = 'posts' } = props
 
   return (
-    <Container>
-      <div className="flex flex-wrap justify-center gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
+    <Container className="px-0 md:px-0">
+      <ul className="flex flex-wrap justify-center gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12 list-none p-0">
         {posts?.map((result, index) => {
           if (typeof result === 'object' && result !== null) {
             const {
@@ -52,7 +52,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
             }
 
             return (
-              <div
+              <li
                 className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] xl:w-[calc(33.333%-3rem)]"
                 key={index}
               >
@@ -62,13 +62,13 @@ export const CollectionArchive: React.FC<Props> = (props) => {
                   relationTo={relationTo}
                   showCategories
                 />
-              </div>
+              </li>
             )
           }
 
           return null
         })}
-      </div>
+      </ul>
     </Container>
   )
 }

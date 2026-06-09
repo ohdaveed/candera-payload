@@ -30,7 +30,7 @@ export default async function ContactPage() {
   return (
     <Section padding="large" className="bg-candera-linen min-h-screen pt-32">
       <Container>
-        <section className="max-w-[800px] mx-auto">
+        <Section as="article" padding="none" className="max-w-[800px] mx-auto">
           <PageHeader
             align="center"
             eyebrow="Get in Touch"
@@ -39,9 +39,13 @@ export default async function ContactPage() {
             className="mb-12"
           />
 
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20">
+          <Section
+            as="section"
+            padding="none"
+            className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20"
+          >
             {/* Left column — contact info */}
-            <section>
+            <Section as="section" padding="none">
               <h2 className="font-display text-2xl mb-6">Inquiries</h2>
               <p className="editorial text-candera-sage-text leading-relaxed mb-10">
                 For questions regarding your order, wholesale opportunities, or press inquiries,
@@ -49,8 +53,8 @@ export default async function ContactPage() {
                 slower pace in the studio.
               </p>
 
-              <section className="flex flex-col gap-6">
-                <section>
+              <Section as="section" padding="none" className="flex flex-col gap-6">
+                <Section as="section" padding="none">
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Email
                   </span>
@@ -60,9 +64,9 @@ export default async function ContactPage() {
                   >
                     studio@canderacandles.com
                   </a>
-                </section>
+                </Section>
 
-                <section>
+                <Section as="section" padding="none">
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Social
                   </span>
@@ -74,26 +78,30 @@ export default async function ContactPage() {
                   >
                     @canderacandles
                   </a>
-                </section>
+                </Section>
 
-                <section>
+                <Section as="section" padding="none">
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Studio Hours
                   </span>
                   <p className="font-sans text-lg text-candera-obsidian">
                     By appointment — slow by design.
                   </p>
-                </section>
-              </section>
-            </section>
+                </Section>
+              </Section>
+            </Section>
 
             {/* Right column — contact form */}
-            <aside className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember">
+            <Section
+              as="aside"
+              padding="none"
+              className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember"
+            >
               <h2 className="font-display text-2xl mb-8">Send a Note</h2>
               <ContactForm formId={contactFormId} />
-            </aside>
-          </section>
-        </section>
+            </Section>
+          </Section>
+        </Section>
       </Container>
     </Section>
   )
