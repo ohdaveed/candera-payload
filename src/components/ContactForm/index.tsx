@@ -49,21 +49,27 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         setError(undefined)
         setIsLoading(true)
 
-        const result = await submitForm(formId, [
-          { field: 'full-name', value: data['full-name'] },
-          { field: 'email', value: data.email },
-          { field: 'phone', value: data.phone || '' },
-          { field: 'message', value: data.message },
-        ])
+        try {
+          const result = await submitForm(formId, [
+            { field: 'full-name', value: data['full-name'] },
+            { field: 'email', value: data.email },
+            { field: 'phone', value: data.phone || '' },
+            { field: 'message', value: data.message },
+          ])
 
-        setIsLoading(false)
+          setIsLoading(false)
 
-        if (!result.ok) {
-          setError(result.error)
-          return
+          if (!result.ok) {
+            setError(result.error)
+            return
+          }
+
+          setHasSubmitted(true)
+        } catch (err) {
+          console.error('[ContactForm] Server Action failed:', err)
+          setIsLoading(false)
+          setError('Something went wrong. Please try again.')
         }
-
-        setHasSubmitted(true)
       }
 
       void submit()
