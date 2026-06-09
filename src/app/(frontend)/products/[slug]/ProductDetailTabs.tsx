@@ -6,6 +6,8 @@ import { FragranceProfile } from '@/components/FragranceProfile'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Card, CardContent } from '@/components/ui/card'
 
+import type { ScentProfile as ScentProfileType } from '@/payload-types'
+
 type ScentProfile =
   | {
       top?: string | null
@@ -19,7 +21,7 @@ type ProductDetailTabsProps = {
   title?: string | null
   scentProfile?: ScentProfile
   burnTime?: string | null
-  atmosphere?: string | null
+  atmosphere?: string | number | ScentProfileType | null
   productType?: 'candle' | 'vintage' | 'custom'
   specifications?: Array<{ label: string; value: string }> | null
 }

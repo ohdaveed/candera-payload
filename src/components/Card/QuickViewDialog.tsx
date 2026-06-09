@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import type { Product } from '@/payload-types'
+import type { Product, ScentProfile as ScentProfileType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -20,7 +20,7 @@ type QuickViewDialogProps = {
   tagline?: Product['tagline']
   scentProfile?: Product['scentProfile']
   burnTime?: Product['burnTime']
-  atmosphere?: Product['atmosphere']
+  atmosphere?: string | number | ScentProfileType | null
   etsyListingId?: Product['etsyListingId']
   productTag?: Product['productTag']
   productType?: Product['productType']
