@@ -163,22 +163,13 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
               {/* Customization Field */}
               {product.isCustomizable && (
-                <div className="flex flex-col gap-3">
-                  <label
-                    htmlFor="customization"
-                    className="text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian"
-                  >
+                <div className="flex flex-col gap-2 rounded-lg border border-candera-stone/20 bg-candera-ash/30 px-4 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian">
                     {product.customizationLabel || 'Personalization'}
-                  </label>
-                  <input
-                    type="text"
-                    id="customization"
-                    aria-label={product.customizationLabel || 'Personalization'}
-                    placeholder="Enter your custom text..."
-                    className="w-full px-4 py-3 bg-candera-ash/30 border border-candera-stone/20 rounded-lg focus:outline-none focus:ring-1 focus:ring-candera-obsidian transition-all placeholder:text-candera-stone/60 text-sm"
-                  />
+                  </p>
                   <p className="text-[11px] italic text-candera-sage-text">
-                    This item is made to order. Please double-check your spelling.
+                    This item is made to order. Please include your custom text in the order notes
+                    and double-check your spelling.
                   </p>
                 </div>
               )}

@@ -112,8 +112,8 @@ export const Card: React.FC<{
 
         {/* Hover overlay for Quick View */}
         {relationTo === 'products' ? (
-          <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
-            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none flex flex-col gap-2">
+          <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 motion-reduce:transition-none group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
+            <div className="flex w-full translate-y-4 flex-col gap-2 transition-transform duration-500 motion-reduce:transition-none group-hover:translate-y-0 group-focus-within:translate-y-0 [@media(hover:none)]:translate-y-0">
               <QuickViewDialog
                 title={titleToUse}
                 slug={slug}
@@ -130,24 +130,30 @@ export const Card: React.FC<{
                 isCustomizable={isCustomizable}
                 customizationLabel={customizationLabel}
               >
-                <button className="relative z-10 flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors rounded-none">
+                <button
+                  type="button"
+                  onClick={(event) => event.stopPropagation()}
+                  onMouseDownCapture={(event) => event.stopPropagation()}
+                  onMouseUpCapture={(event) => event.stopPropagation()}
+                  className="relative z-10 flex h-[48px] w-full items-center justify-center rounded-none bg-white text-[10px] font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
                   Quick View
                 </button>
               </QuickViewDialog>
               <Link
                 href={href}
-                className="relative z-10 text-center text-[10px] font-bold uppercase tracking-[.25em] text-white hover:text-candera-ember transition-colors"
+                className="relative z-10 text-center text-[10px] font-bold uppercase tracking-[.25em] text-white transition-colors hover:text-candera-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 View Details →
               </Link>
             </div>
           </div>
         ) : (
-          <div className="absolute inset-0 bg-candera-obsidian/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none flex items-center justify-center p-6">
-            <div className="w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500 motion-reduce:transition-none">
+          <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 motion-reduce:transition-none group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
+            <div className="w-full translate-y-4 transition-transform duration-500 motion-reduce:transition-none group-hover:translate-y-0 group-focus-within:translate-y-0 [@media(hover:none)]:translate-y-0">
               <Link
                 href={href}
-                className="relative z-10 flex items-center justify-center w-full h-[48px] text-[10px] font-bold uppercase tracking-[.3em] bg-white text-candera-obsidian shadow-xl hover:bg-candera-vellum transition-colors"
+                className="relative z-10 flex h-[48px] w-full items-center justify-center bg-white text-[10px] font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 style={{ borderRadius: 0 }}
               >
                 View Details

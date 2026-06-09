@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Card, type CardPostData } from '@/components/Card'
 
 interface ProductGridProps {
@@ -9,25 +9,29 @@ interface ProductGridProps {
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
+  const shouldReduceMotion = useReducedMotion()
+
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05,
+        duration: shouldReduceMotion ? 0 : undefined,
+        staggerChildren: shouldReduceMotion ? 0 : 0.05,
       },
     },
   }
 
   const item = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
     show: {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring' as const,
-        stiffness: 300,
-        damping: 20,
+        duration: shouldReduceMotion ? 0 : undefined,
+        type: shouldReduceMotion ? undefined : ('spring' as const),
+        stiffness: shouldReduceMotion ? undefined : 300,
+        damping: shouldReduceMotion ? undefined : 20,
       },
     },
   }
@@ -35,7 +39,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   return (
     <motion.div
       variants={container}
-      initial="hidden"
+      initial={shouldReduceMotion ? false : 'hidden'}
       animate="show"
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20"
     >

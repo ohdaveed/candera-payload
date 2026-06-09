@@ -46,17 +46,24 @@ export function ProductFilters() {
         ))}
       </div>
       {/* Sort select */}
-      <select
-        value={activeSort}
-        onChange={(e) => update('sort', e.target.value)}
-        className="text-[10px] font-bold uppercase tracking-[.2em] border border-candera-stone/40 bg-transparent text-candera-obsidian px-3 py-2 cursor-pointer focus:outline-none focus:border-candera-obsidian h-[44px]"
-      >
-        {SORTS.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="product-sort" className="sr-only">
+          Sort products
+        </label>
+        <select
+          id="product-sort"
+          name="sort"
+          value={activeSort}
+          onChange={(e) => update('sort', e.target.value)}
+          className="h-[44px] cursor-pointer border border-candera-stone/40 bg-transparent px-3 py-2 text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          {SORTS.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   )
 }
