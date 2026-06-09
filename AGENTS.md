@@ -123,6 +123,32 @@ Configured in `src/plugins/index.ts`: redirects, nested-docs (categories), SEO, 
 - Next.js 16, React 19, TypeScript 6.
 - Package manager: `pnpm` 10.33.
 
+## Cursor Cloud specific instructions
+
+Cloud Agent VMs ship with `/exec-daemon/node` (Node 22) ahead of nvm on `PATH`. This project requires **Node >=24.15.0**. Before any `pnpm` command, activate nvm:
+
+```bash
+export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && nvm use 24.15.0
+corepack enable && corepack prepare pnpm@11.5.2 --activate
+```
+
+### Services
+
+| Service | Command | Notes |
+| ------- | ------- | ----- |
+| PostgreSQL | `sudo docker compose up -d` | Port **54320**; DB name must match `POSTGRES_DB` in `docker-compose.yml` (`your-database-name`). First run may need `sudo chmod 666 /var/run/docker.sock` or `sudo usermod -aG docker $USER`. |
+| Next.js + Payload | `set -a && source .env && set +a && pnpm dev` | Storefront at `/`, admin at `/admin`. Use a tmux session for long-running dev. |
+
+Copy `.env.example` to `.env` for local dev (plain values, not `pass://` URIs). Required: `POSTGRES_URL`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`.
+
+**First-time DB setup** (after Postgres is up): `pnpm payload migrate`, then `pnpm tsx scripts/seed-admin.ts`. Full content seed needs `SEED_ADMIN_PASSWORD` set when running `pnpm tsx scripts/seed-db.ts`. Default admin: `admin@candera.com` / `password`.
+
+`pass-cli` is optional in Cloud VMs when `.env` has resolved secrets. Production integrations (Vercel Blob, Etsy, Mailchimp, Supabase) are not required for core storefront/CMS dev.
+
+### Validation
+
+See **Commands** above for `pnpm lint`, `pnpm test:int`, and `pnpm test:e2e`. E2E reuses an existing dev server when one is listening on port 3000 (`reuseExistingServer: true` in `playwright.config.ts`).
+
 <!--VITE PLUS START-->
 
 # Using Vite+, the Unified Toolchain for the Web
