@@ -44,7 +44,7 @@ export function ProductDetailTabs({
       : isCandle
         ? [
             { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
-            { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
+            { label: 'Craftsmanship', value: 'Hand-labeled · Micro-batch cured' },
             { label: 'Origin', value: 'Ships from California' },
           ]
         : title?.toLowerCase().includes('metal') || productType === 'custom'

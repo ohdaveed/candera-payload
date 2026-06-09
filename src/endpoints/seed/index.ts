@@ -12,6 +12,7 @@ import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
 import { seedScentQuiz } from './scent-quiz'
 import { contact as contactPageData } from './contact-page'
+import { about as aboutPageData } from './about-page'
 import { home } from './home'
 import { legalPage } from './legal-pages'
 import { image1 } from './image-1'
@@ -304,7 +305,7 @@ export const seed = async ({
       price: 38,
       productTag: 'Bestseller',
       atmosphere: 'Coastal & Airy',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'Gathered from the tide. A practice in coastal stillness.',
       scentProfile: { top: 'Sea Breeze', heart: 'Driftwood', base: 'Salt Air' },
       imageKey: 'seashell-garden',
@@ -317,7 +318,7 @@ export const seed = async ({
       price: 38,
       productTag: 'New Release',
       atmosphere: 'Fresh & Botanical',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
       scentProfile: { top: 'Fresh Green', heart: 'Lily of the Valley', base: 'Morning Dew' },
       imageKey: 'meadowlight-botanical',
@@ -330,7 +331,7 @@ export const seed = async ({
       price: 38,
       productTag: 'Limited Batch',
       atmosphere: 'Moody & Intimate',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
       scentProfile: { top: 'Dark Berry', heart: 'Merlot', base: 'Vetiver' },
       imageKey: 'crimson-noir',
@@ -343,7 +344,7 @@ export const seed = async ({
       price: 38,
       productTag: 'Bestseller',
       atmosphere: 'Romantic & Soft',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
       scentProfile: { top: 'White Lilac', heart: 'Blue Hydrangea', base: 'Soft Musk' },
       imageKey: 'ever-after-glow',
@@ -356,7 +357,7 @@ export const seed = async ({
       price: 38,
       productTag: 'Limited Batch',
       atmosphere: 'Gentle & Contemplative',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
       scentProfile: { top: 'Lilac', heart: 'Pressed Pansy', base: 'Soft Powder' },
       imageKey: 'anyas-eyes',
@@ -369,7 +370,7 @@ export const seed = async ({
       price: 38,
       productTag: 'New Release',
       atmosphere: 'Bold & Floral',
-      burnTime: '50 Hours',
+      burnTime: '60 Hours',
       tagline: 'Botanical architecture. Bold florals grounded in ritual.',
       scentProfile: { top: 'Fresh Florals', heart: 'Botanical Rose', base: 'Green Stem' },
       imageKey: 'scarlet-bloom',
@@ -383,6 +384,7 @@ export const seed = async ({
         collection: 'products',
         data: {
           ...product,
+          _status: 'published',
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         } as unknown as RequiredDataFromCollectionSlug<'products'>,
       })
@@ -401,7 +403,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, contactPage, aboutPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -420,6 +422,17 @@ export const seed = async ({
         disableRevalidate: true,
       },
       data: contactPageData({ contactForm: contactForm }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: aboutPageData({
+        aboutImage:
+          (candleraMediaDocs['minimalist-airy-about'] as unknown as Media) || imageHomeDoc,
+      }),
     }),
     payload.create({
       collection: 'pages',
@@ -474,6 +487,16 @@ export const seed = async ({
           },
           {
             link: {
+              type: 'reference',
+              label: 'About',
+              reference: {
+                relationTo: 'pages',
+                value: aboutPage.id,
+              },
+            },
+          },
+          {
+            link: {
               type: 'custom',
               label: 'Journal',
               url: '/posts',
@@ -499,6 +522,16 @@ export const seed = async ({
       },
       data: {
         navItems: [
+          {
+            link: {
+              type: 'reference',
+              label: 'About',
+              reference: {
+                relationTo: 'pages',
+                value: aboutPage.id,
+              },
+            },
+          },
           {
             link: {
               type: 'custom',
@@ -583,18 +616,22 @@ async function loadCandleraImages(): Promise<Record<string, File | null>> {
     'ever-after-glow',
     'anyas-eyes',
     'scarlet-bloom',
+    'minimalist-airy-about',
+    'minimalist-airy-home',
   ]
 
   const result: Record<string, File | null> = {}
 
   for (const name of images) {
-    const filePath = path.join(process.cwd(), 'public', 'candera', `${name}.jpg`)
+    const isPng = name.includes('minimalist')
+    const ext = isPng ? 'png' : 'jpg'
+    const filePath = path.join(process.cwd(), 'public', 'candera', `${name}.${ext}`)
     try {
       const data = fs.readFileSync(filePath)
       result[name] = {
-        name: `${name}.jpg`,
+        name: `${name}.${ext}`,
         data,
-        mimetype: 'image/jpeg',
+        mimetype: isPng ? 'image/png' : 'image/jpeg',
         size: data.byteLength,
       }
     } catch {

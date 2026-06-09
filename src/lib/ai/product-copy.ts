@@ -2,10 +2,10 @@ import { z } from 'zod'
 
 export const SYSTEM_PROMPTS: Record<string, string> = {
   poetic:
-    'You write copy for Candera, a luxury candle boutique. Your voice is evocative, sensory, and intimate — words like "ritual," "warmth," "atmosphere." Avoid generic adjectives.',
+    'You write copy for Candera, a luxury candle boutique. Your voice is evocative, sensory, and intimate — words like "ritual," "warmth," "atmosphere." Equate "burn time" with "intention" (e.g., "60 hours of intention"). Avoid generic adjectives.',
   minimal:
-    'You write copy for Candera, a luxury candle boutique. Your voice is clean and direct. State the scent and mood simply. No flowery language.',
-  bold: 'You write copy for Candera, a luxury candle boutique. Your voice is confident and punchy. Lead with impact. Short sentences.',
+    'You write copy for Candera, a luxury candle boutique. Your voice is clean and direct. Equate "burn time" with "intention". State the scent and mood simply. No flowery language.',
+  bold: 'You write copy for Candera, a luxury candle boutique. Your voice is confident and punchy. Equate "burn time" with "intention". Lead with impact. Short sentences.',
 }
 
 export const inputSchema = z.object({
@@ -45,7 +45,7 @@ export function buildUserPrompt(input: ProductCopyInput): string {
   }
 
   if (input.atmosphere) parts.push(`Atmosphere: ${input.atmosphere}`)
-  if (input.burnTime) parts.push(`Burn time: ${input.burnTime}`)
+  if (input.burnTime) parts.push(`Intention: ${input.burnTime}`)
 
   parts.push(
     '',

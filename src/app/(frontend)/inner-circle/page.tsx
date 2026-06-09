@@ -32,8 +32,8 @@ export default async function InnerCirclePage() {
           <PageHeader
             align="center"
             eyebrow="The Inner Circle"
-            title="First access. Every batch."
-            description="Our batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop — before the public announcement. No noise, just scent."
+            title="Be the first to know."
+            description="Our studio doors are opening. Join the Inner Circle to receive advance notice of new arrivals, behind-the-scenes updates from the studio, and seasonal ritual invitations."
             maxWidthClassName="max-w-[600px]"
             descriptionClassName="text-[18px] leading-[1.9] max-w-[480px] mx-auto"
             className="mb-14"

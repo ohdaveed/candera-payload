@@ -129,9 +129,11 @@ export const Products: CollectionConfig = {
                 {
                   name: 'burnTime',
                   type: 'text',
+                  label: 'Intention (Burn Time)',
+                  defaultValue: '60 Hours',
                   admin: {
                     condition: (data) => data?.productType === 'candle',
-                    description: 'Expected burn time e.g. "50 Hours".',
+                    description: 'The duration of the ritual, e.g. "60 Hours of Intention".',
                   },
                 },
               ],

@@ -74,7 +74,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
         <header className="flex flex-col items-start text-left max-w-[580px]">
           {heroTag && <Eyebrow className="block mb-6 text-candera-ember">{heroTag}</Eyebrow>}
 
-          <h1 className="hero-heading text-white m-0 text-left font-display font-normal italic leading-[0.85] tracking-tight">
+          <h1 className="text-white m-0 text-left font-display font-normal italic leading-[0.95] tracking-tight text-[clamp(2.5rem,8vw,5rem)] md:text-[clamp(4rem,10vw,8rem)]">
             {headline}
           </h1>
 

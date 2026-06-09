@@ -16,7 +16,7 @@ import { Container } from '@/components/ui/container'
 export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
-    'Hand-poured micro-batch candles. Each vessel is numbered and inspected for peak botanical clarity.',
+    'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
 }
 
 export default async function ProductsPage({
@@ -42,7 +42,7 @@ export default async function ProductsPage({
   const activeTag = tag && tag !== 'All' ? tag : null
   const resultLabel = activeTag
     ? `${products.totalDocs} results for '${activeTag}'`
-    : `${products.totalDocs} vessels in this batch`
+    : `${products.totalDocs} pieces in the collection`
 
   return (
     <Section padding="large" className="bg-candera-linen min-h-screen">
@@ -51,9 +51,9 @@ export default async function ProductsPage({
       <Container>
         <PageHeader
           className="mb-20"
-          eyebrow="Limited Release"
+          eyebrow="Botanical Study"
           title="The Collection"
-          description="Small-batch botanical candles, hand-poured in the studio and numbered for authenticity. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
+          description="Small-batch botanical candles, hand-poured in the studio and curated for sensory depth. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
         />
 
         <Suspense fallback={null}>

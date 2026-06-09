@@ -56,7 +56,7 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
           <Card className="flex-1 bg-candera-ash/60 border-candera-stone/20 rounded-sm">
             <CardContent className="px-3 py-3 flex flex-col gap-1 text-center p-0">
               <span className="text-[8px] font-bold uppercase tracking-[.2em] text-candera-sage-text">
-                Burn Time
+                Intention
               </span>
               <span className="text-[12px] font-medium text-candera-obsidian">{burnTime}</span>
             </CardContent>

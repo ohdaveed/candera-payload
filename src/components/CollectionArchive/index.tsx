@@ -13,7 +13,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
 
   return (
     <Container>
-      <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
+      <div className="flex flex-wrap justify-center gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
         {posts?.map((result, index) => {
           if (typeof result === 'object' && result !== null) {
             const {
@@ -52,7 +52,10 @@ export const CollectionArchive: React.FC<Props> = (props) => {
             }
 
             return (
-              <div className="col-span-4" key={index}>
+              <div
+                className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] xl:w-[calc(33.333%-3rem)]"
+                key={index}
+              >
                 <Card
                   className="h-full"
                   doc={minimizedDoc as CardPostData}

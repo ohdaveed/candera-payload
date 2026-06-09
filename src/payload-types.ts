@@ -999,7 +999,7 @@ export interface Product {
    */
   atmosphere?: (number | null) | ScentProfile;
   /**
-   * Expected burn time e.g. "50 Hours".
+   * The duration of the ritual, e.g. "60 Hours of Intention".
    */
   burnTime?: string | null;
   scentProfile?: {

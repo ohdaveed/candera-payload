@@ -26,6 +26,7 @@ export const ArchiveBlock: React.FC<
   const limit = limitFromProps || 3
 
   let data: (Post | Product)[] = []
+  let totalDocs = 0
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -51,6 +52,7 @@ export const ArchiveBlock: React.FC<
     })
 
     data = fetchedDocs.docs as (Post | Product)[]
+    totalDocs = fetchedDocs.totalDocs
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
@@ -58,18 +60,35 @@ export const ArchiveBlock: React.FC<
       }) as Post[]
 
       data = filteredSelectedPosts
+      totalDocs = data.length
     }
+  }
+
+  // Support dynamic count interpolation in intro content
+  const serializedIntroContent = introContent ? JSON.parse(JSON.stringify(introContent)) : null
+  if (serializedIntroContent?.root?.children) {
+    const traverseAndReplace = (node: unknown) => {
+      if (typeof node !== 'object' || node === null) return
+      const n = node as Record<string, unknown>
+      if (typeof n.text === 'string') {
+        n.text = n.text.replace('{{count}}', totalDocs.toString())
+      }
+      if (Array.isArray(n.children)) {
+        n.children.forEach(traverseAndReplace)
+      }
+    }
+    traverseAndReplace(serializedIntroContent.root)
   }
 
   return (
     <div id={`block-${id}`}>
-      {introContent && (
+      {serializedIntroContent && (
         <div className="container mb-12">
           <RichText
             className="ms-0 max-w-[560px] 
               [&_h3]:h2 [&_h3]:mb-4
               [&_p]:editorial [&_p]:text-candera-sage-text"
-            data={introContent}
+            data={serializedIntroContent}
             enableGutter={false}
           />
         </div>
