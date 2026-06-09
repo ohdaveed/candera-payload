@@ -9,18 +9,15 @@ export const ScentQuiz: Block = {
   },
   fields: [
     {
-      name: 'eyebrow',
-      type: 'text',
-      defaultValue: 'Find Your Scent',
-    },
-    {
-      name: 'headline',
-      type: 'text',
-      defaultValue: 'Which Candera ritual is calling you?',
+      name: 'quiz',
+      type: 'relationship',
+      relationTo: 'quizzes',
+      required: true,
     },
     {
       name: 'formId',
-      type: 'text',
+      type: 'relationship',
+      relationTo: 'forms',
       admin: {
         description: 'The ID of the Scent Quiz form (populated by seed).',
       },

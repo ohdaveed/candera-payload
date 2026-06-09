@@ -76,6 +76,8 @@ export interface Config {
     users: User;
     'etsy-tokens': EtsyToken;
     briefs: Brief;
+    quizzes: Quiz;
+    'scent-profiles': ScentProfile;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -102,6 +104,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'etsy-tokens': EtsyTokensSelect<false> | EtsyTokensSelect<true>;
     briefs: BriefsSelect<false> | BriefsSelect<true>;
+    quizzes: QuizzesSelect<false> | QuizzesSelect<true>;
+    'scent-profiles': ScentProfilesSelect<false> | ScentProfilesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -878,15 +882,68 @@ export interface InnerCircleCTABlock {
  * via the `definition` "ScentQuizBlock".
  */
 export interface ScentQuizBlock {
-  eyebrow?: string | null;
-  headline?: string | null;
+  quiz: number | Quiz;
   /**
    * The ID of the Scent Quiz form (populated by seed).
    */
-  formId?: string | null;
+  formId?: (number | null) | Form;
   id?: string | null;
   blockName?: string | null;
   blockType: 'scentQuiz';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quizzes".
+ */
+export interface Quiz {
+  id: number;
+  title: string;
+  questions: {
+    prompt: string;
+    options: {
+      label: string;
+      image?: (number | null) | Media;
+      scores?:
+        | {
+            profile: number | ScentProfile;
+            points: number;
+            id?: string | null;
+          }[]
+        | null;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scent-profiles".
+ */
+export interface ScentProfile {
+  id: number;
+  name: string;
+  /**
+   * Used for internal identification and URL linking.
+   */
+  slug: string;
+  tagline: string;
+  /**
+   * e.g. "Sea Breeze · Driftwood · Salt Air"
+   */
+  notes?: string | null;
+  editorial: string;
+  /**
+   * The product recommended for this atmosphere.
+   */
+  featuredProduct?: (number | null) | Product;
+  /**
+   * Background image shown during the quiz or result reveal.
+   */
+  ambientImage?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -938,9 +995,9 @@ export interface Product {
       }[]
     | null;
   /**
-   * Mood descriptor e.g. "Coastal & Airy".
+   * The ritual atmosphere associated with this candle.
    */
-  atmosphere?: string | null;
+  atmosphere?: (number | null) | ScentProfile;
   /**
    * Expected burn time e.g. "50 Hours".
    */
@@ -1228,6 +1285,14 @@ export interface PayloadLockedDocument {
         value: number | Brief;
       } | null)
     | ({
+        relationTo: 'quizzes';
+        value: number | Quiz;
+      } | null)
+    | ({
+        relationTo: 'scent-profiles';
+        value: number | ScentProfile;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1495,8 +1560,7 @@ export interface InnerCircleCTABlockSelect<T extends boolean = true> {
  * via the `definition` "ScentQuizBlock_select".
  */
 export interface ScentQuizBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  headline?: T;
+  quiz?: T;
   formId?: T;
   id?: T;
   blockName?: T;
@@ -1734,6 +1798,50 @@ export interface EtsyTokensSelect<T extends boolean = true> {
 export interface BriefsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quizzes_select".
+ */
+export interface QuizzesSelect<T extends boolean = true> {
+  title?: T;
+  questions?:
+    | T
+    | {
+        prompt?: T;
+        options?:
+          | T
+          | {
+              label?: T;
+              image?: T;
+              scores?:
+                | T
+                | {
+                    profile?: T;
+                    points?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scent-profiles_select".
+ */
+export interface ScentProfilesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  tagline?: T;
+  notes?: T;
+  editorial?: T;
+  featuredProduct?: T;
+  ambientImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }

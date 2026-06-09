@@ -1,181 +1,37 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { Media } from '@/components/Media'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 import { getClientSideURL } from '@/utilities/getURL'
-
-type Atmosphere = 'coastal' | 'fresh' | 'moody' | 'romantic' | 'contemplative' | 'bold'
-
-type QuizOption = {
-  label: string
-  scores: Partial<Record<Atmosphere, number>>
-}
-
-type QuizQuestion = {
-  prompt: string
-  options: QuizOption[]
-}
-
-const QUESTIONS: QuizQuestion[] = [
-  {
-    prompt: 'When does your ritual most often unfold?',
-    options: [
-      { label: 'Morning light, before the day begins', scores: { fresh: 2, coastal: 1 } },
-      { label: 'The slow afternoon, between tasks', scores: { contemplative: 2, romantic: 1 } },
-      { label: 'Evening, as the world quiets', scores: { moody: 2, romantic: 1 } },
-      { label: 'Late night, in the dark hours', scores: { moody: 2, bold: 1 } },
-    ],
-  },
-  {
-    prompt: 'Where does your mind wander when the room is quiet?',
-    options: [
-      { label: 'The coast — open air, salt, and distance', scores: { coastal: 3 } },
-      { label: 'A wildflower meadow in full sun', scores: { fresh: 3 } },
-      { label: 'A darkened library, candlelit and still', scores: { moody: 3 } },
-      { label: 'A garden in soft, morning bloom', scores: { romantic: 2, contemplative: 1 } },
-      { label: 'A quiet woodland path in late autumn', scores: { contemplative: 3 } },
-      { label: 'A hothouse full of architectural florals', scores: { bold: 3 } },
-    ],
-  },
-  {
-    prompt: 'How do you want the air in your room to feel?',
-    options: [
-      { label: 'Clear and expansive, like an open window', scores: { coastal: 2, fresh: 1 } },
-      { label: 'Soft and still, inviting deep breaths', scores: { contemplative: 2, romantic: 1 } },
-      { label: 'Deep and intriguing, a layer of shadow', scores: { moody: 2, bold: 1 } },
-      {
-        label: 'Tender and luminous, like a shared secret',
-        scores: { romantic: 2, contemplative: 1 },
-      },
-    ],
-  },
-  {
-    prompt: 'Which sensory memory lingers the longest?',
-    options: [
-      { label: 'The bite of salt air and green stems', scores: { coastal: 3 } },
-      { label: 'Sun-warmed herbs and wild botanicals', scores: { fresh: 3 } },
-      { label: 'Dark fruit, aged wood, and velvet', scores: { moody: 3 } },
-      {
-        label: 'Powdered petals and soft, elegant musk',
-        scores: { romantic: 2, contemplative: 1 },
-      },
-      { label: 'Bold, heady blooms grounded in earth', scores: { bold: 3 } },
-    ],
-  },
-]
-
-type AtmosphereProfile = {
-  name: string
-  tagline: string
-  notes: string
-  slug: string
-  editorial: string
-}
-
-const ATMOSPHERE_PROFILES: Record<Atmosphere, AtmosphereProfile> = {
-  coastal: {
-    name: 'Coastal & Airy',
-    tagline: 'Gathered from the tide. A practice in coastal stillness.',
-    notes: 'Sea Breeze · Driftwood · Salt Air',
-    slug: 'seashell-garden-glow',
-    editorial:
-      'Your ritual is one of expansion and clarity. You seek the vastness of the horizon and the sharp, clean bite of the Pacific air to clear your path.',
-  },
-  fresh: {
-    name: 'Fresh & Botanical',
-    tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
-    notes: 'Fresh Green · Lily of the Valley · Morning Dew',
-    slug: 'meadowlight-botanical',
-    editorial:
-      'You are drawn to the vibrant energy of growth. Your space is a sanctuary for new beginnings, filled with the sun-drenched scent of a meadow in bloom.',
-  },
-  moody: {
-    name: 'Moody & Intimate',
-    tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
-    notes: 'Dark Berry · Merlot · Vetiver',
-    slug: 'crimson-noir',
-    editorial:
-      'You embrace the shadows and the depth of the evening. Your ritual is intimate and layered, seeking the complex notes of dark fruit and ancient woods.',
-  },
-  romantic: {
-    name: 'Romantic & Soft',
-    tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
-    notes: 'White Lilac · Blue Hydrangea · Soft Musk',
-    slug: 'ever-after-glow',
-    editorial:
-      'You find beauty in tenderness and tradition. Your ritual is an act of elegance, surrounding yourself with the soft, luminous fragrance of a garden at dusk.',
-  },
-  contemplative: {
-    name: 'Gentle & Contemplative',
-    tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
-    notes: 'Lilac · Pressed Pansy · Soft Powder',
-    slug: 'anyas-eyes',
-    editorial:
-      'Your practice is one of stillness and introspection. You seek the gentle, powdered scents that invite quiet thought and the slow passage of time.',
-  },
-  bold: {
-    name: 'Bold & Floral',
-    tagline: 'Botanical architecture. Bold florals grounded in ritual.',
-    notes: 'Fresh Florals · Botanical Rose · Green Stem',
-    slug: 'scarlet-bloom',
-    editorial:
-      'You are moved by the architectural power of nature. Your ritual is confident and striking, centered around the heady, unyielding blooms of the botanical world.',
-  },
-}
-
-function deriveResult(scores: Partial<Record<Atmosphere, number>>): Atmosphere {
-  const atmospheres: Atmosphere[] = [
-    'coastal',
-    'fresh',
-    'moody',
-    'romantic',
-    'contemplative',
-    'bold',
-  ]
-  let top: Atmosphere = 'coastal'
-  let topScore = -1
-  for (const key of atmospheres) {
-    const score = scores[key] ?? 0
-    if (score > topScore) {
-      topScore = score
-      top = key
-    }
-  }
-  return top
-}
+import type {
+  ScentQuizBlock as ScentQuizBlockType,
+  Quiz,
+  ScentProfile,
+  Product,
+} from '@/payload-types'
 
 type EmailFormValues = { email: string }
 
-type ScentQuizBlockProps = {
-  eyebrow?: string | null
-  headline?: string | null
-  formId?: string | null
-  blockType?: 'scentQuiz'
-  blockName?: string | null
-  id?: string | null
-}
-
-import { Section } from '@/components/ui/section'
-import { Container } from '@/components/ui/container'
-
-export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
-  eyebrow = 'Find Your Scent',
-  headline = 'Which Candera ritual is calling you?',
-  formId,
-}) => {
+export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, formId }) => {
   const [step, setStep] = useState(0)
-  const [scores, setScores] = useState<Partial<Record<Atmosphere, number>>>({})
-  const [result, setResult] = useState<Atmosphere | null>(null)
+  const [scores, setScores] = useState<Record<string, number>>({})
+  const [result, setResult] = useState<ScentProfile | null>(null)
   const [isRevealing, setIsRevealing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | undefined>()
+
+  const quiz = quizData as Quiz | null
+  const questions = useMemo(() => quiz?.questions || [], [quiz])
+  const isEmailStep = step === questions.length
 
   const {
     register,
@@ -183,29 +39,52 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
     formState: { errors },
   } = useForm<EmailFormValues>()
 
-  const isEmailStep = step === QUESTIONS.length
+  const deriveResult = useCallback(() => {
+    let topId: string | number = ''
+    let topScore = -1
+    for (const [id, score] of Object.entries(scores)) {
+      if (score > topScore) {
+        topScore = score
+        topId = id
+      }
+    }
+
+    // Find the actual profile from the quiz data
+    // We assume the profile relationship was populated
+    const foundProfile = questions
+      .flatMap((q) => q.options.flatMap((o) => o.scores || []))
+      .find(
+        (s) => String(typeof s.profile === 'object' ? s.profile.id : s.profile) === String(topId),
+      )?.profile as ScentProfile | undefined
+
+    return foundProfile || null
+  }, [scores, questions])
 
   const handleOptionSelect = useCallback(
-    (option: QuizOption) => {
+    (option: NonNullable<Quiz['questions']>[number]['options'][number]) => {
       const newScores = { ...scores }
-      for (const [key, val] of Object.entries(option.scores) as [Atmosphere, number][]) {
-        newScores[key] = (newScores[key] ?? 0) + val
-      }
+      option.scores?.forEach((s) => {
+        const profileId = typeof s.profile === 'object' ? s.profile.id : s.profile
+        if (profileId) {
+          const profileIdStr = String(profileId)
+          newScores[profileIdStr] = (newScores[profileIdStr] ?? 0) + (s.points || 0)
+        }
+      })
       setScores(newScores)
 
-      if (step < QUESTIONS.length - 1) {
+      if (step < questions.length - 1) {
         setStep((s) => s + 1)
       } else {
-        const derived = deriveResult(newScores)
+        const derived = deriveResult()
         setResult(derived)
         setIsRevealing(true)
         setTimeout(() => {
           setIsRevealing(false)
-          setStep(QUESTIONS.length)
-        }, 2400)
+          setStep(questions.length)
+        }, 2800)
       }
     },
-    [step, scores],
+    [step, scores, questions, deriveResult],
   )
 
   const onEmailSubmit = useCallback(
@@ -214,7 +93,9 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
         setSubmitError(undefined)
         setIsLoading(true)
 
-        if (!formId) {
+        const finalFormId = typeof formId === 'object' ? formId?.id : formId
+
+        if (!finalFormId) {
           setSubmitError('Form unavailable — please reach out to us directly.')
           setIsLoading(false)
           return
@@ -225,10 +106,10 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              form: formId,
+              form: finalFormId,
               submissionData: [
                 { field: 'email', value: data.email },
-                { field: 'scent-result', value: result ?? '' },
+                { field: 'scent-result', value: result?.name ?? '' },
               ],
             }),
           })
@@ -253,135 +134,151 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
     [formId, result],
   )
 
-  const currentQuestion = QUESTIONS[step]
-  const resultProfile = result ? ATMOSPHERE_PROFILES[result] : null
-  const progress = (step / QUESTIONS.length) * 100
+  const currentQuestion = questions[step]
+  const progress = (step / questions.length) * 100
+
+  if (!quiz) return null
 
   return (
     <Section
       padding="large"
-      className="w-full overflow-hidden"
+      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center"
       style={{ background: 'var(--candera-obsidian)' }}
     >
-      <Container className="max-w-[800px]">
-        {/* Header */}
-        <div className="text-center mb-16">
-          {eyebrow && <Eyebrow className="text-candera-ember/80 mb-4">{eyebrow}</Eyebrow>}
-          <h2 className="h2 text-candera-linen max-w-xl mx-auto">{headline}</h2>
-        </div>
-
-        {/* Minimal Progress Bar */}
-        <div className="relative w-full h-[1px] bg-candera-stone/20 mb-20 max-w-[400px] mx-auto overflow-hidden">
+      {/* Ambient Background Transition */}
+      <AnimatePresence>
+        {result?.ambientImage && (
           <motion.div
-            className="absolute top-0 left-0 h-full bg-candera-ember"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ type: 'spring', stiffness: 50, damping: 20 }}
-          />
-        </div>
+            key={
+              typeof result.ambientImage === 'object' ? result.ambientImage.id : result.ambientImage
+            }
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.15 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+            className="absolute inset-0 pointer-events-none"
+          >
+            <Media fill resource={result.ambientImage} imgClassName="object-cover" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <Container className="relative z-10 max-w-[900px]">
+        {/* Header (Hidden when result is revealing or revealed) */}
+        {!isRevealing && !isEmailStep && !hasSubmitted && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center mb-16"
+          >
+            <Eyebrow className="text-candera-ember/80 mb-4">{quiz.title}</Eyebrow>
+            <div className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden">
+              <motion.div
+                className="absolute top-0 left-0 h-full bg-candera-ember"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+              />
+            </div>
+          </motion.div>
+        )}
 
         <AnimatePresence mode="wait">
           {isRevealing ? (
             <motion.div
               key="revealing"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-20 text-center"
             >
-              <div className="relative w-16 h-16 mb-8">
+              <div className="relative w-24 h-24 mb-12">
                 <motion.div
-                  className="absolute inset-0 border border-candera-ember/30 rounded-full"
-                  animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute inset-0 border border-candera-ember/20 rounded-full"
+                  animate={{ scale: [1, 2, 1], opacity: [0.2, 0, 0.2] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                 />
                 <motion.div
-                  className="absolute inset-0 border border-candera-ember rounded-full"
+                  className="absolute inset-2 border border-candera-ember/40 rounded-full"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                   style={{ borderRightColor: 'transparent', borderBottomColor: 'transparent' }}
                 />
+                <motion.div
+                  className="absolute inset-4 border border-candera-ember rounded-full"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                  style={{ borderLeftColor: 'transparent', borderTopColor: 'transparent' }}
+                />
               </div>
-              <p className="font-display text-2xl text-candera-linen italic animate-pulse">
-                Curating your atmosphere...
+              <p className="font-display text-3xl text-candera-linen italic tracking-wide">
+                Synthesizing your ritual...
               </p>
             </motion.div>
           ) : !isEmailStep && currentQuestion ? (
             <motion.div
               key={step}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <p className="font-display text-2xl md:text-4xl text-candera-linen italic text-center mb-12 leading-tight max-w-2xl">
+              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-16 leading-tight max-w-3xl">
                 {currentQuestion.prompt}
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                 {currentQuestion.options.map((option, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => handleOptionSelect(option)}
-                    className="group relative flex flex-col items-start p-8 border border-candera-stone/20 bg-white/[0.02] text-left transition-all duration-300 hover:border-candera-ember/50 hover:bg-white/[0.05] rounded-[2px] overflow-hidden"
+                    className="group relative flex flex-col items-start p-10 border border-candera-stone/10 bg-white/[0.01] text-left transition-all duration-500 hover:border-candera-ember/40 hover:bg-white/[0.03] rounded-[2px] overflow-hidden"
                   >
-                    <div className="absolute top-0 left-0 w-[2px] h-0 bg-candera-ember transition-all duration-500 group-hover:h-full" />
-                    <span className="font-sans text-[15px] leading-relaxed text-candera-linen/80 group-hover:text-candera-linen transition-colors">
+                    {option.image && (
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
+                        <Media fill resource={option.image} imgClassName="object-cover" />
+                      </div>
+                    )}
+                    <div className="absolute top-0 left-0 w-[1px] h-0 bg-candera-ember/60 transition-all duration-700 group-hover:h-full shadow-[0_0_15px_rgba(191,155,103,0.5)]" />
+                    <span className="font-sans text-[16px] leading-relaxed text-candera-linen/60 group-hover:text-candera-linen transition-colors duration-500 tracking-wide">
                       {option.label}
                     </span>
                   </button>
                 ))}
               </div>
             </motion.div>
-          ) : isEmailStep && resultProfile && !hasSubmitted ? (
+          ) : isEmailStep && result && !hasSubmitted ? (
             <motion.div
               key="email"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center max-w-xl mx-auto"
             >
-              <div className="text-center mb-12 p-12 border border-candera-ember/20 bg-candera-ember/[0.03] backdrop-blur-sm w-full relative rounded-[2px]">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-candera-obsidian px-6">
-                  <Eyebrow className="text-candera-ember">The Reveal</Eyebrow>
-                </div>
-                <h3 className="font-display text-4xl md:text-5xl text-candera-linen italic mb-6">
-                  {resultProfile.name}
+              <div className="text-center mb-12">
+                <Eyebrow className="text-candera-ember mb-6">Discovery Awaits</Eyebrow>
+                <h3 className="font-display text-4xl text-candera-linen italic mb-8">
+                  Your atmosphere study is complete.
                 </h3>
-                <p className="editorial text-candera-linen/70 text-[17px] leading-relaxed mb-6 max-w-md mx-auto">
-                  {resultProfile.tagline}
-                </p>
-                <div className="h-[1px] w-12 bg-candera-ember/30 mx-auto mb-6" />
-                <p className="font-sans text-[12px] font-bold uppercase tracking-[0.3em] text-candera-ember">
-                  {resultProfile.notes}
-                </p>
-              </div>
-
-              <div className="text-center mb-12 max-w-md">
-                <p className="font-display text-xl text-candera-linen italic mb-4">
-                  Let us keep this ritual close.
-                </p>
-                <p className="font-sans text-[14px] text-candera-linen/40 leading-relaxed">
-                  Join our inner circle to unlock your full atmosphere study and receive early
-                  access to the next numbered batch.
+                <p className="font-sans text-[15px] text-candera-linen/50 leading-relaxed mb-12 tracking-wide">
+                  To preserve this ritual and receive your full botanical profile, join our inner
+                  circle. We will send the results and early access to the next numbered batch
+                  directly to your inbox.
                 </p>
               </div>
 
               <form
                 onSubmit={handleSubmit(onEmailSubmit)}
                 noValidate
-                className="flex flex-col items-center gap-6 w-full max-w-[440px]"
+                className="flex flex-col items-center gap-8 w-full"
               >
                 <div className="w-full">
-                  <Label htmlFor="quiz-email" className="sr-only">
-                    Email address
-                  </Label>
                   <Input
                     id="quiz-email"
                     type="email"
                     placeholder="your@ritual.com"
                     autoComplete="email"
-                    className="h-14 bg-white/[0.03] border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-lg focus:border-candera-ember/50 transition-colors rounded-[2px]"
+                    className="h-16 bg-transparent border-0 border-b border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-xl focus:border-candera-ember/50 transition-all duration-700 rounded-none px-0"
                     {...register('email', {
                       required: 'Email is required',
                       pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
@@ -391,7 +288,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
                     <motion.p
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-3 text-[12px] text-candera-rose text-center font-bold uppercase tracking-wider"
+                      className="mt-4 text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
                     >
                       {errors.email.message}
                     </motion.p>
@@ -401,57 +298,96 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
                   type="submit"
                   variant="cta-ember"
                   size="cta"
-                  className="w-full py-8 text-base"
+                  className="w-full py-10 text-lg uppercase tracking-[0.3em]"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Sending Invitation…' : 'Unlock My Profile'}
                 </Button>
                 {submitError && (
-                  <p className="text-[12px] text-candera-rose text-center font-bold uppercase tracking-wider">
+                  <p className="text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]">
                     {submitError}
                   </p>
                 )}
               </form>
             </motion.div>
-          ) : hasSubmitted && resultProfile ? (
+          ) : hasSubmitted && result ? (
             <motion.div
               key="result"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+                },
+              }}
+              className="text-center max-w-3xl mx-auto"
             >
-              <div className="p-16 border border-candera-ember/30 bg-candera-ember/[0.05] relative mb-12 rounded-[2px]">
-                <div className="absolute top-8 left-8">
-                  <div className="w-6 h-6 border-t border-l border-candera-ember/40" />
-                </div>
-                <div className="absolute bottom-8 right-8 rotate-180">
-                  <div className="w-6 h-6 border-t border-l border-candera-ember/40" />
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              >
+                <Eyebrow className="text-candera-ember mb-8">Your Atmosphere Study</Eyebrow>
+              </motion.div>
+
+              <motion.h3
+                variants={{
+                  hidden: { opacity: 0, scale: 0.95 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-6xl md:text-8xl text-candera-linen italic mb-10 leading-[0.9]"
+              >
+                {result.name}
+              </motion.h3>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                className="h-[1px] w-24 bg-candera-ember/30 mx-auto mb-10"
+              />
+
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="editorial text-candera-linen/90 text-[20px] md:text-[24px] leading-relaxed mb-12 italic max-w-2xl mx-auto"
+              >
+                &ldquo;{result.editorial}&rdquo;
+              </motion.p>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="flex flex-col gap-12 items-center"
+              >
+                <div className="flex flex-col gap-4">
+                  <p className="font-sans text-[12px] font-bold uppercase tracking-[0.5em] text-candera-ember">
+                    Botanical Composition
+                  </p>
+                  <p className="font-sans text-[16px] text-candera-linen/50 tracking-[0.2em] font-light">
+                    {result.notes}
+                  </p>
                 </div>
 
-                <Eyebrow className="text-candera-ember mb-6">Your Atmosphere Study</Eyebrow>
-                <h3 className="font-display text-5xl md:text-6xl text-candera-linen italic mb-8">
-                  {resultProfile.name}
-                </h3>
-                <p className="editorial text-candera-linen/80 text-[19px] leading-relaxed mb-8 max-w-lg mx-auto italic">
-                  &ldquo;{resultProfile.editorial}&rdquo;
-                </p>
-                <div className="flex flex-col gap-8 items-center">
-                  <div className="flex flex-col gap-2">
-                    <p className="font-sans text-[11px] font-bold uppercase tracking-[0.4em] text-candera-ember">
-                      Botanical Composition
-                    </p>
-                    <p className="font-sans text-[14px] text-candera-linen/60 tracking-widest">
-                      {resultProfile.notes}
-                    </p>
-                  </div>
-                  <Button asChild variant="cta-ember" size="cta" className="px-12 py-8 text-base">
-                    <Link href={`/products/${resultProfile.slug}`}>Explore the Ritual</Link>
-                  </Button>
-                </div>
-              </div>
-              <p className="font-sans text-[13px] text-candera-linen/30 tracking-widest uppercase font-bold">
-                Profile sent to your inbox.
-              </p>
+                {result.featuredProduct && typeof result.featuredProduct === 'object' && (
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, scale: 0.9 },
+                      visible: { opacity: 1, scale: 1 },
+                    }}
+                    className="flex flex-col items-center gap-8 mt-4"
+                  >
+                    <div className="w-40 h-[1px] bg-candera-stone/20" />
+                    <Button
+                      asChild
+                      variant="cta-ember"
+                      size="cta"
+                      className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
+                    >
+                      <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
+                        Explore the Ritual
+                      </Link>
+                    </Button>
+                  </motion.div>
+                )}
+              </motion.div>
             </motion.div>
           ) : null}
         </AnimatePresence>

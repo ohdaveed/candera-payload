@@ -10,6 +10,7 @@ import type {
 import { contactForm as contactFormData } from './contact-form'
 import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
+import { seedScentQuiz } from './scent-quiz'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
 import { legalPage } from './legal-pages'
@@ -395,6 +396,8 @@ export const seed = async ({
     payload.create({ collection: 'forms', depth: 0, data: innerCircleFormData }),
     payload.create({ collection: 'forms', depth: 0, data: scentQuizFormData }),
   ])
+
+  await seedScentQuiz(payload)
 
   payload.logger.info(`— Seeding pages...`)
 

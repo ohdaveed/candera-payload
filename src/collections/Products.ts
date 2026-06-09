@@ -119,10 +119,11 @@ export const Products: CollectionConfig = {
               fields: [
                 {
                   name: 'atmosphere',
-                  type: 'text',
+                  type: 'relationship',
+                  relationTo: 'scent-profiles',
                   admin: {
                     condition: (data) => data?.productType === 'candle',
-                    description: 'Mood descriptor e.g. "Coastal & Airy".',
+                    description: 'The ritual atmosphere associated with this candle.',
                   },
                 },
                 {
