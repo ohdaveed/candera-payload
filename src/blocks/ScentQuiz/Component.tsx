@@ -161,6 +161,9 @@ type ScentQuizBlockProps = {
   id?: string | null
 }
 
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
+
 export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
   eyebrow = 'Find Your Scent',
   headline = 'Which Candera ritual is calling you?',
@@ -255,11 +258,12 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
   const progress = (step / QUESTIONS.length) * 100
 
   return (
-    <section
-      className="w-full py-32 px-4 overflow-hidden"
+    <Section
+      padding="large"
+      className="w-full overflow-hidden"
       style={{ background: 'var(--candera-obsidian)' }}
     >
-      <div className="container max-w-[800px] mx-auto">
+      <Container className="max-w-[800px]">
         {/* Header */}
         <div className="text-center mb-16">
           {eyebrow && <Eyebrow className="text-candera-ember/80 mb-4">{eyebrow}</Eyebrow>}
@@ -320,7 +324,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
                     key={i}
                     type="button"
                     onClick={() => handleOptionSelect(option)}
-                    className="group relative flex flex-col items-start p-8 border border-candera-stone/20 bg-white/[0.02] text-left transition-all duration-300 hover:border-candera-ember/50 hover:bg-white/[0.05] rounded-none overflow-hidden"
+                    className="group relative flex flex-col items-start p-8 border border-candera-stone/20 bg-white/[0.02] text-left transition-all duration-300 hover:border-candera-ember/50 hover:bg-white/[0.05] rounded-[2px] overflow-hidden"
                   >
                     <div className="absolute top-0 left-0 w-[2px] h-0 bg-candera-ember transition-all duration-500 group-hover:h-full" />
                     <span className="font-sans text-[15px] leading-relaxed text-candera-linen/80 group-hover:text-candera-linen transition-colors">
@@ -337,7 +341,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col items-center"
             >
-              <div className="text-center mb-12 p-12 border border-candera-ember/20 bg-candera-ember/[0.03] backdrop-blur-sm w-full relative">
+              <div className="text-center mb-12 p-12 border border-candera-ember/20 bg-candera-ember/[0.03] backdrop-blur-sm w-full relative rounded-[2px]">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-candera-obsidian px-6">
                   <Eyebrow className="text-candera-ember">The Reveal</Eyebrow>
                 </div>
@@ -377,7 +381,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
                     type="email"
                     placeholder="your@ritual.com"
                     autoComplete="email"
-                    className="h-14 bg-white/[0.03] border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-lg focus:border-candera-ember/50 transition-colors rounded-none"
+                    className="h-14 bg-white/[0.03] border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-lg focus:border-candera-ember/50 transition-colors rounded-[2px]"
                     {...register('email', {
                       required: 'Email is required',
                       pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
@@ -416,7 +420,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               className="text-center"
             >
-              <div className="p-16 border border-candera-ember/30 bg-candera-ember/[0.05] relative mb-12">
+              <div className="p-16 border border-candera-ember/30 bg-candera-ember/[0.05] relative mb-12 rounded-[2px]">
                 <div className="absolute top-8 left-8">
                   <div className="w-6 h-6 border-t border-l border-candera-ember/40" />
                 </div>
@@ -451,7 +455,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockProps> = ({
             </motion.div>
           ) : null}
         </AnimatePresence>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

@@ -82,7 +82,7 @@ export const Card: React.FC<{
     >
       <ShadcnCard
         className={cn(
-          'group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-none border-none bg-white transition-all duration-300 hover:shadow-xl hover:shadow-candera-stone/20 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 motion-reduce:transition-none',
+          'group relative flex h-full cursor-pointer flex-col overflow-hidden border-none bg-white transition-all duration-300 hover:shadow-xl hover:shadow-candera-stone/20 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 motion-reduce:transition-none',
           className,
         )}
       >

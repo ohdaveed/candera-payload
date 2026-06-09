@@ -33,34 +33,39 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
     >
       {/* Background image */}
       {media && typeof media === 'object' && (
-        <div className="absolute inset-0">
+        <figure className="absolute inset-0 m-0">
           <Media
             fill
             imgClassName="object-cover brightness-[0.55] transition-transform duration-[5s] hover:scale-105"
             priority
             resource={media}
           />
-        </div>
+        </figure>
       )}
 
       {/* Radial scrim */}
-      <div
+      <span
         className="absolute inset-0"
         style={{
           background:
             'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
         }}
+        aria-hidden="true"
       />
 
       {/* Bottom transition gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-candera-linen to-transparent pointer-events-none z-[5] opacity-100" />
+      <span
+        className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-candera-linen to-transparent pointer-events-none z-[5] opacity-100"
+        aria-hidden="true"
+      />
 
       {/* Film grain texture */}
-      <div
+      <span
         className="absolute inset-0 pointer-events-none opacity-[0.04] mix-blend-overlay"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
+        aria-hidden="true"
       />
 
       {/* Content Container */}
@@ -79,7 +84,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             </p>
           )}
 
-          <div className="flex flex-wrap items-center gap-10 mt-10">
+          <nav className="flex flex-wrap items-center gap-10 mt-10">
             {primaryCtaLabel && primaryCtaUrl && (
               <Button asChild variant="cta-ember" size="cta">
                 <Link href={primaryCtaUrl}>
@@ -110,42 +115,42 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                 </span>
               </Link>
             )}
-          </div>
+          </nav>
         </header>
 
         {/* Right Side Status Card */}
         {showStatusCard && (
-          <article className="bg-candera-vellum/95 backdrop-blur-md border border-candera-stone/30 p-8 md:p-10 w-full md:w-[280px] self-stretch md:self-auto shadow-2xl text-left transition-all duration-300">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-5 h-[1px] bg-candera-ember" />
-              <p className="font-sans text-[10px] font-bold uppercase tracking-[.25em] text-candera-ember-strong m-0">
+          <article className="bg-candera-vellum/95 backdrop-blur-md border border-candera-stone/30 p-8 md:p-10 w-full md:w-[280px] self-stretch md:self-auto shadow-2xl text-left transition-all duration-300 rounded-[2px]">
+            <header className="flex items-center gap-3 mb-5">
+              <span className="w-5 h-[1px] bg-candera-ember" aria-hidden="true" />
+              <p className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-ember-strong m-0">
                 Current Release
               </p>
-            </div>
+            </header>
             <p className="font-display text-[30px] md:text-[34px] font-normal italic leading-none text-candera-obsidian m-0 mb-1">
               {statusCardTitle}
             </p>
             <p className="font-mono text-[12px] text-candera-sage-text m-0 mb-6 tracking-wider uppercase font-semibold">
               {statusCardSubtitle}
             </p>
-            <div className="border-t border-candera-stone/20 pt-5 flex flex-col gap-3">
+            <section className="border-t border-candera-stone/20 pt-5 flex flex-col gap-3">
               <div className="flex justify-between items-center">
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-sage-text">
                   Status
                 </span>
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[.18em] text-candera-ember">
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-ember">
                   {statusCardStatus}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[.18em] text-candera-sage-text">
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-sage-text">
                   Ships
                 </span>
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[.18em] text-candera-obsidian">
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-obsidian">
                   {statusCardShips}
                 </span>
               </div>
-            </div>
+            </section>
           </article>
         )}
       </Container>
