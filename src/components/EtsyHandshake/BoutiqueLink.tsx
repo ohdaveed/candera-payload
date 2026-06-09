@@ -14,21 +14,22 @@ export const BoutiqueLink: React.FC<BoutiqueLinkProps> = ({
   className,
   ...props
 }) => {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-
+  const handleClick = () => {
     toast.info('Redirecting to Studio Boutique...', {
       description: 'Preparing your ritual transition.',
       duration: 1500,
     })
-
-    setTimeout(() => {
-      window.open(href, '_blank', 'noopener,noreferrer')
-    }, 800)
   }
 
   return (
-    <a href={href} onClick={handleClick} className={className} {...props}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={handleClick}
+      className={className}
+      {...props}
+    >
       {children}
     </a>
   )

@@ -178,7 +178,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               {product.etsyListingId && (
                 <Button asChild variant="cta" size="cta" className="w-full py-7 text-base">
                   <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
-                    Join the Ritual on Etsy
+                    Buy on Etsy
                   </BoutiqueLink>
                 </Button>
               )}

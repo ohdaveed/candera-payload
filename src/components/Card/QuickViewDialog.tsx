@@ -92,7 +92,7 @@ export function QuickViewDialog({
               {etsyListingId && (
                 <Button asChild variant="cta" size="cta">
                   <BoutiqueLink href={`https://www.etsy.com/listing/${etsyListingId}`}>
-                    Join the Ritual on Etsy
+                    Buy on Etsy
                   </BoutiqueLink>
                 </Button>
               )}
