@@ -16,7 +16,8 @@ export type SearchResult = {
 export async function searchContent(query: string): Promise<SearchResult[]> {
   if (!query.trim()) return []
 
-  const pattern = `%${query.trim()}%`
+  const escaped = query.trim().replace(/[%_\\]/g, '\\$&')
+  const pattern = `%${escaped}%`
 
   const rows = await sql`
     SELECT
@@ -27,8 +28,8 @@ export async function searchContent(query: string): Promise<SearchResult[]> {
       s.meta_description,
       m.url   AS meta_image_url,
       m.alt   AS meta_image_alt,
-      m.width AS meta_image_width,
-      m.height AS meta_image_height
+      m.width::integer AS meta_image_width,
+      m.height::integer AS meta_image_height
     FROM   search s
     LEFT JOIN media m ON s.meta_image_id = m.id
     WHERE  s.title            ILIKE ${pattern}
