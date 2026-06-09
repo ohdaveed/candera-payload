@@ -25,7 +25,7 @@ export default async function ContactPage() {
     depth: 0,
   })
 
-  const contactFormId = formsResult.docs[0]?.id?.toString() ?? ''
+  const contactFormId = formsResult.docs[0]?.id ?? 0
 
   return (
     <Section padding="large" className="bg-candera-linen min-h-screen pt-32">

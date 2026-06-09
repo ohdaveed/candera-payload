@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Section } from '@/components/ui/section'
-import { getClientSideURL } from '@/utilities/getURL'
+import { submitForm } from '@/app/actions/submitForm'
 
 type FormValues = {
   'full-name': string
@@ -24,7 +24,7 @@ type FormValues = {
 }
 
 type Props = {
-  formId: string
+  formId: number
 }
 
 export const ContactForm: React.FC<Props> = ({ formId }) => {
@@ -49,34 +49,21 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         setError(undefined)
         setIsLoading(true)
 
-        try {
-          const res = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              form: formId,
-              submissionData: [
-                { field: 'full-name', value: data['full-name'] },
-                { field: 'email', value: data.email },
-                { field: 'phone', value: data.phone || '' },
-                { field: 'message', value: data.message },
-              ],
-            }),
-          })
+        const result = await submitForm(formId, [
+          { field: 'full-name', value: data['full-name'] },
+          { field: 'email', value: data.email },
+          { field: 'phone', value: data.phone || '' },
+          { field: 'message', value: data.message },
+        ])
 
-          if (res.status >= 400) {
-            const json = await res.json()
-            setError(json.errors?.[0]?.message || 'Something went wrong. Please try again.')
-            setIsLoading(false)
-            return
-          }
+        setIsLoading(false)
 
-          setIsLoading(false)
-          setHasSubmitted(true)
-        } catch {
-          setError('Something went wrong. Please try again.')
-          setIsLoading(false)
+        if (!result.ok) {
+          setError(result.error)
+          return
         }
+
+        setHasSubmitted(true)
       }
 
       void submit()
