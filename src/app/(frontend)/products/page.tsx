@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string; sort?: string }>
+  searchParams: Promise<{ tag?: string; sort?: string; page?: string }>
 }) {
-  const { tag, sort } = await searchParams
+  const { tag, sort, page } = await searchParams
 
   const sortField = sort === 'price-asc' ? 'price' : sort === 'price-desc' ? '-price' : '-createdAt'
 
@@ -32,6 +32,7 @@ export default async function ProductsPage({
     depth: 1,
     limit: 12,
     overrideAccess: false,
+    page: page ? parseInt(page) : 1,
     sort: sortField,
     ...(tag && tag !== 'All' ? { where: { productTag: { equals: tag } } } : {}),
   })
@@ -66,6 +67,7 @@ export default async function ProductsPage({
               slug,
               categories,
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,
@@ -82,6 +84,7 @@ export default async function ProductsPage({
                 typeof cat === 'object' ? { title: cat.title } : cat,
               ) as Product['categories'],
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,

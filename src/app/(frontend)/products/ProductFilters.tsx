@@ -23,6 +23,8 @@ export function ProductFilters() {
     } else {
       params.set(key, value)
     }
+    // Reset to page 1 when filter changes
+    params.delete('page')
     const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
     router.replace(nextUrl)
   }

@@ -15,6 +15,7 @@ import { QuickViewDialog } from './QuickViewDialog'
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
   extraPhotos?: Product['extraPhotos']
   etsyListingId?: Product['etsyListingId']
+  tagline?: Product['tagline']
   scentProfile?: Product['scentProfile']
   burnTime?: Product['burnTime']
   atmosphere?: Product['atmosphere']
@@ -43,6 +44,7 @@ export const Card: React.FC<{
     categories,
     meta,
     title,
+    tagline,
     extraPhotos,
     etsyListingId,
     scentProfile,
@@ -117,6 +119,7 @@ export const Card: React.FC<{
               <QuickViewDialog
                 title={titleToUse}
                 slug={slug}
+                tagline={tagline}
                 extraPhotos={extraPhotos}
                 price={price}
                 vessel={vessel}

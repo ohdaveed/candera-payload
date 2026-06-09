@@ -62,7 +62,7 @@ export const ArchiveBlock: React.FC<
   }
 
   return (
-    <div className="my-32" id={`block-${id}`}>
+    <div id={`block-${id}`}>
       {introContent && (
         <div className="container mb-12">
           <RichText
