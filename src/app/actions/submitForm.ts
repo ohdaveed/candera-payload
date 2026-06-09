@@ -37,7 +37,8 @@ export async function submitForm(
     )
 
     return { ok: true }
-  } catch {
+  } catch (err) {
+    console.error('[submitForm] DB write failed:', err)
     return { ok: false, error: 'Something went wrong.' }
   }
 }
