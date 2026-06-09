@@ -4,6 +4,8 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ContactForm } from '@/components/ContactForm'
 import { PageHeader } from '@/components/PageHeader'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,9 +28,9 @@ export default async function ContactPage() {
   const contactFormId = formsResult.docs[0]?.id?.toString() ?? ''
 
   return (
-    <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
-      <div className="container">
-        <div className="max-w-[800px] mx-auto">
+    <Section padding="large" className="bg-candera-linen min-h-screen pt-32">
+      <Container>
+        <section className="max-w-[800px] mx-auto">
           <PageHeader
             align="center"
             eyebrow="Get in Touch"
@@ -37,9 +39,9 @@ export default async function ContactPage() {
             className="mb-12"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20">
             {/* Left column — contact info */}
-            <div>
+            <section>
               <h2 className="font-display text-2xl mb-6">Inquiries</h2>
               <p className="editorial text-candera-sage-text leading-relaxed mb-10">
                 For questions regarding your order, wholesale opportunities, or press inquiries,
@@ -47,8 +49,8 @@ export default async function ContactPage() {
                 slower pace in the studio.
               </p>
 
-              <div className="flex flex-col gap-6">
-                <div>
+              <section className="flex flex-col gap-6">
+                <section>
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Email
                   </span>
@@ -58,9 +60,9 @@ export default async function ContactPage() {
                   >
                     studio@canderacandles.com
                   </a>
-                </div>
+                </section>
 
-                <div>
+                <section>
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Social
                   </span>
@@ -72,27 +74,27 @@ export default async function ContactPage() {
                   >
                     @canderacandles
                   </a>
-                </div>
+                </section>
 
-                <div>
+                <section>
                   <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
                     Studio Hours
                   </span>
                   <p className="font-sans text-lg text-candera-obsidian">
                     By appointment — slow by design.
                   </p>
-                </div>
-              </div>
-            </div>
+                </section>
+              </section>
+            </section>
 
             {/* Right column — contact form */}
-            <div className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember">
+            <aside className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember">
               <h2 className="font-display text-2xl mb-8">Send a Note</h2>
               <ContactForm formId={contactFormId} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </aside>
+          </section>
+        </section>
+      </Container>
+    </Section>
   )
 }

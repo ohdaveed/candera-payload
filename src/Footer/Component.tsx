@@ -5,6 +5,7 @@ import React from 'react'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Separator } from '@/components/ui/separator'
+import { Container } from '@/components/ui/container'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
@@ -21,17 +22,17 @@ export async function Footer() {
   return (
     <footer className="mt-auto bg-candera-linen border-t border-candera-stone/30 relative overflow-hidden">
       {/* Background Watermark */}
-      <div
+      <span
         aria-hidden="true"
         className="absolute bottom-[-1.5rem] right-[-0.5rem] font-display font-bold text-[180px] tracking-[-0.04em] text-candera-obsidian opacity-[0.03] leading-none pointer-events-none select-none"
       >
         CANDERA
-      </div>
+      </span>
 
-      <div className="container py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24">
+      <Container className="py-20 relative z-10">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24">
           {/* Brand & Mission */}
-          <div className="lg:col-span-1">
+          <section className="lg:col-span-1">
             <Link
               aria-label="Candera Home"
               className="font-display font-bold text-[20px] tracking-[-0.02em] text-candera-obsidian no-underline block mb-4"
@@ -43,10 +44,10 @@ export async function Footer() {
               Cultivating intentional living through scent and micro-batch artisanry. Based in the
               studio, shared everywhere.
             </p>
-          </div>
+          </section>
 
           {/* Navigation */}
-          <div>
+          <section>
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Navigation
             </h5>
@@ -59,10 +60,10 @@ export async function Footer() {
                 />
               ))}
             </nav>
-          </div>
+          </section>
 
           {/* Assistance */}
-          <div>
+          <section>
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Assistance
             </h5>
@@ -103,24 +104,24 @@ export async function Footer() {
                 </ul>
               )}
             </nav>
-          </div>
+          </section>
 
           {/* Settings / Theme */}
-          <div>
+          <section>
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Settings
             </h5>
             <ThemeSelector />
-          </div>
-        </div>
+          </section>
+        </section>
 
         {/* Bottom Bar */}
         <Separator className="bg-candera-stone/20 mt-20" />
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <section className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-sans text-[11px] font-light text-candera-sage-text">
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <nav className="flex gap-6">
             {footerLinks.map(({ link }, i) => (
               <CMSLink
                 {...link}
@@ -145,9 +146,9 @@ export async function Footer() {
                 </Link>
               </>
             )}
-          </div>
-        </div>
-      </div>
+          </nav>
+        </section>
+      </Container>
     </footer>
   )
 }

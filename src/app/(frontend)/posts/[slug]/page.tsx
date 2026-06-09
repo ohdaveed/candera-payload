@@ -5,6 +5,9 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Separator } from '@/components/ui/separator'
+import { Container } from '@/components/ui/container'
+import { Section } from '@/components/ui/section'
+import { Badge } from '@/components/ui/badge'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -57,7 +60,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const readTime = Math.max(1, Math.round(wordCount / 200))
 
   return (
-    <article className="pt-32 pb-32 bg-white min-h-screen">
+    <article className="bg-white min-h-screen">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -65,10 +68,9 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      {/* PostHero with Return to Journal link overlaid */}
-      <div className="relative">
-        {/* Return to Journal link — floated above the hero */}
-        <div className="absolute top-0 left-0 right-0 z-20 container pt-8">
+      {/* Hero section with return link */}
+      <Section padding="none" className="relative">
+        <Container className="absolute top-0 left-0 right-0 z-20 pt-8">
           <Link
             href="/posts"
             className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.3em] text-white/70 hover:text-candera-ember transition-colors"
@@ -87,20 +89,23 @@ export default async function Post({ params: paramsPromise }: Args) {
             </svg>
             The Journal
           </Link>
-        </div>
+        </Container>
 
         <PostHero post={post} />
-      </div>
+      </Section>
 
       {/* Reading time */}
-      <div className="container pt-8 flex items-center gap-4">
-        <span className="text-[10px] font-bold uppercase tracking-[.25em] text-candera-sage-text">
+      <Container className="pt-8">
+        <Badge
+          variant="secondary"
+          className="bg-candera-vellum text-candera-sage-text border-candera-stone/20 uppercase tracking-[.2em] px-3"
+        >
           {readTime} min read
-        </span>
-      </div>
+        </Badge>
+      </Container>
 
-      <div className="flex flex-col items-center gap-12 pt-8">
-        <div className="container">
+      <Section padding="large">
+        <Container>
           <RichText
             className="max-w-[680px] mx-auto
               [&_p]:editorial [&_p]:text-candera-obsidian [&_p]:mb-8
@@ -111,21 +116,23 @@ export default async function Post({ params: paramsPromise }: Args) {
           />
 
           {/* InnerCircle CTA */}
-          <div className="max-w-[680px] mx-auto mt-20">
-            <div className="bg-candera-vellum border border-candera-stone/20 p-12 text-center">
-              <Eyebrow className="block mb-4">The Inner Circle</Eyebrow>
-              <p className="editorial text-[18px] text-candera-sage-text mb-8 leading-relaxed">
-                Be the first to know about new batches, scent notes, and studio moments.
-              </p>
-              <Button asChild variant="cta" size="cta">
-                <Link href="/contact">Join the Circle</Link>
-              </Button>
-            </div>
-          </div>
+          <Section
+            as="aside"
+            padding="medium"
+            className="max-w-[680px] mx-auto mt-20 bg-candera-vellum border border-candera-stone/20 text-center"
+          >
+            <Eyebrow className="block mb-4">The Inner Circle</Eyebrow>
+            <p className="editorial text-[18px] text-candera-sage-text mb-8 leading-relaxed">
+              Be the first to know about new batches, scent notes, and studio moments.
+            </p>
+            <Button asChild variant="cta" size="cta">
+              <Link href="/contact">Join the Circle</Link>
+            </Button>
+          </Section>
 
           {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <div className="mt-32">
-              <Separator className="bg-candera-stone/20 mt-32 mb-20" aria-hidden="true" />
+            <Section as="nav" padding="large" className="mt-32">
+              <Separator className="bg-candera-stone/20 mb-20" aria-hidden="true" />
               <Eyebrow as="h4" className="text-center mb-16">
                 Further Reflections
               </Eyebrow>
@@ -133,10 +140,10 @@ export default async function Post({ params: paramsPromise }: Args) {
                 className="max-w-[1280px] mx-auto"
                 docs={post.relatedPosts.filter((post) => typeof post === 'object')}
               />
-            </div>
+            </Section>
           )}
-        </div>
-      </div>
+        </Container>
+      </Section>
     </article>
   )
 }

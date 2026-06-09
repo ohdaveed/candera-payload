@@ -1,7 +1,7 @@
-import { cn } from '@/utilities/ui'
 import React from 'react'
 
 import { Card, CardPostData } from '@/components/Card'
+import { Container } from '@/components/ui/container'
 
 export type Props = {
   posts: CardPostData[]
@@ -12,7 +12,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts, relationTo = 'posts' } = props
 
   return (
-    <div className={cn('container')}>
+    <Container>
       <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
         {posts?.map((result, index) => {
           if (typeof result === 'object' && result !== null) {
@@ -66,6 +66,6 @@ export const CollectionArchive: React.FC<Props> = (props) => {
           return null
         })}
       </div>
-    </div>
+    </Container>
   )
 }

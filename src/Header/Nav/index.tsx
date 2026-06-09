@@ -30,12 +30,12 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
         return <CMSLink key={i} {...link} appearance="link" className={linkClass} />
       })}
 
-      <div className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10">
+      <span className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10">
         <Link aria-label="Search" className={iconBtnClass} href="/search">
           <span className="sr-only">Search</span>
           <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
         </Link>
-      </div>
+      </span>
     </nav>
   )
 }

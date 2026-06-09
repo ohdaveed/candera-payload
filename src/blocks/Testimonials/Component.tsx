@@ -3,6 +3,8 @@ import type { TestimonialsBlock as TestimonialsBlockType } from '@/payload-types
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 type Props = TestimonialsBlockType & { disableInnerContainer?: boolean }
 
@@ -16,36 +18,36 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <section className="py-32 px-6 bg-white border-t border-candera-stone/20">
-      <div className="max-w-[1280px] mx-auto">
+    <Section padding="large" className="bg-white border-t border-candera-stone/10">
+      <Container>
         {eyebrow && (
-          <Eyebrow as="p" className="text-center mb-20">
+          <Eyebrow as="p" className="text-center mb-24">
             {eyebrow}
           </Eyebrow>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 lg:gap-32">
           {items.map((t, i) => (
             <Card
               key={i}
-              className="flex flex-col items-center text-center gap-6 bg-transparent border-none shadow-none"
+              className="flex flex-col items-center text-center gap-8 bg-transparent border-none shadow-none group"
             >
-              <CardContent className="p-0 flex flex-col items-center gap-6">
-                <div className="flex gap-1 text-candera-ember-strong/60 transition-colors group-hover:text-candera-ember-strong">
+              <CardContent className="p-0 flex flex-col items-center gap-8">
+                <div className="flex gap-1.5 text-candera-ember-strong/40 transition-colors duration-700 group-hover:text-candera-ember-strong/80">
                   {[...Array(5)].map((_, j) => (
                     <StarIcon key={j} />
                   ))}
                 </div>
-                <p className="editorial text-[18px] text-candera-obsidian leading-[1.8]">
+                <p className="editorial text-[20px] text-candera-obsidian leading-[1.8] italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex flex-col gap-1.5 items-center mt-2">
-                  <p className="text-[11px] text-candera-obsidian font-bold uppercase tracking-[.2em]">
+                <div className="flex flex-col gap-3 items-center mt-4">
+                  <p className="text-[12px] text-candera-obsidian font-bold uppercase tracking-[.3em]">
                     {t.author}
                   </p>
                   {t.badge && (
                     <Badge
                       variant="outline"
-                      className="text-[9px] tracking-[.18em] uppercase text-candera-sage-text border-candera-stone/30 rounded-none"
+                      className="text-[10px] tracking-[.2em] uppercase text-candera-sage-text border-candera-stone/20 rounded-none px-4 py-1"
                     >
                       {t.badge}
                     </Badge>
@@ -55,7 +57,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
             </Card>
           ))}
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

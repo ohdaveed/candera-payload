@@ -73,31 +73,31 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <div className="py-12 text-center">
+      <section className="py-12 text-center">
         <p className="font-display text-2xl text-candera-obsidian mb-3 italic">
           Your note has been received.
         </p>
         <p className="font-sans text-sm text-candera-sage-text">
           We respond with intention — expect a reply within 48 hours.
         </p>
-      </div>
+      </section>
     )
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       {error && (
-        <div
+        <section
           className="mb-6 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
           role="alert"
           aria-live="polite"
         >
           {error}
-        </div>
+        </section>
       )}
 
-      <div className="flex flex-col gap-6">
-        <div>
+      <section className="flex flex-col gap-6">
+        <section>
           <Label
             htmlFor="full-name"
             className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
@@ -121,9 +121,9 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               {errors['full-name'].message}
             </p>
           )}
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Label
             htmlFor="contact-email"
             className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
@@ -150,9 +150,9 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               {errors.email.message}
             </p>
           )}
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Label
             htmlFor="phone"
             className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
@@ -169,9 +169,9 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             inputMode="numeric"
             {...register('phone')}
           />
-        </div>
+        </section>
 
-        <div>
+        <section>
           <Label
             htmlFor="message"
             className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text"
@@ -194,14 +194,14 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               {errors.message.message}
             </p>
           )}
-        </div>
-      </div>
+        </section>
+      </section>
 
-      <div className="mt-8">
+      <section className="mt-8">
         <Button type="submit" variant="cta" size="cta" disabled={isLoading}>
           {isLoading ? 'Sending…' : 'Send Correspondence'}
         </Button>
-      </div>
+      </section>
     </form>
   )
 }

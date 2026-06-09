@@ -5,6 +5,8 @@ import RichText from '@/components/RichText'
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '../../components/Link'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
@@ -17,27 +19,43 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   }
 
   return (
-    <div className="container my-16">
-      <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
-        {columns &&
-          columns.length > 0 &&
-          columns.map((col, index) => {
-            const { enableLink, link, richText, size } = col
+    <Section padding="large">
+      <Container>
+        <article className="grid grid-cols-4 lg:grid-cols-12 gap-y-12 gap-x-16 lg:gap-x-24">
+          {columns &&
+            columns.length > 0 &&
+            columns.map((col, index) => {
+              const { enableLink, link, richText, size } = col
 
-            return (
-              <div
-                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
-                  'md:col-span-2': size !== 'full',
-                })}
-                key={index}
-              >
-                {richText && <RichText data={richText} enableGutter={false} />}
+              return (
+                <Section
+                  as="aside"
+                  padding="none"
+                  className={cn(
+                    `col-span-4 lg:col-span-${colsSpanClasses[size!]}`,
+                    {
+                      'md:col-span-2': size !== 'full',
+                    },
+                    'flex flex-col gap-8',
+                  )}
+                  key={index}
+                >
+                  {richText && (
+                    <Section padding="none" className="editorial">
+                      <RichText data={richText} enableGutter={false} />
+                    </Section>
+                  )}
 
-                {enableLink && <CMSLink {...link} />}
-              </div>
-            )
-          })}
-      </div>
-    </div>
+                  {enableLink && (
+                    <Section padding="none" className="mt-4">
+                      <CMSLink {...link} />
+                    </Section>
+                  )}
+                </Section>
+              )
+            })}
+        </article>
+      </Container>
+    </Section>
   )
 }

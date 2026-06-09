@@ -20,9 +20,9 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
   const activeImage = allImages[activeIndex] ?? null
 
   return (
-    <div className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4">
       {/* Large image */}
-      <div className="relative aspect-square overflow-hidden bg-candera-ash shadow-sm">
+      <figure className="relative aspect-square overflow-hidden bg-candera-ash shadow-sm m-0">
         {activeImage && typeof activeImage !== 'string' ? (
           <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
@@ -30,11 +30,11 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
             Image unavailable
           </div>
         )}
-      </div>
+      </figure>
 
       {/* Thumbnail row — only render if there are multiple images */}
       {allImages.length > 1 && (
-        <div className="flex flex-row flex-wrap gap-2">
+        <nav className="flex flex-row flex-wrap gap-2" aria-label="Product image thumbnails">
           {allImages.map((photo, index) => (
             <button
               key={index}
@@ -46,14 +46,15 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
                   : 'ring-1 ring-transparent opacity-70 hover:opacity-100',
               )}
               aria-label={`View image ${index + 1}`}
+              aria-current={activeIndex === index ? 'true' : 'false'}
             >
               {photo && typeof photo !== 'string' && (
                 <MediaComponent fill imgClassName="object-cover" resource={photo} />
               )}
             </button>
           ))}
-        </div>
+        </nav>
       )}
-    </div>
+    </section>
   )
 }

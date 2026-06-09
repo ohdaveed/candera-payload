@@ -10,6 +10,8 @@ import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
 import { PageHeader } from '@/components/PageHeader'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
@@ -43,10 +45,10 @@ export default async function ProductsPage({
     : `${products.totalDocs} vessels in this batch`
 
   return (
-    <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
+    <Section padding="large" className="bg-candera-linen min-h-screen">
       <PageClient />
 
-      <div className="container">
+      <Container>
         <PageHeader
           className="mb-20"
           eyebrow="Limited Release"
@@ -97,7 +99,7 @@ export default async function ProductsPage({
         />
 
         {products.docs.length === 0 && (
-          <div className="text-center py-24">
+          <Section padding="medium" className="text-center">
             <p className="editorial text-[20px] italic text-candera-sage-text mb-6">
               No vessels found in this category.
             </p>
@@ -107,19 +109,19 @@ export default async function ProductsPage({
             >
               View all vessels →
             </Link>
-          </div>
+          </Section>
         )}
 
-        <div className="mt-16">
-          {products.totalPages > 1 && products.page && (
+        {products.totalPages > 1 && products.page && (
+          <Section padding="none" className="mt-16">
             <Pagination
               basePath="/products"
               page={products.page}
               totalPages={products.totalPages}
             />
-          )}
-        </div>
-      </div>
-    </div>
+          </Section>
+        )}
+      </Container>
+    </Section>
   )
 }

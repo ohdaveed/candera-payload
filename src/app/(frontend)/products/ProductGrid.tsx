@@ -37,7 +37,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   }
 
   return (
-    <motion.div
+    <motion.section
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
       animate="show"
@@ -48,6 +48,6 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
           <Card doc={product} relationTo="products" />
         </motion.div>
       ))}
-    </motion.div>
+    </motion.section>
   )
 }
