@@ -45,13 +45,13 @@ export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): P
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  ALTER TABLE "_pages_v_blocks_scent_quiz" RENAME COLUMN "form_id" TO "form_id_id";
-  ALTER TABLE "products" RENAME COLUMN "atmosphere" TO "atmosphere_id";
+  ALTER TABLE "products" ADD COLUMN "atmosphere_id" integer;
   ALTER TABLE "pages_blocks_storefront_hero" ALTER COLUMN "secondary_cta_label" SET DEFAULT 'Take the Scent Quiz';
   ALTER TABLE "_pages_v_blocks_storefront_hero" ALTER COLUMN "secondary_cta_label" SET DEFAULT 'Take the Scent Quiz';
   ALTER TABLE "pages_blocks_scent_quiz" ADD COLUMN "quiz_id" integer;
   ALTER TABLE "pages_blocks_scent_quiz" ADD COLUMN "form_id_id" integer;
   ALTER TABLE "_pages_v_blocks_scent_quiz" ADD COLUMN "quiz_id" integer;
+  ALTER TABLE "_pages_v_blocks_scent_quiz" ADD COLUMN "form_id_id" integer;
   ALTER TABLE "_products_v" ADD COLUMN "version_atmosphere_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "quizzes_id" integer;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "scent_profiles_id" integer;
@@ -98,6 +98,8 @@ export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): P
   ALTER TABLE "pages_blocks_scent_quiz" DROP COLUMN "form_id";
   ALTER TABLE "_pages_v_blocks_scent_quiz" DROP COLUMN "eyebrow";
   ALTER TABLE "_pages_v_blocks_scent_quiz" DROP COLUMN "headline";
+  ALTER TABLE "_pages_v_blocks_scent_quiz" DROP COLUMN "form_id";
+  ALTER TABLE "products" DROP COLUMN "atmosphere";
   ALTER TABLE "_products_v" DROP COLUMN "version_atmosphere";`)
 }
 
