@@ -3,9 +3,9 @@ import type { Metadata } from 'next/types'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
+import { PageHeader } from '@/components/PageHeader'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 
@@ -23,7 +23,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const sanitizedPageNumber = Number(pageNumber)
 
-  if (!Number.isInteger(sanitizedPageNumber)) notFound()
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
 
   const products = await payload.find({
     collection: 'products',
@@ -36,11 +36,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   return (
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <PageClient />
+
       <div className="container mb-20">
-        <div className="max-w-[600px]">
-          <span className="eyebrow block mb-4">Limited Release</span>
-          <h1 className="hero-heading text-candera-obsidian">The Collection</h1>
-        </div>
+        <PageHeader eyebrow="Limited Release" title="The Collection" />
       </div>
 
       <div className="container mb-8">

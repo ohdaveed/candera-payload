@@ -42,6 +42,8 @@ export const RenderBlocks: React.FC<{
       <Fragment>
         {blocks.map((block, index) => {
           const { blockType } = block
+          const previousBlock = index > 0 ? blocks[index - 1] : null
+          const followsStorefrontHero = previousBlock?.blockType === 'storefrontHero'
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]
@@ -50,7 +52,12 @@ export const RenderBlocks: React.FC<{
               const isFullBleed = fullBleedBlocks.has(blockType)
               return (
                 <div
-                  className={isFullBleed ? '' : 'my-16'}
+                  className={[
+                    isFullBleed ? '' : 'my-16',
+                    followsStorefrontHero ? 'mt-32 md:mt-48' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                   id={
                     blockType === 'archive'
                       ? 'collection'

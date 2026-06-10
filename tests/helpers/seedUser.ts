@@ -1,9 +1,17 @@
 import { getPayload } from 'payload'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 import config from '../../src/payload.config.js'
 
-export const testUser = {
+export const testUserCredentials = {
   email: 'dev@payloadcms.com',
   password: 'test',
+}
+
+export const testUser: RequiredDataFromCollectionSlug<'users'> = {
+  ...testUserCredentials,
+  name: 'Test Admin',
+  roles: ['admin'],
+  status: 'active',
 }
 
 /**

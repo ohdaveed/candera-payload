@@ -2,26 +2,29 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { Pagination } from '@/components/Pagination'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import PageClient from './page.client'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
+import { PageHeader } from '@/components/PageHeader'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
-    'Hand-poured micro-batch candles. Each vessel is numbered and inspected for peak botanical clarity.',
+    'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
 }
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string; sort?: string }>
+  searchParams: Promise<{ tag?: string; sort?: string; page?: string }>
 }) {
-  const { tag, sort } = await searchParams
+  const { tag, sort, page } = await searchParams
 
   const sortField = sort === 'price-asc' ? 'price' : sort === 'price-desc' ? '-price' : '-createdAt'
 
@@ -31,6 +34,7 @@ export default async function ProductsPage({
     depth: 1,
     limit: 12,
     overrideAccess: false,
+    page: page ? parseInt(page) : 1,
     sort: sortField,
     ...(tag && tag !== 'All' ? { where: { productTag: { equals: tag } } } : {}),
   })
@@ -38,21 +42,19 @@ export default async function ProductsPage({
   const activeTag = tag && tag !== 'All' ? tag : null
   const resultLabel = activeTag
     ? `${products.totalDocs} results for '${activeTag}'`
-    : `${products.totalDocs} vessels in this batch`
+    : `${products.totalDocs} pieces in the collection`
 
   return (
-    <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
+    <Section padding="large" className="bg-candera-linen min-h-screen">
       <PageClient />
-      <div className="container">
-        <div className="mb-20 max-w-[600px]">
-          <Eyebrow className="block mb-4">Limited Release</Eyebrow>
-          <h1 className="hero-heading text-candera-obsidian">The Collection</h1>
-          <p className="editorial mt-6 text-candera-sage-text">
-            Small-batch botanical candles, hand-poured in the studio and numbered for authenticity.
-            Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that
-            transforms your environment.
-          </p>
-        </div>
+
+      <Container>
+        <PageHeader
+          className="mb-20"
+          eyebrow="Botanical Study"
+          title="The Collection"
+          description="Small-batch botanical candles, hand-poured in the studio and curated for sensory depth. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
+        />
 
         <Suspense fallback={null}>
           <ProductFilters />
@@ -67,6 +69,7 @@ export default async function ProductsPage({
               slug,
               categories,
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,
@@ -83,6 +86,7 @@ export default async function ProductsPage({
                 typeof cat === 'object' ? { title: cat.title } : cat,
               ) as Product['categories'],
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,
@@ -95,7 +99,7 @@ export default async function ProductsPage({
         />
 
         {products.docs.length === 0 && (
-          <div className="text-center py-24">
+          <Section padding="medium" className="text-center">
             <p className="editorial text-[20px] italic text-candera-sage-text mb-6">
               No vessels found in this category.
             </p>
@@ -105,19 +109,19 @@ export default async function ProductsPage({
             >
               View all vessels →
             </Link>
-          </div>
+          </Section>
         )}
 
-        <div className="mt-16">
-          {products.totalPages > 1 && products.page && (
+        {products.totalPages > 1 && products.page && (
+          <Section padding="none" className="mt-16">
             <Pagination
               basePath="/products"
               page={products.page}
               totalPages={products.totalPages}
             />
-          )}
-        </div>
-      </div>
-    </div>
+          </Section>
+        )}
+      </Container>
+    </Section>
   )
 }

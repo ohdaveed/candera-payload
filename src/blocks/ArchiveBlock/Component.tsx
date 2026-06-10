@@ -7,6 +7,8 @@ import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { CardPostData } from '@/components/Card'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -26,6 +28,7 @@ export const ArchiveBlock: React.FC<
   const limit = limitFromProps || 3
 
   let data: (Post | Product)[] = []
+  let totalDocs = 0
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -51,6 +54,7 @@ export const ArchiveBlock: React.FC<
     })
 
     data = fetchedDocs.docs as (Post | Product)[]
+    totalDocs = fetchedDocs.totalDocs
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
@@ -58,23 +62,42 @@ export const ArchiveBlock: React.FC<
       }) as Post[]
 
       data = filteredSelectedPosts
+      totalDocs = data.length
     }
   }
 
+  // Support dynamic count interpolation in intro content
+  const serializedIntroContent = introContent ? JSON.parse(JSON.stringify(introContent)) : null
+  if (serializedIntroContent?.root?.children) {
+    const traverseAndReplace = (node: unknown) => {
+      if (typeof node !== 'object' || node === null) return
+      const n = node as Record<string, unknown>
+      if (typeof n.text === 'string') {
+        n.text = n.text.replace('{{count}}', totalDocs.toString())
+      }
+      if (Array.isArray(n.children)) {
+        n.children.forEach(traverseAndReplace)
+      }
+    }
+    traverseAndReplace(serializedIntroContent.root)
+  }
+
   return (
-    <div className="my-32" id={`block-${id}`}>
-      {introContent && (
-        <div className="container mb-12">
+    <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
+      {serializedIntroContent && (
+        <Container className="mb-12">
           <RichText
             className="ms-0 max-w-[560px] 
               [&_h3]:h2 [&_h3]:mb-4
               [&_p]:editorial [&_p]:text-candera-sage-text"
-            data={introContent}
+            data={serializedIntroContent}
             enableGutter={false}
           />
-        </div>
+        </Container>
       )}
-      <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
-    </div>
+      <Container>
+        <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
+      </Container>
+    </Section>
   )
 }

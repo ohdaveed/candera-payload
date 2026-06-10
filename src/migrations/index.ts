@@ -10,6 +10,9 @@ import * as migration_20260604_023044_add_product_type_and_seo from './20260604_
 import * as migration_20260606_235002_add_footer_fields from './20260606_235002_add_footer_fields'
 import * as migration_20260607_033421_add_briefs_collection from './20260607_033421_add_briefs_collection'
 import * as migration_20260607_230627 from './20260607_230627'
+import * as migration_20260609_030106_add_quiz_collections from './20260609_030106_add_quiz_collections'
+import * as migration_20260610_040157 from './20260610_040157'
+import * as migration_20260610_060333_user_table_metadata from './20260610_060333_user_table_metadata'
 
 export const migrations = [
   {
@@ -71,5 +74,20 @@ export const migrations = [
     up: migration_20260607_230627.up,
     down: migration_20260607_230627.down,
     name: '20260607_230627',
+  },
+  {
+    up: migration_20260609_030106_add_quiz_collections.up,
+    down: migration_20260609_030106_add_quiz_collections.down,
+    name: '20260609_030106_add_quiz_collections',
+  },
+  {
+    up: migration_20260610_040157.up,
+    down: migration_20260610_040157.down,
+    name: '20260610_040157',
+  },
+  {
+    up: migration_20260610_060333_user_table_metadata.up,
+    down: migration_20260610_060333_user_table_metadata.down,
+    name: '20260610_060333_user_table_metadata',
   },
 ]

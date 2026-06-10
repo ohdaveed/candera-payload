@@ -8,8 +8,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export const Pagination: React.FC<{
   className?: string
@@ -29,11 +31,20 @@ export const Pagination: React.FC<{
       <PaginationComponent>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious
-              aria-disabled={!hasPrevPage}
-              className={!hasPrevPage ? 'pointer-events-none opacity-50' : undefined}
-              href={hasPrevPage ? `${basePath}/page/${page - 1}` : '#'}
-            />
+            {hasPrevPage ? (
+              <PaginationPrevious href={`${basePath}/page/${page - 1}`} />
+            ) : (
+              <span
+                aria-disabled="true"
+                className={cn(
+                  buttonVariants({ size: 'default', variant: 'ghost' }),
+                  'gap-1 pl-2.5 pointer-events-none opacity-50',
+                )}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span>Previous</span>
+              </span>
+            )}
           </PaginationItem>
 
           {hasExtraPrevPages && (
@@ -81,11 +92,20 @@ export const Pagination: React.FC<{
           )}
 
           <PaginationItem>
-            <PaginationNext
-              aria-disabled={!hasNextPage}
-              className={!hasNextPage ? 'pointer-events-none opacity-50' : undefined}
-              href={hasNextPage ? `${basePath}/page/${page + 1}` : '#'}
-            />
+            {hasNextPage ? (
+              <PaginationNext href={`${basePath}/page/${page + 1}`} />
+            ) : (
+              <span
+                aria-disabled="true"
+                className={cn(
+                  buttonVariants({ size: 'default', variant: 'ghost' }),
+                  'gap-1 pr-2.5 pointer-events-none opacity-50',
+                )}
+              >
+                <span>Next</span>
+                <ChevronRight className="h-4 w-4" />
+              </span>
+            )}
           </PaginationItem>
         </PaginationContent>
       </PaginationComponent>

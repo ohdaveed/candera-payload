@@ -8,9 +8,9 @@ This repository powers the Candera ecosystem, featuring a deep [Etsy-to-Payload]
 
 Candera is more than a candle shop; it's an invitation to slow down. Our platform is built to reflect the stillness of the studio:
 
-- **Micro-Batch Exclusivity:** Every vessel is numbered and tracked.
-- **Botanical Clarity:** Scent profiles are derived from real pressed botanicals.
-- **Real-Time Studio Status:** Integrated batch-tracking shows exactly when a collection is curing, pouring, or shipping.
+- **Micro-Batch Depth:** Focused on small, intentional collections.
+- **Botanical Clarity:** Scent profiles derived from real pressed botanicals.
+- **Studio Status:** Integrated tracking shows the current state of the collection—pouring, curing, or ready for ritual.
 
 ---
 

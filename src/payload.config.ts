@@ -31,6 +31,9 @@ import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { EtsyClient, DefaultPayloadTokenRepository } from './utilities/etsyClient'
 
+import { Quizzes } from './collections/Quizzes'
+import { ScentProfiles } from './collections/ScentProfiles'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -122,6 +125,8 @@ export default buildConfig({
     Users,
     EtsyTokens,
     Briefs,
+    Quizzes,
+    ScentProfiles,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [

@@ -14,10 +14,25 @@ export interface CacheBusterPort {
  */
 export class NextCacheBusterAdapter implements CacheBusterPort {
   revalidatePath(path: string): void {
-    revalidatePath(path)
+    try {
+      revalidatePath(path)
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('static generation store missing')) {
+        return
+      }
+      throw err
+    }
   }
   revalidateTag(tag: string): void {
-    revalidateTag(tag, 'max')
+    try {
+      revalidateTag(tag, 'max')
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('static generation store missing')) {
+        // This error is expected when running Payload hooks outside of a Next.js request context (e.g. scripts)
+        return
+      }
+      throw err
+    }
   }
 }
 
@@ -187,7 +202,7 @@ globalRevalidator.registerRule(
     name: 'products-revalidation',
     collections: ['products'],
     groupTag: 'products-sitemap',
-    formatPaths: (slug) => [`/products/${slug}`],
+    formatPaths: (slug) => [`/products/${slug}`, '/'],
   }),
 )
 

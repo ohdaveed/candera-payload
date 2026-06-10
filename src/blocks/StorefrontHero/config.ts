@@ -49,7 +49,7 @@ export const StorefrontHero: Block = {
     {
       name: 'secondaryCtaLabel',
       type: 'text',
-      defaultValue: 'Take the Scent Quiz →',
+      defaultValue: 'Take the Scent Quiz',
       label: 'Secondary CTA Label',
     },
     {

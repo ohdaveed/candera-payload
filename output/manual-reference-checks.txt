@@ -1,0 +1,186 @@
+package.json:56:    "@radix-ui/react-tooltip": "^1.2.8",
+src/Footer/Component.tsx:3:import React from 'react'
+src/Header/Component.client.tsx:5:import React, { useEffect, useState, startTransition } from 'react'
+src/Header/Component.tsx:3:import React from 'react'
+src/Header/Nav/MobileNav.tsx:3:import React, { useState, useEffect } from 'react'
+src/Header/Nav/index.tsx:3:import React from 'react'
+src/app/(frontend)/[slug]/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/[slug]/page.tsx:7:import React, { cache } from 'react'
+src/app/(frontend)/contact/page.tsx:2:import React from 'react'
+src/app/(frontend)/inner-circle/page.tsx:2:import React from 'react'
+src/app/(frontend)/layout.tsx:6:import React from 'react'
+src/app/(frontend)/not-found.tsx:2:import React from 'react'
+src/app/(frontend)/posts/[slug]/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/posts/[slug]/page.tsx:14:import React, { cache } from 'react'
+src/app/(frontend)/posts/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/posts/page.tsx:12:import React from 'react'
+src/app/(frontend)/posts/page/[pageNumber]/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/posts/page/[pageNumber]/page.tsx:9:import React from 'react'
+src/app/(frontend)/products/ProductGrid.tsx:3:import React from 'react'
+src/app/(frontend)/products/[slug]/ImageGallery.tsx:3:import React, { useState } from 'react'
+src/app/(frontend)/products/[slug]/ProductDetailTabs.tsx:3:import React from 'react'
+src/app/(frontend)/products/[slug]/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/products/[slug]/page.tsx:8:import React, { cache } from 'react'
+src/app/(frontend)/products/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/products/page.tsx:5:import React, { Suspense } from 'react'
+src/app/(frontend)/products/page/[pageNumber]/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/products/page/[pageNumber]/page.tsx:9:import React from 'react'
+src/app/(frontend)/search/page.client.tsx:3:import React, { useEffect } from 'react'
+src/app/(frontend)/search/page.tsx:4:import React from 'react'
+src/app/(payload)/layout.tsx:7:import React from 'react'
+src/blocks/ArchiveBlock/Component.tsx:5:import React from 'react'
+src/blocks/Banner/Component.tsx:4:import React from 'react'
+src/blocks/CallToAction/Component.tsx:1:import React from 'react'
+src/blocks/Code/Component.client.tsx:3:import React from 'react'
+src/blocks/Code/Component.tsx:1:import React from 'react'
+src/blocks/Code/CopyButton.tsx:4:import { useState } from 'react'
+src/blocks/Content/Component.tsx:2:import React from 'react'
+src/blocks/Form/Checkbox/index.tsx:2:import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+src/blocks/Form/Checkbox/index.tsx:4:import { useFormContext } from 'react-hook-form'
+src/blocks/Form/Checkbox/index.tsx:8:import React from 'react'
+src/blocks/Form/Component.tsx:5:import React, { useCallback, useState } from 'react'
+src/blocks/Form/Component.tsx:6:import { useForm } from 'react-hook-form'
+src/blocks/Form/Country/index.tsx:2:import type { Control, FieldErrorsImpl } from 'react-hook-form'
+src/blocks/Form/Country/index.tsx:12:import React from 'react'
+src/blocks/Form/Country/index.tsx:13:import { Controller } from 'react-hook-form'
+src/blocks/Form/Email/index.tsx:2:import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+src/blocks/Form/Email/index.tsx:6:import React from 'react'
+src/blocks/Form/Error/index.tsx:3:import * as React from 'react'
+src/blocks/Form/Error/index.tsx:4:import { useFormContext } from 'react-hook-form'
+src/blocks/Form/Message/index.tsx:2:import React from 'react'
+src/blocks/Form/Number/index.tsx:2:import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+src/blocks/Form/Number/index.tsx:6:import React from 'react'
+src/blocks/Form/Select/index.tsx:2:import type { Control, FieldErrorsImpl } from 'react-hook-form'
+src/blocks/Form/Select/index.tsx:12:import React from 'react'
+src/blocks/Form/Select/index.tsx:13:import { Controller } from 'react-hook-form'
+src/blocks/Form/State/index.tsx:2:import type { Control, FieldErrorsImpl } from 'react-hook-form'
+src/blocks/Form/State/index.tsx:12:import React from 'react'
+src/blocks/Form/State/index.tsx:13:import { Controller } from 'react-hook-form'
+src/blocks/Form/Text/index.tsx:2:import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+src/blocks/Form/Text/index.tsx:6:import React from 'react'
+src/blocks/Form/Textarea/index.tsx:2:import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+src/blocks/Form/Textarea/index.tsx:6:import React from 'react'
+src/blocks/Form/Width/index.tsx:1:import * as React from 'react'
+src/blocks/InnerCircleCTA/Component.tsx:1:import React from 'react'
+src/blocks/InnerCircleCTA/EmailForm.tsx:3:import React, { useState, useCallback } from 'react'
+src/blocks/InnerCircleCTA/EmailForm.tsx:4:import { useForm } from 'react-hook-form'
+src/blocks/MediaBlock/Component.tsx:4:import React from 'react'
+src/blocks/RelatedPosts/Component.tsx:2:import React from 'react'
+src/blocks/RenderBlocks.tsx:1:import React, { Fragment } from 'react'
+src/blocks/ScentQuiz/Component.tsx:3:import React, { useState, useCallback, useMemo } from 'react'
+src/blocks/ScentQuiz/Component.tsx:5:import { useForm } from 'react-hook-form'
+src/blocks/StorefrontHero/Component.tsx:1:import React from 'react'
+src/blocks/Testimonials/Component.tsx:1:import React from 'react'
+src/components/AdminBar/index.tsx:8:import React, { useState } from 'react'
+src/components/BeforeDashboard/DashboardHeader.tsx:1:import React from 'react'
+src/components/BeforeDashboard/MetricCard.tsx:3:import React from 'react'
+src/components/BeforeDashboard/QuickAccessCard.tsx:1:import React from 'react'
+src/components/BeforeDashboard/SeedButton/index.tsx:3:import React, { Fragment, useCallback, useState } from 'react'
+src/components/BeforeDashboard/SeedButton/index.tsx:17:export const SeedButton: React.FC = () => {
+src/components/BeforeDashboard/index.tsx:1:import React from 'react'
+src/components/BeforeLogin/index.tsx:1:import React from 'react'
+src/components/Card/QuickViewDialog.tsx:3:import React from 'react'
+src/components/Card/index.tsx:5:import React, { Fragment } from 'react'
+src/components/CollectionArchive/index.tsx:1:import React from 'react'
+src/components/ContactForm/index.tsx:3:import React, { useState, useCallback } from 'react'
+src/components/ContactForm/index.tsx:4:import { useForm } from 'react-hook-form'
+src/components/EtsyHandshake/BoutiqueLink.tsx:3:import React from 'react'
+src/components/FragranceProfile/index.tsx:1:import React from 'react'
+src/components/GlobalLayout/index.tsx:1:import React from 'react'
+src/components/Link/index.tsx:4:import React from 'react'
+src/components/LivePreviewListener/index.tsx:5:import React from 'react'
+src/components/Logo/Logo.tsx:2:import React from 'react'
+src/components/Media/ImageMedia/index.tsx:7:import React, { useState } from 'react'
+src/components/Media/VideoMedia/index.tsx:4:import React, { useEffect, useRef } from 'react'
+src/components/Media/index.tsx:1:import React, { Fragment } from 'react'
+src/components/Media/types.ts:2:import type { ElementType, Ref } from 'react'
+src/components/PageHeader/index.tsx:1:import React from 'react'
+src/components/PageRange/index.tsx:1:import React from 'react'
+src/components/Pagination/index.tsx:13:import React from 'react'
+src/components/PayloadRedirects/index.tsx:1:import type React from 'react'
+src/components/admin/GenerateCopyButton.tsx:3:import { useState } from 'react'
+src/components/ui/badge.tsx:1:import * as React from 'react'
+src/components/ui/button.tsx:4:import * as React from 'react'
+src/components/ui/card.tsx:2:import * as React from 'react'
+src/components/ui/checkbox.tsx:6:import * as React from 'react'
+src/components/ui/collapsible-section.tsx:3:import * as React from 'react'
+src/components/ui/collapsible-section.tsx:8:export interface CollapsibleSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+src/components/ui/collapsible-section.tsx:16:export function CollapsibleSection({
+src/components/ui/collapsible-section.tsx:25:}: CollapsibleSectionProps) {
+src/components/ui/container.tsx:2:import React from 'react'
+src/components/ui/dialog.tsx:3:import * as React from 'react'
+src/components/ui/eyebrow.tsx:2:import React from 'react'
+src/components/ui/form.tsx:3:import * as React from 'react'
+src/components/ui/form.tsx:13:} from 'react-hook-form'
+src/components/ui/input.tsx:2:import * as React from 'react'
+src/components/ui/label.tsx:6:import * as React from 'react'
+src/components/ui/pagination.tsx:6:import * as React from 'react'
+src/components/ui/section.tsx:2:import React from 'react'
+src/components/ui/select.tsx:6:import * as React from 'react'
+src/components/ui/separator.tsx:3:import * as React from 'react'
+src/components/ui/sheet.tsx:3:import * as React from 'react'
+src/components/ui/spinner.tsx:6: * A semantic loading spinner component.
+src/components/ui/spinner.tsx:9:function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
+src/components/ui/spinner.tsx:20:export { Spinner }
+src/components/ui/tabs.tsx:3:import * as React from 'react'
+src/components/ui/textarea.tsx:2:import * as React from 'react'
+src/components/ui/tooltip.tsx:3:import * as React from 'react'
+src/components/ui/tooltip.tsx:4:import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+src/components/ui/tooltip.tsx:8:const TooltipProvider = TooltipPrimitive.Provider
+src/components/ui/tooltip.tsx:10:const Tooltip = TooltipPrimitive.Root
+src/components/ui/tooltip.tsx:12:const TooltipTrigger = TooltipPrimitive.Trigger
+src/components/ui/tooltip.tsx:14:const TooltipContent = React.forwardRef<
+src/components/ui/tooltip.tsx:15:  React.ElementRef<typeof TooltipPrimitive.Content>,
+src/components/ui/tooltip.tsx:16:  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+src/components/ui/tooltip.tsx:18:  <TooltipPrimitive.Content
+src/components/ui/tooltip.tsx:22:      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]',
+src/components/ui/tooltip.tsx:28:TooltipContent.displayName = TooltipPrimitive.Content.displayName
+src/components/ui/tooltip.tsx:30:export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+src/components/zoomable-image.css:1:.zoomable-image-dialog [data-rmiz-modal-overlay='hidden'] {
+src/components/zoomable-image.css:5:.zoomable-image-dialog [data-rmiz-modal-overlay='visible'] {
+src/components/zoomable-image.css:9:.zoomable-image-dialog [data-rmiz-btn-unzoom] {
+src/components/zoomable-image.css:14:.zoomable-image-dialog [data-rmiz-btn-unzoom]:focus-visible {
+src/components/zoomable-image.tsx:3:import Zoom from 'react-medium-image-zoom'
+src/components/zoomable-image.tsx:5:import './zoomable-image.css'
+src/components/zoomable-image.tsx:7:import { DetailedHTMLProps, ImgHTMLAttributes, useState } from 'react'
+src/components/zoomable-image.tsx:9:export interface ZoomableImageProps extends DetailedHTMLProps<
+src/components/zoomable-image.tsx:21:export default function ZoomableImage({
+src/components/zoomable-image.tsx:31:}: ZoomableImageProps) {
+src/components/zoomable-image.tsx:69:      classDialog="zoomable-image-dialog"
+src/heros/HighImpact/index.tsx:3:import React, { useEffect } from 'react'
+src/heros/LowImpact/index.tsx:1:import React from 'react'
+src/heros/MediumImpact/index.tsx:1:import React from 'react'
+src/heros/PostHero/index.tsx:2:import React from 'react'
+src/heros/RenderHero.tsx:1:import React from 'react'
+src/hooks/use-task.ts:1:import { useState, useEffect, useRef, useCallback } from 'react'
+src/hooks/use-task.ts:57: * const { task, isLoading, isStreaming } = useTask({
+src/hooks/use-task.ts:63:export function useTask({
+src/providers/HeaderTheme/index.tsx:5:import React, { createContext, useCallback, use, useState } from 'react'
+src/providers/Theme/InitTheme/index.tsx:1:import React from 'react'
+src/providers/Theme/ThemeSelector/index.tsx:10:import React, { useState, startTransition } from 'react'
+src/providers/Theme/index.tsx:3:import React, { createContext, useCallback, use, useEffect, useState, startTransition } from 'react'
+src/providers/index.tsx:1:import React from 'react'
+src/search/Component.tsx:4:import React, { useState, useEffect } from 'react'
+src/utilities/etsyClient.ts:330:  async getListing(listingId: number, includes?: string[]): Promise<unknown> {
+src/utilities/etsyClient.ts:332:    return this.request(`/listings/${listingId}`, { params })
+src/utilities/etsyClient.ts:339:    listingIds: number[],
+src/utilities/etsyClient.ts:343:      listing_ids: listingIds.join(','),
+src/utilities/getMeUser.ts:7:export const getMeUser = async (args?: {
+src/utilities/syncEtsy.ts:38:  | { type: 'listings'; listingIds: number[] }
+src/utilities/syncEtsy.ts:43:  failures: Array<{ listingId: number; error: string }>
+src/utilities/syncEtsy.ts:73:    listingId: number,
+src/utilities/syncEtsy.ts:103:        ? `Starting Etsy sync for ${source.listingIds.length} listing IDs...`
+src/utilities/syncEtsy.ts:107:    const failures: Array<{ listingId: number; error: string }> = []
+src/utilities/syncEtsy.ts:209:        failures.push({ listingId: listing_id, error: msg })
+src/utilities/syncEtsy.ts:305:        const data = await this.client.getListingsBatch(source.listingIds, ['Images'])
+src/utilities/syncEtsy.ts:309:        for (const id of source.listingIds) {
+src/utilities/syncEtsy.ts:406:    listingId: number,
+src/utilities/syncEtsy.ts:428:        name: `etsy-${listingId}-${etsyImageId}.jpg`,
+src/utilities/syncEtsy.ts:448:    ? { type: 'listings', listingIds: source }
+src/utilities/toKebabCase.ts:1:export const toKebabCase = (string: string): string =>
+src/utilities/useClickableCard.ts:2:import type { RefObject } from 'react'
+src/utilities/useClickableCard.ts:5:import { useCallback, useEffect, useRef } from 'react'
+src/utilities/useDebounce.ts:1:import { useState, useEffect } from 'react'
+tests/int/syncEtsy.int.spec.ts:56:    listingId: number,
+tests/int/syncEtsy.int.spec.ts:155:      { type: 'listings', listingIds: [101] },
+tests/int/syncEtsy.int.spec.ts:225:    expect(result.failures[0].listingId).toBe(301)

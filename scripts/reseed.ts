@@ -48,7 +48,13 @@ async function main(): Promise<void> {
     createdBootstrapUser = true
     user = await payload.create({
       collection: 'users',
-      data: { name: bootstrapName, email: bootstrapEmail, password: bootstrapPassword },
+      data: {
+        name: bootstrapName,
+        email: bootstrapEmail,
+        password: bootstrapPassword,
+        roles: ['admin'],
+        status: 'active',
+      },
     })
   } else {
     user = users[0]

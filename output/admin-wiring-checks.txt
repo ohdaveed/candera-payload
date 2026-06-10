@@ -1,0 +1,29 @@
+src/app/(frontend)/products/[slug]/page.tsx:25:import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
+src/app/(frontend)/products/[slug]/page.tsx:197:                    <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
+src/app/(frontend)/products/[slug]/page.tsx:199:                    </BoutiqueLink>
+src/app/(payload)/admin/[[...segments]]/not-found.tsx:7:import { importMap } from '../importMap'
+src/app/(payload)/admin/[[...segments]]/not-found.tsx:22:  NotFoundPage({ config, params, searchParams, importMap })
+src/app/(payload)/admin/[[...segments]]/page.tsx:7:import { importMap } from '../importMap'
+src/app/(payload)/admin/[[...segments]]/page.tsx:22:  RootPage({ config, params, searchParams, importMap })
+src/app/(payload)/admin/importMap.js:22:import { GenerateCopyButton as GenerateCopyButton_47ed734a0ca4546f9177bc8d35cf0416 } from '@/components/admin/GenerateCopyButton'
+src/app/(payload)/admin/importMap.js:30:import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
+src/app/(payload)/admin/importMap.js:36:export const importMap = {
+src/app/(payload)/admin/importMap.js:58:  "@/components/admin/GenerateCopyButton#GenerateCopyButton": GenerateCopyButton_47ed734a0ca4546f9177bc8d35cf0416,
+src/app/(payload)/admin/importMap.js:66:  "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
+src/app/(payload)/layout.tsx:9:import { importMap } from './admin/importMap.js'
+src/app/(payload)/layout.tsx:21:    importMap,
+src/app/(payload)/layout.tsx:26:  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+src/collections/Products.ts:159:                  Field: '@/components/admin/GenerateCopyButton#GenerateCopyButton',
+src/components/BeforeDashboard/SeedButton/index.tsx:17:export const SeedButton: React.FC = () => {
+src/components/BeforeDashboard/index.tsx:11:const BeforeDashboard: React.FC = async () => {
+src/components/BeforeDashboard/index.tsx:108:export default BeforeDashboard
+src/components/Card/QuickViewDialog.tsx:12:import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
+src/components/Card/QuickViewDialog.tsx:94:                  <BoutiqueLink href={`https://www.etsy.com/listing/${etsyListingId}`}>
+src/components/Card/QuickViewDialog.tsx:96:                  </BoutiqueLink>
+src/components/EtsyHandshake/BoutiqueLink.tsx:6:interface BoutiqueLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+src/components/EtsyHandshake/BoutiqueLink.tsx:11:export const BoutiqueLink: React.FC<BoutiqueLinkProps> = ({
+src/components/admin/GenerateCopyButton.tsx:22:export function GenerateCopyButton() {
+src/payload.config.ts:63:      beforeLogin: ['@/components/BeforeLogin'],
+src/payload.config.ts:64:      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
+src/payload.config.ts:66:      beforeDashboard: ['@/components/BeforeDashboard'],
+src/payload.config.ts:68:    importMap: {

@@ -1,9 +1,11 @@
 'use client'
 
-import React from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { Card, CardContent } from '@/components/ui/card'
+
+import type { ScentProfile as ScentProfileType } from '@/payload-types'
 
 type ScentProfile =
   | {
@@ -18,7 +20,7 @@ type ProductDetailTabsProps = {
   title?: string | null
   scentProfile?: ScentProfile
   burnTime?: string | null
-  atmosphere?: string | null
+  atmosphere?: string | number | ScentProfileType | null
   productType?: 'candle' | 'vintage' | 'custom'
   specifications?: Array<{ label: string; value: string }> | null
 }
@@ -41,7 +43,7 @@ export function ProductDetailTabs({
       : isCandle
         ? [
             { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
-            { label: 'Craftsmanship', value: 'Numbered vessel · Micro-batch cured' },
+            { label: 'Craftsmanship', value: 'Hand-labeled · Micro-batch cured' },
             { label: 'Origin', value: 'Ships from California' },
           ]
         : title?.toLowerCase().includes('metal') || productType === 'custom'
@@ -62,7 +64,7 @@ export function ProductDetailTabs({
               ]
 
   return (
-    <Tabs defaultValue="specs">
+    <Tabs defaultValue="specs" className="mt-32">
       <TabsList className="bg-candera-ash/50 rounded-none border border-candera-stone/20 p-0 h-auto w-full">
         <TabsTrigger
           value="specs"
@@ -81,19 +83,21 @@ export function ProductDetailTabs({
       </TabsList>
 
       <TabsContent value="specs" className="pt-4">
-        <div className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 px-6 py-6">
-          <Eyebrow as="p" className="mb-5">
-            Specifications
-          </Eyebrow>
-          <ul className="flex flex-col gap-3.5 p-0 list-none">
-            {displaySpecs.map(({ label, value }) => (
-              <li key={label} className="flex justify-between items-baseline gap-4 text-[13px]">
-                <span className="font-semibold text-candera-obsidian shrink-0">{label}</span>
-                <span className="text-candera-sage-text text-right">{value}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Card className="rounded-xl border border-candera-stone/20 bg-candera-ash/40 overflow-hidden">
+          <CardContent className="px-6 py-6">
+            <Eyebrow as="p" className="mb-5">
+              Specifications
+            </Eyebrow>
+            <ul className="flex flex-col gap-3.5 p-0 list-none">
+              {displaySpecs.map(({ label, value }) => (
+                <li key={label} className="flex justify-between items-baseline gap-4 text-[13px]">
+                  <span className="font-semibold text-candera-obsidian shrink-0">{label}</span>
+                  <span className="text-candera-sage-text text-right">{value}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       </TabsContent>
 
       {isCandle && hasScent && (

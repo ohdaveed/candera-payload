@@ -1,7 +1,7 @@
-import { cn } from '@/utilities/ui'
 import React from 'react'
 
 import { Card, CardPostData } from '@/components/Card'
+import { Container } from '@/components/ui/container'
 
 export type Props = {
   posts: CardPostData[]
@@ -12,8 +12,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts, relationTo = 'posts' } = props
 
   return (
-    <div className={cn('container')}>
-      <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12">
+    <Container className="px-0 md:px-0">
+      <ul className="flex flex-wrap justify-center gap-y-16 gap-x-6 lg:gap-x-10 xl:gap-x-12 list-none p-0">
         {posts?.map((result, index) => {
           if (typeof result === 'object' && result !== null) {
             const {
@@ -21,6 +21,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
               categories,
               meta,
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,
@@ -40,6 +41,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
                 image: meta?.image,
               },
               title,
+              tagline,
               extraPhotos,
               scentProfile,
               burnTime,
@@ -50,20 +52,23 @@ export const CollectionArchive: React.FC<Props> = (props) => {
             }
 
             return (
-              <div className="col-span-4" key={index}>
+              <li
+                className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] xl:w-[calc(33.333%-3rem)]"
+                key={index}
+              >
                 <Card
                   className="h-full"
                   doc={minimizedDoc as CardPostData}
                   relationTo={relationTo}
                   showCategories
                 />
-              </div>
+              </li>
             )
           }
 
           return null
         })}
-      </div>
-    </div>
+      </ul>
+    </Container>
   )
 }

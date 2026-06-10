@@ -3,10 +3,13 @@ import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-b
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { Container } from '@/components/ui/container'
+import { Section } from '@/components/ui/section'
+import { Form } from '@/components/ui/form'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
@@ -109,7 +112,7 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[50rem] py-32">
+    <Container className="lg:max-w-[50rem] py-32">
       {enableIntro && introContent && !hasSubmitted ? (
         <RichText
           className="mb-16 
@@ -120,12 +123,12 @@ export const FormBlock: React.FC<
         />
       ) : null}
       <Separator className="bg-candera-stone/20 mb-16" />
-      <div className="p-0">
-        <FormProvider {...formMethods}>
+      <Section padding="none" className="p-0">
+        <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <div className="py-12 text-center">
+            <Section padding="none" className="py-12 text-center">
               <RichText className="editorial" data={confirmationMessage} />
-            </div>
+            </Section>
           ) : null}
           {isLoading && !hasSubmitted ? (
             <p className="editorial animate-pulse" aria-live="polite">
@@ -133,17 +136,18 @@ export const FormBlock: React.FC<
             </p>
           ) : null}
           {error ? (
-            <div
+            <Section
+              padding="none"
               className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
               aria-live="polite"
               role="alert"
             >
               {`${error.status || '500'}: ${error.message || ''}`}
-            </div>
+            </Section>
           ) : null}
           {!hasSubmitted ? (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-10 last:mb-0">
+              <Section padding="none" className="mb-10 last:mb-0">
                 {formFromProps && formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
                       const Field = fields?.[
@@ -151,7 +155,7 @@ export const FormBlock: React.FC<
                       ] as React.ElementType
                       if (Field) {
                         return (
-                          <div className="mb-8 last:mb-0" key={index}>
+                          <Section padding="none" className="mb-8 last:mb-0" key={index}>
                             <Field
                               form={formFromProps}
                               {...field}
@@ -160,21 +164,27 @@ export const FormBlock: React.FC<
                               errors={errors}
                               register={register}
                             />
-                          </div>
+                          </Section>
                         )
                       }
                       return null
                     })
                   : null}
-              </div>
+              </Section>
 
-              <Button disabled={isLoading} form={formID} type="submit" variant="cta" size="cta">
+              <Button
+                disabled={isLoading}
+                form={formID}
+                type="submit"
+                variant="cta-ember"
+                size="cta"
+              >
                 {isLoading ? 'Sending…' : submitButtonLabel || 'Send Correspondence'}
               </Button>
             </form>
           ) : null}
-        </FormProvider>
-      </div>
-    </div>
+        </Form>
+      </Section>
+    </Container>
   )
 }

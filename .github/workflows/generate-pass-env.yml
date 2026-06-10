@@ -1,0 +1,57 @@
+name: Generate .env.pass
+
+on:
+  workflow_dispatch:
+    inputs:
+      share_id:
+        description: 'Proton Pass share id (optional, can use secret PROTON_PASS_SHARE_ID)'
+        required: false
+        default: ''
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    env:
+      PROTON_PASS_AGENT_REASON: 'CI: generate .env.pass'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pass-cli and jq
+        run: |
+          curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
+          export PATH="$HOME/.local/bin:$PATH"
+          sudo apt-get update && sudo apt-get install -y jq
+        shell: bash
+
+      - name: Login to Proton Pass (PAT)
+        env:
+          PROTON_PASS_PERSONAL_ACCESS_TOKEN: ${{ secrets.PROTON_PASS_PERSONAL_ACCESS_TOKEN }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          if [ -z "${PROTON_PASS_PERSONAL_ACCESS_TOKEN:-}" ]; then
+            echo 'PROTON_PASS_PERSONAL_ACCESS_TOKEN secret not set' >&2
+            exit 1
+          fi
+          PROTON_PASS_PERSONAL_ACCESS_TOKEN="${PROTON_PASS_PERSONAL_ACCESS_TOKEN}" pass-cli login
+          pass-cli info
+        shell: bash
+
+      - name: Generate .env.pass
+        env:
+          PROTON_PASS_AGENT_REASON: ${{ env.PROTON_PASS_AGENT_REASON }}
+          SHARE_ID: ${{ github.event.inputs.share_id || secrets.PROTON_PASS_SHARE_ID }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          if [ -z "${SHARE_ID:-}" ]; then
+            echo 'Share id not provided via workflow input or secrets.PROTON_PASS_SHARE_ID' >&2
+            exit 1
+          fi
+          ./scripts/generate-pass-env.sh --share-id "$SHARE_ID" --out .env.pass
+        shell: bash
+
+      - name: Show generated .env.pass (head 20)
+        run: |
+          echo '--- .env.pass (first 20 lines) ---'
+          head -n 20 .env.pass || true
+        shell: bash

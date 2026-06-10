@@ -42,7 +42,7 @@ export const post5: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: "A well-made botanical candle should give you 50 hours of burn time. Most people get significantly less — not because the candle is poor quality, but because of five very fixable habits. Here's what they are and how to correct them.",
+                text: "A well-made botanical candle should give you sixty hours of intention. Most people get significantly less — not because the candle is poor quality, but because of five very fixable habits. Here's what they are and how to correct them.",
                 version: 1,
               },
             ],
