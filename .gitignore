@@ -77,3 +77,4 @@ scripts/merge-pass-env.py
 
 # Python bytecode from local checks
 scripts/__pycache__/
+.neon

@@ -103,6 +103,7 @@ export const seed = async ({
       email: adminEmail,
       password: adminPassword,
       roles: ['admin'],
+      status: 'active',
     } as never,
   })
 
@@ -132,6 +133,8 @@ export const seed = async ({
         name: process.env.SEED_DEMO_AUTHOR_NAME || 'Demo Author',
         email: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com',
         password: process.env.SEED_DEMO_AUTHOR_PASSWORD || 'password',
+        roles: ['editor'],
+        status: 'active',
       },
     }),
     payload.create({

@@ -460,7 +460,19 @@ export interface Category {
  */
 export interface User {
   id: number;
-  name?: string | null;
+  name: string;
+  /**
+   * Internal access label for admin users.
+   */
+  roles: ('admin' | 'editor')[];
+  /**
+   * Operational account status. Enforcement can be added after roles are backfilled.
+   */
+  status: 'active' | 'suspended';
+  /**
+   * Internal notes for account context. Do not store secrets here.
+   */
+  notes?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1762,6 +1774,9 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
+  status?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

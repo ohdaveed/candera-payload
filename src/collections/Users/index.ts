@@ -12,7 +12,7 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name', 'email', 'roles', 'status', 'updatedAt'],
     useAsTitle: 'name',
     group: 'System',
   },
@@ -21,6 +21,59 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      required: true,
+    },
+    {
+      name: 'roles',
+      type: 'select',
+      hasMany: true,
+      required: true,
+      defaultValue: ['editor'],
+      saveToJWT: true,
+      admin: {
+        description: 'Internal access label for admin users.',
+        isClearable: false,
+        isSortable: true,
+      },
+      options: [
+        {
+          label: 'Admin',
+          value: 'admin',
+        },
+        {
+          label: 'Editor',
+          value: 'editor',
+        },
+      ],
+    },
+    {
+      name: 'status',
+      type: 'select',
+      required: true,
+      defaultValue: 'active',
+      admin: {
+        description:
+          'Operational account status. Enforcement can be added after roles are backfilled.',
+      },
+      options: [
+        {
+          label: 'Active',
+          value: 'active',
+        },
+        {
+          label: 'Suspended',
+          value: 'suspended',
+        },
+      ],
+    },
+    {
+      name: 'notes',
+      type: 'textarea',
+      admin: {
+        description: 'Internal notes for account context. Do not store secrets here.',
+        position: 'sidebar',
+        rows: 4,
+      },
     },
   ],
   timestamps: true,
