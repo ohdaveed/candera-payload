@@ -80,12 +80,12 @@ export const seed = async ({
     payload.delete({
       collection: 'users',
       depth: 0,
-      where: { email: { equals: 'demo-author@example.com' } },
+      where: { email: { equals: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com' } },
     }),
     payload.delete({
       collection: 'users',
       depth: 0,
-      where: { email: { equals: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com' } },
+      where: { email: { equals: process.env.SEED_ADMIN_EMAIL } },
     }),
   ])
 
@@ -93,11 +93,14 @@ export const seed = async ({
   if (!adminPassword)
     throw new Error('SEED_ADMIN_PASSWORD env var is required to seed the database')
 
+  const adminEmail = process.env.SEED_ADMIN_EMAIL
+  if (!adminEmail) throw new Error('SEED_ADMIN_EMAIL env var is required to seed the database')
+
   await payload.create({
     collection: 'users',
     data: {
-      name: process.env.SEED_ADMIN_NAME || 'Candera Admin',
-      email: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com',
+      name: process.env.SEED_ADMIN_NAME,
+      email: adminEmail,
       password: adminPassword,
       roles: ['admin'],
     } as never,
@@ -126,9 +129,9 @@ export const seed = async ({
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
+        name: process.env.SEED_DEMO_AUTHOR_NAME || 'Demo Author',
+        email: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com',
+        password: process.env.SEED_DEMO_AUTHOR_PASSWORD || 'password',
       },
     }),
     payload.create({
