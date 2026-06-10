@@ -1,7 +1,6 @@
 import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
-import React from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import type { CardPostData } from '@/components/Card'

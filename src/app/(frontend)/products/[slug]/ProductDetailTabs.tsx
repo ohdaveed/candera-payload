@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { Eyebrow } from '@/components/ui/eyebrow'

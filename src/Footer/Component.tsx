@@ -1,7 +1,5 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
-import React from 'react'
-
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Separator } from '@/components/ui/separator'

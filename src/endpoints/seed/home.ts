@@ -4,7 +4,8 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
 
 type HomeArgs = {
   heroImage: Media
-  scentQuizFormId?: string
+  scentQuizFormId?: string | number
+  scentQuizId?: string | number
 }
 
 const COLLECTION_HEADING = 'Crafted in the Studio.'
@@ -19,7 +20,8 @@ const META_DESCRIPTION =
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
-  scentQuizFormId = '',
+  scentQuizFormId,
+  scentQuizId,
 }) => {
   return {
     slug: 'home',
@@ -54,7 +56,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           createParagraph(COLLECTION_BODY),
         ]),
         populateBy: 'collection',
-        relationTo: 'products',
+        relationTo: 'posts',
         limit: 6,
       },
       {
@@ -90,6 +92,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockType: 'scentQuiz',
         eyebrow: 'Find Your Scent',
         headline: 'Which Candera ritual is calling you?',
+        quiz: scentQuizId,
         formId: scentQuizFormId,
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {

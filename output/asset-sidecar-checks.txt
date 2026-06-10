@@ -1,0 +1,20 @@
+docs/superpowers/specs/2026-06-07-tagline-seo-generator-design.md:40:  - Spinner during request
+package.json:56:    "@radix-ui/react-tooltip": "^1.2.8",
+package.json:79:    "react-medium-image-zoom": "^5.4.5",
+pnpm-lock.yaml:99:      '@radix-ui/react-tooltip':
+pnpm-lock.yaml:168:      react-medium-image-zoom:
+pnpm-lock.yaml:1795:  '@radix-ui/react-tooltip@1.2.8':
+pnpm-lock.yaml:3913:  react-medium-image-zoom@5.4.5:
+pnpm-lock.yaml:6063:  '@radix-ui/react-tooltip@1.2.8(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+pnpm-lock.yaml:8113:  react-medium-image-zoom@5.4.5(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+src/components/BeforeDashboard/SeedButton/index.scss:1:.seedButton {
+src/components/BeforeDashboard/SeedButton/index.tsx:82:      <button type="button" className="seedButton" onClick={handleClick}>
+src/components/ui/collapsible-section.tsx:8:export interface CollapsibleSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+src/components/ui/collapsible-section.tsx:16:export function CollapsibleSection({
+src/components/ui/collapsible-section.tsx:25:}: CollapsibleSectionProps) {
+src/components/ui/spinner.tsx:9:function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
+src/components/ui/spinner.tsx:20:export { Spinner }
+src/components/ui/tooltip.tsx:4:import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+src/components/zoomable-image.tsx:3:import Zoom from 'react-medium-image-zoom'
+src/components/zoomable-image.tsx:4:import 'react-medium-image-zoom/dist/styles.css'
+src/components/zoomable-image.tsx:5:import './zoomable-image.css'

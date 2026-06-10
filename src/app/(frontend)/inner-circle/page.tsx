@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'

@@ -39,26 +39,27 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
     formState: { errors },
   } = useForm<EmailFormValues>()
 
-  const deriveResult = useCallback(() => {
-    let topId: string | number = ''
-    let topScore = -1
-    for (const [id, score] of Object.entries(scores)) {
-      if (score > topScore) {
-        topScore = score
-        topId = id
+  const deriveResultFromScores = useCallback(
+    (scoreMap: Record<string, number>) => {
+      let topId: string | number = ''
+      let topScore = -1
+      for (const [id, score] of Object.entries(scoreMap)) {
+        if (score > topScore) {
+          topScore = score
+          topId = id
+        }
       }
-    }
 
-    // Find the actual profile from the quiz data
-    // We assume the profile relationship was populated
-    const foundProfile = questions
-      .flatMap((q) => q.options.flatMap((o) => o.scores || []))
-      .find(
-        (s) => String(typeof s.profile === 'object' ? s.profile.id : s.profile) === String(topId),
-      )?.profile as ScentProfile | undefined
+      const foundProfile = questions
+        .flatMap((q) => q.options.flatMap((o) => o.scores || []))
+        .find(
+          (s) => String(typeof s.profile === 'object' ? s.profile.id : s.profile) === String(topId),
+        )?.profile as ScentProfile | undefined
 
-    return foundProfile || null
-  }, [scores, questions])
+      return foundProfile || null
+    },
+    [questions],
+  )
 
   const handleOptionSelect = useCallback(
     (option: NonNullable<Quiz['questions']>[number]['options'][number]) => {
@@ -75,7 +76,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
       if (step < questions.length - 1) {
         setStep((s) => s + 1)
       } else {
-        const derived = deriveResult()
+        const derived = deriveResultFromScores(newScores)
         setResult(derived)
         setIsRevealing(true)
         setTimeout(() => {
@@ -84,7 +85,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
         }, 2800)
       }
     },
-    [step, scores, questions, deriveResult],
+    [step, scores, questions, deriveResultFromScores],
   )
 
   const onEmailSubmit = useCallback(

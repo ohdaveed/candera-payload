@@ -34,6 +34,8 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'scent-profiles',
+  'quizzes',
 ]
 
 const globals: GlobalSlug[] = ['header', 'footer']
@@ -296,6 +298,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding products...`)
 
+  // atmosphere is a relationship to scent-profiles seeded later; linked in a second pass below
   const productSeedData = [
     {
       title: 'Seashell Garden Glow',
@@ -304,7 +307,7 @@ export const seed = async ({
       vessel: '001',
       price: 38,
       productTag: 'Bestseller',
-      atmosphere: 'Coastal & Airy',
+      atmosphereSlug: 'coastal',
       burnTime: '60 Hours',
       tagline: 'Gathered from the tide. A practice in coastal stillness.',
       scentProfile: { top: 'Sea Breeze', heart: 'Driftwood', base: 'Salt Air' },
@@ -317,7 +320,7 @@ export const seed = async ({
       vessel: '002',
       price: 38,
       productTag: 'New Release',
-      atmosphere: 'Fresh & Botanical',
+      atmosphereSlug: 'fresh',
       burnTime: '60 Hours',
       tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
       scentProfile: { top: 'Fresh Green', heart: 'Lily of the Valley', base: 'Morning Dew' },
@@ -330,7 +333,7 @@ export const seed = async ({
       vessel: '003',
       price: 38,
       productTag: 'Limited Batch',
-      atmosphere: 'Moody & Intimate',
+      atmosphereSlug: 'moody',
       burnTime: '60 Hours',
       tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
       scentProfile: { top: 'Dark Berry', heart: 'Merlot', base: 'Vetiver' },
@@ -343,7 +346,7 @@ export const seed = async ({
       vessel: '004',
       price: 38,
       productTag: 'Bestseller',
-      atmosphere: 'Romantic & Soft',
+      atmosphereSlug: 'romantic',
       burnTime: '60 Hours',
       tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
       scentProfile: { top: 'White Lilac', heart: 'Blue Hydrangea', base: 'Soft Musk' },
@@ -356,7 +359,7 @@ export const seed = async ({
       vessel: '005',
       price: 38,
       productTag: 'Limited Batch',
-      atmosphere: 'Gentle & Contemplative',
+      atmosphereSlug: 'contemplative',
       burnTime: '60 Hours',
       tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
       scentProfile: { top: 'Lilac', heart: 'Pressed Pansy', base: 'Soft Powder' },
@@ -369,7 +372,7 @@ export const seed = async ({
       vessel: '006',
       price: 38,
       productTag: 'New Release',
-      atmosphere: 'Bold & Floral',
+      atmosphereSlug: 'bold',
       burnTime: '60 Hours',
       tagline: 'Botanical architecture. Bold florals grounded in ritual.',
       scentProfile: { top: 'Fresh Florals', heart: 'Botanical Rose', base: 'Green Stem' },
@@ -377,8 +380,8 @@ export const seed = async ({
     },
   ]
 
-  await Promise.all(
-    productSeedData.map(({ imageKey, ...product }) => {
+  const productDocs = await Promise.all(
+    productSeedData.map(({ imageKey, atmosphereSlug: _atm, ...product }) => {
       const mediaDoc = candleraMediaDocs[imageKey]
       return payload.create({
         collection: 'products',
@@ -399,7 +402,22 @@ export const seed = async ({
     payload.create({ collection: 'forms', depth: 0, data: scentQuizFormData }),
   ])
 
-  await seedScentQuiz(payload)
+  const { profileDocs, quizId } = await seedScentQuiz(payload)
+
+  // Second pass: link each product to its atmosphere (scent-profile)
+  payload.logger.info(`— Linking product atmospheres...`)
+  await Promise.all(
+    productDocs.map((doc, i) => {
+      const { atmosphereSlug } = productSeedData[i]
+      const atmosphereId = profileDocs[atmosphereSlug]
+      if (!atmosphereId) return Promise.resolve()
+      return payload.update({
+        collection: 'products',
+        id: doc.id,
+        data: { atmosphere: atmosphereId } as unknown as RequiredDataFromCollectionSlug<'products'>,
+      })
+    }),
+  )
 
   payload.logger.info(`— Seeding pages...`)
 
@@ -412,7 +430,8 @@ export const seed = async ({
       },
       data: home({
         heroImage: (candleraMediaDocs['seashell-garden'] as unknown as Media) || imageHomeDoc,
-        scentQuizFormId: scentQuizFormDoc.id.toString(),
+        scentQuizFormId: scentQuizFormDoc.id,
+        scentQuizId: quizId,
       }),
     }),
     payload.create({

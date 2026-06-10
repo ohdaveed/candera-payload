@@ -6,7 +6,6 @@ import { Pagination } from '@/components/Pagination'
 import { PageHeader } from '@/components/PageHeader'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 

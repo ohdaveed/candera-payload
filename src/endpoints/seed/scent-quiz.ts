@@ -1,7 +1,31 @@
 import type { Payload } from 'payload'
 
-export const seedScentQuiz = async (payload: Payload): Promise<void> => {
+// slug → product slug mapping
+const PROFILE_PRODUCT_SLUGS: Record<string, string> = {
+  coastal: 'seashell-garden-glow',
+  fresh: 'meadowlight-botanical',
+  moody: 'crimson-noir',
+  romantic: 'ever-after-glow',
+  contemplative: 'anyas-eyes',
+  bold: 'scarlet-bloom',
+}
+
+export const seedScentQuiz = async (
+  payload: Payload,
+): Promise<{ profileDocs: Record<string, string | number>; quizId: string | number }> => {
   payload.logger.info('Seeding Scent Profiles and Quiz...')
+
+  // Look up product IDs by slug so we don't rely on hardcoded integer IDs
+  const productSlugToId: Record<string, number> = {}
+  for (const productSlug of Object.values(PROFILE_PRODUCT_SLUGS)) {
+    const { docs } = await payload.find({
+      collection: 'products',
+      where: { slug: { equals: productSlug } },
+      limit: 1,
+      depth: 0,
+    })
+    if (docs[0]) productSlugToId[productSlug] = docs[0].id as number
+  }
 
   // 1. Create Scent Profiles
   const profiles = [
@@ -12,8 +36,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'Sea Breeze · Driftwood · Salt Air',
       editorial:
         'Your ritual is one of expansion and clarity. You seek the vastness of the horizon and the sharp, clean bite of the Pacific air to clear your path.',
-      featuredProduct: 23, // seashell-garden-glow
-      ambientImage: 53,
+      featuredProduct: productSlugToId['seashell-garden-glow'],
     },
     {
       name: 'Fresh & Botanical',
@@ -22,8 +45,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'Fresh Green · Lily of the Valley · Morning Dew',
       editorial:
         'You are drawn to the vibrant energy of growth. Your space is a sanctuary for new beginnings, filled with the sun-drenched scent of a meadow in bloom.',
-      featuredProduct: 22, // meadowlight-botanical
-      ambientImage: 54,
+      featuredProduct: productSlugToId['meadowlight-botanical'],
     },
     {
       name: 'Moody & Intimate',
@@ -32,8 +54,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'Dark Berry · Merlot · Vetiver',
       editorial:
         'You embrace the shadows and the depth of the evening. Your ritual is intimate and layered, seeking the complex notes of dark fruit and ancient woods.',
-      featuredProduct: 24, // crimson-noir
-      ambientImage: 55,
+      featuredProduct: productSlugToId['crimson-noir'],
     },
     {
       name: 'Romantic & Soft',
@@ -42,8 +63,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'White Lilac · Blue Hydrangea · Soft Musk',
       editorial:
         'You find beauty in tenderness and tradition. Your ritual is an act of elegance, surrounding yourself with the soft, luminous fragrance of a garden at dusk.',
-      featuredProduct: 25, // ever-after-glow
-      ambientImage: 56,
+      featuredProduct: productSlugToId['ever-after-glow'],
     },
     {
       name: 'Gentle & Contemplative',
@@ -52,8 +72,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'Lilac · Pressed Pansy · Soft Powder',
       editorial:
         'Your practice is one of stillness and introspection. You seek the gentle, powdered scents that invite quiet thought and the slow passage of time.',
-      featuredProduct: 26, // anyas-eyes
-      ambientImage: 57,
+      featuredProduct: productSlugToId['anyas-eyes'],
     },
     {
       name: 'Bold & Floral',
@@ -62,8 +81,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
       notes: 'Fresh Florals · Botanical Rose · Green Stem',
       editorial:
         'You are moved by the architectural power of nature. Your ritual is confident and striking, centered around the heady, unyielding blooms of the botanical world.',
-      featuredProduct: 27, // scarlet-bloom
-      ambientImage: 58,
+      featuredProduct: productSlugToId['scarlet-bloom'],
     },
   ]
 
@@ -78,7 +96,7 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
   }
 
   // 2. Create the Quiz
-  await payload.create({
+  const quizDoc = await payload.create({
     collection: 'quizzes',
     data: {
       title: 'Candera Scent Ritual Quiz',
@@ -214,4 +232,5 @@ export const seedScentQuiz = async (payload: Payload): Promise<void> => {
   })
 
   payload.logger.info('Scent Profiles and Quiz seeded successfully.')
+  return { profileDocs, quizId: quizDoc.id }
 }
