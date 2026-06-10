@@ -38,8 +38,9 @@ export const Search: React.FC = () => {
   }, [debouncedValue, pathname, query, router, searchParams])
 
   return (
-    <div>
+    <div className="w-full">
       <form
+        className="mx-auto w-full max-w-[270px] sm:max-w-[360px]"
         onSubmit={(e) => {
           e.preventDefault()
         }}
@@ -50,11 +51,13 @@ export const Search: React.FC = () => {
         <Input
           id="search"
           autoComplete="off"
+          name="q"
           value={value}
           onChange={(event) => {
             setValue(event.target.value)
           }}
-          placeholder="Search…"
+          placeholder="Sandalwood, citrus, smoke…"
+          className="h-[48px] min-h-[48px] border-candera-stone/50 bg-candera-vellum/60 px-5 py-3 text-center font-sans text-[15px] leading-[1.2]"
         />
         <button type="submit" className="sr-only">
           submit

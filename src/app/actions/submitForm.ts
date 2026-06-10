@@ -17,24 +17,29 @@ export async function submitForm(
   }
 
   try {
-    const rows = await sql`
-      INSERT INTO form_submissions (form_id, updated_at, created_at)
-      VALUES (${formId}, NOW(), NOW())
-      RETURNING id
-    `
+    const submissionRows = submissionData.map((item, order) => ({
+      order,
+      id: crypto.randomUUID(),
+      field: item.field,
+      value: item.value,
+    }))
 
-    const submissionId = (rows[0] as { id: number }).id
-
-    await sql.transaction((tx) =>
-      submissionData.map(
-        (item, i) =>
-          tx`
-          INSERT INTO form_submissions_submission_data
-            (_order, _parent_id, id, field, value)
-          VALUES (${i}, ${submissionId}, ${crypto.randomUUID()}, ${item.field}, ${item.value})
-        `,
+    await sql`
+      WITH created_submission AS (
+        INSERT INTO form_submissions (form_id, updated_at, created_at)
+        VALUES (${formId}, NOW(), NOW())
+        RETURNING id
       ),
-    )
+      submission_data AS (
+        SELECT *
+        FROM jsonb_to_recordset(${JSON.stringify(submissionRows)}::jsonb)
+          AS item("order" integer, id varchar, field varchar, value varchar)
+      )
+      INSERT INTO form_submissions_submission_data (_order, _parent_id, id, field, value)
+      SELECT item."order", created_submission.id, item.id, item.field, item.value
+      FROM submission_data item
+      CROSS JOIN created_submission
+    `
 
     return { ok: true }
   } catch (err) {

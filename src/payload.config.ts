@@ -19,6 +19,7 @@ import { Posts } from './collections/Posts'
 import { Products } from './collections/Products'
 import { Users } from './collections/Users'
 import { Briefs } from './collections/Briefs'
+import { Folders } from './collections/Folders'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -26,10 +27,9 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { syncEtsyListings } from './utilities/syncEtsy'
 import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
-import { EtsyClient, DefaultPayloadTokenRepository } from './utilities/etsyClient'
+import { etsyEndpoints } from './endpoints/etsy'
 
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
@@ -101,22 +101,7 @@ export default buildConfig({
     push: false,
   }),
   collections: [
-    {
-      slug: 'folders',
-      folders: true,
-      admin: {
-        useAsTitle: 'name',
-        group: 'System',
-      },
-      fields: [
-        {
-          name: 'name',
-          type: 'text',
-          required: true,
-          label: 'Folder Name',
-        },
-      ],
-    },
+    Folders,
     Pages,
     Posts,
     Products,
@@ -161,88 +146,7 @@ export default buildConfig({
           jsonTransport: true, // Use a non-network transport if no SMTP_HOST is provided
         },
   }),
-  endpoints: [
-    createHomeEndpoint,
-    {
-      path: '/sync-etsy',
-      method: 'get',
-      handler: async (req) => {
-        if (!req.user) {
-          return Response.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-        try {
-          const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
-          const result = await syncEtsyListings(shopId, req.payload)
-          return Response.json(result)
-        } catch (error) {
-          req.payload.logger.error({ err: error, msg: 'Error in /sync-etsy endpoint' })
-          return Response.json({ error: 'Error syncing Etsy listings' }, { status: 500 })
-        }
-      },
-    },
-    {
-      path: '/etsy/oauth/init',
-      method: 'get',
-      handler: async (req) => {
-        const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-        const client = new EtsyClient(
-          { redirectUri },
-          new DefaultPayloadTokenRepository(req.payload),
-        )
-        const url = client.generateAuthUrl()
-        return Response.redirect(url)
-      },
-    },
-    {
-      path: '/etsy/set-vacation',
-      method: 'get',
-      handler: async (req) => {
-        if (!req.user) {
-          return Response.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-        try {
-          const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
-          const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-          const client = new EtsyClient(
-            { redirectUri },
-            new DefaultPayloadTokenRepository(req.payload),
-          )
-          const data = await client.request<unknown>(`/shops/${shopId}`, {
-            method: 'PUT',
-            body: JSON.stringify({ is_vacation: false }),
-          })
-          return Response.json({ success: true, shop: data })
-        } catch (error) {
-          return Response.json({ error: String(error) }, { status: 500 })
-        }
-      },
-    },
-    {
-      path: '/etsy/oauth/callback',
-      method: 'get',
-      handler: async (req) => {
-        if (!req.url) {
-          return Response.json({ error: 'Missing request URL' }, { status: 400 })
-        }
-        const url = new URL(req.url)
-        const code = url.searchParams.get('code')
-        if (!code) {
-          return Response.json({ error: 'Missing authorization code' }, { status: 400 })
-        }
-        try {
-          const redirectUri = `${getServerSideURL()}/api/etsy/oauth/callback`
-          const client = new EtsyClient(
-            { redirectUri },
-            new DefaultPayloadTokenRepository(req.payload),
-          )
-          await client.completeAuthFlow(code)
-          return Response.redirect('/admin')
-        } catch (error) {
-          return Response.json({ error: String(error) }, { status: 500 })
-        }
-      },
-    },
-  ],
+  endpoints: [createHomeEndpoint, ...etsyEndpoints],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

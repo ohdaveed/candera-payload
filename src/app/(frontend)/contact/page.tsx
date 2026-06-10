@@ -27,7 +27,7 @@ export default async function ContactPage() {
   const contactFormId = formsResult.docs[0]?.id ?? 0
 
   return (
-    <Section padding="large" className="bg-candera-linen min-h-screen pt-32">
+    <Section padding="large" className="bg-candera-linen min-h-screen pt-28 md:pt-32">
       <Container>
         <Section as="article" padding="none" className="max-w-[800px] mx-auto">
           <PageHeader
@@ -41,7 +41,7 @@ export default async function ContactPage() {
           <Section
             as="section"
             padding="none"
-            className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20"
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mt-14 md:mt-20"
           >
             {/* Left column — contact info */}
             <Section as="section" padding="none">
@@ -94,7 +94,7 @@ export default async function ContactPage() {
             <Section
               as="aside"
               padding="none"
-              className="relative bg-candera-vellum/50 p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember"
+              className="relative bg-candera-vellum/50 p-6 sm:p-8 md:p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember overflow-hidden"
             >
               <h2 className="font-display text-2xl mb-8">Send a Note</h2>
               <ContactForm formId={contactFormId} />

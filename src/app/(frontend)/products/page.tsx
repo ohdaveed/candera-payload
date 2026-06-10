@@ -56,9 +56,11 @@ export default async function ProductsPage({
           description="Small-batch botanical candles, hand-poured in the studio and curated for sensory depth. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
         />
 
-        <Suspense fallback={null}>
-          <ProductFilters />
-        </Suspense>
+        {products.totalDocs > 0 || activeTag ? (
+          <Suspense fallback={null}>
+            <ProductFilters />
+          </Suspense>
+        ) : null}
 
         <Eyebrow className="block mb-8">{resultLabel}</Eyebrow>
 
@@ -100,8 +102,13 @@ export default async function ProductsPage({
 
         {products.docs.length === 0 && (
           <Section padding="medium" className="text-center">
-            <p className="editorial text-[20px] italic text-candera-sage-text mb-6">
-              No vessels found in this category.
+            <p className="editorial text-[22px] italic text-candera-sage-text mb-4">
+              {activeTag ? `No vessels found for ${activeTag}.` : 'The next batch is still curing.'}
+            </p>
+            <p className="mx-auto mb-8 max-w-[420px] text-candera-sage-text">
+              {activeTag
+                ? 'Clear the filter to return to the full studio archive.'
+                : 'Candera releases small batches as they finish their studio rest. Check back soon for the next limited pour.'}
             </p>
             <Link
               href="/products"

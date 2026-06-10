@@ -47,7 +47,7 @@ export function ProductFilters() {
               variant={activeTag === tag ? 'cta' : 'outline'}
               onClick={() => update('tag', tag)}
               className={cn(
-                'h-auto py-2.5 px-6 min-h-[44px]',
+                'h-auto py-2.5 px-4 sm:px-6 min-h-[44px] text-[10px] tracking-[.22em] sm:tracking-[.3em]',
                 activeTag !== tag &&
                   'border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
               )}
@@ -58,7 +58,7 @@ export function ProductFilters() {
         ))}
       </ul>
       {/* Sort select */}
-      <fieldset className="flex flex-col gap-2 min-w-[200px] border-none p-0 m-0">
+      <fieldset className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[200px] border-none p-0 m-0">
         <legend className="sr-only">Sort products</legend>
         <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
           <SelectTrigger

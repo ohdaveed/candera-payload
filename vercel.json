@@ -1,5 +1,5 @@
 {
-  "buildCommand": "echo y | NODE_OPTIONS=--no-deprecation payload migrate && NODE_OPTIONS=--no-deprecation npx tsx scripts/seed-admin.ts && pnpm build",
+  "buildCommand": "echo y | payload migrate && npx tsx scripts/seed-admin.ts && pnpm build",
   "installCommand": "pnpm install",
   "crons": [
     {

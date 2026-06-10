@@ -38,19 +38,21 @@
   .h1 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: clamp(3rem, 8vw, 7.25rem);
+    font-size: clamp(2.5rem, 14vw, 7.25rem);
     line-height: 1.15;
     letter-spacing: -0.01em;
     margin: 0;
+    overflow-wrap: anywhere;
   }
 
   .hero-heading {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: clamp(3rem, 8vw, 7.25rem);
-    line-height: 1.1;
+    font-size: clamp(2.5rem, 13vw, 7.25rem);
+    line-height: 1.08;
     letter-spacing: -0.01em;
     margin: 0;
+    overflow-wrap: anywhere;
   }
 
   h2,
@@ -110,10 +112,10 @@
     border-radius: 2px;
   }
 
-  input:focus,
-  textarea:focus,
-  select:focus {
-    @apply outline-none border-candera-ember-strong/50 bg-white shadow-sm;
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply border-candera-ember-strong/50 bg-white shadow-sm;
   }
 
   /* Body text */
