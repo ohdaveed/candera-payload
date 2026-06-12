@@ -123,6 +123,8 @@ export default buildConfig({
               media: true,
             },
             token: process.env.BLOB_READ_WRITE_TOKEN,
+            // Re-seeding re-uploads the same filenames; the blob store rejects duplicates otherwise
+            addRandomSuffix: true,
           }),
         ]
       : []),

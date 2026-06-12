@@ -31,11 +31,11 @@ const collections: CollectionSlug[] = [
   'pages',
   'posts',
   'products',
-  'forms',
   'form-submissions',
+  'forms',
   'search',
-  'scent-profiles',
   'quizzes',
+  'scent-profiles',
 ]
 
 const _globals: GlobalSlug[] = ['header', 'footer']
