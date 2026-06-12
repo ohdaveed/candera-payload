@@ -69,7 +69,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       />
 
       {/* Content Container */}
-      <Container className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end w-full pb-20 pt-32 md:pt-40 gap-12">
+      <Container className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end w-full pb-20 pt-32 md:pt-40 gap-10 md:gap-12">
         {/* Left Side Content */}
         <header className="flex flex-col items-start text-left max-w-[580px]">
           {heroTag && <Eyebrow className="block mb-6 text-candera-ember">{heroTag}</Eyebrow>}
@@ -84,7 +84,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             </p>
           )}
 
-          <nav className="flex flex-wrap items-center gap-10 mt-10">
+          <nav className="flex flex-wrap items-center gap-6 md:gap-10 mt-10">
             {primaryCtaLabel && primaryCtaUrl && (
               <Button asChild variant="cta-ember" size="cta">
                 <Link href={primaryCtaUrl}>
@@ -120,7 +120,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
         {/* Right Side Status Card */}
         {showStatusCard && (
-          <article className="bg-candera-vellum/95 backdrop-blur-md border border-candera-stone/30 p-8 md:p-10 w-full md:w-[280px] self-stretch md:self-auto shadow-2xl text-left transition-all duration-300 rounded-[2px]">
+          <article className="bg-candera-vellum/95 backdrop-blur-md border border-candera-stone/30 p-7 md:p-10 w-full max-w-full md:w-[280px] self-stretch md:self-auto shadow-2xl text-left transition-[background-color,border-color,box-shadow,opacity,transform] duration-300 rounded-[2px]">
             <header className="flex items-center gap-3 mb-5">
               <span className="w-5 h-[1px] bg-candera-ember" aria-hidden="true" />
               <p className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-ember-strong m-0">
@@ -130,23 +130,23 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             <p className="font-display text-[30px] md:text-[34px] font-normal italic leading-none text-candera-obsidian m-0 mb-1">
               {statusCardTitle}
             </p>
-            <p className="font-mono text-[12px] text-candera-sage-text m-0 mb-6 tracking-wider uppercase font-semibold">
+            <p className="font-mono text-[12px] text-candera-sage-text m-0 mb-6 tracking-[0.12em] uppercase font-semibold break-words">
               {statusCardSubtitle}
             </p>
             <section className="border-t border-candera-stone/20 pt-5 flex flex-col gap-3">
-              <div className="flex justify-between items-center">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-4 items-center">
                 <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-sage-text">
                   Status
                 </span>
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-ember">
+                <span className="min-w-0 text-right font-sans text-[11px] font-bold uppercase tracking-[0.12em] md:tracking-[0.18em] text-candera-ember break-words">
                   {statusCardStatus}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-4 items-center">
                 <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-sage-text">
                   Ships
                 </span>
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-candera-obsidian">
+                <span className="min-w-0 text-right font-sans text-[11px] font-bold uppercase tracking-[0.12em] md:tracking-[0.18em] text-candera-obsidian break-words">
                   {statusCardShips}
                 </span>
               </div>

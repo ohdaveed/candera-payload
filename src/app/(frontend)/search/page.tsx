@@ -25,16 +25,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     slug: r.slug ?? '',
     categories: undefined,
     meta: {
-      title: r.meta_title ?? undefined,
-      description: r.meta_description ?? undefined,
-      image: r.meta_image_url
-        ? ({
-            url: r.meta_image_url,
-            alt: r.meta_image_alt ?? '',
-            width: r.meta_image_width ?? 0,
-            height: r.meta_image_height ?? 0,
-          } as Media)
-        : undefined,
+      title: r.meta?.title ?? undefined,
+      description: r.meta?.description ?? undefined,
+      image:
+        r.meta?.image && typeof r.meta.image === 'object' ? (r.meta.image as Media) : undefined,
     },
   }))
 
@@ -42,10 +36,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     <div className="min-h-screen bg-candera-vellum">
       <PageClient />
 
-      <div className="container pt-32 pb-16">
+      <div className="container pt-40 md:pt-32 pb-16">
         <PageHeader
           align="center"
-          eyebrow="Explore"
           title="Search the Collection"
           description="Discover your next ritual scent."
           maxWidthClassName="max-w-[560px]"
@@ -71,6 +64,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         </div>
       ) : (
         <div className="container pb-32 text-center">
+          <p className="editorial mx-auto mb-8 max-w-[280px] text-[22px] italic text-candera-sage-text sm:max-w-[440px]">
+            Try a note, atmosphere, or ritual mood.
+          </p>
           <Link
             href="/products"
             className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"

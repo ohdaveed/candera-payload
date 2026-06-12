@@ -2,7 +2,14 @@ import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
-import { Fraunces, DM_Sans, EB_Garamond } from 'next/font/google'
+import {
+  Fraunces,
+  DM_Sans,
+  EB_Garamond,
+  Playfair_Display,
+  Inter,
+  Space_Grotesk,
+} from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -17,6 +24,7 @@ import { Toaster } from '@/components/ui/sonner'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -39,8 +47,28 @@ const ebGaramond = EB_Garamond({
   display: 'swap',
 })
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const siteTheme = await getCachedGlobal('site-theme')()
 
   return (
     <html
@@ -49,8 +77,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         fraunces.variable,
         dmSans.variable,
         ebGaramond.variable,
+        playfair.variable,
+        inter.variable,
+        spaceGrotesk.variable,
         'scroll-smooth',
       )}
+      data-fontset={siteTheme?.fontSet ?? 'default'}
+      data-skin={siteTheme?.colorScheme ?? 'default'}
       data-scroll-behavior="smooth"
       lang="en"
       suppressHydrationWarning

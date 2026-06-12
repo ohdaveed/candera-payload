@@ -118,7 +118,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Your Name" autoComplete="name" {...field} />
+                  <Input placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
               </FormItem>
@@ -141,7 +141,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="email@example.com" autoComplete="email" {...field} />
+                  <Input
+                    placeholder="email@example.com"
+                    autoComplete="email"
+                    spellCheck={false}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
               </FormItem>
@@ -160,7 +165,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="(555) 000-0000" autoComplete="tel" {...field} />
+                  <Input
+                    placeholder="(555) 000-0000"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
               </FormItem>

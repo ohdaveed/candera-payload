@@ -56,7 +56,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       ].join(' ')}
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <Container className="max-w-[1280px] py-4 flex items-center justify-between px-10">
+      <Container className="max-w-[1280px] py-4 flex items-center justify-between px-6 md:px-10">
         {/* Left-aligned logo */}
         <Link
           aria-label="Candera Home"

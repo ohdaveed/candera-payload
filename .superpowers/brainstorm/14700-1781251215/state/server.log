@@ -1,0 +1,6 @@
+{"type":"server-started","port":55611,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:55611","screen_dir":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/content","state_dir":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/state"}
+{"type":"screen-added","file":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/content/design-direction.html"}
+{"type":"screen-added","file":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/content/design-direction-v2.html"}
+{"type":"screen-added","file":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/content/design-direction-v3.html"}
+{"type":"screen-added","file":"/home/ohdaveed/projects/candera-payload/.superpowers/brainstorm/14700-1781251215/content/design-direction-v4.html"}
+{"type":"server-stopped","reason":"owner process exited"}

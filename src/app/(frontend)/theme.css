@@ -116,3 +116,84 @@
   --color-warning: var(--warning);
   --color-error: var(--error);
 }
+
+/* Site Theme skins — selected via the Site Theme global in the Payload admin.
+   All foreground/background pairs verified ≥ 4.5:1 (WCAG AA). */
+html[data-skin='ink-orchid'] {
+  --background: #121014;
+  --foreground: #f5f1f4;
+  --card: #1b181e;
+  --card-foreground: #f5f1f4;
+  --popover: #1b181e;
+  --popover-foreground: #f5f1f4;
+  --primary: #ef5da8;
+  --primary-foreground: #121014;
+  --secondary: #241f28;
+  --secondary-foreground: #f5f1f4;
+  --muted: #241f28;
+  --muted-foreground: #9d93a0;
+  --accent: #ef5da8;
+  --accent-foreground: #121014;
+  --border: #2e2833;
+  --input: #2e2833;
+  --ring: #ef5da8;
+}
+
+html[data-skin='lavender-noir'] {
+  --background: #17131f;
+  --foreground: #f3f0fa;
+  --card: #201a2c;
+  --card-foreground: #f3f0fa;
+  --popover: #201a2c;
+  --popover-foreground: #f3f0fa;
+  --primary: #c4b0ff;
+  --primary-foreground: #17131f;
+  --secondary: #2a2140;
+  --secondary-foreground: #f3f0fa;
+  --muted: #2a2140;
+  --muted-foreground: #968cb3;
+  --accent: #c4b0ff;
+  --accent-foreground: #17131f;
+  --border: #342a4d;
+  --input: #342a4d;
+  --ring: #c4b0ff;
+}
+
+html[data-skin='porcelain-pop'] {
+  --background: #fdfcfd;
+  --foreground: #0d0c0e;
+  --card: #f6f4f8;
+  --card-foreground: #0d0c0e;
+  --popover: #fdfcfd;
+  --popover-foreground: #0d0c0e;
+  --primary: #b9116a;
+  --primary-foreground: #fdfcfd;
+  --secondary: #efeaf3;
+  --secondary-foreground: #0d0c0e;
+  --muted: #efeaf3;
+  --muted-foreground: #6c6772;
+  --accent: #5f48bd;
+  --accent-foreground: #fdfcfd;
+  --border: #e5e0ea;
+  --input: #e5e0ea;
+  --ring: #b9116a;
+}
+
+/* Site Theme font sets — override the typography variables set in typography.css */
+html[data-fontset='playfair-inter'] {
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-editorial: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html[data-fontset='dm-sans'] {
+  --font-display: var(--font-dm-sans), system-ui, sans-serif;
+  --font-editorial: var(--font-dm-sans), system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+html[data-fontset='space-grotesk'] {
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-editorial: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+}

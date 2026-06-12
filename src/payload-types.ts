@@ -124,10 +124,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-theme': SiteTheme;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-theme': SiteThemeSelect<false> | SiteThemeSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1123,10 +1125,15 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: number | Post;
-  };
+  doc:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }
+    | {
+        relationTo: 'products';
+        value: number | Product;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
@@ -2234,6 +2241,19 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Pick the storefront color direction and font pairing. All palettes are WCAG AA verified.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-theme".
+ */
+export interface SiteTheme {
+  id: number;
+  colorScheme: 'default' | 'ink-orchid' | 'lavender-noir' | 'porcelain-pop';
+  fontSet: 'default' | 'playfair-inter' | 'dm-sans' | 'space-grotesk';
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2303,6 +2323,17 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-theme_select".
+ */
+export interface SiteThemeSelect<T extends boolean = true> {
+  colorScheme?: T;
+  fontSet?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

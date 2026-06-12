@@ -62,10 +62,15 @@ scripts/verify-*.png
 .playwright-mcp/
 .serena/
 .gemini/
+.codex/
+.entire/
 .cache_ggshield
 
-# Agents / skills
-.agents/
+# Local screenshots & scratch output
+/*.png
+/output/
+
+# Skills lock
 skills-lock.json
 
 # Local Proton Pass payloads (contain secret placeholders / values)

@@ -38,7 +38,7 @@ export function PageHeader({
     <section className={cn(className)}>
       <div
         className={cn(
-          'space-y-4',
+          'space-y-4 w-full min-w-0',
           align === 'center' && 'mx-auto text-center',
           maxWidthClassName,
           contentClassName,
