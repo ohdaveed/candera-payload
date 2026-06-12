@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Generate pass:// references for all items/fields in a Proton Pass share (zsh)
 # Usage: ./scripts/generate-pass-env.sh --share-id <SHARE_ID> [--out <file>] [--dry-run]
 
@@ -84,7 +84,7 @@ echo "$ITEMS_JSON" | jq -c '.items[]' | while read -r ITEM; do
   # offer a small set of common candidate field names to reference.
   FIELD_NAMES="password username api_key secret token note"
 
-  for FIELD in ${(z)FIELD_NAMES}; do
+  for FIELD in $FIELD_NAMES; do
     # Build an environment variable name suggestion
     S_TITLE=$(sanitize "$TITLE")
     S_FIELD=$(sanitize "$FIELD")
