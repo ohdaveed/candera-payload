@@ -14,6 +14,7 @@ import * as migration_20260609_030106_add_quiz_collections from './20260609_0301
 import * as migration_20260610_040157 from './20260610_040157'
 import * as migration_20260610_060333_user_table_metadata from './20260610_060333_user_table_metadata'
 import * as migration_20260612_073101_add_products_to_search from './20260612_073101_add_products_to_search'
+import * as migration_20260612_081028_add_site_theme from './20260612_081028_add_site_theme'
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20260612_073101_add_products_to_search.up,
     down: migration_20260612_073101_add_products_to_search.down,
     name: '20260612_073101_add_products_to_search',
+  },
+  {
+    up: migration_20260612_081028_add_site_theme.up,
+    down: migration_20260612_081028_add_site_theme.down,
+    name: '20260612_081028_add_site_theme',
   },
 ]

@@ -70,8 +70,7 @@ scripts/verify-*.png
 /*.png
 /output/
 
-# Agents / skills
-.agents/
+# Skills lock
 skills-lock.json
 
 # Local Proton Pass payloads (contain secret placeholders / values)
