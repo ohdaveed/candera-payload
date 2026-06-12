@@ -1,3 +1,4 @@
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import { payloadLogger } from './utilities/logger'
@@ -30,12 +31,23 @@ import { syncEtsyListings } from './utilities/syncEtsy'
 import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { EtsyClient, DefaultPayloadTokenRepository } from './utilities/etsyClient'
+import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+const databaseAdapterArgs = {
+  pool: {
+    connectionString: databaseConnectionString,
+  },
+  push: false,
+}
+const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
+  ? vercelPostgresAdapter(databaseAdapterArgs)
+  : postgresAdapter(databaseAdapterArgs)
 
 export default buildConfig({
   admin: {
@@ -94,12 +106,7 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: vercelPostgresAdapter({
-    pool: {
-      connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL || '',
-    },
-    push: false,
-  }),
+  db: databaseAdapter,
   collections: [
     {
       slug: 'folders',
