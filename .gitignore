@@ -62,7 +62,13 @@ scripts/verify-*.png
 .playwright-mcp/
 .serena/
 .gemini/
+.codex/
+.entire/
 .cache_ggshield
+
+# Local screenshots & scratch output
+/*.png
+/output/
 
 # Agents / skills
 .agents/

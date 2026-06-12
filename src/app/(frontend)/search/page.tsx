@@ -25,16 +25,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     slug: r.slug ?? '',
     categories: undefined,
     meta: {
-      title: r.meta_title ?? undefined,
-      description: r.meta_description ?? undefined,
-      image: r.meta_image_url
-        ? ({
-            url: r.meta_image_url,
-            alt: r.meta_image_alt ?? '',
-            width: r.meta_image_width ?? 0,
-            height: r.meta_image_height ?? 0,
-          } as Media)
-        : undefined,
+      title: r.meta?.title ?? undefined,
+      description: r.meta?.description ?? undefined,
+      image:
+        r.meta?.image && typeof r.meta.image === 'object' ? (r.meta.image as Media) : undefined,
     },
   }))
 
