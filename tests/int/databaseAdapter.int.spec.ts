@@ -19,4 +19,14 @@ describe('database adapter selection', () => {
     expect(shouldUseVercelPostgresAdapter('postgres://postgres@127.0.0.1:54320/local')).toBe(false)
     expect(shouldUseVercelPostgresAdapter('')).toBe(false)
   })
+
+  it('falls back to the standard adapter for malformed connection strings', () => {
+    expect(shouldUseVercelPostgresAdapter('not-a-url')).toBe(false)
+    expect(shouldUseVercelPostgresAdapter('neon.tech')).toBe(false)
+  })
+
+  it('is not fooled by lookalike hostnames', () => {
+    expect(shouldUseVercelPostgresAdapter('postgres://user@evilneon.tech/db')).toBe(false)
+    expect(shouldUseVercelPostgresAdapter('postgres://user@neon.tech.evil.com/db')).toBe(false)
+  })
 })
