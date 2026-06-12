@@ -17,11 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pass-cli and jq
+      - name: Install zsh, pass-cli and jq
         run: |
+          sudo apt-get update && sudo apt-get install -y zsh jq
           curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
           export PATH="$HOME/.local/bin:$PATH"
-          sudo apt-get update && sudo apt-get install -y jq
         shell: bash
 
       - name: Login to Proton Pass (PAT)
