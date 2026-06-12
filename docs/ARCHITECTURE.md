@@ -156,8 +156,9 @@ Three event-driven flows that fan out from content/form changes.
 ```mermaid
 flowchart TB
     subgraph FormFlow["Form Submission"]
-        CF["ContactForm / Form block"] --> SA["submitForm (server action)<br/>raw SQL → form_submissions"]
-        SA --> Hook["processSubmission hook"]
+        CF["ContactForm / Form block"] --> SA["submitForm (server action)<br/>raw SQL via Neon"]
+        SA --> FST[("form_submissions table<br/>⚠ bypasses Payload hooks")]
+        PW["Payload API write<br/>(admin / Local API)"] --> Hook["processSubmission<br/>afterChange hook"]
         Hook -->|Promise.allSettled| MC["Mailchimp<br/>upsert subscriber + tags"]
         Hook --> SB["Supabase<br/>archive submission"]
     end
@@ -174,6 +175,8 @@ flowchart TB
         RV --> RT["revalidateTag(...)"]
     end
 ```
+
+**Note:** the storefront `submitForm` server action writes directly to `form_submissions` via raw SQL, so it bypasses Payload's collection hooks — the `processSubmission` `afterChange` hook (and its Mailchimp/Supabase fan-out) only runs for submissions created through Payload's API (e.g. the admin panel or Local API).
 
 **Search:** the Search plugin indexes published posts into a `search` collection via `beforeSyncWithSearch` (`src/search/beforeSync.ts`); `src/lib/queries/search.ts` runs ILIKE queries against it through the Neon SQL client.
 
