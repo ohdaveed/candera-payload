@@ -53,7 +53,7 @@ class InMemoryMediaStorageAdapter implements MediaStoragePort {
   }
 
   async downloadAndRegisterMedia(
-    listingId: number,
+    _listingId: number,
     etsyImageId: number,
     _imageUrl: string,
     _altText: string,

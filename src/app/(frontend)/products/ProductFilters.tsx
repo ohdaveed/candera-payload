@@ -1,6 +1,14 @@
 'use client'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { cn } from '@/utilities/ui'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const TAGS = ['All', 'New Release', 'Bestseller', 'Limited Batch']
 const SORTS = [
@@ -23,40 +31,55 @@ export function ProductFilters() {
     } else {
       params.set(key, value)
     }
-    router.push(`${pathname}?${params.toString()}`)
+    // Reset to page 1 when filter changes
+    params.delete('page')
+    const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    router.replace(nextUrl)
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12 pb-6 border-b border-candera-stone/20">
+    <nav className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12 pb-6 border-b border-candera-stone/20">
       {/* Tag pills */}
-      <div className="flex flex-wrap gap-2">
+      <ul className="flex flex-wrap gap-2 list-none p-0 m-0">
         {TAGS.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => update('tag', tag)}
-            className={cn(
-              'text-[10px] font-bold uppercase tracking-[.25em] px-4 py-2 transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center',
-              activeTag === tag
-                ? 'bg-candera-obsidian text-white'
-                : 'border border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
-            )}
-          >
-            {tag}
-          </button>
+          <li key={tag}>
+            <Button
+              variant={activeTag === tag ? 'cta' : 'outline'}
+              onClick={() => update('tag', tag)}
+              className={cn(
+                'h-auto py-2.5 px-6 min-h-[44px]',
+                activeTag !== tag &&
+                  'border-candera-stone/40 text-candera-sage-text hover:border-candera-obsidian hover:text-candera-obsidian',
+              )}
+            >
+              {tag}
+            </Button>
+          </li>
         ))}
-      </div>
+      </ul>
       {/* Sort select */}
-      <select
-        value={activeSort}
-        onChange={(e) => update('sort', e.target.value)}
-        className="text-[10px] font-bold uppercase tracking-[.2em] border border-candera-stone/40 bg-transparent text-candera-obsidian px-3 py-2 cursor-pointer focus:outline-none focus:border-candera-obsidian h-[44px]"
-      >
-        {SORTS.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
-    </div>
+      <fieldset className="flex flex-col gap-2 min-w-[200px] border-none p-0 m-0">
+        <legend className="sr-only">Sort products</legend>
+        <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
+          <SelectTrigger
+            id="product-sort"
+            className="h-[44px] border-candera-stone/40 bg-transparent text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus:ring-candera-ember-strong/20"
+          >
+            <SelectValue placeholder="Sort Batch" />
+          </SelectTrigger>
+          <SelectContent className="rounded-none border-candera-stone/20">
+            {SORTS.map((s) => (
+              <SelectItem
+                key={s.value}
+                value={s.value}
+                className="text-[10px] font-bold uppercase tracking-[.1em]"
+              >
+                {s.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </fieldset>
+    </nav>
   )
 }

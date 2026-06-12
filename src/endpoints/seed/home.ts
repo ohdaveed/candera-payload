@@ -4,22 +4,24 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
 
 type HomeArgs = {
   heroImage: Media
-  scentQuizFormId?: string
+  scentQuizFormId?: string | number
+  scentQuizId?: string | number
 }
 
-const COLLECTION_HEADING = 'Six vessels. One batch. Your space.'
+const COLLECTION_HEADING = 'Crafted in the Studio.'
 const COLLECTION_BODY =
-  'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.'
-const CTA_HEADING = 'Never Miss a Batch'
+  'Hand-poured botanical candles, curated for scent and stillness. Each piece is hand-labeled and cured in studio silence.'
+const CTA_HEADING = 'Join the Inner Circle'
 const CTA_BODY =
-  'Sellouts happen in days, not weeks. Get first access to every new scent drop plus personal ritual invitations from the studio.'
+  'Be the first to hear about new arrivals, studio updates, and seasonal ritual invitations.'
 const META_TITLE = 'Candera Candles | Botanical Scent Studio'
 const META_DESCRIPTION =
-  'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.'
+  'Hand-poured botanical candles crafted with intent. Scent, stillness, and ritual objects for your daily practice.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
-  scentQuizFormId = '',
+  scentQuizFormId,
+  scentQuizId,
 }) => {
   return {
     slug: 'home',
@@ -31,20 +33,19 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Storefront Hero',
         blockType: 'storefrontHero',
-        heroTag: 'Hand-Poured in the Studio',
-        headline: 'An invitation to slow down.',
-        subheading:
-          'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+        heroTag: 'Botanical Scent Studio',
+        headline: 'Anchor your space with sixty hours of intention and botanical stillness.',
+        subheading: 'Botanical candles crafted with intent. Now preparing our first studio series.',
         media: heroImage.id,
         primaryCtaLabel: 'Explore the Collection',
         primaryCtaUrl: '/products',
         secondaryCtaLabel: 'Take the Scent Quiz →',
         secondaryCtaUrl: '#scent-quiz',
         showStatusCard: true,
-        statusCardTitle: 'Batch 014',
-        statusCardSubtitle: '47 units · hand-poured',
-        statusCardStatus: 'Curing',
-        statusCardShips: '~3 weeks',
+        statusCardTitle: 'Studio Status',
+        statusCardSubtitle: 'Hand-pouring series 01',
+        statusCardStatus: 'In Progress',
+        statusCardShips: 'Coming Soon',
       } satisfies StorefrontHeroBlock & { blockType: 'storefrontHero'; blockName?: string },
       {
         blockName: 'Product Archive',
@@ -55,7 +56,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           createParagraph(COLLECTION_BODY),
         ]),
         populateBy: 'collection',
-        relationTo: 'products',
+        relationTo: 'posts',
         limit: 6,
       },
       {
@@ -91,6 +92,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockType: 'scentQuiz',
         eyebrow: 'Find Your Scent',
         headline: 'Which Candera ritual is calling you?',
+        quiz: scentQuizId,
         formId: scentQuizFormId,
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {

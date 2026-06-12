@@ -8,6 +8,9 @@ import type { Header } from '@/payload-types'
 
 import { HeaderNav } from './Nav'
 import { MobileNav } from './Nav/MobileNav'
+import { Container } from '@/components/ui/container'
+
+import { Section } from '@/components/ui/section'
 
 interface HeaderClientProps {
   data: Header
@@ -42,7 +45,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const isTransparent = isDark && !scrolled
 
   return (
-    <header
+    <Section
+      as="header"
+      padding="none"
       className={[
         'fixed top-0 left-0 right-0 z-[120] transition-[background-color,padding,box-shadow,border-color,backdrop-filter] duration-500',
         isTransparent
@@ -51,15 +56,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       ].join(' ')}
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <div className="max-w-[1280px] mx-auto px-10 py-4 grid grid-cols-[1fr_auto_1fr] items-center">
-        {/* Left nav placeholder — filled by HeaderNav left slot if needed */}
-        <div />
-
-        {/* Centered logo */}
+      <Container className="max-w-[1280px] py-4 flex items-center justify-between px-10">
+        {/* Left-aligned logo */}
         <Link
           aria-label="Candera Home"
           className={[
-            'font-display font-bold text-[24px] tracking-[-0.04em] justify-self-center transition-colors',
+            'font-display font-bold text-[24px] tracking-[-0.04em] transition-colors',
             isTransparent ? 'text-white' : 'text-candera-obsidian',
           ].join(' ')}
           href="/"
@@ -68,11 +70,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
 
         {/* Right nav */}
-        <div className="justify-self-end flex items-center">
+        <Section as="nav" padding="none" className="flex items-center">
           <HeaderNav data={data} transparent={isTransparent} />
           <MobileNav data={data} transparent={isTransparent} />
-        </div>
-      </div>
-    </header>
+        </Section>
+      </Container>
+    </Section>
   )
 }

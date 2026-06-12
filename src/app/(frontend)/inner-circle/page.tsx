@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { Eyebrow } from '@/components/ui/eyebrow'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
+import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,14 +28,15 @@ export default async function InnerCirclePage() {
     <div className="min-h-screen bg-candera-linen pt-32 pb-32">
       <div className="container">
         <div className="max-w-[600px] mx-auto text-center">
-          <Eyebrow className="block mb-6">The Inner Circle</Eyebrow>
-
-          <h1 className="hero-heading text-candera-obsidian mb-8">First access. Every batch.</h1>
-
-          <p className="editorial text-[18px] leading-[1.9] text-candera-sage-text mb-14 max-w-[480px] mx-auto">
-            Our batches often sell out within 48 hours. Join to receive 24-hour early access to
-            every limited drop — before the public announcement. No noise, just scent.
-          </p>
+          <PageHeader
+            align="center"
+            eyebrow="The Inner Circle"
+            title="Be the first to know."
+            description="Our studio doors are opening. Join the Inner Circle to receive advance notice of new arrivals, behind-the-scenes updates from the studio, and seasonal ritual invitations."
+            maxWidthClassName="max-w-[600px]"
+            descriptionClassName="text-[18px] leading-[1.9] max-w-[480px] mx-auto"
+            className="mb-14"
+          />
 
           <div className="flex flex-col items-center gap-4">
             <InnerCircleEmailForm formId={formId} />

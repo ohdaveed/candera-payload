@@ -8,6 +8,9 @@ import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { SearchIcon } from 'lucide-react'
 
+import { Section } from '@/components/ui/section'
+import { Button } from '@/components/ui/button'
+
 export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = ({
   data,
   transparent,
@@ -25,17 +28,28 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   ].join(' ')
 
   return (
-    <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-1">
+    <Section
+      as="nav"
+      padding="none"
+      aria-label="Main Navigation"
+      className="hidden md:flex items-center gap-1"
+    >
       {navItems.map(({ link }, i) => {
         return <CMSLink key={i} {...link} appearance="link" className={linkClass} />
       })}
 
-      <div className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10">
-        <Link aria-label="Search" className={iconBtnClass} href="/search">
-          <span className="sr-only">Search</span>
-          <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
-        </Link>
-      </div>
-    </nav>
+      <Section
+        as="span"
+        padding="none"
+        className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10"
+      >
+        <Button asChild variant="ghost" size="icon" className={iconBtnClass} aria-label="Search">
+          <Link href="/search">
+            <span className="sr-only">Search</span>
+            <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
+          </Link>
+        </Button>
+      </Section>
+    </Section>
   )
 }

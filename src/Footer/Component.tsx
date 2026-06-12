@@ -1,10 +1,10 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
-import React from 'react'
-
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Separator } from '@/components/ui/separator'
+import { Container } from '@/components/ui/container'
+import { Section } from '@/components/ui/section'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
@@ -19,19 +19,28 @@ export async function Footer() {
   })
 
   return (
-    <footer className="mt-auto bg-candera-linen border-t border-candera-stone/30 relative overflow-hidden">
+    <Section
+      as="footer"
+      padding="none"
+      className="mt-auto bg-candera-linen border-t border-candera-stone/30 relative overflow-hidden"
+    >
       {/* Background Watermark */}
-      <div
+      <Section
+        as="span"
+        padding="none"
         aria-hidden="true"
         className="absolute bottom-[-1.5rem] right-[-0.5rem] font-display font-bold text-[180px] tracking-[-0.04em] text-candera-obsidian opacity-[0.03] leading-none pointer-events-none select-none"
       >
         CANDERA
-      </div>
+      </Section>
 
-      <div className="container py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24">
+      <Container className="py-20 relative z-10">
+        <Section
+          padding="none"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24"
+        >
           {/* Brand & Mission */}
-          <div className="lg:col-span-1">
+          <Section padding="none" className="lg:col-span-1">
             <Link
               aria-label="Candera Home"
               className="font-display font-bold text-[20px] tracking-[-0.02em] text-candera-obsidian no-underline block mb-4"
@@ -43,14 +52,14 @@ export async function Footer() {
               Cultivating intentional living through scent and micro-batch artisanry. Based in the
               studio, shared everywhere.
             </p>
-          </div>
+          </Section>
 
           {/* Navigation */}
-          <div>
+          <Section padding="none">
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Navigation
             </h5>
-            <nav className="flex flex-col gap-1">
+            <Section as="nav" padding="none" className="flex flex-col gap-1">
               {navItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
@@ -58,15 +67,15 @@ export async function Footer() {
                   key={i}
                 />
               ))}
-            </nav>
-          </div>
+            </Section>
+          </Section>
 
           {/* Assistance */}
-          <div>
+          <Section padding="none">
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Assistance
             </h5>
-            <nav className="flex flex-col gap-1">
+            <Section as="nav" padding="none" className="flex flex-col gap-1">
               {assistanceItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
@@ -102,25 +111,28 @@ export async function Footer() {
                   </li>
                 </ul>
               )}
-            </nav>
-          </div>
+            </Section>
+          </Section>
 
           {/* Settings / Theme */}
-          <div>
+          <Section padding="none">
             <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
               Settings
             </h5>
             <ThemeSelector />
-          </div>
-        </div>
+          </Section>
+        </Section>
 
         {/* Bottom Bar */}
         <Separator className="bg-candera-stone/20 mt-20" />
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <Section
+          padding="none"
+          className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+        >
           <p className="font-sans text-[11px] font-light text-candera-sage-text">
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <Section as="nav" padding="none" className="flex gap-6">
             {footerLinks.map(({ link }, i) => (
               <CMSLink
                 {...link}
@@ -136,7 +148,9 @@ export async function Footer() {
                 >
                   Privacy Policy
                 </Link>
-                <span className="text-candera-stone self-center">·</span>
+                <Section as="span" padding="none" className="text-candera-stone self-center">
+                  ·
+                </Section>
                 <Link
                   href="/terms-of-service"
                   className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
@@ -145,9 +159,9 @@ export async function Footer() {
                 </Link>
               </>
             )}
-          </div>
-        </div>
-      </div>
-    </footer>
+          </Section>
+        </Section>
+      </Container>
+    </Section>
   )
 }

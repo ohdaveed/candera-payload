@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import type { Media } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { Section } from '@/components/ui/section'
 
 type Props = {
   mainImage: Media | string | null | undefined
@@ -20,21 +21,29 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
   const activeImage = allImages[activeIndex] ?? null
 
   return (
-    <div className="flex flex-col gap-4">
+    <Section padding="none" className="flex flex-col gap-16">
       {/* Large image */}
-      <div className="relative aspect-square overflow-hidden bg-candera-ash shadow-sm">
+      <figure className="relative aspect-square overflow-hidden bg-candera-ash shadow-sm m-0">
         {activeImage && typeof activeImage !== 'string' ? (
           <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
-          <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
+          <Section
+            padding="none"
+            className="flex h-full items-center justify-center text-candera-sage-text text-sm italic"
+          >
             Image unavailable
-          </div>
+          </Section>
         )}
-      </div>
+      </figure>
 
       {/* Thumbnail row — only render if there are multiple images */}
       {allImages.length > 1 && (
-        <div className="flex flex-row flex-wrap gap-2">
+        <Section
+          as="nav"
+          padding="none"
+          className="flex flex-row flex-wrap gap-3"
+          aria-label="Product image thumbnails"
+        >
           {allImages.map((photo, index) => (
             <button
               key={index}
@@ -46,14 +55,15 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
                   : 'ring-1 ring-transparent opacity-70 hover:opacity-100',
               )}
               aria-label={`View image ${index + 1}`}
+              aria-current={activeIndex === index ? 'true' : 'false'}
             >
               {photo && typeof photo !== 'string' && (
                 <MediaComponent fill imgClassName="object-cover" resource={photo} />
               )}
             </button>
           ))}
-        </div>
+        </Section>
       )}
-    </div>
+    </Section>
   )
 }

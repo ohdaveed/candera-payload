@@ -33,7 +33,7 @@ function useClickableCard<T extends HTMLElement>({
         const target = e.target as Element
 
         const timeNow = +new Date()
-        const parent = target?.closest('a')
+        const parent = target?.closest('a') || target?.closest('button')
 
         pressedButton.current = e.button
 

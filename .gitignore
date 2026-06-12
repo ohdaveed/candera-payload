@@ -31,6 +31,9 @@ public/sitemap*.xml
 .claude/worktrees/
 .claude/settings.json
 
+# VS Code local settings
+.vscode/
+
 # Temporary/blob reports
 /blob-report/
 
@@ -70,3 +73,8 @@ scripts/pass_payloads/*.json
 
 # Generated pass output (contains resolved secrets)
 .env.pass
+scripts/merge-pass-env.py
+
+# Python bytecode from local checks
+scripts/__pycache__/
+.neon

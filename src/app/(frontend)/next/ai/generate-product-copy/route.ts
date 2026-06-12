@@ -1,9 +1,40 @@
 import { generateObject, gateway } from 'ai'
+import { cookies } from 'next/headers'
 import { SYSTEM_PROMPTS, buildUserPrompt, inputSchema, outputSchema } from '@/lib/ai/product-copy'
+import { getClientSideURL } from '@/utilities/getURL'
 
 export const maxDuration = 30
 
+async function requireAuthenticatedUser() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')?.value
+
+  if (!token) {
+    return false
+  }
+
+  const meUserReq = await fetch(`${getClientSideURL()}/api/users/me`, {
+    cache: 'no-store',
+    headers: {
+      Authorization: `JWT ${token}`,
+    },
+  })
+
+  if (!meUserReq.ok) {
+    return false
+  }
+
+  const { user }: { user?: unknown } = await meUserReq.json()
+  return Boolean(user)
+}
+
 export async function POST(req: Request): Promise<Response> {
+  const isAuthenticated = await requireAuthenticatedUser()
+
+  if (!isAuthenticated) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const body: unknown = await req.json()
   const parsed = inputSchema.safeParse(body)
 

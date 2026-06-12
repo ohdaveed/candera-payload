@@ -23,7 +23,6 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vp test run --config ./vitest.config.mts",
     "prepare": "vp config",
     "dump-public-schema": "bash ./scripts/dump-public-schema.sh \"$DATABASE_URL\" ./schema/public_schema.tsv",
-    "dump-public-schema:neon": "bash ./scripts/dump-public-schema.sh \"postgresql://neondb_owner:npg_hQ6Dx5agmvuH@ep-spring-water-aqg2ymy6-pooler.c-8.us-east-1.aws.neon.tech/neondb?channel_binding=require&sslmode=require\" ./schema/public_schema.tsv",
     "show-public-schema": "sed -n '1,500p' ./schema/public_schema.tsv",
     "dump-and-show-public-schema": "pnpm run dump-public-schema && pnpm run show-public-schema"
   },
@@ -109,6 +108,6 @@
   },
   "packageManager": "pnpm@11.5.2",
   "engines": {
-    "node": ">=24.15.0"
+    "node": "24.x"
   }
 }

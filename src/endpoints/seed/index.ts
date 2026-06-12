@@ -10,7 +10,9 @@ import type {
 import { contactForm as contactFormData } from './contact-form'
 import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
+import { seedScentQuiz } from './scent-quiz'
 import { contact as contactPageData } from './contact-page'
+import { about as aboutPageData } from './about-page'
 import { home } from './home'
 import { legalPage } from './legal-pages'
 import { image1 } from './image-1'
@@ -32,9 +34,11 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'scent-profiles',
+  'quizzes',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const _globals: GlobalSlug[] = ['header', 'footer']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -57,31 +61,18 @@ export const seed = async ({
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear the database
-  await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+  // Globals are fully overwritten later in the seed; skip clearing them here
+  // to avoid validation errors on required relationship fields.
 
-  await Promise.all(
-    collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
-  )
+  for (const collection of collections) {
+    await payload.db.deleteMany({ collection, req, where: {} })
+  }
 
-  await Promise.all(
-    collections
-      .filter((collection) => Boolean(payload.collections[collection].config.versions))
-      .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
-  )
+  for (const collection of collections) {
+    if (payload.collections[collection].config.versions) {
+      await payload.db.deleteVersions({ collection, req, where: {} })
+    }
+  }
 
   payload.logger.info(`— Seeding demo author and admin user...`)
 
@@ -89,12 +80,12 @@ export const seed = async ({
     payload.delete({
       collection: 'users',
       depth: 0,
-      where: { email: { equals: 'demo-author@example.com' } },
+      where: { email: { equals: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com' } },
     }),
     payload.delete({
       collection: 'users',
       depth: 0,
-      where: { email: { equals: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com' } },
+      where: { email: { equals: process.env.SEED_ADMIN_EMAIL } },
     }),
   ])
 
@@ -102,13 +93,17 @@ export const seed = async ({
   if (!adminPassword)
     throw new Error('SEED_ADMIN_PASSWORD env var is required to seed the database')
 
+  const adminEmail = process.env.SEED_ADMIN_EMAIL
+  if (!adminEmail) throw new Error('SEED_ADMIN_EMAIL env var is required to seed the database')
+
   await payload.create({
     collection: 'users',
     data: {
-      name: process.env.SEED_ADMIN_NAME || 'Candera Admin',
-      email: process.env.SEED_ADMIN_EMAIL || 'admin@canderacandles.com',
+      name: process.env.SEED_ADMIN_NAME,
+      email: adminEmail,
       password: adminPassword,
       roles: ['admin'],
+      status: 'active',
     } as never,
   })
 
@@ -135,9 +130,11 @@ export const seed = async ({
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
+        name: process.env.SEED_DEMO_AUTHOR_NAME || 'Demo Author',
+        email: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com',
+        password: process.env.SEED_DEMO_AUTHOR_PASSWORD || 'password',
+        roles: ['editor'],
+        status: 'active',
       },
     }),
     payload.create({
@@ -294,6 +291,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding products...`)
 
+  // atmosphere is a relationship to scent-profiles seeded later; linked in a second pass below
   const productSeedData = [
     {
       title: 'Seashell Garden Glow',
@@ -302,8 +300,8 @@ export const seed = async ({
       vessel: '001',
       price: 38,
       productTag: 'Bestseller',
-      atmosphere: 'Coastal & Airy',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'coastal',
+      burnTime: '60 Hours',
       tagline: 'Gathered from the tide. A practice in coastal stillness.',
       scentProfile: { top: 'Sea Breeze', heart: 'Driftwood', base: 'Salt Air' },
       imageKey: 'seashell-garden',
@@ -315,8 +313,8 @@ export const seed = async ({
       vessel: '002',
       price: 38,
       productTag: 'New Release',
-      atmosphere: 'Fresh & Botanical',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'fresh',
+      burnTime: '60 Hours',
       tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
       scentProfile: { top: 'Fresh Green', heart: 'Lily of the Valley', base: 'Morning Dew' },
       imageKey: 'meadowlight-botanical',
@@ -328,8 +326,8 @@ export const seed = async ({
       vessel: '003',
       price: 38,
       productTag: 'Limited Batch',
-      atmosphere: 'Moody & Intimate',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'moody',
+      burnTime: '60 Hours',
       tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
       scentProfile: { top: 'Dark Berry', heart: 'Merlot', base: 'Vetiver' },
       imageKey: 'crimson-noir',
@@ -341,8 +339,8 @@ export const seed = async ({
       vessel: '004',
       price: 38,
       productTag: 'Bestseller',
-      atmosphere: 'Romantic & Soft',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'romantic',
+      burnTime: '60 Hours',
       tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
       scentProfile: { top: 'White Lilac', heart: 'Blue Hydrangea', base: 'Soft Musk' },
       imageKey: 'ever-after-glow',
@@ -354,8 +352,8 @@ export const seed = async ({
       vessel: '005',
       price: 38,
       productTag: 'Limited Batch',
-      atmosphere: 'Gentle & Contemplative',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'contemplative',
+      burnTime: '60 Hours',
       tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
       scentProfile: { top: 'Lilac', heart: 'Pressed Pansy', base: 'Soft Powder' },
       imageKey: 'anyas-eyes',
@@ -367,21 +365,22 @@ export const seed = async ({
       vessel: '006',
       price: 38,
       productTag: 'New Release',
-      atmosphere: 'Bold & Floral',
-      burnTime: '50 Hours',
+      atmosphereSlug: 'bold',
+      burnTime: '60 Hours',
       tagline: 'Botanical architecture. Bold florals grounded in ritual.',
       scentProfile: { top: 'Fresh Florals', heart: 'Botanical Rose', base: 'Green Stem' },
       imageKey: 'scarlet-bloom',
     },
   ]
 
-  await Promise.all(
-    productSeedData.map(({ imageKey, ...product }) => {
+  const productDocs = await Promise.all(
+    productSeedData.map(({ imageKey, atmosphereSlug: _atm, ...product }) => {
       const mediaDoc = candleraMediaDocs[imageKey]
       return payload.create({
         collection: 'products',
         data: {
           ...product,
+          _status: 'published',
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         } as unknown as RequiredDataFromCollectionSlug<'products'>,
       })
@@ -396,9 +395,26 @@ export const seed = async ({
     payload.create({ collection: 'forms', depth: 0, data: scentQuizFormData }),
   ])
 
+  const { profileDocs, quizId } = await seedScentQuiz(payload)
+
+  // Second pass: link each product to its atmosphere (scent-profile)
+  payload.logger.info(`— Linking product atmospheres...`)
+  await Promise.all(
+    productDocs.map((doc, i) => {
+      const { atmosphereSlug } = productSeedData[i]
+      const atmosphereId = profileDocs[atmosphereSlug]
+      if (!atmosphereId) return Promise.resolve()
+      return payload.update({
+        collection: 'products',
+        id: doc.id,
+        data: { atmosphere: atmosphereId } as unknown as RequiredDataFromCollectionSlug<'products'>,
+      })
+    }),
+  )
+
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, contactPage, aboutPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -407,7 +423,8 @@ export const seed = async ({
       },
       data: home({
         heroImage: (candleraMediaDocs['seashell-garden'] as unknown as Media) || imageHomeDoc,
-        scentQuizFormId: scentQuizFormDoc.id.toString(),
+        scentQuizFormId: scentQuizFormDoc.id,
+        scentQuizId: quizId,
       }),
     }),
     payload.create({
@@ -417,6 +434,17 @@ export const seed = async ({
         disableRevalidate: true,
       },
       data: contactPageData({ contactForm: contactForm }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: aboutPageData({
+        aboutImage:
+          (candleraMediaDocs['minimalist-airy-about'] as unknown as Media) || imageHomeDoc,
+      }),
     }),
     payload.create({
       collection: 'pages',
@@ -471,6 +499,16 @@ export const seed = async ({
           },
           {
             link: {
+              type: 'reference',
+              label: 'About',
+              reference: {
+                relationTo: 'pages',
+                value: aboutPage.id,
+              },
+            },
+          },
+          {
+            link: {
               type: 'custom',
               label: 'Journal',
               url: '/posts',
@@ -496,6 +534,16 @@ export const seed = async ({
       },
       data: {
         navItems: [
+          {
+            link: {
+              type: 'reference',
+              label: 'About',
+              reference: {
+                relationTo: 'pages',
+                value: aboutPage.id,
+              },
+            },
+          },
           {
             link: {
               type: 'custom',
@@ -580,18 +628,22 @@ async function loadCandleraImages(): Promise<Record<string, File | null>> {
     'ever-after-glow',
     'anyas-eyes',
     'scarlet-bloom',
+    'minimalist-airy-about',
+    'minimalist-airy-home',
   ]
 
   const result: Record<string, File | null> = {}
 
   for (const name of images) {
-    const filePath = path.join(process.cwd(), 'public', 'candera', `${name}.jpg`)
+    const isPng = name.includes('minimalist')
+    const ext = isPng ? 'png' : 'jpg'
+    const filePath = path.join(process.cwd(), 'public', 'candera', `${name}.${ext}`)
     try {
       const data = fs.readFileSync(filePath)
       result[name] = {
-        name: `${name}.jpg`,
+        name: `${name}.${ext}`,
         data,
-        mimetype: 'image/jpeg',
+        mimetype: isPng ? 'image/png' : 'image/jpeg',
         size: data.byteLength,
       }
     } catch {

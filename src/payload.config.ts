@@ -33,6 +33,9 @@ import { EtsyTokens } from './collections/EtsyTokens'
 import { EtsyClient, DefaultPayloadTokenRepository } from './utilities/etsyClient'
 import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
+import { Quizzes } from './collections/Quizzes'
+import { ScentProfiles } from './collections/ScentProfiles'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
@@ -129,6 +132,8 @@ export default buildConfig({
     Users,
     EtsyTokens,
     Briefs,
+    Quizzes,
+    ScentProfiles,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [

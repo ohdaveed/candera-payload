@@ -7,6 +7,8 @@ import RichText from '@/components/RichText'
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
 
 import { Media } from '../../components/Media'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 type Props = MediaBlockProps & {
   breakout?: boolean
@@ -17,6 +19,8 @@ type Props = MediaBlockProps & {
   staticImage?: StaticImageData
   disableInnerContainer?: boolean
 }
+
+import { Separator } from '@/components/ui/separator'
 
 export const MediaBlock: React.FC<Props> = (props) => {
   const {
@@ -33,35 +37,37 @@ export const MediaBlock: React.FC<Props> = (props) => {
   if (media && typeof media === 'object') caption = media.caption
 
   return (
-    <div
-      className={cn(
-        '',
-        {
-          container: enableGutter,
-        },
-        className,
-      )}
-    >
-      {(media || staticImage) && (
-        <Media
-          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-          resource={media}
-          src={staticImage}
-        />
-      )}
-      {caption && (
-        <div
-          className={cn(
-            'mt-6',
-            {
-              container: !disableInnerContainer,
-            },
-            captionClassName,
+    <Section padding="large" className={cn('overflow-hidden', className)}>
+      <Container className={cn({ 'px-0 md:px-0 max-w-none': !enableGutter })}>
+        <figure className="m-0 group flex flex-col items-center">
+          {(media || staticImage) && (
+            <Media
+              className="w-full"
+              htmlElement="span"
+              imgClassName={cn(
+                'border border-border/40 rounded-none grayscale hover:grayscale-0 transition-all duration-1000 ease-candera-enter',
+                imgClassName,
+              )}
+              resource={media}
+              src={staticImage}
+            />
           )}
-        >
-          <RichText data={caption} enableGutter={false} />
-        </div>
-      )}
-    </div>
+          {caption && (
+            <figcaption
+              className={cn(
+                'mt-12 max-w-[700px] mx-auto text-center editorial italic text-candera-sage-text leading-relaxed',
+                {
+                  container: !disableInnerContainer,
+                },
+                captionClassName,
+              )}
+            >
+              <Separator className="w-12 mx-auto mb-8 bg-candera-stone/40" />
+              <RichText data={caption} enableGutter={false} />
+            </figcaption>
+          )}
+        </figure>
+      </Container>
+    </Section>
   )
 }
