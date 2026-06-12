@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — CANDERA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="luxury_rose_theme.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: rgb(from var(--background) r g b) !important;
+            color: rgb(from var(--foreground) r g b) !important;
+            line-height: 1.6 !important;
+            letter-spacing: var(--tracking-normal) !important;
+        }
+        
+        .serif {
+            font-family: var(--font-serif) !important;
+        }
+        
+        .luxury-rose {
+            color: rgb(from var(--accent) r g b);
+        }
+        
+        .luxury-rose-bg {
+            background-color: rgb(from var(--accent) r g b);
+            color: rgb(from var(--accent-foreground) r g b);
+        }
+        
+        .luxury-border {
+            border-color: rgb(from var(--border) r g b);
+        }
+        
+        .nav-minimal {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .candera-logo {
+            font-family: var(--font-serif);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+        }
+        
+        .section-divider {
+            width: 60px;
+            height: 1px;
+            background: rgb(from var(--accent) r g b);
+            margin: 0 auto;
+        }
+        
+        .section-divider-left {
+            width: 60px;
+            height: 1px;
+            background: rgb(from var(--accent) r g b);
+            margin: 0;
+        }
+        
+        .cart-badge {
+            background: rgb(from var(--accent) r g b);
+            color: rgb(from var(--accent-foreground) r g b);
+        }
+        
+        .hero-about {
+            background: linear-gradient(135deg, rgba(212, 165, 165, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+        
+        .quote-large {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            line-height: 1.2;
+        }
+        
+        .image-hover {
+            transition: transform 0.6s ease;
+        }
+        
+        .image-hover:hover {
+            transform: scale(1.02);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stagger-1 { animation-delay: 0.2s; }
+        .stagger-2 { animation-delay: 0.4s; }
+        .stagger-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-minimal fixed top-0 w-full z-50 border-b luxury-border">
+        <div class="max-w-7xl mx-auto px-8 py-6">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="candera-logo text-2xl font-medium tracking-wider">
+                    <a href="candera_storefront_1.html">CANDERA</a>
+                </div>
+                
+                <!-- Center Navigation -->
+                <div class="hidden md:flex space-x-12 text-sm uppercase tracking-wider">
+                    <a href="candera_collections.html" class="hover:luxury-rose transition-colors">Collections</a>
+                    <a href="candera_collections.html" class="hover:luxury-rose transition-colors">Candles</a>
+                    <a href="candera_storefront_1.html" class="hover:luxury-rose transition-colors">Home</a>
+                    <a href="candera_about.html" class="luxury-rose transition-colors">About</a>
+                </div>
+                
+                <!-- Right Actions -->
+                <div class="flex items-center space-x-6">
+                    <button class="hover:luxury-rose transition-colors">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <button class="hover:luxury-rose transition-colors relative">
+                        <i data-lucide="heart" class="w-5 h-5"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 luxury-rose-bg rounded-full"></span>
+                    </button>
+                    <button class="hover:luxury-rose transition-colors relative">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="absolute -top-2 -right-2 w-4 h-4 cart-badge text-xs flex items-center justify-center text-[10px] rounded-full">2</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-about pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-8 text-center">
+            <div class="section-divider mb-8 fade-in"></div>
+            <h1 class="serif text-5xl md:text-6xl font-medium mb-8 fade-in stagger-1">Our Story</h1>
+            <p class="quote-large serif italic luxury-rose mb-8 fade-in stagger-2">
+                "Self-possessed & effortlessly inviting, each candle embodies quiet luxury and soft femininity."
+            </p>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="py-32">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
+                <div>
+                    <div class="section-divider-left mb-8"></div>
+                    <h2 class="serif text-4xl font-medium mb-8 leading-tight">
+                        Born from a Simple<br>
+                        <span class="luxury-rose">Belief</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        CANDERA was founded on the belief that the objects we surround ourselves with 
+                        should be as intentional as the moments we create with them. In a world of 
+                        mass production and fleeting trends, we chose a different path.
+                    </p>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Each candle is designed to burn for exactly 50 hours—not by accident, but by design. 
+                        Fifty hours is enough time to mark a season, celebrate a milestone, or simply 
+                        create a ritual of presence in your daily life.
+                    </p>
+                </div>
+                <div class="aspect-[4/5] relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600&h=750&fit=crop&crop=center" 
+                         alt="Artisan crafting candles" class="image-hover w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 aspect-[4/5] relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1602874801006-e26c4c9d9fb0?w=600&h=750&fit=crop&crop=center" 
+                         alt="Candera candles in natural setting" class="image-hover w-full h-full object-cover">
+                </div>
+                <div class="order-1 lg:order-2 lg:pl-8">
+                    <div class="section-divider-left mb-8"></div>
+                    <h2 class="serif text-4xl font-medium mb-8 leading-tight">
+                        Crafted with<br>
+                        <span class="luxury-rose">Purpose</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Our candles are hand-poured in small batches using only the finest natural wax 
+                        and carefully curated fragrance oils. Each vessel is selected for its ability 
+                        to live on long after the last flame is extinguished.
+                    </p>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        We work with artisans who share our commitment to quality and sustainability, 
+                        ensuring that every step of our process honors both the craft and the environment.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <div class="section-divider mb-8"></div>
+                <h2 class="serif text-4xl md:text-5xl font-medium mb-6">Our Values</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    The principles that guide every decision we make, from sourcing to shipping.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-6 luxury-rose-bg rounded-full flex items-center justify-center">
+                        <i data-lucide="leaf" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="serif text-2xl font-medium mb-4">Sustainability</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        We use only natural, renewable materials and work with suppliers who 
+                        share our commitment to environmental responsibility.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-6 luxury-rose-bg rounded-full flex items-center justify-center">
+                        <i data-lucide="heart" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="serif text-2xl font-medium mb-4">Intention</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Every candle is designed to create moments of mindfulness and presence, 
+                        transforming ordinary spaces into sanctuaries of calm.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-6 luxury-rose-bg rounded-full flex items-center justify-center">
+                        <i data-lucide="star" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="serif text-2xl font-medium mb-4">Excellence</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        We never compromise on quality, from the purity of our wax to the 
+                        precision of our burn time, ensuring every candle meets our exacting standards.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-32">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <div class="section-divider mb-8"></div>
+                <h2 class="serif text-4xl md:text-5xl font-medium mb-6">Meet the Makers</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    The passionate artisans and creators behind every CANDERA candle.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div class="text-center">
+                    <div class="aspect-square mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616c9c0e8e0?w=400&h=400&fit=crop&crop=face" 
+                             alt="Sarah Chen, Founder" class="image-hover w-full h-full object-cover">
+                    </div>
+                    <h3 class="serif text-xl font-medium mb-2">Sarah Chen</h3>
+                    <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Founder & Creative Director</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Former fragrance chemist turned candle artisan, Sarah brings 15 years 
+                        of expertise in scent composition to every CANDERA creation.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="aspect-square mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" 
+                             alt="Marcus Rivera, Master Chandler" class="image-hover w-full h-full object-cover">
+                    </div>
+                    <h3 class="serif text-xl font-medium mb-2">Marcus Rivera</h3>
+                    <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Master Chandler</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        With hands trained in traditional candle-making techniques, Marcus ensures 
+                        every candle burns perfectly for exactly 50 hours.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="aspect-square mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face" 
+                             alt="Elena Vasquez, Vessel Designer" class="image-hover w-full h-full object-cover">
+                    </div>
+                    <h3 class="serif text-xl font-medium mb-2">Elena Vasquez</h3>
+                    <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Vessel Designer</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        A ceramic artist by training, Elena designs and sources the beautiful 
+                        vessels that house our candles, ensuring they're treasured long after burning.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-32 bg-black text-white">
+        <div class="max-w-4xl mx-auto px-8 text-center">
+            <div class="section-divider mb-8" style="background: rgb(from var(--accent) r g b);"></div>
+            <h2 class="serif text-4xl md:text-5xl font-medium mb-8">
+                Begin Your Ritual
+            </h2>
+            <p class="text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
+                Discover the transformative power of intentional living with our 
+                carefully curated collection of 50-hour candles.
+            </p>
+            <a href="candera_collections.html" class="inline-block border border-white text-white px-8 py-4 font-medium uppercase tracking-wider text-sm hover:bg-white hover:text-black transition-all duration-300">
+                Explore Collections
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t luxury-border">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="candera-logo text-2xl font-medium mb-6 tracking-wider">CANDERA</div>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Curating exceptional handcrafted goods for the discerning collector.
+                    </p>
+                    <div class="w-12 h-1 luxury-rose-bg"></div>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Collections</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Candles</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Home Fragrance</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Vessels</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Limited Edition</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Support</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Shipping</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Returns</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Care Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t luxury-border pt-8 text-center text-sm text-gray-600 uppercase tracking-wider">
+                © 2024 Candera. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.image-hover').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
