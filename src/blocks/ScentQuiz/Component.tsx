@@ -396,15 +396,43 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   className="w-full py-10 text-lg uppercase tracking-[0.3em]"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Sending Invitation…' : 'Unlock My Profile'}
+                  {isLoading
+                    ? 'Sending Invitation…'
+                    : submitError
+                      ? 'Try Again'
+                      : 'Unlock My Profile'}
                 </Button>
                 {submitError && (
-                  <p
-                    role="alert"
-                    className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
-                  >
-                    {submitError}
-                  </p>
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span
+                        role="alert"
+                        className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                      >
+                        {submitError}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setSubmitError(undefined)}
+                        className="text-candera-stone/40 hover:text-candera-vellum transition-colors"
+                        aria-label="Dismiss error"
+                      >
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 )}
               </form>
             </motion.div>
