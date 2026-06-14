@@ -20,8 +20,8 @@ export async function login({
 }: LoginOptions): Promise<void> {
   await page.goto(`${serverURL}/admin/login`)
 
-  await page.fill('#field-email', user.email)
-  await page.fill('#field-password', user.password)
+  await page.getByRole('textbox', { name: /email/i }).fill(user.email)
+  await page.getByRole('textbox', { name: /password/i }).fill(user.password)
   await page.click('button[type="submit"]')
 
   await page.waitForURL(`${serverURL}/admin`)
