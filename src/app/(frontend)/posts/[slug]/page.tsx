@@ -4,10 +4,8 @@ import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
-import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
-import { Badge } from '@/components/ui/badge'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -17,7 +15,7 @@ import Link from 'next/link'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 export async function generateStaticParams() {
@@ -49,7 +47,6 @@ type Args = {
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/posts/' + decodedSlug
   const post = await queryPostBySlug({ slug: decodedSlug })
@@ -60,97 +57,88 @@ export default async function Post({ params: paramsPromise }: Args) {
   const readTime = Math.max(1, Math.round(wordCount / 200))
 
   return (
-    <article className="bg-white min-h-screen">
-      <PageClient />
-
-      {/* Allows redirects for valid pages too */}
+    <article className="bg-candera-vellum min-h-screen">
+      <SetHeaderTheme theme="dark" />
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
 
-      {/* Hero section with return link */}
-      <Section padding="none" className="relative">
-        <Container className="absolute top-0 left-0 right-0 z-20 pt-8">
-          <Link
-            href="/posts"
-            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.3em] text-white/70 hover:text-candera-ember transition-colors"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-            The Journal
-          </Link>
-        </Container>
+      {/* Hero — back link + title + byline integrated */}
+      <PostHero post={post} readTime={readTime} />
 
-        <PostHero post={post} />
-      </Section>
-
-      {/* Reading time */}
-      <Container className="pt-8">
-        <Badge
-          variant="secondary"
-          className="bg-candera-vellum text-candera-sage-text border-candera-stone/20 uppercase tracking-[.2em] px-3"
-        >
-          {readTime} min read
-        </Badge>
-      </Container>
-
+      {/* Article body */}
       <Section padding="large">
         <Container>
           <RichText
-            className="max-w-[680px] mx-auto
-              [&_p]:editorial [&_p]:text-candera-obsidian [&_p]:mb-8
-              [&_h2]:h2 [&_h2]:mb-6
-              [&_blockquote]:editorial [&_blockquote]:text-[24px] [&_blockquote]:border-l-0 [&_blockquote]:text-center [&_blockquote]:my-16 [&_blockquote]:text-candera-rose-strong"
+            className="
+              max-w-[680px] mx-auto
+              [&_p]:font-serif [&_p]:text-[17px] [&_p]:leading-[1.85] [&_p]:text-candera-obsidian [&_p]:mb-7
+              [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:text-[clamp(1.75rem,3vw,2.5rem)] [&_h2]:leading-tight [&_h2]:mt-16 [&_h2]:mb-6 [&_h2]:m-0
+              [&_h3]:font-display [&_h3]:italic [&_h3]:text-candera-obsidian [&_h3]:text-[1.4rem] [&_h3]:mt-12 [&_h3]:mb-4
+              [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:ml-0 [&_blockquote]:mr-0
+              [&_blockquote_p]:font-display [&_blockquote_p]:italic [&_blockquote_p]:text-[1.5rem] [&_blockquote_p]:leading-snug [&_blockquote_p]:text-candera-obsidian [&_blockquote_p]:mb-0
+              [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:text-candera-obsidian [&_ul_li]:font-serif [&_ul_li]:text-[16px] [&_ul_li]:leading-relaxed
+              [&_a]:text-candera-ember-strong [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-candera-obsidian [&_a]:transition-colors
+            "
             data={post.content}
             enableGutter={false}
           />
-
-          {/* InnerCircle CTA */}
-          <Section
-            as="aside"
-            padding="medium"
-            className="max-w-[680px] mx-auto mt-20 bg-candera-vellum border border-candera-stone/20 text-center"
-          >
-            <Eyebrow className="block mb-4">The Inner Circle</Eyebrow>
-            <p className="editorial text-[18px] text-candera-sage-text mb-8 leading-relaxed">
-              Be the first to know about new batches, scent notes, and studio moments.
-            </p>
-            <Button asChild variant="cta" size="cta">
-              <Link href="/contact">Join the Circle</Link>
-            </Button>
-          </Section>
-
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <Section as="nav" padding="large" className="mt-32">
-              <Separator className="bg-candera-stone/20 mb-20" aria-hidden="true" />
-              <Eyebrow as="h4" className="text-center mb-16">
-                Further Reflections
-              </Eyebrow>
-              <RelatedPosts
-                className="max-w-[1280px] mx-auto"
-                docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-              />
-            </Section>
-          )}
         </Container>
       </Section>
+
+      {/* Inner Circle CTA — full-bleed editorial dark strip */}
+      <aside className="bg-candera-obsidian grain">
+        <Container className="py-20 md:py-28 flex flex-col items-center text-center gap-8">
+          {/* Eyebrow with flanking rules */}
+          <div className="flex items-center gap-4">
+            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
+            <Eyebrow className="text-candera-ember">The Inner Circle</Eyebrow>
+            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
+          </div>
+
+          {/* Headline */}
+          <p
+            className="font-display italic text-white leading-[1.15] max-w-[36rem] m-0"
+            style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
+          >
+            Be the first to know about new batches, scent notes, and studio moments.
+          </p>
+
+          <Button asChild variant="cta-ember" size="cta" className="mt-2">
+            <Link href="/contact">Join the Circle</Link>
+          </Button>
+
+          <p className="text-[10px] uppercase tracking-[.2em] text-white/50 m-0">
+            No noise. Unsubscribe anytime.
+          </p>
+        </Container>
+      </aside>
+
+      {/* Related posts */}
+      {post.relatedPosts && post.relatedPosts.length > 0 && (
+        <Section padding="large">
+          <Container>
+            {/* Ruled eyebrow */}
+            <div className="flex items-center gap-4 mb-16">
+              <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
+              <Eyebrow as="h4" className="text-candera-sage-text">
+                Further Reflections
+              </Eyebrow>
+              <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
+            </div>
+
+            <RelatedPosts
+              className="max-w-[1280px] mx-auto"
+              docs={post.relatedPosts.filter((p) => typeof p === 'object')}
+            />
+          </Container>
+        </Section>
+      )}
     </article>
   )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const post = await queryPostBySlug({ slug: decodedSlug })
 

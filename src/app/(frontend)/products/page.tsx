@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { Pagination } from '@/components/Pagination'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
@@ -77,7 +77,7 @@ export default async function ProductsPage({
 
   return (
     <main className="bg-candera-vellum min-h-screen">
-      <PageClient />
+      <SetHeaderTheme theme="dark" />
 
       <EditorialPageHero
         eyebrow="Botanical Study"

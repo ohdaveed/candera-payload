@@ -8,8 +8,6 @@ import { CMSLink } from '../../components/Link'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 
-import { Separator } from '@/components/ui/separator'
-
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
 
@@ -59,7 +57,10 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   )}
 
                   {index < columns.length - 1 && (
-                    <Separator className="lg:hidden bg-candera-stone/20 my-4" />
+                    <span
+                      className="block h-px lg:hidden bg-candera-stone/20 my-4"
+                      aria-hidden="true"
+                    />
                   )}
                 </Section>
               )

@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-static'
@@ -35,7 +35,7 @@ export default async function Page() {
 
   return (
     <main className="bg-candera-vellum">
-      <PageClient />
+      <SetHeaderTheme theme="light" />
 
       <Section padding="large" className="pt-32 pb-16">
         <Container>

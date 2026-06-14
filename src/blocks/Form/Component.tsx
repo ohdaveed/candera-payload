@@ -6,7 +6,6 @@ import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Form } from '@/components/ui/form'
@@ -122,7 +121,7 @@ export const FormBlock: React.FC<
           enableGutter={false}
         />
       ) : null}
-      <Separator className="bg-candera-stone/20 mb-16" />
+      <span className="block h-px bg-candera-stone/20 mb-16" aria-hidden="true" />
       <Section padding="none" className="p-0">
         <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (

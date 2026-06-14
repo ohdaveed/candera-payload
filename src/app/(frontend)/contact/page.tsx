@@ -5,7 +5,7 @@ import { ContactForm } from '@/components/ContactForm'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,7 +29,7 @@ export default async function ContactPage() {
 
   return (
     <main className="bg-candera-vellum min-h-screen">
-      <PageClient />
+      <SetHeaderTheme theme="dark" />
 
       <EditorialPageHero
         eyebrow="Candera Studio"

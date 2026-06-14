@@ -6,7 +6,7 @@ import { Pagination } from '@/components/Pagination'
 import { PageHeader } from '@/components/PageHeader'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { notFound } from 'next/navigation'
 
 export const revalidate = 600
@@ -35,7 +35,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <div className="pt-24 pb-24">
-      <PageClient />
+      <SetHeaderTheme theme="light" />
 
       <div className="container mb-16">
         <PageHeader eyebrow="Candera Stories" title="The Journal" />
