@@ -195,11 +195,13 @@ export const ScentQuizCTABand: React.FC<Props> = ({
   body = "Answer a few questions and we'll match you to the candle that fits your space, your mood, and your ritual — before you have to browse.",
 }) => (
   <section
-    className="flex items-center gap-10 px-[52px] py-12"
     style={{
       background: 'var(--candera-obsidian)',
       display: 'grid',
       gridTemplateColumns: '1fr auto',
+      alignItems: 'center',
+      gap: '40px',
+      padding: '48px 52px',
       borderBottom: '1px solid rgba(196,168,130,0.12)',
     }}
   >
@@ -429,59 +431,116 @@ Three targeted changes:
 
 The card body area currently renders `tagline` (an italic description) and a `FragranceProfile`. For the redesign, the visible hierarchy should be: category (faint) → title (darkest) → price (mid-tone). Tagline and fragrance profile stay — they're revealed on hover/in quick view.
 
-- [ ] **Step 1: Locate the card body section in `src/components/Card/index.tsx`**
+- [ ] **Step 1: Replace the `CardHeader` block in `src/components/Card/index.tsx`**
 
-Find the `<CardContent>` section. It currently renders inside `<ShadcnCard>` after the image div. Add the price display after the title:
-
-Find this block (around line 160+):
-```tsx
-<CardHeader className="px-0 pb-2 pt-4">
-```
-
-The exact content varies — open the file and find the `CardHeader`/`CardContent` block that renders title and description. Add price rendering directly after the title:
+Find and replace this exact block (lines 172–195):
 
 ```tsx
-{/* Category — faint, de-emphasized */}
-{hasCategories && showCategories && (
-  <div className="flex items-center gap-1.5 mb-1">
-    {categories?.map((category, i) => {
-      if (typeof category === 'object' && category !== null) {
-        const { title: titleOfCategory } = category
-        const isLast = i === categories.length - 1
-        return (
-          <Fragment key={i}>
-            <p className="font-sans text-[9px] font-normal uppercase tracking-[3px] text-[#b8aa98] m-0">
-              {titleOfCategory}
-            </p>
-            {!isLast && <p className="text-[#b8aa98] m-0">,&nbsp;</p>}
-          </Fragment>
-        )
-      }
-      return null
-    })}
-  </div>
-)}
-
-{/* Title — darkest color */}
-{titleToUse && (
-  <h3 className="font-display text-[16px] text-[#0f0d0b] leading-[1.3] m-0">
-    <Link href={href} ref={linkRef} className="no-underline text-inherit hover:text-candera-ember transition-colors">
-      {titleToUse}
-    </Link>
-  </h3>
-)}
-
-{/* Price — distinct mid-tone, clear gap from title */}
-{price && (
-  <p className="font-sans text-[13px] font-semibold text-[#4a3f34] mt-[10px] m-0">
-    ${typeof price === 'number' ? price.toFixed(2) : price}
-  </p>
-)}
+// REPLACE THIS:
+        <CardHeader className="pt-6 pb-3 px-0">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-1.5 px-0">
+              {titleToUse ? (
+                <CardTitle className="m-0 text-balance text-[18px] font-medium leading-snug not-italic text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem] border-none p-0 bg-transparent shadow-none">
+                  <Link
+                    href={href}
+                    ref={linkRef}
+                    className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+                  >
+                    {titleToUse}
+                  </Link>
+                </CardTitle>
+              ) : null}
+            </div>
+            {price != null && (
+              <span className="price text-[15px] font-medium shrink-0 pt-4 px-0">
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  Number(price),
+                )}
+              </span>
+            )}
+          </div>
+        </CardHeader>
 ```
 
-- [ ] **Step 2: Confirm `ProductTagBadge` wrapper uses `top-4 left-4`**
+```tsx
+// WITH THIS:
+        <CardHeader className="pt-4 pb-2 px-4">
+          <div className="flex flex-col">
+            {/* Category — faint, de-emphasized (for products) */}
+            {showCategories && hasCategories && relationTo === 'products' && (
+              <div className="flex items-center gap-1 mb-1">
+                {categories?.map((category, i) => {
+                  if (typeof category === 'object' && category !== null) {
+                    const { title: titleOfCategory } = category
+                    const isLast = i === categories.length - 1
+                    return (
+                      <Fragment key={i}>
+                        <p className="font-sans text-[9px] font-normal uppercase tracking-[3px] text-[#b8aa98] m-0">
+                          {titleOfCategory}
+                        </p>
+                        {!isLast && <span className="text-[#b8aa98]">,&nbsp;</span>}
+                      </Fragment>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+            )}
+            {/* Title — darkest */}
+            {titleToUse ? (
+              <CardTitle className="m-0 font-display text-[16px] font-normal not-italic leading-[1.3] text-[#0f0d0b] border-none p-0 bg-transparent shadow-none">
+                <Link
+                  href={href}
+                  ref={linkRef}
+                  className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember transition-colors"
+                >
+                  {titleToUse}
+                </Link>
+              </CardTitle>
+            ) : null}
+            {/* Price — mid-tone, clear gap */}
+            {price != null && (
+              <p className="font-sans text-[13px] font-semibold text-[#4a3f34] mt-[10px] m-0 tabular-nums">
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  Number(price),
+                )}
+              </p>
+            )}
+          </div>
+        </CardHeader>
+```
 
-In `src/components/Card/index.tsx`, find the `productTag` rendering:
+- [ ] **Step 2: Remove the duplicate category rendering from `CardContent`**
+
+In the same file, find the `CardContent` block. It has a category fallback gated on `!scentProfile`. Remove it entirely since category is now in `CardHeader`:
+
+```tsx
+// REMOVE THIS BLOCK:
+          {/* Categories fallback for posts */}
+          {showCategories && hasCategories && !scentProfile && (
+            <div className="uppercase text-[10px] font-bold tracking-widest text-candera-sage-text mt-auto px-0">
+              {categories?.map((category, index) => {
+                if (category && typeof category === 'object') {
+                  const { title: titleFromCategory } = category
+                  const categoryTitle = titleFromCategory || 'Untitled category'
+                  const isLast = index === categories.length - 1
+                  return (
+                    <Fragment key={index}>
+                      {categoryTitle}
+                      {!isLast && <Fragment> &bull; </Fragment>}
+                    </Fragment>
+                  )
+                }
+                return null
+              })}
+            </div>
+          )}
+```
+
+- [ ] **Step 3: Confirm `ProductTagBadge` wrapper is `top-4 left-4`**
+
+In `src/components/Card/index.tsx`, find the `productTag` rendering. It should already be:
 
 ```tsx
 {productTag ? (
@@ -491,11 +550,7 @@ In `src/components/Card/index.tsx`, find the `productTag` rendering:
 ) : null}
 ```
 
-If it already has `top-4 left-4`, no change needed. If it has `top-0 left-0` or `top-2 left-2`, update to `top-4 left-4`.
-
-- [ ] **Step 3: Verify no duplicate category rendering**
-
-The card previously rendered categories inside `CardHeader`. If there are two places rendering categories, remove the old one so only the new faint version above the title remains.
+If `top-0 left-0` or `top-2 left-2`, update to `top-4 left-4`. No other change needed.
 
 - [ ] **Step 4: Check TypeScript**
 
@@ -703,7 +758,31 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
 }
 ```
 
-- [ ] **Step 2: Rewrite `src/blocks/InnerCircleCTA/EmailForm.tsx`**
+- [ ] **Step 2: Add input CSS to `src/app/(frontend)/theme.css`**
+
+Append at the end of the file:
+
+```css
+/* Inner Circle email input — explicit dark affordance */
+.ic-email-input {
+  flex: 1;
+  padding: 13px 16px;
+  background: #171717;
+  border: 1px solid #525252;
+  color: #f3f4f6;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ic-email-input::placeholder { color: #6b7280; }
+.ic-email-input:focus {
+  border-color: #d4d4d4;
+  box-shadow: 0 0 0 1px #d4d4d4;
+}
+```
+
+- [ ] **Step 3: Rewrite `src/blocks/InnerCircleCTA/EmailForm.tsx`**
 
 Replace the entire render return with the new layout. Keep all existing state/hooks — only the JSX changes:
 
@@ -731,24 +810,7 @@ Replace the entire render return with the new layout. Keep all existing state/ho
             placeholder="you@example.com"
             autoComplete="email"
             aria-label="Email address"
-            style={{
-              flex: 1,
-              padding: '13px 16px',
-              background: '#171717',
-              border: '1px solid #525252',
-              color: '#f3f4f6',
-              fontSize: '13px',
-              fontFamily: 'inherit',
-              outline: 'none',
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = '#d4d4d4'
-              e.currentTarget.style.boxShadow = '0 0 0 1px #d4d4d4'
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = '#525252'
-              e.currentTarget.style.boxShadow = 'none'
-            }}
+            className="ic-email-input"
             {...register('email', {
               required: 'Email is required',
               pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
@@ -801,7 +863,7 @@ Expected: no errors.
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/blocks/InnerCircleCTA/Component.tsx src/blocks/InnerCircleCTA/EmailForm.tsx
+git add src/blocks/InnerCircleCTA/Component.tsx src/blocks/InnerCircleCTA/EmailForm.tsx src/app/\(frontend\)/theme.css
 git commit -m "feat: inner circle — two-col grid, visible input border, microcopy below input"
 ```
 
