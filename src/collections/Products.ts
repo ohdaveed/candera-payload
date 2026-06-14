@@ -235,6 +235,33 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'currency',
+      type: 'select',
+      defaultValue: 'USD',
+      options: [
+        { label: 'USD', value: 'USD' },
+        { label: 'CAD', value: 'CAD' },
+        { label: 'EUR', value: 'EUR' },
+        { label: 'GBP', value: 'GBP' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Currency for the price above.',
+      },
+    },
+    {
+      name: 'priceSyncedAt',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        description: 'When price was last synced from Etsy.',
+        readOnly: true,
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+    },
+    {
       name: 'categories',
       type: 'relationship',
       relationTo: 'categories',
