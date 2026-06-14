@@ -8,6 +8,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { Tooltip } from '@/components/ui/tooltip'
 import { Media } from '@/components/Media'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -485,7 +486,12 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
               >
                 <div className="flex flex-col gap-4">
                   <p className="font-sans text-sm font-bold uppercase tracking-[0.5em] text-candera-ember">
-                    Botanical Composition
+                    <Tooltip content="The unique fragrance notes that define this scent profile">
+                      Botanical Composition
+                      <span className="inline-flex items-center justify-center w-3.5 h-3.5 ml-1.5 rounded-full border border-candera-ember/40 text-[9px] leading-none text-candera-ember/60 cursor-help align-super">
+                        ?
+                      </span>
+                    </Tooltip>
                   </p>
                   <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
                     {result.notes}
