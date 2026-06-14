@@ -16,8 +16,6 @@ type Props = {
 export function ProductCTASection({ title, price, vessel, etsyListingId }: Props) {
   const sentinelRef = useRef<HTMLDivElement>(null)
 
-  if (!etsyListingId) return null
-
   return (
     <>
       <Section padding="none" className="flex flex-col gap-2">
@@ -27,7 +25,13 @@ export function ProductCTASection({ title, price, vessel, etsyListingId }: Props
           size="cta"
           className="w-full py-5 text-xs font-bold tracking-[.2em] uppercase bg-candera-ember-strong hover:bg-candera-obsidian transition-colors"
         >
-          <BoutiqueLink href={`https://www.etsy.com/listing/${etsyListingId}`}>
+          <BoutiqueLink
+            href={
+              etsyListingId
+                ? `https://www.etsy.com/listing/${etsyListingId}`
+                : 'https://www.etsy.com/shop/candera'
+            }
+          >
             Buy on Etsy
           </BoutiqueLink>
         </Button>

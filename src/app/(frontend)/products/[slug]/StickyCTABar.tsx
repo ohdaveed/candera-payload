@@ -12,7 +12,8 @@ type Props = {
   sentinelRef: React.RefObject<HTMLDivElement | null>
 }
 
-const etsyListingUrl = (id: number) => `https://www.etsy.com/listing/${id}`
+const etsyListingUrl = (id: number | null | undefined) =>
+  id ? `https://www.etsy.com/listing/${id}` : 'https://www.etsy.com/shop/candera'
 
 export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
@@ -30,8 +31,6 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [sentinelRef])
-
-  if (!etsyListingId) return null
 
   return (
     <aside
