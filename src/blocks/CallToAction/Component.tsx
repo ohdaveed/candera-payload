@@ -22,9 +22,8 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
             {richText && (
               <RichText
                 className="
-                  [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:leading-tight [&_h2]:m-0
-                  [&_h2]:text-[clamp(2rem,4vw,3.5rem)]
-                  [&_p]:font-serif [&_p]:italic [&_p]:text-[17px] [&_p]:leading-[1.75] [&_p]:text-candera-sage-text [&_p]:mt-5 [&_p]:m-0
+                  [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:leading-[var(--leading-h2)] [&_h2]:m-0
+                  [&_p]:font-editorial [&_p]:italic [&_p]:leading-relaxed [&_p]:text-candera-sage-text [&_p]:mt-5 [&_p]:m-0
                 "
                 data={richText}
                 enableGutter={false}
@@ -36,7 +35,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
           {links && links.length > 0 && (
             <div className="flex flex-col gap-3 shrink-0 md:items-end">
               {links.map(({ link }, i) => (
-                <CMSLink key={i} {...link} appearance={i === 0 ? 'default' : 'outline'} />
+                <CMSLink key={i} {...link} appearance={i === 0 ? 'cta' : 'outline'} />
               ))}
             </div>
           )}

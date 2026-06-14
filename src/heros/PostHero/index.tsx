@@ -7,7 +7,7 @@ import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { Container } from '@/components/ui/container'
 import { FilmGrain } from '@/components/FilmGrain'
-import Link from 'next/link'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 export const PostHero: React.FC<{
   post: Post
@@ -23,10 +23,7 @@ export const PostHero: React.FC<{
     .map((c) => c.title || 'Untitled')
 
   return (
-    <header
-      className="relative flex min-h-[80vh] flex-col items-center justify-end overflow-hidden bg-candera-obsidian"
-      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
-    >
+    <header className="relative flex min-h-[80vh] flex-col items-center justify-end overflow-hidden bg-candera-obsidian -mt-[var(--nav-height)]">
       {/* Background image */}
       {heroImage && typeof heroImage !== 'string' && (
         <figure className="absolute inset-0 m-0">
@@ -37,52 +34,36 @@ export const PostHero: React.FC<{
             imgClassName="object-cover brightness-[0.45]"
             resource={heroImage}
           />
+          {/* Fail-safe overlay for dynamic image contrast */}
+          <div className="absolute inset-0 bg-candera-obsidian/30" aria-hidden="true" />
         </figure>
       )}
 
       {/* Radial scrim */}
       <span
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(20,20,18,0.15) 0%, rgba(20,20,18,0.65) 100%)',
-        }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,20,18,0.15)_0%,rgba(20,20,18,0.65)_100%)]"
         aria-hidden="true"
       />
 
       {/* Bottom gradient — fades to page background */}
       <span
-        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to top, rgba(245,242,237,0.18) 0%, rgba(20,20,18,0.0) 100%)',
-        }}
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none bg-[linear-gradient(to_top,color-mix(in_oklch,var(--color-candera-vellum)_18%,transparent)_0%,transparent_100%)]"
         aria-hidden="true"
       />
 
       <FilmGrain />
 
-      {/* Back link — top left */}
+      {/* Breadcrumb — top left */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-8">
         <Container>
-          <Link
-            href="/posts"
-            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.3em] text-white/70 hover:text-candera-ember transition-colors"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-            The Journal
-          </Link>
+          <Breadcrumbs
+            className="text-candera-vellum/70"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Journal', href: '/posts' },
+              { label: title },
+            ]}
+          />
         </Container>
       </div>
 
@@ -94,7 +75,7 @@ export const PostHero: React.FC<{
             {categoryLabels.map((label, i) => (
               <span
                 key={i}
-                className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/30 px-3 py-1.5"
+                className="text-xs font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/50 px-3 py-1.5"
               >
                 {label}
               </span>
@@ -103,22 +84,15 @@ export const PostHero: React.FC<{
         )}
 
         {/* Title */}
-        <h1
-          className="font-display font-normal italic text-white text-balance leading-[1.08] tracking-tight m-0"
-          style={{ fontSize: 'clamp(2.25rem, 6vw, 4.5rem)' }}
-        >
-          {title}
-        </h1>
+        <h1 className="hero-heading text-candera-vellum m-0">{title}</h1>
 
         {/* Byline */}
         {(hasAuthors || publishedAt || readTime) && (
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8">
             {hasAuthors && (
               <span className="flex items-center gap-2.5">
-                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
-                  By
-                </span>
-                <span className="font-editorial italic text-[14px] text-white/80">
+                <span className="label text-candera-vellum/75">By</span>
+                <span className="editorial text-candera-vellum/80">
                   {formatAuthors(populatedAuthors)}
                 </span>
               </span>
@@ -127,16 +101,14 @@ export const PostHero: React.FC<{
             {publishedAt && (
               <>
                 {hasAuthors && (
-                  <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
+                  <span
+                    className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
+                    aria-hidden="true"
+                  />
                 )}
                 <span className="flex items-center gap-2.5">
-                  <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
-                    Published
-                  </span>
-                  <time
-                    className="font-editorial italic text-[14px] text-white/80"
-                    dateTime={publishedAt}
-                  >
+                  <span className="label text-candera-vellum/75">Published</span>
+                  <time className="editorial text-candera-vellum/80" dateTime={publishedAt}>
                     {formatDateTime(publishedAt)}
                   </time>
                 </span>
@@ -145,10 +117,11 @@ export const PostHero: React.FC<{
 
             {readTime && (
               <>
-                <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
-                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
-                  {readTime} min read
-                </span>
+                <span
+                  className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
+                  aria-hidden="true"
+                />
+                <span className="label text-candera-vellum/75">{readTime} min read</span>
               </>
             )}
           </div>

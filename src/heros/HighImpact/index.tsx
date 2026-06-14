@@ -19,8 +19,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian"
-      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
+      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian -mt-[var(--nav-height)]"
       data-theme="dark"
     >
       {/* Background image */}
@@ -33,17 +32,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
             priority
             resource={media}
           />
+          {/* Fail-safe overlay for dynamic image contrast */}
+          <div className="absolute inset-0 bg-candera-obsidian/30" aria-hidden="true" />
         </div>
       )}
 
       {/* Radial scrim */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
-        }}
-      />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(20,20,18,0.2)_0%,rgba(20,20,18,0.7)_100%)]" />
 
       <FilmGrain />
 
@@ -52,9 +47,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
           {richText && (
             <RichText
               className="mb-10 
-                [&_h1]:hero-heading [&_h1]:text-white [&_h1]:mb-6 [&_h1]:text-balance
-                [&_h2]:h1 [&_h2]:text-white [&_h2]:mb-6 [&_h2]:text-balance
-                [&_p]:editorial [&_p]:text-white/80 [&_p]:max-w-[32rem] [&_p]:mx-auto"
+                [&_h1]:hero-heading [&_h1]:text-candera-vellum [&_h1]:mb-6 [&_h1]:text-balance
+                [&_h2]:h1 [&_h2]:text-candera-vellum [&_h2]:mb-6 [&_h2]:text-balance
+                [&_p]:editorial [&_p]:text-candera-vellum/80 [&_p]:max-w-[32rem] [&_p]:mx-auto"
               data={richText}
               enableGutter={false}
             />

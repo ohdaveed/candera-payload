@@ -6,13 +6,36 @@ import React, { Fragment } from 'react'
 
 import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-types'
 
+import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
-import { FragranceProfile } from '@/components/FragranceProfile'
-import { ProductTagBadge } from './ProductTagBadge'
-import { QuickViewDialog } from './QuickViewDialog'
+import { formatAuthors } from '@/utilities/formatAuthors'
+import { formatDateTime } from '@/utilities/formatDateTime'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
+const cardContainerVariants = cva('group relative flex h-full cursor-pointer flex-col', {
+  variants: {
+    type: {
+      post: '',
+      product: [
+        'bg-candera-linen overflow-hidden',
+        'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
+        'transition-all duration-300 motion-reduce:transition-none',
+        'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
+        'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+      ].join(' '),
+    },
+  },
+  defaultVariants: {
+    type: 'post',
+  },
+})
+
+export type CardContainerVariants = VariantProps<typeof cardContainerVariants>
+
+export type CardPostData = Pick<
+  Post,
+  'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt' | 'heroImage'
+> & {
   extraPhotos?: Product['extraPhotos']
   etsyListingId?: Product['etsyListingId']
   tagline?: Product['tagline']
@@ -28,10 +51,7 @@ export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> 
   customizationLabel?: Product['customizationLabel']
 }
 
-import { Card as ShadcnCard, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
 export const Card: React.FC<{
-  alignItems?: 'center'
   className?: string
   doc?: CardPostData
   relationTo?: 'posts' | 'products'
@@ -49,28 +69,145 @@ export const Card: React.FC<{
     title,
     tagline,
     extraPhotos,
-    etsyListingId,
     scentProfile,
-    burnTime,
-    atmosphere,
-    productTag,
-    vessel,
     price,
-    productType,
-    specifications,
-    isCustomizable,
-    customizationLabel,
+    populatedAuthors,
+    publishedAt,
+    heroImage,
   } = doc || {}
   const { description, image: metaImage } = meta || {}
 
-  const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+  const sanitizedDescription = description?.replace(/\s/g, ' ')
   const href = `/${relationTo}/${slug}`
 
-  // For products, use the first extra photo as the image if meta image is missing
-  const imageToUse = metaImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
+  const imageToUse =
+    metaImage || heroImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
 
+  const isPosts = relationTo === 'posts'
+  const hasCategories = categories && Array.isArray(categories) && categories.length > 0
+  const hasAuthors =
+    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
+
+  const hasScentNotes =
+    scentProfile && (scentProfile.top || scentProfile.heart || scentProfile.base)
+
+  // ── POST VARIANT ─────────────────────────────────────────────
+  if (isPosts) {
+    return (
+      <motion.div
+        initial="initial"
+        whileHover="hover"
+        whileTap={prefersReducedMotion ? undefined : 'tap'}
+        variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
+        ref={cardRef as React.RefObject<HTMLDivElement>}
+        className={cn(cardContainerVariants({ type: 'post' }), className)}
+      >
+        <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/3]">
+          {imageToUse && typeof imageToUse !== 'string' ? (
+            <Media
+              fill
+              pictureClassName="w-full h-full"
+              imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+              resource={imageToUse}
+              size="33vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-end p-5 candle-bg">
+              {/* Candle flame — pure CSS */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative flex flex-col items-center mb-[8%]">
+                  {/* Flame */}
+                  <div className="candle-flame" />
+                  {/* Glow */}
+                  <div className="candle-glow" />
+                  {/* Wick */}
+                  <div className="candle-wick" />
+                  {/* Candle body */}
+                  <div className="candle-body" />
+                </div>
+              </div>
+              {/* Warm floor glow */}
+              <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
+            </div>
+          )}
+          <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:pointer-events-auto group-hover:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
+            <Link
+              href={href}
+              className="flex h-[48px] w-full items-center justify-center bg-candera-linen text-xs font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              View Details
+            </Link>
+          </div>
+        </div>
+
+        <div className="pt-5 pb-3 px-4 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
+          {/* Date + author row */}
+          {(hasAuthors || publishedAt) && (
+            <div className="flex items-center gap-2 mb-2">
+              {publishedAt && (
+                <time
+                  className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
+                  dateTime={publishedAt}
+                >
+                  {formatDateTime(publishedAt)}
+                </time>
+              )}
+              {hasAuthors && publishedAt && (
+                <span className="text-candera-stone/50 text-sm">·</span>
+              )}
+              {hasAuthors && (
+                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70">
+                  {formatAuthors(populatedAuthors)}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Title */}
+          {titleToUse && (
+            <p className="font-display text-lg font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-0.5">
+              <Link
+                href={href}
+                ref={linkRef}
+                className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
+              >
+                {titleToUse}
+              </Link>
+            </p>
+          )}
+
+          {/* Description */}
+          {description && (
+            <p className="font-serif italic text-sm text-candera-sage-text leading-[1.55] line-clamp-2 min-h-[3.1em] m-0">
+              {sanitizedDescription}
+            </p>
+          )}
+
+          {/* Read link */}
+          <div className="mt-auto pt-6">
+            <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-sage-text border-b border-candera-sage-text/40 pb-px group-hover:text-candera-ember-strong group-hover:border-candera-ember-strong transition-colors">
+              Read →
+            </span>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
+
+  // Determine secondary image for crossfade (from extraPhotos list)
+  const secondaryImage =
+    extraPhotos && extraPhotos.length > 1
+      ? extraPhotos[1]
+      : extraPhotos && extraPhotos.length > 0 && extraPhotos[0] !== imageToUse
+        ? extraPhotos[0]
+        : null
+
+  const scentNotesText = [scentProfile?.top, scentProfile?.heart, scentProfile?.base]
+    .filter(Boolean)
+    .join(' · ')
+
+  // ── PRODUCT VARIANT ───────────────────────────────────────────
   return (
     <motion.div
       initial="initial"
@@ -78,175 +215,139 @@ export const Card: React.FC<{
       whileTap={prefersReducedMotion ? undefined : 'tap'}
       variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
       ref={cardRef as React.RefObject<HTMLDivElement>}
+      className={cn(cardContainerVariants({ type: 'product' }), className)}
     >
-      <ShadcnCard
-        className={cn(
-          'group relative flex h-full cursor-pointer flex-col overflow-hidden border-none bg-white transition-all duration-300 hover:shadow-xl hover:shadow-candera-stone/20 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 motion-reduce:transition-none',
-          className,
-        )}
-      >
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-candera-ash">
-          {!imageToUse ? (
-            <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage-text italic">
-              Image unavailable
-            </div>
-          ) : null}
-          {imageToUse && typeof imageToUse !== 'string' ? (
+      {/* ── Image ── */}
+      <div className="relative w-full overflow-hidden bg-candera-ash aspect-square">
+        {imageToUse && typeof imageToUse !== 'string' ? (
+          <>
             <Media
               fill
-              imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+              imgClassName="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               resource={imageToUse}
               size="33vw"
             />
-          ) : null}
-
-          {/* Product tag badge */}
-          {productTag ? (
-            <div className="absolute top-4 left-4 z-10">
-              <ProductTagBadge tag={productTag} />
-            </div>
-          ) : null}
-
-          {vessel ? (
-            <div className="absolute top-4 right-4 z-10">
-              <span className="relative z-10 text-[9px] font-bold uppercase tracking-[.18em] px-2.5 py-1 bg-white/90 text-candera-obsidian backdrop-blur-sm">
-                BATCH {vessel}
-              </span>
-            </div>
-          ) : null}
-
-          {/* Hover overlay for Quick View */}
-          {relationTo === 'products' ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 motion-reduce:transition-none group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
-              <div className="flex w-full translate-y-4 flex-col gap-2 transition-transform duration-500 motion-reduce:transition-none group-hover:translate-y-0 group-focus-within:translate-y-0 [@media(hover:none)]:translate-y-0">
-                <QuickViewDialog
-                  title={titleToUse}
-                  slug={slug}
-                  tagline={tagline}
-                  extraPhotos={extraPhotos}
-                  price={price}
-                  vessel={vessel}
-                  scentProfile={scentProfile}
-                  burnTime={burnTime}
-                  atmosphere={atmosphere}
-                  productTag={productTag}
-                  etsyListingId={etsyListingId}
-                  productType={productType}
-                  specifications={specifications}
-                  isCustomizable={isCustomizable}
-                  customizationLabel={customizationLabel}
-                >
-                  <button
-                    type="button"
-                    onClick={(event) => event.stopPropagation()}
-                    onMouseDownCapture={(event) => event.stopPropagation()}
-                    onMouseUpCapture={(event) => event.stopPropagation()}
-                    className="relative z-10 flex h-[48px] w-full items-center justify-center rounded-none bg-white text-[10px] font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    Quick View
-                  </button>
-                </QuickViewDialog>
-                <Link
-                  href={href}
-                  className="relative z-10 text-center text-[10px] font-bold uppercase tracking-[.25em] text-white transition-colors hover:text-candera-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  View Details →
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 motion-reduce:transition-none group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
-              <div className="w-full translate-y-4 transition-transform duration-500 motion-reduce:transition-none group-hover:translate-y-0 group-focus-within:translate-y-0 [@media(hover:none)]:translate-y-0">
-                <Link
-                  href={href}
-                  className="relative z-10 flex h-[48px] w-full items-center justify-center bg-white text-[10px] font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  style={{ borderRadius: 0 }}
-                >
-                  View Details
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <CardHeader className="pt-4 pb-2 px-4">
-          <div className="flex flex-col">
-            {/* Category — faint, de-emphasized (for products) */}
-            {showCategories && hasCategories && relationTo === 'products' && (
-              <div className="flex items-center gap-1 mb-1">
-                {categories?.map((category, i) => {
-                  if (typeof category === 'object' && category !== null) {
-                    const { title: titleOfCategory } = category
-                    const isLast = i === categories.length - 1
-                    return (
-                      <Fragment key={i}>
-                        <p className="font-sans text-[9px] font-normal uppercase tracking-[3px] text-[#b8aa98] m-0">
-                          {titleOfCategory}
-                        </p>
-                        {!isLast && <span className="text-[#b8aa98]">,&nbsp;</span>}
-                      </Fragment>
-                    )
-                  }
-                  return null
-                })}
+            {/* Secondary image for hover crossfade */}
+            {secondaryImage && typeof secondaryImage !== 'string' && (
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[1]"
+                aria-hidden="true"
+              >
+                <Media fill imgClassName="object-cover" resource={secondaryImage} size="33vw" />
               </div>
             )}
-            {/* Title — darkest */}
-            {titleToUse ? (
-              <CardTitle className="m-0 font-display text-[16px] font-normal not-italic leading-[1.3] text-[#0f0d0b] border-none p-0 bg-transparent shadow-none">
-                <Link
-                  href={href}
-                  ref={linkRef}
-                  className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember transition-colors"
-                >
-                  {titleToUse}
-                </Link>
-              </CardTitle>
-            ) : null}
-            {/* Price — mid-tone, clear gap */}
-            {price != null && (
-              <p className="font-sans text-[13px] font-semibold text-[#4a3f34] mt-[10px] m-0 tabular-nums">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                  Number(price),
-                )}
-              </p>
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-end p-5 candle-bg">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative flex flex-col items-center mb-[8%]">
+                <div className="candle-flame" />
+                <div className="candle-glow" />
+                <div className="candle-wick" />
+                <div className="candle-body" />
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
+          </div>
+        )}
+
+        {/* Hover slide-up bar for scent notes */}
+        {scentNotesText && (
+          <div className="absolute bottom-0 left-0 right-0 bg-[#121210]/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 py-3 px-4 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white m-0">
+              {scentNotesText}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Body ── */}
+      <div className="flex flex-col flex-1 px-5 pt-4 pb-5 border-t border-candera-ash/60">
+        {/* Category label */}
+        {showCategories && hasCategories && (
+          <div className="flex items-center gap-1 mb-[0.55rem]">
+            {categories?.map((category, i) => {
+              if (typeof category === 'object' && category !== null) {
+                const isLast = i === categories.length - 1
+                return (
+                  <Fragment key={i}>
+                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-candera-sage-text">
+                      {category.title}
+                    </span>
+                    {!isLast && <span className="text-candera-sage-text">,&nbsp;</span>}
+                  </Fragment>
+                )
+              }
+              return null
+            })}
+          </div>
+        )}
+
+        {/* Product name */}
+        {titleToUse && (
+          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem]">
+            <Link
+              href={href}
+              ref={linkRef}
+              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
+            >
+              {titleToUse}
+            </Link>
+          </p>
+        )}
+
+        {/* Tagline */}
+        {tagline && (
+          <p className="font-display italic text-sm text-candera-sage-text leading-[1.4] mb-[0.55rem] m-0 line-clamp-2 min-h-[2.8em]">
+            {tagline}
+          </p>
+        )}
+
+        {/* Divider */}
+        <div className="w-full h-px bg-candera-ash/60 mb-[0.55rem]" />
+
+        {/* Scent note pills — always visible */}
+        {hasScentNotes && (
+          <div className="flex items-center gap-1.5 mb-[0.55rem] whitespace-nowrap overflow-hidden">
+            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-sage-text shrink-0">
+              Scent
+            </span>
+            {scentProfile?.top && (
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+                {scentProfile.top}
+              </span>
+            )}
+            {scentProfile?.heart && (
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+                {scentProfile.heart}
+              </span>
+            )}
+            {scentProfile?.base && (
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+                {scentProfile.base}
+              </span>
             )}
           </div>
-        </CardHeader>
+        )}
 
-        <CardContent className="pt-0 pb-2 px-0 flex flex-col flex-grow">
-          {/* Fragrance profile for products - Strict conditional check */}
-          {relationTo === 'products' &&
-            scentProfile &&
-            (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
-              <motion.div
-                variants={{
-                  initial: { height: 0, opacity: 0, marginTop: 0 },
-                  hover: { height: 'auto', opacity: 1, marginTop: 8 },
-                }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0 }
-                    : { type: 'spring', stiffness: 300, damping: 30 }
-                }
-                className="mt-auto overflow-hidden pointer-events-none group-hover:pointer-events-auto"
-              >
-                <FragranceProfile
-                  profile={scentProfile}
-                  burnTime={burnTime}
-                  atmosphere={atmosphere}
-                />
-              </motion.div>
-            )}
-
-          {/* Description for posts */}
-          {description && !scentProfile && (
-            <p className="font-serif italic text-[15px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2 px-0">
-              {sanitizedDescription}
-            </p>
+        {/* Price + CTA */}
+        <div className="flex items-center justify-between mt-auto">
+          {price != null && (
+            <span className="text-base font-semibold text-candera-obsidian tabular-nums">
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                Number(price),
+              )}
+            </span>
           )}
-        </CardContent>
-      </ShadcnCard>
+          <Link
+            href={href}
+            onClick={(e) => e.stopPropagation()}
+            className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            View Details →
+          </Link>
+        </div>
+      </div>
     </motion.div>
   )
 }

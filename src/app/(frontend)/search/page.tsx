@@ -8,6 +8,7 @@ import type { Media } from '@/payload-types'
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { searchContent } from '@/lib/queries/search'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 type Args = {
   searchParams: Promise<{
@@ -52,24 +53,47 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         <CollectionArchive posts={posts} />
       ) : query ? (
         <div className="container pb-32 text-center">
-          <p className="editorial text-[24px] italic text-candera-sage-text mb-8">
-            Nothing found for &ldquo;{query}&rdquo;
+          <p className="h3 text-candera-sage-text mb-4">Nothing found for &ldquo;{query}&rdquo;</p>
+          <p className="text-sm text-candera-sage-text mb-6">
+            Try exploring one of our signature profiles:
           </p>
+          <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
+            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+              <Link
+                key={s}
+                href={`/search?q=${s}`}
+                className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+              >
+                {s}
+              </Link>
+            ))}
+          </div>
           <Link
             href="/products"
-            className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
           >
             ← Return to the Collection
           </Link>
         </div>
       ) : (
         <div className="container pb-32 text-center">
-          <p className="editorial mx-auto mb-8 max-w-[280px] text-[22px] italic text-candera-sage-text sm:max-w-[440px]">
+          <p className="h3 text-candera-sage-text mx-auto mb-6 max-w-[280px] sm:max-w-[440px]">
             Try a note, atmosphere, or ritual mood.
           </p>
+          <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
+            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+              <Link
+                key={s}
+                href={`/search?q=${s}`}
+                className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+              >
+                {s}
+              </Link>
+            ))}
+          </div>
           <Link
             href="/products"
-            className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
           >
             Explore the full collection →
           </Link>
@@ -81,6 +105,13 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Search — Candera`,
+    title: 'Search — Candera',
+    description: 'Search the Candera collection by scent note, atmosphere, or ritual mood.',
+    alternates: { canonical: '/search' },
+    openGraph: mergeOpenGraph({
+      title: 'Search — Candera',
+      description: 'Search the Candera collection by scent note, atmosphere, or ritual mood.',
+      url: '/search',
+    }),
   }
 }

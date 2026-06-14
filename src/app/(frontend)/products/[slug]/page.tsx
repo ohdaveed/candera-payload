@@ -9,16 +9,18 @@ import { cache } from 'react'
 
 import type { Media, Product } from '@/payload-types'
 
-import { Eyebrow } from '@/components/ui/eyebrow'
 import { Badge } from '@/components/ui/badge'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getServerSideURL } from '@/utilities/getURL'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductDetailSections } from './ProductDetailSections'
 import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
+import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
+import { Eyebrow } from '@/components/ui/eyebrow'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -43,6 +45,16 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   if (!product) return <PayloadRedirects url={url} />
 
   const serverUrl = getServerSideURL()
+
+  const payload = await getPayload({ config: configPromise })
+  const innerCircleFormResult = await payload.find({
+    collection: 'forms',
+    where: { title: { equals: 'Inner Circle Signup' } },
+    limit: 1,
+    depth: 0,
+  })
+  const innerCircleFormId = innerCircleFormResult.docs[0]?.id?.toString() ?? ''
+
   const productImageUrl =
     product.meta?.image && typeof product.meta.image === 'object' && 'url' in product.meta.image
       ? serverUrl + (product.meta.image as Media).url
@@ -86,8 +98,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   return (
     <Section
       as="article"
-      padding="large"
-      className="bg-candera-vellum min-h-screen grain"
+      padding="none"
+      className="bg-candera-vellum min-h-screen grain pt-32 md:pt-40 pb-20"
       data-page="product-detail"
     >
       <script
@@ -102,31 +114,20 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       <SetHeaderTheme theme="light" />
 
       <Container>
-        {/* Back link */}
-        <Link
-          href="/products"
-          className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="transition-transform group-hover:-translate-x-1"
-          >
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          Return to Collection
-        </Link>
+        {/* Breadcrumb */}
+        <Breadcrumbs
+          className="mb-16 text-candera-sage-text"
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collection', href: '/products' },
+            { label: product.title },
+          ]}
+        />
 
         <Section
           as="article"
           padding="none"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-32"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-10"
           data-section="product-layout-grid"
         >
           {/* Left: image gallery — sticky on desktop so it stays in view while scrolling details */}
@@ -139,7 +140,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <ImageGallery
               mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
               extraPhotos={product.extraPhotos as (Media | string)[] | null}
-              productTag={product.productTag ?? null}
             />
           </Section>
 
@@ -147,23 +147,14 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <Section
             as="aside"
             padding="none"
-            className="lg:col-span-5 flex flex-col gap-10 py-4"
+            className="lg:col-span-5 flex flex-col gap-10 py-4 lg:min-h-[calc(100vh-var(--nav-height)-120px)]"
             data-section="product-details"
           >
             {/* Identity block */}
             <Section padding="none" className="flex flex-col gap-4">
-              {product.vessel && (
-                <Eyebrow className="text-candera-sage-text tracking-[.3em]">
-                  Vessel {product.vessel}
-                </Eyebrow>
-              )}
-              <h1 className="font-display italic text-candera-obsidian leading-[1.15] text-[clamp(2rem,4vw,3.25rem)]">
-                {product.title}
-              </h1>
+              <h1 className="h1 text-candera-obsidian">{product.title}</h1>
               {product.tagline && (
-                <p className="font-serif italic text-[15px] leading-[1.7] text-candera-sage-text max-w-[40ch]">
-                  {product.tagline}
-                </p>
+                <p className="editorial text-candera-sage-text max-w-[40ch]">{product.tagline}</p>
               )}
             </Section>
 
@@ -173,13 +164,11 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               className="flex items-baseline gap-4 border-t border-b border-candera-stone/20 py-5"
             >
               {product.price != null && (
-                <p className="font-display text-[2.25rem] font-semibold text-candera-obsidian leading-none tracking-tight">
-                  ${Number(product.price).toFixed(2)}
-                </p>
+                <p className="price text-2xl">${Number(product.price).toFixed(2)}</p>
               )}
               <Badge
                 variant="outline"
-                className="text-[9px] font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
+                className="text-xs font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
               >
                 In Stock
               </Badge>
@@ -188,10 +177,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Customization note */}
             {product.isCustomizable && (
               <aside className="border-l-2 border-candera-ember-strong pl-4 flex flex-col gap-1">
-                <p className="text-[9px] font-bold uppercase tracking-[.25em] text-candera-obsidian">
+                <p className="eyebrow text-candera-obsidian">
                   {product.customizationLabel || 'Personalization Available'}
                 </p>
-                <p className="text-[12px] italic text-candera-sage-text leading-relaxed">
+                <p className="editorial text-candera-sage-text">
                   This item is made to order. Include your custom text in the order notes and
                   double-check your spelling — every character is hand-lettered.
                 </p>
@@ -226,10 +215,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         data-section="brand-story-strip"
       >
         <div className="flex flex-col gap-2 max-w-prose">
-          <h2 className="font-display italic text-white text-2xl leading-snug">
-            Made with intention, in small batches
-          </h2>
-          <p className="text-[13px] text-white/80 leading-relaxed">
+          <h2 className="h3 text-candera-vellum">Made with intention, in small batches</h2>
+          <p className="body text-candera-vellum/80">
             Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
             botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
             they smell in the jar.
@@ -237,7 +224,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[.25em] text-white border-b border-white/30 pb-0.5 hover:border-white transition-colors shrink-0 self-start lg:self-auto"
+          className="btn-text text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto inline-flex items-center gap-2"
         >
           Explore the collection
           <svg
@@ -255,6 +242,21 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </svg>
         </Link>
       </aside>
+
+      <aside className="bg-candera-obsidian mt-px px-8 py-14 lg:px-16 lg:py-16" data-section="join-the-circle">
+        <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-8">
+          <div className="flex flex-col gap-3">
+            <Eyebrow className="text-candera-ember/80">Inner Circle</Eyebrow>
+            <h2 className="h2 text-candera-vellum m-0">Join the Circle</h2>
+            <p className="body text-candera-vellum/70">
+              Early access to new batches, studio notes, and first look at limited releases.
+            </p>
+          </div>
+          <div className="w-full max-w-md">
+            <InnerCircleEmailForm formId={innerCircleFormId} />
+          </div>
+        </div>
+      </aside>
     </Section>
   )
 }
@@ -262,7 +264,14 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
-  return generateMeta({ doc: product as unknown as Product })
+
+  const meta = await generateMeta({ doc: product as unknown as Product, pathPrefix: 'products' })
+
+  if (product?.title) {
+    meta.title = `${product.title} — Candera`
+  }
+
+  return meta
 }
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {

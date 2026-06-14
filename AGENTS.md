@@ -68,7 +68,7 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 - Pooled connections: append `-pooler` to the endpoint hostname in the connection string
 - ILIKE queries use `pg_trgm`; ensure the extension is enabled if doing case-insensitive search at scale
 
-**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file → run `pnpm run ci` in a controlled production-only pipeline. Vercel's build command intentionally runs `pnpm build` only; do not seed or migrate in preview builds.
+**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file. Vercel's build command runs `pnpm run ci` (`payload migrate && pnpm build`), so migrations are applied automatically on every deploy (preview + production). Do not seed in preview builds.
 
 ## Testing quirks
 

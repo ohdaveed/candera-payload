@@ -67,8 +67,17 @@ export const StorefrontHero: Block = {
     {
       name: 'statusCardTitle',
       type: 'text',
-      defaultValue: 'Batch 014',
-      label: 'Status Card Title',
+      defaultValue: 'Featured Candle',
+      label: 'Status Card Title (e.g. Featured Candle)',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
+    {
+      name: 'statusCardPrice',
+      type: 'text',
+      defaultValue: '$38',
+      label: 'Status Card Price',
       admin: {
         condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
       },
@@ -76,8 +85,8 @@ export const StorefrontHero: Block = {
     {
       name: 'statusCardSubtitle',
       type: 'text',
-      defaultValue: '47 units · hand-poured',
-      label: 'Status Card Subtitle',
+      defaultValue: 'Wild Lilac (8 oz)',
+      label: 'Status Card Subtitle (e.g. Wild Lilac (8 oz))',
       admin: {
         condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
       },
@@ -85,8 +94,8 @@ export const StorefrontHero: Block = {
     {
       name: 'statusCardStatus',
       type: 'text',
-      defaultValue: 'Curing',
-      label: 'Status Card Status Label',
+      defaultValue: 'Limited Batch',
+      label: 'Status Card Left Label (e.g. Limited Batch)',
       admin: {
         condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
       },
@@ -94,8 +103,17 @@ export const StorefrontHero: Block = {
     {
       name: 'statusCardShips',
       type: 'text',
-      defaultValue: '~3 weeks',
-      label: 'Status Card Ships Label',
+      defaultValue: '47 units total',
+      label: 'Status Card Left Value (e.g. 47 units total)',
+      admin: {
+        condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
+      },
+    },
+    {
+      name: 'statusCardLinkUrl',
+      type: 'text',
+      defaultValue: '/products/wild-lilac',
+      label: 'Status Card Link URL',
       admin: {
         condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
       },

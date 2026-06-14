@@ -51,7 +51,6 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Scent Quiz',
         blockType: 'scentQuiz',
-        eyebrow: 'Find Your Scent',
         headline: 'Not sure where to start?',
         quiz: scentQuizId,
         formId: scentQuizFormId,
@@ -71,7 +70,6 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Testimonials',
         blockType: 'testimonials',
-        eyebrow: 'From Our Community',
         items: [
           {
             quote:

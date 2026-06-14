@@ -3,16 +3,14 @@
 import React, { useState } from 'react'
 import type { Media } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
-import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
 import { cn } from '@/utilities/ui'
 
 type Props = {
   mainImage: Media | string | null | undefined
   extraPhotos?: (Media | string)[] | null
-  productTag?: string | null
 }
 
-export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos, productTag }) => {
+export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
   // extraPhotos already contains mainImage as its first entry,
   // so use extraPhotos as the full list when available; otherwise fall back to mainImage alone.
   const allImages: (Media | string)[] =
@@ -61,14 +59,16 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos, productT
         {activeImage && typeof activeImage !== 'string' ? (
           <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
-          <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
-            Image unavailable
-          </div>
-        )}
-        {/* Product tag anchored to image top-left */}
-        {productTag && (
-          <div className="absolute top-5 left-5 z-20">
-            <ProductTagBadge tag={productTag} />
+          <div className="absolute inset-0 flex items-end p-5 candle-bg">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative flex flex-col items-center mb-[8%]">
+                <div className="candle-flame" />
+                <div className="candle-glow" />
+                <div className="candle-wick" />
+                <div className="candle-body" />
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
           </div>
         )}
         {/* Thumbnails overlaid at bottom-left on desktop */}

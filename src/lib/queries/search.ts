@@ -13,6 +13,7 @@ export async function searchContent(query: string): Promise<Search[]> {
     collection: 'search',
     depth: 1,
     limit: 12,
+    overrideAccess: false,
     sort: ['-priority', '-createdAt'],
     where: {
       or: [

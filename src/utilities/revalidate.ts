@@ -1,5 +1,4 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from 'payload'
-import { revalidatePath, revalidateTag } from 'next/cache'
 
 /**
  * Seam decoupling revalidation actions from Next.js caching libraries.
@@ -13,22 +12,39 @@ export interface CacheBusterPort {
  * Production adapter wrapping Next.js native Cache APIs.
  */
 export class NextCacheBusterAdapter implements CacheBusterPort {
-  revalidatePath(path: string): void {
+  async revalidatePath(path: string): Promise<void> {
     try {
+      const { revalidatePath } = await import('next/cache')
       revalidatePath(path)
     } catch (err) {
       if (err instanceof Error && err.message.includes('static generation store missing')) {
         return
       }
+      // If next/cache is not available (e.g. in some test environments), just log and skip
+      if (
+        err instanceof Error &&
+        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
+      ) {
+        console.warn(`Skipping revalidatePath for ${path} - next/cache not available`)
+        return
+      }
       throw err
     }
   }
-  revalidateTag(tag: string): void {
+  async revalidateTag(tag: string): Promise<void> {
     try {
+      const { revalidateTag } = await import('next/cache')
       revalidateTag(tag, 'max')
     } catch (err) {
       if (err instanceof Error && err.message.includes('static generation store missing')) {
         // This error is expected when running Payload hooks outside of a Next.js request context (e.g. scripts)
+        return
+      }
+      if (
+        err instanceof Error &&
+        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
+      ) {
+        console.warn(`Skipping revalidateTag for ${tag} - next/cache not available`)
         return
       }
       throw err

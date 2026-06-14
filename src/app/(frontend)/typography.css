@@ -1,10 +1,10 @@
 @layer base {
-  /* Font CSS custom properties for use in Tailwind config prose styles */
+  /* Font CSS custom properties for use in prose styles */
   :root {
-    --font-sans: theme('fontFamily.sans');
-    --font-display: theme('fontFamily.display');
-    --font-editorial: theme('fontFamily.editorial');
-    --font-mono: theme('fontFamily.mono');
+    --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+    --font-display: var(--font-fraunces), Georgia, serif;
+    --font-editorial: var(--font-eb-garamond), Georgia, serif;
+    --font-mono: var(--font-geist-mono), monospace;
   }
 
   h1,
@@ -38,60 +38,60 @@
   .h1 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.hero');
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    font-size: var(--font-size-hero);
+    line-height: var(--leading-hero);
+    letter-spacing: var(--tracking-display);
     margin: 0;
     overflow-wrap: anywhere;
   }
 
   .hero-heading {
-    @apply font-display font-normal italic text-candera-obsidian text-balance;
+    @apply font-display font-normal italic text-candera-obsidian text-pretty;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.hero');
-    line-height: 1.08;
-    letter-spacing: -0.01em;
+    font-size: var(--font-size-hero);
+    line-height: var(--leading-hero);
+    letter-spacing: var(--tracking-display);
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   h2,
   .h2 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.3xl');
-    line-height: 1.2;
+    font-size: var(--font-size-3xl);
+    line-height: var(--leading-h2);
     margin: 0;
   }
 
   h3,
   .h3 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: 1.75rem;
-    line-height: 1.3;
+    font-size: var(--font-size-2xl);
+    line-height: var(--leading-h3);
     margin: 0;
   }
 
   h4,
   .h4 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: 1.25rem;
-    line-height: 1.3;
+    font-size: var(--font-size-xl);
+    line-height: var(--leading-h4);
     margin: 0;
   }
 
   /* Eyebrow / kicker — uppercase, wide tracking */
   .eyebrow {
     @apply font-sans font-bold text-candera-ember-strong uppercase;
-    font-size: 0.64rem;
-    letter-spacing: 0.3em;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-widest);
     margin: 0;
   }
 
   .label {
     @apply font-sans font-semibold text-candera-sage-text uppercase;
-    font-size: 0.64rem;
-    letter-spacing: 0.2em;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wider);
     margin: 0;
   }
 
@@ -99,8 +99,8 @@
   label,
   .label {
     @apply font-sans font-bold text-candera-sage-text uppercase block mb-2;
-    font-size: 0.64rem;
-    letter-spacing: 0.25em;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wider);
   }
 
   input[type='text'],
@@ -108,15 +108,15 @@
   input[type='number'],
   textarea,
   select {
-    @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-[15px] transition-all duration-300;
-    border-radius: 2px;
+    @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-base transition-all duration-300;
+    border-radius: var(--radius-input);
   }
 
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    @apply border-candera-ember-strong/50 bg-white shadow-sm;
-    outline: 2px solid theme('colors.candera.ember.strong / 50%');
+    @apply border-candera-ember-strong/50 bg-candera-linen shadow-sm;
+    outline: 2px solid color-mix(in oklch, var(--color-candera-ember-strong) 50%, transparent);
     outline-offset: 2px;
   }
 
@@ -124,31 +124,31 @@
   p,
   .body {
     @apply font-sans text-candera-obsidian font-light;
-    font-size: 1rem;
-    line-height: 1.75;
+    font-size: var(--font-size-base);
+    line-height: var(--leading-body);
     text-wrap: pretty;
     margin: 0;
   }
 
   .lead {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: 1.25rem;
-    line-height: 1.75;
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-body);
     margin: 0;
   }
 
   /* Editorial / pull-quote — EB Garamond italic */
   .editorial {
     @apply font-editorial font-normal italic text-candera-sage-text;
-    font-size: 1.25rem;
-    line-height: 1.7;
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-relaxed);
     margin: 0;
   }
 
   /* Price — DM Sans, tabular */
   .price {
     @apply font-sans font-light text-candera-obsidian;
-    letter-spacing: 0.1em;
+    letter-spacing: var(--tracking-wide);
     font-variant-numeric: tabular-nums;
     margin: 0;
   }
@@ -156,8 +156,8 @@
   /* Button text */
   .btn-text {
     @apply font-sans font-semibold uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
+    font-size: var(--font-size-sm);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
   }
 
@@ -165,8 +165,57 @@
   .caption,
   .small {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: 0.8rem;
+    font-size: var(--font-size-sm);
     line-height: 1.5;
     margin: 0;
+  }
+
+  /* Film grain texture overlay */
+  .film-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Candle illustration — post card placeholder when no image is set */
+  .candle-bg {
+    background: linear-gradient(160deg, #2a1f14 0%, #3d2a18 35%, #1a110a 100%);
+  }
+  .candle-flame {
+    width: 18px;
+    height: 28px;
+    background: radial-gradient(
+      ellipse at 50% 80%,
+      #fff5cc 0%,
+      #ffd060 30%,
+      #e8700a 65%,
+      transparent 100%
+    );
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+    filter: blur(1.5px);
+    opacity: 0.92;
+  }
+  .candle-glow {
+    position: absolute;
+    top: -8px;
+    width: 48px;
+    height: 48px;
+    background: radial-gradient(ellipse, rgba(255, 200, 80, 0.28) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .candle-wick {
+    width: 2px;
+    height: 10px;
+    background: #2a1a0a;
+    border-radius: 1px;
+    margin-top: -2px;
+  }
+  .candle-body {
+    width: 28px;
+    height: 64px;
+    background: linear-gradient(to right, #e8ddd0 0%, #f5f0e8 40%, #e0d5c5 100%);
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 0 20px rgba(255, 180, 60, 0.15);
+  }
+  .candle-floor-glow {
+    background: linear-gradient(to top, rgba(255, 160, 40, 0.08), transparent);
   }
 }

@@ -109,22 +109,28 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding media...`)
 
-  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
-    ),
-  ])
-
   const candleraImages = await loadCandleraImages()
+
+  const image1Buffer =
+    candleraImages['blog-hero-candle-white'] ??
+    (await fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
+    ))
+  const image2Buffer =
+    candleraImages['blog-hero-candle-book'] ??
+    (await fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
+    ))
+  const image3Buffer =
+    candleraImages['blog-hero-candle-red'] ??
+    (await fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
+    ))
+  const hero1Buffer =
+    candleraImages['blog-lifestyle-cozy'] ??
+    (await fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
+    ))
 
   const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
     payload.create({
@@ -630,6 +636,12 @@ async function loadCandleraImages(): Promise<Record<string, File | null>> {
     'scarlet-bloom',
     'minimalist-airy-about',
     'minimalist-airy-home',
+    'blog-hero-candle-white',
+    'blog-hero-candle-book',
+    'blog-hero-candle-red',
+    'blog-hero-fragrance-bottle',
+    'blog-lifestyle-cozy',
+    'blog-lifestyle-home',
   ]
 
   const result: Record<string, File | null> = {}

@@ -4,10 +4,9 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { payloadLogger } from './utilities/logger'
 
 if (!process.env.PAYLOAD_SECRET) {
-  payloadLogger.warn('PAYLOAD_SECRET is not set! Authentication will fail.')
-} else {
-  payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
+  throw new Error('PAYLOAD_SECRET is not set. Set this environment variable before starting.')
 }
+payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -43,6 +42,9 @@ const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABAS
 const databaseAdapterArgs = {
   pool: {
     connectionString: databaseConnectionString,
+    max: 10,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 5_000,
   },
   push: false,
 }

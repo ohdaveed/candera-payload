@@ -2,9 +2,9 @@
 
 import React, { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { MinimalInput } from '@/components/ui/MinimalInput'
+import { MinimalTextarea } from '@/components/ui/MinimalTextarea'
+import { SubmitButton } from '@/components/ui/SubmitButton'
 import {
   Form,
   FormControl,
@@ -79,13 +79,8 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
   if (hasSubmitted) {
     return (
       <div className="py-12 text-center">
-        <p
-          className="font-display italic text-candera-obsidian mb-3 m-0"
-          style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
-        >
-          Your note has been received.
-        </p>
-        <p className="font-sans text-[14px] text-candera-sage-text m-0 mt-2">
+        <p className="h3 mb-3 m-0">Your note has been received.</p>
+        <p className="body text-candera-sage-text m-0 mt-2">
           We respond with intention — expect a reply within 48 hours.
         </p>
       </div>
@@ -97,32 +92,31 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {error && (
           <div
-            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-[13px] font-medium"
+            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-sm font-medium"
             role="alert"
-            aria-live="polite"
           >
             {error}
           </div>
         )}
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           <FormField
             control={control}
             name="full-name"
             rules={{ required: 'Full name is required' }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Full Name{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" autoComplete="name" {...field} />
+                  <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
                 {/* ember-strong = 5.5:1 on vellum — passes AA */}
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -136,21 +130,21 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Email{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <MinimalInput
                     placeholder="email@example.com"
                     autoComplete="email"
                     spellCheck={false}
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -160,21 +154,21 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Phone {/* sage-text = 5.2:1 on vellum — passes AA */}
-                  <span className="text-candera-sage-text text-[10px] normal-case tracking-normal font-normal ml-1">
+                  <span className="text-candera-sage-text text-xs normal-case tracking-normal font-normal ml-1">
                     (optional)
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <MinimalInput
                     placeholder="(555) 000-0000"
                     autoComplete="tel"
                     inputMode="tel"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -185,25 +179,25 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             rules={{ required: 'Message is required' }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Message{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Textarea placeholder="How can we help?" rows={5} {...field} />
+                  <MinimalTextarea placeholder="How can we help?" rows={5} {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
         </div>
 
         <div className="mt-8">
-          <Button type="submit" variant="cta-ember" size="cta" disabled={isLoading}>
+          <SubmitButton disabled={isLoading}>
             {isLoading ? 'Sending…' : 'Send Correspondence'}
-          </Button>
+          </SubmitButton>
         </div>
       </form>
     </Form>

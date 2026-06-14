@@ -16,8 +16,6 @@ type Props = {
 export function ProductCTASection({ title, price, vessel, etsyListingId }: Props) {
   const sentinelRef = useRef<HTMLDivElement>(null)
 
-  if (!etsyListingId) return null
-
   return (
     <>
       <Section padding="none" className="flex flex-col gap-2">
@@ -25,14 +23,23 @@ export function ProductCTASection({ title, price, vessel, etsyListingId }: Props
           asChild
           variant="cta-ember"
           size="cta"
-          className="w-full py-5 text-[11px] font-bold tracking-[.2em] uppercase bg-candera-ember-strong hover:bg-candera-obsidian transition-colors"
+          className="w-full py-5 text-xs font-bold tracking-[.2em] uppercase bg-candera-ember-strong hover:bg-candera-obsidian transition-colors"
         >
-          <BoutiqueLink href={`https://www.etsy.com/listing/${etsyListingId}`}>
+          <BoutiqueLink
+            href={
+              etsyListingId
+                ? `https://www.etsy.com/listing/${etsyListingId}`
+                : 'https://www.etsy.com/shop/candera'
+            }
+          >
             Buy on Etsy
           </BoutiqueLink>
         </Button>
-        <p className="text-center text-[10px] text-candera-sage-text tracking-[.1em]">
+        <p className="text-center text-xs text-candera-sage-text tracking-[.1em]">
           Ships from California · Handmade in micro-batches
+        </p>
+        <p className="text-center text-[11px] text-candera-stone/50 tracking-[.12em] mt-0.5">
+          Authentic handcraft · Secure checkout · 14-day returns
         </p>
       </Section>
 

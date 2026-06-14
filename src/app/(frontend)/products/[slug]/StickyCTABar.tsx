@@ -12,9 +12,10 @@ type Props = {
   sentinelRef: React.RefObject<HTMLDivElement | null>
 }
 
-const etsyListingUrl = (id: number) => `https://www.etsy.com/listing/${id}`
+const etsyListingUrl = (id: number | null | undefined) =>
+  id ? `https://www.etsy.com/listing/${id}` : 'https://www.etsy.com/shop/candera'
 
-export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef }: Props) {
+export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -31,14 +32,12 @@ export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef 
     return () => observer.disconnect()
   }, [sentinelRef])
 
-  if (!etsyListingId) return null
-
   return (
     <aside
       aria-label="Quick purchase"
       className={`
         fixed bottom-0 left-0 right-0 z-50
-        bg-candera-obsidian text-white
+        bg-candera-obsidian text-candera-vellum
         flex items-center justify-between
         px-6 py-4 gap-4
         shadow-[0_-4px_24px_rgba(0,0,0,0.18)]
@@ -47,18 +46,17 @@ export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef 
       `}
     >
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="font-display italic text-white text-[1rem] leading-tight truncate">
+        <span className="font-display italic text-candera-vellum text-base leading-tight truncate">
           {title}
         </span>
-        <span className="text-[10px] text-white/75 tracking-[.1em]">
-          {vessel ? `Vessel ${vessel} · ` : ''}
+        <span className="text-xs text-candera-vellum/75 tracking-[.1em]">
           {price != null ? `$${Number(price).toFixed(2)}` : ''}
         </span>
       </div>
 
       <BoutiqueLink
         href={etsyListingUrl(etsyListingId)}
-        className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-white hover:text-candera-obsidian text-white text-[10px] font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
+        className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-candera-vellum hover:text-candera-obsidian text-candera-vellum text-xs font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
       >
         Buy on Etsy
         <svg

@@ -67,7 +67,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <div className="pb-32 bg-candera-linen/30">
+    <div className="pb-32 bg-candera-vellum">
       <SetHeaderTheme theme="light" />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
@@ -95,7 +95,13 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     slug: decodedSlug,
   })
 
-  return generateMeta({ doc: page })
+  const meta = await generateMeta({ doc: page })
+
+  if (page?.title && page.slug !== 'home') {
+    meta.title = `${page.title} — Candera`
+  }
+
+  return meta
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {

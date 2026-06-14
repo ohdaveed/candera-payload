@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-14T00:00:00.000Z",
+  "title": "Design System: Candera — Botanical Scent Studio",
+  "extensions": {
+    "colorMeta": {
+      "obsidian": { "role": "primary", "displayName": "Obsidian", "canonical": "oklch(14.5% 0 0deg)", "tonalRamp": ["oklch(10% 0 0deg)", "oklch(14.5% 0 0deg)", "oklch(25% 0 0deg)", "oklch(35% 0 0deg)", "oklch(50% 0 0deg)", "oklch(65% 0 0deg)", "oklch(80% 0 0deg)", "oklch(92% 0 0deg)"] },
+      "vellum": { "role": "neutral", "displayName": "Vellum", "canonical": "oklch(94.8% 0.008 70deg)", "tonalRamp": ["oklch(90% 0.008 70deg)", "oklch(92% 0.008 70deg)", "oklch(94.8% 0.008 70deg)", "oklch(96% 0.006 70deg)", "oklch(97% 0.004 70deg)", "oklch(98% 0.003 70deg)", "oklch(99% 0.001 70deg)", "oklch(100% 0 0deg)"] },
+      "linen": { "role": "neutral", "displayName": "Linen", "canonical": "oklch(98.5% 0.003 70deg)", "tonalRamp": ["oklch(90% 0.008 70deg)", "oklch(93% 0.006 70deg)", "oklch(96% 0.005 70deg)", "oklch(98.5% 0.003 70deg)", "oklch(99% 0.002 70deg)", "oklch(99.5% 0.001 70deg)", "oklch(100% 0 0deg)", "oklch(100% 0 0deg)"] },
+      "ember": { "role": "accent", "displayName": "Ember", "canonical": "oklch(68% 0.12 45deg)", "tonalRamp": ["oklch(25% 0.12 45deg)", "oklch(35% 0.12 45deg)", "oklch(45% 0.12 45deg)", "oklch(55% 0.12 45deg)", "oklch(68% 0.12 45deg)", "oklch(78% 0.1 45deg)", "oklch(88% 0.06 45deg)", "oklch(95% 0.03 45deg)"] },
+      "ember-strong": { "role": "accent", "displayName": "Ember Strong", "canonical": "oklch(50% 0.14 40deg)", "tonalRamp": ["oklch(20% 0.14 40deg)", "oklch(30% 0.14 40deg)", "oklch(40% 0.14 40deg)", "oklch(50% 0.14 40deg)", "oklch(60% 0.12 40deg)", "oklch(72% 0.1 40deg)", "oklch(85% 0.06 40deg)", "oklch(94% 0.03 40deg)"] },
+      "rose": { "role": "accent", "displayName": "Rose", "canonical": "oklch(65% 0.07 350deg)", "tonalRamp": ["oklch(25% 0.07 350deg)", "oklch(35% 0.07 350deg)", "oklch(45% 0.07 350deg)", "oklch(55% 0.07 350deg)", "oklch(65% 0.07 350deg)", "oklch(76% 0.05 350deg)", "oklch(87% 0.03 350deg)", "oklch(95% 0.015 350deg)"] },
+      "sage-text": { "role": "neutral", "displayName": "Sage Text", "canonical": "oklch(43% 0.025 140deg)", "tonalRamp": ["oklch(20% 0.03 140deg)", "oklch(30% 0.03 140deg)", "oklch(43% 0.025 140deg)", "oklch(55% 0.02 140deg)", "oklch(68% 0.015 140deg)", "oklch(80% 0.01 140deg)", "oklch(90% 0.005 140deg)", "oklch(96% 0.002 140deg)"] },
+      "stone": { "role": "neutral", "displayName": "Stone", "canonical": "oklch(82% 0.025 75deg)", "tonalRamp": ["oklch(30% 0.03 75deg)", "oklch(45% 0.03 75deg)", "oklch(60% 0.03 75deg)", "oklch(72% 0.03 75deg)", "oklch(82% 0.025 75deg)", "oklch(90% 0.015 75deg)", "oklch(95% 0.01 75deg)", "oklch(98% 0.005 75deg)"] },
+      "ash": { "role": "neutral", "displayName": "Ash", "canonical": "oklch(88% 0.008 70deg)", "tonalRamp": ["oklch(50% 0.01 70deg)", "oklch(65% 0.01 70deg)", "oklch(78% 0.01 70deg)", "oklch(88% 0.008 70deg)", "oklch(93% 0.006 70deg)", "oklch(96% 0.004 70deg)", "oklch(98% 0.002 70deg)", "oklch(99% 0.001 70deg)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines only. The most prominent typographic statement on any page." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings (h2)." },
+      "title": { "displayName": "Title", "purpose": "Subsection headings (h3), card titles." },
+      "body": { "displayName": "Body", "purpose": "All prose content. DM Sans light, 1.75 line-height." },
+      "label": { "displayName": "Label", "purpose": "Button text, CTA labels, small navigation, form labels." },
+      "editorial": { "displayName": "Editorial", "purpose": "Pull quotes, maker's notes, editorial asides." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04)", "purpose": "Default card and raised surface shadow. The 1px pseudo-border is essential." },
+      { "name": "sm", "value": "0 1px 2px rgba(20, 20, 18, 0.05)", "purpose": "Subtle elevation for hovered small elements, tooltips." },
+      { "name": "lg", "value": "0 18px 40px -12px rgba(20, 20, 18, 0.25)", "purpose": "Modals, dialogs, floating panels. Noticeably lifted." },
+      { "name": "button-hover", "value": "0 18px 40px -12px rgba(20, 20, 18, 0.35)", "purpose": "CTA button hover state. Paired with -translate-y-0.5 lift." }
+    ],
+    "motion": [
+      { "name": "ease-enter", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions and entrances." },
+      { "name": "ease-exit", "value": "cubic-bezier(0.4, 0, 1, 1)", "purpose": "Easing for exits and dismissals." },
+      { "name": "duration-micro", "value": "100ms", "purpose": "Instant feedback (press, hover)." },
+      { "name": "duration-entrance", "value": "900ms", "purpose": "Section entrance animations." },
+      { "name": "duration-reveal", "value": "1000ms", "purpose": "Scroll-driven reveal animations." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1376px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary CTA Button",
+      "kind": "button",
+      "refersTo": "button-cta",
+      "description": "Primary call-to-action. Use for main conversion actions like 'Buy on Etsy' or 'Shop Now'.",
+      "html": "<button class=\"ds-btn-cta\">BUY ON ETSY</button>",
+      "css": ".ds-btn-cta { background: #141412; color: #f5f2ed; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; height: 52px; padding: 16px 40px; border: none; border-radius: 0; cursor: pointer; box-shadow: 0 18px 40px -12px rgba(20, 20, 18, 0.25); transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-cta:hover { background: #a8502b; box-shadow: 0 18px 40px -12px rgba(20, 20, 18, 0.35); transform: translateY(-2px); } .ds-btn-cta:focus-visible { outline: 2px solid #a8502b; outline-offset: 2px; } .ds-btn-cta:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Ember CTA Button",
+      "kind": "button",
+      "refersTo": "button-cta-ember",
+      "description": "Conversion-focused CTA with ember accent background. Use for promotional or urgency-driven actions.",
+      "html": "<button class=\"ds-btn-ember\">SHOP THE COLLECTION</button>",
+      "css": ".ds-btn-ember { background: #a8502b; color: #f5f2ed; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; height: 52px; padding: 16px 40px; border: none; border-radius: 0; cursor: pointer; box-shadow: 0 18px 40px -12px rgba(20, 20, 18, 0.25); transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-ember:hover { background: #141412; box-shadow: 0 18px 40px -12px rgba(20, 20, 18, 0.35); transform: translateY(-2px); } .ds-btn-ember:focus-visible { outline: 2px solid #a8502b; outline-offset: 2px; } .ds-btn-ember:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard text/email input for forms.",
+      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"Enter your email\" />",
+      "css": ".ds-input { background: rgba(245, 242, 237, 0.5); color: #141412; font-family: 'DM Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 300; padding: 12px 16px; height: 48px; border: 1px solid rgba(218, 203, 184, 0.3); border-radius: 2px; outline: none; width: 100%; transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1); } .ds-input::placeholder { color: #5f6459; } .ds-input:focus { background: #fdfbf7; border-color: rgba(168, 80, 43, 0.5); box-shadow: 0 0 0 2px rgba(168, 80, 43, 0.3); outline-offset: 2px; } .ds-input:disabled { opacity: 0.5; pointer-events: none; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Product listing card with image, name, tagline, scent notes, and price.",
+      "html": "<div class=\"ds-product-card\"><div class=\"ds-product-card-image\"></div><div class=\"ds-product-card-body\"><h3 class=\"ds-product-card-title\">No. 014</h3><p class=\"ds-product-card-subtitle\">Blood Orange + Vetiver</p><div class=\"ds-product-card-notes\"><span class=\"ds-chip\">bergamot</span><span class=\"ds-chip\">cedar</span></div><span class=\"ds-product-card-price\">$48</span></div></div>",
+      "css": ".ds-product-card { background: #fdfbf7; border-radius: 2px; box-shadow: 0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04); overflow: hidden; transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); } .ds-product-card:hover { box-shadow: 0 4px 16px rgba(20, 20, 18, 0.1), 0 0 0 1px rgba(20, 20, 18, 0.06); transform: translateY(-2px); } .ds-product-card-image { aspect-ratio: 4/5; background: #e2ddd6; width: 100%; } .ds-product-card-body { padding: 16px; } .ds-product-card-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; font-weight: 400; font-style: italic; color: #141412; margin: 0; } .ds-product-card-subtitle { font-family: 'Fraunces', Georgia, serif; font-size: 0.875rem; font-style: italic; color: #5f6459; margin: 4px 0 8px; } .ds-product-card-notes { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; } .ds-chip { background: #f5f2ed; color: #141412; padding: 2px 8px; border-radius: 2px; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75rem; } .ds-product-card-price { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; color: #141412; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Primary navigation link. Used in the site header.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Journal</a><a class=\"ds-nav-link\" href=\"#\">Products</a><a class=\"ds-nav-link\" href=\"#\">About</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 32px; } .ds-nav-link { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #141412; text-decoration: none; padding: 12px 0; position: relative; transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); } .ds-nav-link::after { content: ''; position: absolute; bottom: 8px; left: 50%; width: 0; height: 1px; background: #141412; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(-50%); } .ds-nav-link:hover::after { width: 100%; } .ds-nav-link:focus-visible { outline: 2px solid #a8502b; outline-offset: 4px; }"
+    },
+    {
+      "name": "Grain Texture Overlay",
+      "kind": "custom",
+      "refersTo": "grain",
+      "description": "Subtle film grain noise overlay applied globally for tactile atmosphere.",
+      "html": "<div class=\"ds-grain\"></div>",
+      "css": ".ds-grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.04; mix-blend-mode: overlay; background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\"); background-repeat: repeat; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Editorial Atelier",
+    "overview": "Candera's design language is the confidence of a design studio that happens to make candles. It borrows from the editorial world — generous whitespace, sharp typography, art-direction-forward composition — and applies it to the sensory experience of botanical scent. The page should feel like opening a carefully bound monograph: composed, intentional, worth taking time with.\n\nThe palette is warm without being rustic, refined without being cold. Near-black body text on a warm paper ground anchors every page in legibility. Accents in copper and muted rose arrive sparingly, like an illuminated initial in a manuscript — present when they matter, absent when they don't.\n\nThis system explicitly rejects: generic mass-market candle aesthetics (farmhouse visuals, Mason jar tropes, stock-photo candle imagery), the DTC SaaS cliché of super-white hyper-minimal pages, and any ornament that doesn't serve the product.",
+    "keyCharacteristics": [
+      "Editorial typography as the primary design material — Fraunces italic at generous scales",
+      "Near-zero border radius; the only curvature is a 2px micro-radius that says 'designed,' not 'softened'",
+      "Warm paper-toned backgrounds (vellum, linen) with a subtle film grain texture for tactility",
+      "Grounded shadows that make surfaces feel like physical objects on the page",
+      "Sparse, intentional color — the page breathes by being mostly ink on paper"
+    ],
+    "rules": [
+      { "name": "The One-Voice Rule", "body": "The ember and rose accents are used on ≤10% of any given screen. Their rarity is the point — when they appear, they mean something.", "section": "colors" },
+      { "name": "The Ink-on-Paper Rule", "body": "Obsidian text on vellum background. No dark-mode-as-default, no light-on-dark text blocks except as deliberate section mood shifts.", "section": "colors" },
+      { "name": "The No-Eyebrow-by-Default Rule", "body": "The tiny uppercase tracked section kicker is reserved for deliberate brand voice, not generated as default scaffolding on every section.", "section": "typography" },
+      { "name": "The 70ch Ceiling Rule", "body": "Body text max-width is 70 characters. No paragraph should span the full viewport width.", "section": "typography" },
+      { "name": "The Grounded-by-Default Rule", "body": "Surfaces are at rest. Shadows appear as responses to state. No floating elements at rest.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use obsidian (#141412) for body text against vellum (#f5f2ed) or linen (#fdfbf7) backgrounds.",
+      "Do use ember (#dd7d52) or ember-strong (#a8502b) as the primary accent, limited to ≤10% of any given screen.",
+      "Do keep body text line length at 70ch maximum.",
+      "Do use Fraunces italic for all display and heading text.",
+      "Do use DM Sans light (300) for body text.",
+      "Do include visible :focus-visible ring system on every interactive element.",
+      "Do handle all six UI states (empty, loading, error, success, focus, disabled) for every interactive component.",
+      "Do use the card shadow (1px pseudo-border + soft drop) for cards and raised surfaces.",
+      "Do use prefers-reduced-motion: reduce for all non-essential motion."
+    ],
+    "donts": [
+      "Don't use generic mass-market candle aesthetics — no farmhouse visuals, Mason jar tropes, or stock-photo candle imagery.",
+      "Don't use a warm-tinted off-white body background as a default move. Vellum is a specific color choice.",
+      "Don't use border-left greater than 1px as a colored accent stripe.",
+      "Don't use gradient text.",
+      "Don't use glassmorphism or decorative blur effects.",
+      "Don't use the tiny uppercase tracked eyebrow above every section.",
+      "Don't use numbered section markers (01 / 02 / 03) as default scaffolding.",
+      "Don't use border-radius greater than 2px on cards, inputs, or sections.",
+      "Don't pair border + box-shadow with blur ≥ 16px on the same element.",
+      "Don't use repeating-linear-gradient stripe backgrounds or sketchy SVG illustrations."
+    ]
+  }
+}

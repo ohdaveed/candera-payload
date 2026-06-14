@@ -61,6 +61,7 @@ function fixCircular(configs) {
 const eslintConfig = fixCircular([
   {
     ignores: [
+      '**/.agents/**',
       '.next/',
       'src/payload-types.ts',
       'src/payload-generated-schema.ts',

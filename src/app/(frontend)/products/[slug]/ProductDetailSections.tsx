@@ -110,8 +110,7 @@ export function ProductDetailSections({
           onToggle={() => setSpecsOpen((v) => !v)}
         />
         <div
-          className="overflow-hidden transition-all duration-300 ease-in-out"
-          style={{ maxHeight: specsOpen ? '600px' : '0px', opacity: specsOpen ? 1 : 0 }}
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${specsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
         >
           <ul className="flex flex-col pt-4 list-none">
             {displaySpecs.map(({ label, value }) => (
@@ -119,10 +118,10 @@ export function ProductDetailSections({
                 key={label}
                 className="flex justify-between items-baseline gap-4 py-2.5 border-b border-candera-stone/10 last:border-b-0"
               >
-                <span className="text-[12px] font-semibold text-candera-obsidian shrink-0">
+                <span className="text-sm font-semibold text-candera-obsidian shrink-0">
                   {label}
                 </span>
-                <span className="text-[12px] text-candera-sage-text text-right">{value}</span>
+                <span className="text-sm text-candera-sage-text text-right">{value}</span>
               </li>
             ))}
           </ul>
@@ -138,8 +137,7 @@ export function ProductDetailSections({
             onToggle={() => setScentOpen((v) => !v)}
           />
           <div
-            className="overflow-hidden transition-all duration-300 ease-in-out"
-            style={{ maxHeight: scentOpen ? '600px' : '0px', opacity: scentOpen ? 1 : 0 }}
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${scentOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
           >
             <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
           </div>

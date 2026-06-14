@@ -42,12 +42,12 @@ export async function Footer() {
           <Section padding="none" className="lg:col-span-1">
             <Link
               aria-label="Candera Home"
-              className="font-display font-bold text-[20px] tracking-[-0.02em] text-candera-obsidian no-underline block mb-4"
+              className="font-display font-bold text-xl tracking-display text-candera-obsidian no-underline block mb-4"
               href="/"
             >
               CANDERA
             </Link>
-            <p className="editorial text-[13px] text-candera-sage-text leading-relaxed max-w-[320px] text-pretty">
+            <p className="body text-candera-sage-text max-w-[320px] text-pretty">
               Cultivating intentional living through scent and micro-batch artisanry. Based in the
               studio, shared everywhere.
             </p>
@@ -55,14 +55,12 @@ export async function Footer() {
 
           {/* Navigation */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
-              Navigation
-            </h5>
+            <h5 className="label text-candera-obsidian mb-6">Navigation</h5>
             <Section as="nav" padding="none" className="flex flex-col gap-0">
               {navItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
-                  className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                  className="body text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                   key={i}
                 />
               ))}
@@ -71,53 +69,21 @@ export async function Footer() {
 
           {/* Assistance */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
-              Assistance
-            </h5>
+            <h5 className="label text-candera-obsidian mb-6">Assistance</h5>
             <Section as="nav" padding="none" className="flex flex-col gap-0">
               {assistanceItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
-                  className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                  className="body text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                   key={i}
                 />
               ))}
-              {assistanceItems.length === 0 && (
-                <ul className="flex flex-col gap-0 list-none p-0 m-0">
-                  <li>
-                    <Link
-                      href="/shipping-and-returns"
-                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Shipping & Returns
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/wholesale"
-                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Wholesale
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/contact"
-                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              )}
             </Section>
           </Section>
 
           {/* Settings / Theme */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
-              Settings
-            </h5>
+            <h5 className="label text-candera-obsidian mb-6">Settings</h5>
             <ThemeSelector />
           </Section>
         </Section>
@@ -128,36 +94,17 @@ export async function Footer() {
           padding="none"
           className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p className="font-sans text-[11px] font-light text-candera-sage-text">
+          <p className="caption text-candera-sage-text">
             © {new Date().getFullYear()} Candera Studio. All rights reserved.
           </p>
           <Section as="nav" padding="none" className="flex gap-6">
             {footerLinks.map(({ link }, i) => (
               <CMSLink
                 {...link}
-                className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
+                className="caption text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
                 key={i}
               />
             ))}
-            {footerLinks.length === 0 && (
-              <>
-                <Link
-                  href="/privacy-policy"
-                  className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-                >
-                  Privacy Policy
-                </Link>
-                <Section as="span" padding="none" className="text-candera-stone self-center">
-                  ·
-                </Section>
-                <Link
-                  href="/terms-of-service"
-                  className="font-sans text-[11px] font-light text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-                >
-                  Terms of Service
-                </Link>
-              </>
-            )}
           </Section>
         </Section>
       </Container>

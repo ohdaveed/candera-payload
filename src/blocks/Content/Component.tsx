@@ -19,7 +19,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   }
 
   return (
-    <Section padding="large" className="bg-candera-linen/20">
+    <Section padding="medium">
       <Container>
         <article className="grid grid-cols-4 lg:grid-cols-12 gap-y-16 gap-x-16 lg:gap-x-24 items-start">
           {columns &&
@@ -42,7 +42,14 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   key={index}
                 >
                   {richText && (
-                    <Section padding="none" className="editorial-prose">
+                    <Section
+                      padding="none"
+                      className="editorial-prose [&_h2]:mb-8 [&_p]:mb-6 [&_p:last-child]:mb-0"
+                    >
+                      <span
+                        className="block h-px w-16 mb-8 bg-candera-stone/20"
+                        aria-hidden="true"
+                      />
                       <RichText data={richText} enableGutter={false} />
                     </Section>
                   )}
@@ -51,7 +58,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                     <Section padding="none" className="mt-2">
                       <CMSLink
                         {...link}
-                        className="group-hover:translate-x-1 transition-transform duration-300"
+                        className="hover:translate-x-1 transition-transform duration-300"
                       />
                     </Section>
                   )}

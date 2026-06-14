@@ -96,7 +96,6 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     } as unknown as ArchiveBlock,
     {
       blockType: 'testimonials',
-      eyebrow: 'From Our Community',
       items: [
         {
           quote:
@@ -123,7 +122,6 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     } as unknown as TestimonialsBlock,
     {
       blockType: 'scentQuiz',
-      eyebrow: 'Find Your Scent',
       headline: 'Not sure where to start?',
       formId: '',
     } as unknown as ScentQuizBlock,

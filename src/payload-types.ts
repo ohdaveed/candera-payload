@@ -216,7 +216,7 @@ export interface Media {
    * The numeric ID of the image from Etsy.
    */
   etsyImageId?: number | null;
-  alt?: string | null;
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -468,7 +468,7 @@ export interface User {
    */
   roles: ('admin' | 'editor')[];
   /**
-   * Operational account status. Enforcement can be added after roles are backfilled.
+   * Suspended accounts are blocked from logging in.
    */
   status: 'active' | 'suspended';
   /**
@@ -509,9 +509,11 @@ export interface StorefrontHeroBlock {
   secondaryCtaUrl?: string | null;
   showStatusCard?: boolean | null;
   statusCardTitle?: string | null;
+  statusCardPrice?: string | null;
   statusCardSubtitle?: string | null;
   statusCardStatus?: string | null;
   statusCardShips?: string | null;
+  statusCardLinkUrl?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'storefrontHero';
@@ -1043,6 +1045,14 @@ export interface Product {
    */
   vessel?: string | null;
   price?: number | null;
+  /**
+   * Currency for the price above.
+   */
+  currency?: ('USD' | 'CAD' | 'EUR' | 'GBP') | null;
+  /**
+   * When price was last synced from Etsy.
+   */
+  priceSyncedAt?: string | null;
   categories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
@@ -1453,9 +1463,11 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   secondaryCtaUrl?: T;
   showStatusCard?: T;
   statusCardTitle?: T;
+  statusCardPrice?: T;
   statusCardSubtitle?: T;
   statusCardStatus?: T;
   statusCardShips?: T;
+  statusCardLinkUrl?: T;
   id?: T;
   blockName?: T;
 }
@@ -1655,6 +1667,8 @@ export interface ProductsSelect<T extends boolean = true> {
   productTag?: T;
   vessel?: T;
   price?: T;
+  currency?: T;
+  priceSyncedAt?: T;
   categories?: T;
   updatedAt?: T;
   createdAt?: T;

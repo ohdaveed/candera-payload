@@ -14,6 +14,7 @@ export const Briefs: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  versions: true,
   fields: [
     {
       name: 'title',

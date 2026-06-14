@@ -30,7 +30,7 @@ export const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
       </Link>
       <Link
         href={createHref}
-        title={`Create new ${label.toLowerCase()}`}
+        aria-label={`Create new ${label.toLowerCase()}`}
         className="quick-access-card__create"
       >
         <svg
@@ -40,6 +40,7 @@ export const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          aria-hidden="true"
         >
           <path d="M8 3v10M3 8h10" />
         </svg>

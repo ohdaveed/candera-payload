@@ -4,8 +4,10 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { InnerCircleEmailForm } from './EmailForm'
 import type { InnerCircleCTABlock as InnerCircleCTABlockType } from '@/payload-types'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
-type Props = InnerCircleCTABlockType & { disableInnerContainer?: boolean }
+type Props = InnerCircleCTABlockType
 
 const getInnerCircleFormId = cache(async () => {
   const payload = await getPayload({ config: configPromise })
@@ -22,25 +24,21 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
   const formId = await getInnerCircleFormId()
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 items-center bg-candera-obsidian p-6 md:p-[52px] gap-10 md:gap-[52px]">
-      {/* Left — heading + body only, no bullets */}
-      <div className="flex flex-col gap-[14px]">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
-          <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-[#6b5e50] m-0">
-            Join the Inner Circle
-          </p>
-        </div>
-        <h2 className="font-display text-[28px] text-candera-vellum leading-[1.2] m-0">
-          {headline}
-        </h2>
-        {description && (
-          <p className="font-sans text-[14px] leading-[1.75] m-0 text-[#a3a3a3]">{description}</p>
-        )}
-      </div>
+    <Section padding="none" className="bg-candera-obsidian">
+      <Container className="py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-16">
+          {/* Left — heading + body only (spans columns 1-6) */}
+          <div className="lg:col-span-6 flex flex-col gap-3.5">
+            <h2 className="h2 text-candera-vellum m-0">{headline}</h2>
+            {description && <p className="body text-candera-vellum/70 m-0">{description}</p>}
+          </div>
 
-      {/* Right — form + microcopy below */}
-      <InnerCircleEmailForm formId={formId} />
-    </section>
+          {/* Right — form (spans columns 7-12) */}
+          <div className="lg:col-span-6 w-full">
+            <InnerCircleEmailForm formId={formId} />
+          </div>
+        </div>
+      </Container>
+    </Section>
   )
 }

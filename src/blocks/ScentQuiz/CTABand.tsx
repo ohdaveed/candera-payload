@@ -14,30 +14,31 @@ export const ScentQuizCTABand: React.FC<Props> = ({
   headline = 'Not sure where to start?',
   body = "Answer a few questions and we'll match you to the candle that fits your space, your mood, and your ritual — before you have to browse.",
 }) => (
-  <section className="grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-10 px-6 py-12 md:px-[52px] md:py-12 bg-candera-obsidian border-b border-[rgba(196,168,130,0.12)]">
-    <div className="flex flex-col gap-2">
+  <section className="bg-candera-obsidian py-20 md:py-28 relative">
+    <div className="w-full max-w-[1200px] mx-auto px-[5vw] flex flex-col items-center text-center gap-6">
       {eyebrow && (
-        <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-[#6b5e50] m-0">
-          {eyebrow}
-        </p>
+        <div className="flex items-center gap-2">
+          <span className="block w-4 h-px bg-candera-ember" aria-hidden="true" />
+          <p className="eyebrow text-candera-stone">{eyebrow}</p>
+          <span className="block w-4 h-px bg-candera-ember" aria-hidden="true" />
+        </div>
       )}
       {headline && (
-        <h2 className="font-display italic text-[26px] text-candera-vellum leading-[1.2] m-0">
+        <h2 className="font-display font-normal italic text-candera-vellum text-3xl md:text-4xl m-0 leading-tight">
           {headline}
         </h2>
       )}
       {body && (
-        <p className="font-sans text-[13px] text-candera-sage-text leading-[1.6] max-w-[440px] m-0 mt-1">
+        <p className="font-sans font-light text-candera-sage-text max-w-[560px] m-0 text-sm md:text-base leading-relaxed">
           {body}
         </p>
       )}
+      <Link
+        href="#scent-quiz"
+        className="btn-text bg-candera-ember text-candera-obsidian px-8 py-4 no-underline whitespace-nowrap hover:bg-candera-vellum hover:text-candera-obsidian transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-none"
+      >
+        Take the Scent Quiz →
+      </Link>
     </div>
-    <Link
-      href="#scent-quiz"
-      className="font-sans text-[10px] font-bold uppercase tracking-[3px] px-8 py-4 no-underline whitespace-nowrap"
-      style={{ background: 'var(--candera-ember)', color: '#0a0806' }}
-    >
-      Take the Scent Quiz →
-    </Link>
   </section>
 )

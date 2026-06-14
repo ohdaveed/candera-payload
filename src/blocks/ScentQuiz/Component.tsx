@@ -3,11 +3,12 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { Tooltip } from '@/components/ui/tooltip'
 import { Media } from '@/components/Media'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -77,6 +78,7 @@ function parseAnswers(raw: string | null): number[] {
 type InnerProps = ScentQuizBlockType
 
 const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
+  const shouldReduceMotion = useReducedMotion()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -110,6 +112,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | undefined>()
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
 
   const {
     register,
@@ -168,6 +171,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
           }
 
           setIsLoading(false)
+          setSubmittedEmail(data.email)
           setHasSubmitted(true)
         } catch {
           setSubmitError('Something went wrong. Please try again.')
@@ -188,8 +192,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   return (
     <Section
       padding="large"
-      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center"
-      style={{ background: 'var(--candera-obsidian)' }}
+      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center bg-candera-obsidian"
     >
       {/* Ambient background when result is known */}
       <AnimatePresence>
@@ -201,7 +204,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.15 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 2 }}
             className="absolute inset-0 pointer-events-none"
           >
             <Media fill resource={result.ambientImage} imgClassName="object-cover" />
@@ -218,12 +221,21 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             className="text-center mb-16"
           >
             <Eyebrow className="text-candera-ember/80 mb-4">{quiz.title}</Eyebrow>
-            <div className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden">
+            <div
+              role="status"
+              aria-live="polite"
+              aria-label={`Question ${step + 1} of ${questions.length}`}
+              className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden"
+            >
               <motion.div
                 className="absolute top-0 left-0 h-full bg-candera-ember"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 50, damping: 20 }
+                }
               />
             </div>
           </motion.div>
@@ -242,23 +254,33 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 <motion.div
                   className="absolute inset-0 border border-candera-ember/20 rounded-full"
                   animate={{ scale: [1, 2, 1], opacity: [0.2, 0, 0.2] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 3,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'easeInOut',
+                  }}
                 />
                 <motion.div
-                  className="absolute inset-2 border border-candera-ember/40 rounded-full"
+                  className="absolute inset-2 border border-candera-ember/40 rounded-full border-r-transparent border-b-transparent"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                  style={{ borderRightColor: 'transparent', borderBottomColor: 'transparent' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 4,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'linear',
+                  }}
                 />
                 <motion.div
-                  className="absolute inset-4 border border-candera-ember rounded-full"
+                  className="absolute inset-4 border border-candera-ember rounded-full border-l-transparent border-t-transparent"
                   animate={{ rotate: -360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                  style={{ borderLeftColor: 'transparent', borderTopColor: 'transparent' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 2,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'linear',
+                  }}
                 />
               </div>
               <p className="font-display text-3xl text-candera-linen italic tracking-wide">
-                Synthesizing your ritual...
+                Synthesizing your ritual…
               </p>
             </motion.div>
           ) : !isEmailStep && currentQuestion ? (
@@ -267,12 +289,31 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-16 leading-tight max-w-3xl">
+              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-8 leading-tight max-w-3xl">
                 {currentQuestion.prompt}
               </h2>
+              {step > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const prevAnswers = [...answers]
+                    prevAnswers.pop()
+                    const params = new URLSearchParams(searchParams.toString())
+                    if (prevAnswers.length > 0) {
+                      params.set('q', prevAnswers.join('-'))
+                    } else {
+                      params.delete('q')
+                    }
+                    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+                  }}
+                  className="font-sans text-xs text-candera-linen/40 hover:text-candera-linen/70 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+                >
+                  ← Back
+                </button>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                 {currentQuestion.options.map((option, i) => {
                   // Highlight the previously-selected answer when navigating back
@@ -284,10 +325,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       onClick={() => handleOptionSelect(i)}
                       aria-pressed={isSelected}
                       className={[
-                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-[2px] overflow-hidden',
+                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-input overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian',
                         isSelected
                           ? 'border-candera-ember/60 bg-white/[0.05]'
-                          : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember/40 hover:bg-white/[0.03]',
+                          : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember-strong/50 hover:bg-white/[0.03]',
                       ].join(' ')}
                     >
                       {option.image && (
@@ -308,7 +349,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       />
                       <span
                         className={[
-                          'font-sans text-[16px] leading-relaxed transition-colors duration-500 tracking-wide',
+                          'font-sans text-base leading-relaxed transition-colors duration-500 tracking-wide',
                           isSelected
                             ? 'text-candera-linen'
                             : 'text-candera-linen/60 group-hover:text-candera-linen',
@@ -324,64 +365,162 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
           ) : isEmailStep && result && !hasSubmitted ? (
             <motion.div
               key="email"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center max-w-xl mx-auto"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+                },
+              }}
+              className="flex flex-col items-center max-w-3xl mx-auto"
             >
-              <div className="text-center mb-12">
-                <Eyebrow className="text-candera-ember mb-6">Discovery Awaits</Eyebrow>
-                <h3 className="font-display text-4xl text-candera-linen italic mb-8">
-                  Your atmosphere study is complete.
-                </h3>
-                <p className="font-sans text-[15px] text-candera-linen/50 leading-relaxed mb-12 tracking-wide">
-                  To preserve this ritual and receive your full botanical profile, join our inner
-                  circle. We will send the results and early access to the next numbered batch
-                  directly to your inbox.
-                </p>
-              </div>
-
-              <form
-                onSubmit={handleSubmit(onEmailSubmit)}
-                noValidate
-                className="flex flex-col items-center gap-8 w-full"
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               >
-                <div className="w-full">
-                  <Input
-                    id="quiz-email"
-                    type="email"
-                    placeholder="your@ritual.com"
-                    autoComplete="email"
-                    className="h-16 bg-transparent border-0 border-b border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-xl focus:border-candera-ember/50 transition-all duration-700 rounded-none px-0"
-                    {...register('email', {
-                      required: 'Email is required',
-                      pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
-                    })}
-                  />
-                  {errors.email && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-4 text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
-                    >
-                      {errors.email.message}
-                    </motion.p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  variant="cta-ember"
-                  size="cta"
-                  className="w-full py-10 text-lg uppercase tracking-[0.3em]"
-                  disabled={isLoading}
+                <Eyebrow className="text-candera-ember mb-8">Your Atmosphere Study</Eyebrow>
+              </motion.div>
+
+              <motion.h3
+                variants={{
+                  hidden: { opacity: 0, scale: 0.95 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-6xl md:text-8xl text-candera-linen italic mb-10 leading-[0.9]"
+              >
+                {result.name}
+              </motion.h3>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                className="h-[1px] w-24 bg-candera-ember/30 mx-auto mb-10"
+              />
+
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="editorial text-candera-linen/90 text-lg md:text-xl leading-relaxed mb-12 italic max-w-2xl mx-auto"
+              >
+                &ldquo;{result.editorial}&rdquo;
+              </motion.p>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="flex flex-col gap-4 mb-16"
+              >
+                <p className="font-sans text-sm font-bold uppercase tracking-[0.5em] text-candera-ember">
+                  <Tooltip content="The unique fragrance notes that define this scent profile">
+                    Botanical Composition
+                    <span className="inline-flex items-center justify-center w-3.5 h-3.5 ml-1.5 rounded-full border border-candera-ember/40 text-[9px] leading-none text-candera-ember/60 cursor-help align-super">
+                      ?
+                    </span>
+                  </Tooltip>
+                </p>
+                <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
+                  {result.notes}
+                </p>
+              </motion.div>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="w-full max-w-xl"
+              >
+                <p className="font-sans text-sm text-candera-linen/50 leading-relaxed mb-10 tracking-wide text-center">
+                  Enter your email to receive your full scent profile and discover the candle that
+                  matches your atmosphere.
+                </p>
+
+                <form
+                  onSubmit={handleSubmit(onEmailSubmit)}
+                  noValidate
+                  className="flex flex-col items-center gap-8 w-full"
                 >
-                  {isLoading ? 'Sending Invitation…' : 'Unlock My Profile'}
-                </Button>
-                {submitError && (
-                  <p className="text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]">
-                    {submitError}
-                  </p>
-                )}
-              </form>
+                  <div className="w-full">
+                    <Input
+                      id="quiz-email"
+                      type="email"
+                      placeholder="your@ritual.com"
+                      autoComplete="email"
+                      aria-label="Email address"
+                      spellCheck={false}
+                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-candera-linen placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian transition-all duration-700 rounded-none px-0"
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^\S[^\s@]*@\S+$/,
+                          message: 'Please enter a valid email',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <motion.p
+                        role="alert"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-4 text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                      >
+                        {errors.email.message}
+                      </motion.p>
+                    )}
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="cta-ember"
+                    size="cta"
+                    className="w-full py-10 text-lg uppercase tracking-[0.3em]"
+                    disabled={isLoading}
+                  >
+                    {isLoading
+                      ? 'Sending Invitation…'
+                      : submitError
+                        ? 'Try Again'
+                        : 'Unlock My Profile'}
+                  </Button>
+                  {submitError && (
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <span
+                          role="alert"
+                          className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                        >
+                          {submitError}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setSubmitError(undefined)}
+                          className="text-candera-stone/40 hover:text-candera-vellum transition-colors"
+                          aria-label="Dismiss error"
+                        >
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="M18 6L6 18M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </form>
+
+                <p className="mt-6 text-[11px] text-candera-stone/40 text-center tracking-wide">
+                  No spam &middot; Unsubscribe any time &middot;{' '}
+                  <Link
+                    href="/privacy-policy"
+                    className="underline underline-offset-2 hover:text-candera-vellum/60 transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </p>
+              </motion.div>
             </motion.div>
           ) : hasSubmitted && result ? (
             <motion.div
@@ -409,58 +548,55 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   visible: { opacity: 1, scale: 1 },
                 }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-6xl md:text-8xl text-candera-linen italic mb-10 leading-[0.9]"
+                className="font-display text-5xl md:text-7xl text-candera-linen italic mb-6 leading-[0.9]"
               >
                 {result.name}
               </motion.h3>
 
-              <motion.div
-                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                className="h-[1px] w-24 bg-candera-ember/30 mx-auto mb-10"
-              />
-
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="editorial text-candera-linen/90 text-[20px] md:text-[24px] leading-relaxed mb-12 italic max-w-2xl mx-auto"
+                className="font-sans text-sm text-candera-linen/40 tracking-[0.2em] font-light mb-10"
               >
-                &ldquo;{result.editorial}&rdquo;
+                Your profile has been sent to{' '}
+                {submittedEmail ? submittedEmail.replace(/(?<=.).(?=[^@]*@)/g, '*') : ''}
               </motion.p>
 
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="flex flex-col gap-12 items-center"
-              >
-                <div className="flex flex-col gap-4">
-                  <p className="font-sans text-[12px] font-bold uppercase tracking-[0.5em] text-candera-ember">
-                    Botanical Composition
+              {result.featuredProduct && typeof result.featuredProduct === 'object' && (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.9 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  className="flex flex-col items-center gap-8 mt-4"
+                >
+                  <div className="w-40 h-[1px] bg-candera-stone/20" />
+                  <p className="font-sans text-xs text-candera-linen/60 uppercase tracking-[0.3em] font-semibold">
+                    Your matched candle
                   </p>
-                  <p className="font-sans text-[16px] text-candera-linen/50 tracking-[0.2em] font-light">
-                    {result.notes}
-                  </p>
-                </div>
-
-                {result.featuredProduct && typeof result.featuredProduct === 'object' && (
-                  <motion.div
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.9 },
-                      visible: { opacity: 1, scale: 1 },
-                    }}
-                    className="flex flex-col items-center gap-8 mt-4"
+                  <Button
+                    asChild
+                    variant="cta-ember"
+                    size="cta"
+                    className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
                   >
-                    <div className="w-40 h-[1px] bg-candera-stone/20" />
-                    <Button
-                      asChild
-                      variant="cta-ember"
-                      size="cta"
-                      className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
-                    >
-                      <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
-                        Explore the Ritual
-                      </Link>
-                    </Button>
-                  </motion.div>
-                )}
-              </motion.div>
+                    <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
+                      Explore the Ritual
+                    </Link>
+                  </Button>
+                </motion.div>
+              )}
+              <motion.button
+                type="button"
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString())
+                  params.delete('q')
+                  router.push(`${pathname}?${params.toString()}`, { scroll: false })
+                }}
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                className="font-sans text-xs text-candera-linen/30 hover:text-candera-linen/60 uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+              >
+                Retake the Quiz
+              </motion.button>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -475,8 +611,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = (props) => (
     fallback={
       <Section
         padding="large"
-        className="relative w-full min-h-[800px] flex items-center justify-center"
-        style={{ background: 'var(--candera-obsidian)' }}
+        className="relative w-full min-h-[800px] flex items-center justify-center bg-candera-obsidian"
       />
     }
   >

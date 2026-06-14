@@ -55,7 +55,12 @@ export const syncEtsyEndpoint: Endpoint = {
 export const etsyOAuthInitEndpoint: Endpoint = {
   path: '/etsy/oauth/init',
   method: 'get',
-  handler: async (req) => Response.redirect(createEtsyClient(req).generateAuthUrl()),
+  handler: async (req) => {
+    if (!req.user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    return Response.redirect(createEtsyClient(req).generateAuthUrl())
+  },
 }
 
 export const setEtsyVacationEndpoint: Endpoint = {

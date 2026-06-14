@@ -1,17 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/utilities/ui'
-import { Card, CardContent } from '@/components/ui/card'
 
 export function ProductCardSkeleton({ className }: { className?: string }) {
   return (
-    <Card
-      className={cn(
-        'flex flex-col h-full bg-white rounded-none border-none shadow-none',
-        className,
-      )}
-    >
+    <div className={cn('flex flex-col h-full bg-candera-linen', className)}>
       <Skeleton className="aspect-[4/5] w-full bg-candera-ash rounded-none" />
-      <CardContent className="pt-6 pb-2 flex flex-col flex-grow p-0">
+      <div className="pt-6 pb-2 flex flex-col flex-grow p-0">
         <div className="flex items-start justify-between gap-4 mb-3 px-4">
           <div className="flex flex-col gap-2 w-full">
             <Skeleton className="h-3 w-16 bg-candera-ash" />
@@ -27,7 +21,7 @@ export function ProductCardSkeleton({ className }: { className?: string }) {
             <Skeleton className="h-8 w-full bg-candera-ash" />
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
