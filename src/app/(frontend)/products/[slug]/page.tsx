@@ -269,11 +269,16 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 // meta image (og size) and falling back to the first gallery photo so social
 // shares never default to the generic template OG image.
 function resolveProductImageUrl(product: Product, serverUrl: string): string | undefined {
+  // Payload serves media via relative paths (/api/media/file/...), but external
+  // storage adapters (e.g. Vercel Blob) can return absolute URLs — only prepend
+  // serverUrl when the URL isn't already absolute.
+  const toAbsolute = (url?: string | null): string | undefined =>
+    !url ? undefined : url.startsWith('http') ? url : serverUrl + url
+
   const fromMedia = (media: unknown): string | undefined => {
     if (media && typeof media === 'object' && 'url' in media) {
       const m = media as Media
-      const ogUrl = m.sizes?.og?.url
-      return ogUrl ? serverUrl + ogUrl : m.url ? serverUrl + m.url : undefined
+      return toAbsolute(m.sizes?.og?.url) ?? toAbsolute(m.url)
     }
     return undefined
   }
