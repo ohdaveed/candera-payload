@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import type { Post } from '@/payload-types'
 
 interface FeaturedPostCardProps {
-  post: Pick<Post, 'slug' | 'title' | 'meta'>
+  post: Pick<Post, 'slug' | 'title' | 'meta' | 'heroImage'>
 }
 
 /**
@@ -16,11 +16,11 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
   return (
     <Link href={`/posts/${post.slug}`} className="block group">
       <article className="relative w-full aspect-[16/7] overflow-hidden bg-candera-ash mb-4">
-        {post.meta?.image && (
+        {(post.meta?.image || post.heroImage) && (
           <Media
             fill
             imgClassName="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
-            resource={post.meta.image}
+            resource={post.meta?.image || post.heroImage}
           />
         )}
 

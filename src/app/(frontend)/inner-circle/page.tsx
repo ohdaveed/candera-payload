@@ -39,7 +39,7 @@ export default async function InnerCirclePage() {
 
           <div className="flex flex-col items-center gap-4">
             <InnerCircleEmailForm formId={formId} />
-            <p className="caption text-candera-stone/60 mt-2">No spam. Unsubscribe anytime.</p>
+            <p className="caption text-candera-sage-text mt-2">No spam. Unsubscribe anytime.</p>
           </div>
 
           <div

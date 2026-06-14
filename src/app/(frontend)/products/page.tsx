@@ -8,6 +8,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
+import type { ProductCardData } from '@/components/ProductCard'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 
@@ -17,36 +18,18 @@ export const metadata: Metadata = {
     'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
 }
 
-function toGridProduct(product: Product) {
-  const {
-    id,
-    slug,
-    categories,
-    title,
-    tagline,
-    extraPhotos,
-    scentProfile,
-    burnTime,
-    atmosphere,
-    productTag,
-    vessel,
-    price,
-  } = product
+function toGridProduct(product: Product): ProductCardData {
   return {
-    id,
-    slug,
-    categories: categories?.map((cat) =>
-      typeof cat === 'object' ? { title: cat.title } : cat,
-    ) as Product['categories'],
-    title,
-    tagline,
-    extraPhotos,
-    scentProfile,
-    burnTime,
-    atmosphere,
-    productTag,
-    vessel,
-    price,
+    id: product.id,
+    slug: product.slug,
+    title: product.title,
+    tagline: product.tagline,
+    extraPhotos: product.extraPhotos,
+    scentProfile: product.scentProfile,
+    price: product.price,
+    categories: product.categories?.map((cat) =>
+      typeof cat === 'object' && cat !== null ? { title: cat.title } : cat,
+    ),
   }
 }
 

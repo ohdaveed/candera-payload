@@ -2,9 +2,9 @@
 
 import React, { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { MinimalInput } from '@/components/ui/MinimalInput'
+import { MinimalTextarea } from '@/components/ui/MinimalTextarea'
+import { SubmitButton } from '@/components/ui/SubmitButton'
 import {
   Form,
   FormControl,
@@ -99,7 +99,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           </div>
         )}
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           <FormField
             control={control}
             name="full-name"
@@ -113,7 +113,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" autoComplete="name" {...field} />
+                  <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
                 {/* ember-strong = 5.5:1 on vellum — passes AA */}
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
@@ -137,7 +137,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <MinimalInput
                     placeholder="email@example.com"
                     autoComplete="email"
                     spellCheck={false}
@@ -161,7 +161,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <MinimalInput
                     placeholder="(555) 000-0000"
                     autoComplete="tel"
                     inputMode="tel"
@@ -186,7 +186,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <Textarea placeholder="How can we help?" rows={5} {...field} />
+                  <MinimalTextarea placeholder="How can we help?" rows={5} {...field} />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
@@ -195,9 +195,9 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         </div>
 
         <div className="mt-8">
-          <Button type="submit" variant="cta-ember" size="cta" disabled={isLoading}>
+          <SubmitButton disabled={isLoading}>
             {isLoading ? 'Sending…' : 'Send Correspondence'}
-          </Button>
+          </SubmitButton>
         </div>
       </form>
     </Form>

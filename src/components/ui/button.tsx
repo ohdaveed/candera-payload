@@ -17,7 +17,7 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         cta: 'bg-candera-obsidian text-candera-vellum hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-ember':
-          'bg-candera-ember text-candera-vellum hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+          'bg-candera-ember-strong text-candera-vellum hover:bg-candera-obsidian text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-inverse':
           'bg-candera-linen text-candera-obsidian hover:bg-candera-vellum text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-ghost-dark':

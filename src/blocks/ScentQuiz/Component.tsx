@@ -277,7 +277,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 />
               </div>
               <p className="font-display text-3xl text-candera-linen italic tracking-wide">
-                Synthesizing your ritual...
+                Synthesizing your ritual…
               </p>
             </motion.div>
           ) : !isEmailStep && currentQuestion ? (
@@ -303,10 +303,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       onClick={() => handleOptionSelect(i)}
                       aria-pressed={isSelected}
                       className={[
-                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-[2px] overflow-hidden',
+                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-[2px] overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian',
                         isSelected
                           ? 'border-candera-ember/60 bg-white/[0.05]'
-                          : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember/40 hover:bg-white/[0.03]',
+                          : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember-strong/50 hover:bg-white/[0.03]',
                       ].join(' ')}
                     >
                       {option.image && (
@@ -370,7 +370,9 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     type="email"
                     placeholder="your@ritual.com"
                     autoComplete="email"
-                    className="h-16 bg-transparent border-0 border-b border-candera-stone/30 text-candera-linen placeholder:text-candera-linen/20 text-center text-xl focus:border-candera-ember/50 transition-all duration-700 rounded-none px-0"
+                    aria-label="Email address"
+                    spellCheck={false}
+                    className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-candera-linen placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong transition-all duration-700 rounded-none px-0"
                     {...register('email', {
                       required: 'Email is required',
                       pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },

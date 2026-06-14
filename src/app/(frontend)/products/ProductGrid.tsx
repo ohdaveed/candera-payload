@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Card, type CardPostData } from '@/components/Card'
+import { ProductCard, type ProductCardData } from '@/components/ProductCard'
 
 interface ProductGridProps {
-  products: CardPostData[]
+  products: ProductCardData[]
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
@@ -41,11 +41,11 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 list-none p-0"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 list-none p-0 m-0"
     >
       {products.map((product, i) => (
-        <motion.li key={product.slug || i} variants={item}>
-          <Card doc={product} relationTo="products" />
+        <motion.li key={product.slug ?? i} variants={item} className="flex">
+          <ProductCard product={product} className="w-full" />
         </motion.li>
       ))}
     </motion.ul>

@@ -34,6 +34,8 @@ export const PostHero: React.FC<{
             imgClassName="object-cover brightness-[0.45]"
             resource={heroImage}
           />
+          {/* Fail-safe overlay for dynamic image contrast */}
+          <div className="absolute inset-0 bg-candera-obsidian/30" aria-hidden="true" />
         </figure>
       )}
 
@@ -84,7 +86,7 @@ export const PostHero: React.FC<{
             {categoryLabels.map((label, i) => (
               <span
                 key={i}
-                className="text-xs font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/30 px-3 py-1.5"
+                className="text-xs font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/50 px-3 py-1.5"
               >
                 {label}
               </span>

@@ -70,7 +70,7 @@ export default async function Post({ params: paramsPromise }: Args) {
         <Container>
           <RichText
             className="
-              max-w-[680px] mx-auto
+              !max-w-[860px] mx-auto
               [&_p]:body [&_p]:mb-7
               [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
               [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4

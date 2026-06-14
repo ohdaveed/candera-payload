@@ -32,6 +32,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
             priority
             resource={media}
           />
+          {/* Fail-safe overlay for dynamic image contrast */}
+          <div className="absolute inset-0 bg-candera-obsidian/30" aria-hidden="true" />
         </div>
       )}
 

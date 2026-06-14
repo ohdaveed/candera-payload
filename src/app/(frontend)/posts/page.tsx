@@ -29,6 +29,7 @@ export default async function Page() {
       meta: true,
       populatedAuthors: true,
       publishedAt: true,
+      heroImage: true,
     },
   })
 

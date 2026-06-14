@@ -145,7 +145,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <Section
             as="aside"
             padding="none"
-            className="lg:col-span-5 flex flex-col gap-10 py-4"
+            className="lg:col-span-5 flex flex-col gap-10 py-4 lg:min-h-[calc(100vh-var(--nav-height)-120px)]"
             data-section="product-details"
           >
             {/* Identity block */}
