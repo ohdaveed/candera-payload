@@ -112,6 +112,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | undefined>()
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
 
   const {
     register,
@@ -170,6 +171,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
           }
 
           setIsLoading(false)
+          setSubmittedEmail(data.email)
           setHasSubmitted(true)
         } catch {
           setSubmitError('Something went wrong. Please try again.')
@@ -344,102 +346,6 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
           ) : isEmailStep && result && !hasSubmitted ? (
             <motion.div
               key="email"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center max-w-xl mx-auto"
-            >
-              <div className="text-center mb-12">
-                <Eyebrow className="text-candera-ember mb-6">Discovery Awaits</Eyebrow>
-                <h3 className="font-display text-4xl text-candera-linen italic mb-8">
-                  Your atmosphere study is complete.
-                </h3>
-                <p className="font-sans text-base text-candera-linen/50 leading-relaxed mb-12 tracking-wide">
-                  To preserve this ritual and receive your full botanical profile, join our inner
-                  circle. We will send the results and early access to the next numbered batch
-                  directly to your inbox.
-                </p>
-              </div>
-
-              <form
-                onSubmit={handleSubmit(onEmailSubmit)}
-                noValidate
-                className="flex flex-col items-center gap-8 w-full"
-              >
-                <div className="w-full">
-                  <Input
-                    id="quiz-email"
-                    type="email"
-                    placeholder="your@ritual.com"
-                    autoComplete="email"
-                    aria-label="Email address"
-                    spellCheck={false}
-                    className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-candera-linen placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian transition-all duration-700 rounded-none px-0"
-                    {...register('email', {
-                      required: 'Email is required',
-                      pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
-                    })}
-                  />
-                  {errors.email && (
-                    <motion.p
-                      role="alert"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-4 text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
-                    >
-                      {errors.email.message}
-                    </motion.p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  variant="cta-ember"
-                  size="cta"
-                  className="w-full py-10 text-lg uppercase tracking-[0.3em]"
-                  disabled={isLoading}
-                >
-                  {isLoading
-                    ? 'Sending Invitation…'
-                    : submitError
-                      ? 'Try Again'
-                      : 'Unlock My Profile'}
-                </Button>
-                {submitError && (
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <span
-                        role="alert"
-                        className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
-                      >
-                        {submitError}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setSubmitError(undefined)}
-                        className="text-candera-stone/40 hover:text-candera-vellum transition-colors"
-                        aria-label="Dismiss error"
-                      >
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="M18 6L6 18M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </form>
-            </motion.div>
-          ) : hasSubmitted && result ? (
-            <motion.div
-              key="result"
               initial="hidden"
               animate="visible"
               variants={{
@@ -449,7 +355,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   transition: { staggerChildren: 0.3, delayChildren: 0.2 },
                 },
               }}
-              className="text-center max-w-3xl mx-auto"
+              className="flex flex-col items-center max-w-3xl mx-auto"
             >
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
@@ -482,44 +388,184 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="flex flex-col gap-12 items-center"
+                className="flex flex-col gap-4 mb-16"
               >
-                <div className="flex flex-col gap-4">
-                  <p className="font-sans text-sm font-bold uppercase tracking-[0.5em] text-candera-ember">
-                    <Tooltip content="The unique fragrance notes that define this scent profile">
-                      Botanical Composition
-                      <span className="inline-flex items-center justify-center w-3.5 h-3.5 ml-1.5 rounded-full border border-candera-ember/40 text-[9px] leading-none text-candera-ember/60 cursor-help align-super">
-                        ?
-                      </span>
-                    </Tooltip>
-                  </p>
-                  <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
-                    {result.notes}
-                  </p>
-                </div>
-
-                {result.featuredProduct && typeof result.featuredProduct === 'object' && (
-                  <motion.div
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.9 },
-                      visible: { opacity: 1, scale: 1 },
-                    }}
-                    className="flex flex-col items-center gap-8 mt-4"
-                  >
-                    <div className="w-40 h-[1px] bg-candera-stone/20" />
-                    <Button
-                      asChild
-                      variant="cta-ember"
-                      size="cta"
-                      className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
-                    >
-                      <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
-                        Explore the Ritual
-                      </Link>
-                    </Button>
-                  </motion.div>
-                )}
+                <p className="font-sans text-sm font-bold uppercase tracking-[0.5em] text-candera-ember">
+                  <Tooltip content="The unique fragrance notes that define this scent profile">
+                    Botanical Composition
+                    <span className="inline-flex items-center justify-center w-3.5 h-3.5 ml-1.5 rounded-full border border-candera-ember/40 text-[9px] leading-none text-candera-ember/60 cursor-help align-super">
+                      ?
+                    </span>
+                  </Tooltip>
+                </p>
+                <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
+                  {result.notes}
+                </p>
               </motion.div>
+
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="w-full max-w-xl"
+              >
+                <p className="font-sans text-sm text-candera-linen/50 leading-relaxed mb-10 tracking-wide text-center">
+                  Enter your email to receive your full scent profile and discover the candle that
+                  matches your atmosphere.
+                </p>
+
+                <form
+                  onSubmit={handleSubmit(onEmailSubmit)}
+                  noValidate
+                  className="flex flex-col items-center gap-8 w-full"
+                >
+                  <div className="w-full">
+                    <Input
+                      id="quiz-email"
+                      type="email"
+                      placeholder="your@ritual.com"
+                      autoComplete="email"
+                      aria-label="Email address"
+                      spellCheck={false}
+                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-candera-linen placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian transition-all duration-700 rounded-none px-0"
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^\S[^\s@]*@\S+$/,
+                          message: 'Please enter a valid email',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <motion.p
+                        role="alert"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-4 text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                      >
+                        {errors.email.message}
+                      </motion.p>
+                    )}
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="cta-ember"
+                    size="cta"
+                    className="w-full py-10 text-lg uppercase tracking-[0.3em]"
+                    disabled={isLoading}
+                  >
+                    {isLoading
+                      ? 'Sending Invitation…'
+                      : submitError
+                        ? 'Try Again'
+                        : 'Unlock My Profile'}
+                  </Button>
+                  {submitError && (
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <span
+                          role="alert"
+                          className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                        >
+                          {submitError}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setSubmitError(undefined)}
+                          className="text-candera-stone/40 hover:text-candera-vellum transition-colors"
+                          aria-label="Dismiss error"
+                        >
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="M18 6L6 18M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </form>
+
+                <p className="mt-6 text-[11px] text-candera-stone/40 text-center tracking-wide">
+                  No spam &middot; Unsubscribe any time &middot;{' '}
+                  <Link
+                    href="/privacy-policy"
+                    className="underline underline-offset-2 hover:text-candera-vellum/60 transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </p>
+              </motion.div>
+            </motion.div>
+          ) : hasSubmitted && result ? (
+            <motion.div
+              key="result"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+                },
+              }}
+              className="text-center max-w-3xl mx-auto"
+            >
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              >
+                <Eyebrow className="text-candera-ember mb-8">Your Atmosphere Study</Eyebrow>
+              </motion.div>
+
+              <motion.h3
+                variants={{
+                  hidden: { opacity: 0, scale: 0.95 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-5xl md:text-7xl text-candera-linen italic mb-6 leading-[0.9]"
+              >
+                {result.name}
+              </motion.h3>
+
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                className="font-sans text-sm text-candera-linen/40 tracking-[0.2em] font-light mb-10"
+              >
+                Your profile has been sent to{' '}
+                {submittedEmail ? submittedEmail.replace(/(?<=.).(?=[^@]*@)/g, '*') : ''}
+              </motion.p>
+
+              {result.featuredProduct && typeof result.featuredProduct === 'object' && (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.9 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  className="flex flex-col items-center gap-8 mt-4"
+                >
+                  <div className="w-40 h-[1px] bg-candera-stone/20" />
+                  <p className="font-sans text-xs text-candera-linen/60 uppercase tracking-[0.3em] font-semibold">
+                    Your matched candle
+                  </p>
+                  <Button
+                    asChild
+                    variant="cta-ember"
+                    size="cta"
+                    className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
+                  >
+                    <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
+                      Explore the Ritual
+                    </Link>
+                  </Button>
+                </motion.div>
+              )}
             </motion.div>
           ) : null}
         </AnimatePresence>
