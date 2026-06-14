@@ -24,6 +24,7 @@ export const Quizzes: CollectionConfig = {
       name: 'questions',
       type: 'array',
       required: true,
+      minRows: 1,
       fields: [
         {
           name: 'prompt',
