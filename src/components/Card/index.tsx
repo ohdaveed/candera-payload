@@ -93,8 +93,70 @@ export const Card: React.FC<{
               size="33vw"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-sm text-candera-sage-text italic">
-              Image unavailable
+            <div
+              className="absolute inset-0 flex items-end p-5"
+              style={{
+                background: 'linear-gradient(160deg, #2a1f14 0%, #3d2a18 35%, #1a110a 100%)',
+              }}
+            >
+              {/* Candle flame — pure CSS */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative flex flex-col items-center" style={{ marginBottom: '8%' }}>
+                  {/* Flame */}
+                  <div
+                    style={{
+                      width: 18,
+                      height: 28,
+                      background:
+                        'radial-gradient(ellipse at 50% 80%, #fff5cc 0%, #ffd060 30%, #e8700a 65%, transparent 100%)',
+                      borderRadius: '50% 50% 30% 30% / 60% 60% 40% 40%',
+                      filter: 'blur(1.5px)',
+                      opacity: 0.92,
+                    }}
+                  />
+                  {/* Glow */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: -8,
+                      width: 48,
+                      height: 48,
+                      background:
+                        'radial-gradient(ellipse, rgba(255,200,80,0.28) 0%, transparent 70%)',
+                      borderRadius: '50%',
+                    }}
+                  />
+                  {/* Wick */}
+                  <div
+                    style={{
+                      width: 2,
+                      height: 10,
+                      background: '#2a1a0a',
+                      borderRadius: 1,
+                      marginTop: -2,
+                    }}
+                  />
+                  {/* Candle body */}
+                  <div
+                    style={{
+                      width: 28,
+                      height: 64,
+                      background:
+                        'linear-gradient(to right, #e8ddd0 0%, #f5f0e8 40%, #e0d5c5 100%)',
+                      borderRadius: '2px 2px 0 0',
+                      boxShadow: '0 0 20px rgba(255,180,60,0.15)',
+                      marginTop: 0,
+                    }}
+                  />
+                </div>
+              </div>
+              {/* Warm floor glow */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-16"
+                style={{
+                  background: 'linear-gradient(to top, rgba(255,160,40,0.08), transparent)',
+                }}
+              />
             </div>
           )}
           <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:pointer-events-auto group-hover:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
@@ -107,9 +169,30 @@ export const Card: React.FC<{
           </div>
         </div>
 
-        <div className="pt-4 pb-2 px-4 bg-white flex-1 flex flex-col">
+        <div className="pt-4 pb-4 px-5 bg-white flex-1 flex flex-col border-t border-[#ede8e1]">
+          {/* Date + author row */}
+          {(hasAuthors || publishedAt) && (
+            <div className="flex items-center gap-2 mb-2">
+              {publishedAt && (
+                <time
+                  className="font-sans text-[10px] font-semibold uppercase tracking-[.18em] text-[#b8aa98]"
+                  dateTime={publishedAt}
+                >
+                  {formatDateTime(publishedAt)}
+                </time>
+              )}
+              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-[10px]">·</span>}
+              {hasAuthors && (
+                <span className="font-sans text-[10px] font-semibold uppercase tracking-[.18em] text-[#b8aa98]">
+                  {formatAuthors(populatedAuthors)}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Title */}
           {titleToUse && (
-            <p className="font-display text-[16px] font-normal not-italic leading-[1.3] text-candera-obsidian m-0 mb-1">
+            <p className="font-display text-[20px] font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-2">
               <Link
                 href={href}
                 ref={linkRef}
@@ -119,31 +202,20 @@ export const Card: React.FC<{
               </Link>
             </p>
           )}
-          {(hasAuthors || publishedAt) && (
-            <div className="flex items-center gap-2 mt-2">
-              {hasAuthors && (
-                <span className="font-editorial italic text-candera-sage-text text-[13px]">
-                  By {formatAuthors(populatedAuthors)}
-                </span>
-              )}
-              {hasAuthors && publishedAt && (
-                <span className="text-candera-stone/40 text-[10px]">•</span>
-              )}
-              {publishedAt && (
-                <time
-                  className="font-editorial italic text-candera-sage-text text-[13px]"
-                  dateTime={publishedAt}
-                >
-                  {formatDateTime(publishedAt)}
-                </time>
-              )}
-            </div>
-          )}
+
+          {/* Description */}
           {description && (
-            <p className="font-serif italic text-[15px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2">
+            <p className="font-serif italic text-[14px] text-[#7a6c5e] leading-[1.65] line-clamp-2 m-0">
               {sanitizedDescription}
             </p>
           )}
+
+          {/* Read link */}
+          <div className="mt-auto pt-3">
+            <span className="text-[9px] font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
+              Read →
+            </span>
+          </div>
         </div>
       </motion.div>
     )
