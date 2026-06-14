@@ -110,7 +110,7 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-candera-obsidian/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-candera-obsidian/90 backdrop-blur-md"
         onClick={close}
         aria-hidden="true"
       />
