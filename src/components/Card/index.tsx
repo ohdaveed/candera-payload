@@ -307,22 +307,22 @@ export const Card: React.FC<{
 
         {/* Scent note pills — always visible */}
         {hasScentNotes && (
-          <div className="flex flex-wrap items-center gap-1.5 mb-[0.55rem]">
-            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-sage-text mr-1">
+          <div className="flex items-center gap-1.5 mb-[0.55rem] whitespace-nowrap overflow-hidden">
+            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-sage-text shrink-0">
               Scent
             </span>
             {scentProfile?.top && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.top}
               </span>
             )}
             {scentProfile?.heart && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.heart}
               </span>
             )}
             {scentProfile?.base && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.base}
               </span>
             )}

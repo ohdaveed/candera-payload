@@ -111,7 +111,7 @@ export const CollectionArchive: React.FC<Props> = ({
       <CardList
         posts={posts}
         relationTo={relationTo}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-8"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8"
       />
     )
   }
@@ -140,7 +140,7 @@ export const CollectionArchive: React.FC<Props> = ({
         <CardList
           posts={posts}
           relationTo={relationTo}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
         />
       </div>
     </div>
