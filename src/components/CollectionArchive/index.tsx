@@ -40,6 +40,7 @@ const CardList: React.FC<{
         price,
         populatedAuthors,
         publishedAt,
+        heroImage,
       } = result
 
       const minimizedDoc = {
@@ -59,6 +60,7 @@ const CardList: React.FC<{
         price,
         populatedAuthors,
         publishedAt,
+        heroImage,
       }
 
       return (
@@ -115,25 +117,31 @@ export const CollectionArchive: React.FC<Props> = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
-      {/* Left sidebar — sticky */}
-      <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-12 bg-candera-vellum py-16 md:py-24">
+      {/* Left sidebar — sticky (spans columns 1-4) */}
+      <div className="md:col-span-4 md:sticky md:top-28 md:self-start flex flex-col gap-4">
         <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
-        <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
-        <p className="font-sans text-sm text-candera-sage-text leading-relaxed m-0">
+        <h2 className="text-[1.85rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
+          {sidebarTitle || defaultTitle}
+        </h2>
+        <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
           {sidebarDescription || defaultDescription}
         </p>
         <Link
           href={collectionPath}
-          className="btn-text text-candera-obsidian no-underline border-b border-candera-ember pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember transition-colors"
+          className="btn-text text-candera-obsidian no-underline border-b border-candera-ember-strong pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember-strong transition-colors mt-4"
         >
           {sidebarLinkText || defaultLinkText}
         </Link>
       </div>
 
-      {/* Right — card grid */}
-      <div className="p-6 md:pt-7 md:pb-7 md:pr-[52px] md:pl-0">
-        <CardList posts={posts} relationTo={relationTo} />
+      {/* Right — card grid (spans columns 5-12) */}
+      <div className="md:col-span-8">
+        <CardList
+          posts={posts}
+          relationTo={relationTo}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-8"
+        />
       </div>
     </div>
   )
