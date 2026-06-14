@@ -71,7 +71,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
         {/* Right nav */}
         <Section as="nav" padding="none" className="flex items-center">
-          <HeaderNav data={data} transparent={isTransparent} />
+          <HeaderNav data={data} transparent={isTransparent} pathname={pathname} />
           <MobileNav data={data} transparent={isTransparent} />
         </Section>
       </Container>
