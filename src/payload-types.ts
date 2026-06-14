@@ -2248,8 +2248,34 @@ export interface Footer {
  */
 export interface SiteTheme {
   id: number;
-  colorScheme: 'default' | 'ink-orchid' | 'lavender-noir' | 'porcelain-pop';
+  colorScheme:
+    | 'rose-conversion'
+    | 'black-gold-rose'
+    | 'amethyst-amber'
+    | 'ink-orchid-coral'
+    | 'plum-sage-coral'
+    | 'lavender-trust-rose'
+    | 'ink-orchid'
+    | 'lavender-noir'
+    | 'porcelain-pop'
+    | 'default';
   fontSet: 'default' | 'playfair-inter' | 'dm-sans' | 'space-grotesk';
+  /**
+   * Controls the hero section layout on the homepage
+   */
+  heroLayout?: ('centered-editorial' | 'split-atelier' | 'cinematic-noir') | null;
+  /**
+   * Controls how products are displayed in archive grids
+   */
+  productCardDensity?: ('gallery' | 'boutique-grid' | 'compact') | null;
+  /**
+   * Default section background mood
+   */
+  sectionMood?: ('light-editorial' | 'rose-wash' | 'noir-contrast') | null;
+  /**
+   * Default call-to-action button style
+   */
+  ctaStyle?: ('minimal-outline' | 'conversion-filled' | 'couture-glow') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2334,6 +2360,10 @@ export interface FooterSelect<T extends boolean = true> {
 export interface SiteThemeSelect<T extends boolean = true> {
   colorScheme?: T;
   fontSet?: T;
+  heroLayout?: T;
+  productCardDensity?: T;
+  sectionMood?: T;
+  ctaStyle?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

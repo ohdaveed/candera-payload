@@ -1,30 +1,16 @@
 import { generateObject, gateway } from 'ai'
-import { cookies } from 'next/headers'
+import { headers } from 'next/headers'
 import { SYSTEM_PROMPTS, buildUserPrompt, inputSchema, outputSchema } from '@/lib/ai/product-copy'
-import { getClientSideURL } from '@/utilities/getURL'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
 export const maxDuration = 30
 
 async function requireAuthenticatedUser() {
-  const cookieStore = await cookies()
-  const token = cookieStore.get('payload-token')?.value
+  const payload = await getPayload({ config })
+  const requestHeaders = await headers()
+  const { user } = await payload.auth({ headers: requestHeaders })
 
-  if (!token) {
-    return false
-  }
-
-  const meUserReq = await fetch(`${getClientSideURL()}/api/users/me`, {
-    cache: 'no-store',
-    headers: {
-      Authorization: `JWT ${token}`,
-    },
-  })
-
-  if (!meUserReq.ok) {
-    return false
-  }
-
-  const { user }: { user?: unknown } = await meUserReq.json()
   return Boolean(user)
 }
 

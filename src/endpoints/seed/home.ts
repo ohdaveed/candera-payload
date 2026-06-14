@@ -8,15 +8,15 @@ type HomeArgs = {
   scentQuizId?: string | number
 }
 
-const COLLECTION_HEADING = 'Crafted in the Studio.'
+const COLLECTION_HEADING = 'Not manufactured. Made.'
 const COLLECTION_BODY =
-  'Hand-poured botanical candles, curated for scent and stillness. Each piece is hand-labeled and cured in studio silence.'
+  "Every Candera candle is designed, poured, decorated, and finished by hand — by Olesia, the founder and the only maker. The flowers are real. The herbs are real. No two are exactly alike. That's not a limitation — it's the point."
 const CTA_HEADING = 'Join the Inner Circle'
 const CTA_BODY =
-  'Be the first to hear about new arrivals, studio updates, and seasonal ritual invitations.'
-const META_TITLE = 'Candera Candles | Botanical Scent Studio'
+  'New batches are made by hand, one at a time. Join to receive early access before each drop opens to the public.'
+const META_TITLE = 'Candera Candles | Handmade Botanical Candles'
 const META_DESCRIPTION =
-  'Hand-poured botanical candles crafted with intent. Scent, stillness, and ritual objects for your daily practice.'
+  'Handcrafted botanical candles made by one maker, one at a time. Real flowers, natural wax, clean burn — designed to bring a little more light and intention into your home.'
 
 export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
   heroImage,
@@ -33,9 +33,10 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Storefront Hero',
         blockType: 'storefrontHero',
-        heroTag: 'Botanical Scent Studio',
-        headline: 'Anchor your space with sixty hours of intention and botanical stillness.',
-        subheading: 'Botanical candles crafted with intent. Now preparing our first studio series.',
+        heroTag: 'Handmade by Olesia',
+        headline: 'Made to make you stop.',
+        subheading:
+          'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.',
         media: heroImage.id,
         primaryCtaLabel: 'Explore the Collection',
         primaryCtaUrl: '/products',
@@ -62,27 +63,28 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Testimonials',
         blockType: 'testimonials',
-        eyebrow: 'From Our Ritualists',
+        eyebrow: 'From Our Community',
         items: [
           {
             quote:
-              'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
+              "I've burned through every trendy candle out there. These are different. You can feel the intention in every detail.",
             author: 'Elena R.',
             location: 'Los Angeles',
-            badge: 'Verified Ritualist',
+            badge: 'Verified Purchase',
           },
           {
             quote:
-              'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
+              'The botanicals are breathtaking. I keep the vessel on my shelf long after the candle is gone.',
             author: 'James T.',
             location: 'Austin',
-            badge: 'Repeat Collector',
+            badge: 'Repeat Customer',
           },
           {
-            quote: 'A ritual I look forward to every evening. This is the soul of my living room.',
+            quote:
+              'Lighting this at the end of the day has become my ritual. It gives me permission to slow down.',
             author: 'Sarah L.',
             location: 'Brooklyn',
-            badge: 'Verified Ritualist',
+            badge: 'Verified Purchase',
           },
         ],
         richText: createRichText([createHeading(CTA_HEADING, 'h3'), createParagraph(CTA_BODY)]),
@@ -91,16 +93,16 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockName: 'Scent Quiz',
         blockType: 'scentQuiz',
         eyebrow: 'Find Your Scent',
-        headline: 'Which Candera ritual is calling you?',
+        headline: 'Not sure where to start?',
         quiz: scentQuizId,
         formId: scentQuizFormId,
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {
         blockName: 'Inner Circle CTA',
         blockType: 'innerCircleCTA',
-        headline: 'Never Miss a Batch.',
+        headline: 'Your space deserves this.',
         description:
-          'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
+          "When you light a Candera candle, Olesia's hope is that you feel more than fragrance. She hopes you feel comfort. She hopes you feel present. Join the Inner Circle for early access to every new batch — made by hand, one at a time.",
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
     ],
     meta: {

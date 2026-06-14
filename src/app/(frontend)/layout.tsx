@@ -17,6 +17,7 @@ import { GlobalLayout } from '@/components/GlobalLayout'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { normalizeSiteThemeSettings } from '@/utilities/siteTheme'
 import { draftMode } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -69,6 +70,7 @@ const spaceGrotesk = Space_Grotesk({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
   const siteTheme = await getCachedGlobal('site-theme')()
+  const theme = normalizeSiteThemeSettings(siteTheme)
 
   return (
     <html
@@ -82,9 +84,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         spaceGrotesk.variable,
         'scroll-smooth',
       )}
-      data-fontset={siteTheme?.fontSet ?? 'default'}
-      data-skin={siteTheme?.colorScheme ?? 'default'}
-      data-scroll-behavior="smooth"
+      data-fontset={theme.fontSet}
+      data-skin={theme.colorScheme}
+      data-hero-layout={theme.heroLayout}
+      data-product-card-density={theme.productCardDensity}
+      data-section-mood={theme.sectionMood}
+      data-cta-style={theme.ctaStyle}
       lang="en"
       suppressHydrationWarning
     >

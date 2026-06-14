@@ -1,5 +1,5 @@
 {
-  "buildCommand": "echo y | payload migrate && npx tsx scripts/seed-admin.ts && pnpm build",
+  "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "crons": [
     {

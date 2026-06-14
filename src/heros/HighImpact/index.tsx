@@ -7,6 +7,7 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import { FilmGrain } from '@/components/FilmGrain'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
@@ -18,7 +19,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative isolate -mt-[10.4rem] flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian"
+      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian"
+      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
       data-theme="dark"
     >
       {/* Background image */}
@@ -43,13 +45,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
         }}
       />
 
-      {/* Film grain overlay */}
-      <div
-        className="absolute inset-0 -z-10 pointer-events-none opacity-[0.04] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }}
-      />
+      <FilmGrain />
 
       <div className="container mb-8 z-10 relative flex items-center justify-center">
         <div className="max-w-[50rem] md:text-center flex flex-col items-center">

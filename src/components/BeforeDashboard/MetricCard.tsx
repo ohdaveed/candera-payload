@@ -1,7 +1,4 @@
-'use client'
-
 import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
 
 type MetricCardProps = {
   label: string
@@ -10,15 +7,38 @@ type MetricCardProps = {
 
 export const MetricCard: React.FC<MetricCardProps> = ({ label, value }) => {
   return (
-    <Card className="flex flex-col gap-1 p-4 bg-card border-border">
-      <CardContent className="p-0 flex flex-col gap-1">
-        <span className="text-[1.75rem] font-medium leading-none tabular-nums text-foreground">
-          {value}
-        </span>
-        <span className="text-[0.75rem] text-muted-foreground uppercase tracking-[0.06em]">
-          {label}
-        </span>
-      </CardContent>
-    </Card>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        padding: '1rem',
+        border: '1px solid var(--theme-elevation-150)',
+        borderRadius: '6px',
+        background: 'var(--theme-elevation-0)',
+      }}
+    >
+      <span
+        style={{
+          fontSize: '1.75rem',
+          fontWeight: 500,
+          lineHeight: 1,
+          fontVariantNumeric: 'tabular-nums',
+          color: 'var(--theme-text)',
+        }}
+      >
+        {value}
+      </span>
+      <span
+        style={{
+          fontSize: '0.75rem',
+          color: 'var(--theme-elevation-700)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+        }}
+      >
+        {label}
+      </span>
+    </div>
   )
 }

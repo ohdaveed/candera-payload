@@ -16,19 +16,31 @@ export const SiteTheme: GlobalConfig = {
     {
       name: 'colorScheme',
       type: 'select',
-      defaultValue: 'default',
+      defaultValue: 'rose-conversion',
       options: [
-        { label: 'Default (current design)', value: 'default' },
-        { label: 'Ink & Orchid — near-black with orchid pink', value: 'ink-orchid' },
-        { label: 'Lavender Noir — aubergine with luminous lavender', value: 'lavender-noir' },
-        { label: 'Porcelain Pop — white with magenta & violet', value: 'porcelain-pop' },
+        {
+          label: 'Rose Conversion — warm editorial, conversion-optimised',
+          value: 'rose-conversion',
+        },
+        { label: 'Black Gold Rose — luxury near-black with gold & rose', value: 'black-gold-rose' },
+        { label: 'Amethyst Amber — purples & amber warmth', value: 'amethyst-amber' },
+        { label: 'Ink Orchid Coral — near-black with orchid & coral', value: 'ink-orchid-coral' },
+        { label: 'Plum Sage Coral — warm plum, sage & coral', value: 'plum-sage-coral' },
+        {
+          label: 'Lavender Trust Rose — trustworthy lavender with dusky rose',
+          value: 'lavender-trust-rose',
+        },
+        { label: 'Legacy: Ink & Orchid', value: 'ink-orchid' },
+        { label: 'Legacy: Lavender Noir', value: 'lavender-noir' },
+        { label: 'Legacy: Porcelain Pop', value: 'porcelain-pop' },
+        { label: 'Legacy: Default', value: 'default' },
       ],
       required: true,
     },
     {
       name: 'fontSet',
       type: 'select',
-      defaultValue: 'default',
+      defaultValue: 'playfair-inter',
       options: [
         { label: 'Default (current fonts)', value: 'default' },
         { label: 'Playfair Display + Inter (serif headlines)', value: 'playfair-inter' },
@@ -36,6 +48,58 @@ export const SiteTheme: GlobalConfig = {
         { label: 'Space Grotesk (modern studio sans)', value: 'space-grotesk' },
       ],
       required: true,
+    },
+    {
+      name: 'heroLayout',
+      type: 'select',
+      defaultValue: 'centered-editorial',
+      options: [
+        { label: 'Centered Editorial', value: 'centered-editorial' },
+        { label: 'Split Atelier', value: 'split-atelier' },
+        { label: 'Cinematic Noir', value: 'cinematic-noir' },
+      ],
+      admin: {
+        description: 'Controls the hero section layout on the homepage',
+      },
+    },
+    {
+      name: 'productCardDensity',
+      type: 'select',
+      defaultValue: 'boutique-grid',
+      options: [
+        { label: 'Gallery', value: 'gallery' },
+        { label: 'Boutique Grid', value: 'boutique-grid' },
+        { label: 'Compact', value: 'compact' },
+      ],
+      admin: {
+        description: 'Controls how products are displayed in archive grids',
+      },
+    },
+    {
+      name: 'sectionMood',
+      type: 'select',
+      defaultValue: 'light-editorial',
+      options: [
+        { label: 'Light Editorial', value: 'light-editorial' },
+        { label: 'Rose Wash', value: 'rose-wash' },
+        { label: 'Noir Contrast', value: 'noir-contrast' },
+      ],
+      admin: {
+        description: 'Default section background mood',
+      },
+    },
+    {
+      name: 'ctaStyle',
+      type: 'select',
+      defaultValue: 'conversion-filled',
+      options: [
+        { label: 'Minimal Outline', value: 'minimal-outline' },
+        { label: 'Conversion Filled', value: 'conversion-filled' },
+        { label: 'Couture Glow', value: 'couture-glow' },
+      ],
+      admin: {
+        description: 'Default call-to-action button style',
+      },
     },
   ],
   hooks: {

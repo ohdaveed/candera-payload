@@ -37,7 +37,22 @@ jobs:
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
         run: pnpm run test:int
 
+      - name: Run build
+        if: github.event_name == 'pull_request'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
+          POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PREVIEW_SECRET: ${{ secrets.PREVIEW_SECRET }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+          ETSY_API_KEY: ${{ secrets.ETSY_API_KEY }}
+          ETSY_SHARED_SECRET: ${{ secrets.ETSY_SHARED_SECRET }}
+          VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
+        run: pnpm run ci:build
+
       - name: Run CI (migrate + build)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}
           POSTGRES_URL: ${{ secrets.DATABASE_URL || secrets.POSTGRES_URL }}

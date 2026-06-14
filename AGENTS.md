@@ -68,13 +68,45 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 - Pooled connections: append `-pooler` to the endpoint hostname in the connection string
 - ILIKE queries use `pg_trgm`; ensure the extension is enabled if doing case-insensitive search at scale
 
-**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file → on deploy `pnpm run ci` runs `payload migrate && pnpm build`.
+**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file → run `pnpm run ci` in a controlled production-only pipeline. Vercel's build command intentionally runs `pnpm build` only; do not seed or migrate in preview builds.
 
 ## Testing quirks
 
 - **Integration tests** (`tests/int/`) use Vitest + jsdom, load `.env` via `dotenv/config` — need a real or mock DB connection. Run with `pnpm test:int`.
 - **E2E tests** (`tests/e2e/`) use Playwright, auto-starts `pnpm dev` via `webServer` config. Run with `pnpm test:e2e`.
 - Test helpers in `tests/helpers/`: `login.ts`, `seedUser.ts`.
+
+## pass-cli credential access
+
+This project uses `pass-cli` (Proton Pass CLI) for secret management. Store the PAT
+outside the repository and provide it at runtime via `PROTON_PASS_PERSONAL_ACCESS_TOKEN`.
+
+**Available vaults:** `Google` (role: Owner)
+
+**Session lifecycle:**
+
+- Before any `pass-cli` command, verify session: `pass-cli info`
+- If session expired: `pass-cli logout --force`, then re-login with PAT
+- Isolated session dir: `export PROTON_PASS_SESSION_DIR="/tmp/pass-agent-$(whoami)-$(date +%s)"`
+- Login: `PROTON_PASS_PERSONAL_ACCESS_TOKEN="..." pass-cli login`
+- Always set `PROTON_PASS_AGENT_REASON` for `item view`, `item create`, `item update`, `item trash`, `item untrash`, `vault update`
+
+**Fetching secrets:**
+
+```bash
+PROTON_PASS_AGENT_REASON="Why this item is needed" pass-cli item view \
+  --vault-name "Google" \
+  --item-title "Item Title" \
+  [--field password]
+```
+
+**Quick commands:**
+
+- `pass-cli vault list --output json` — list vaults
+- `pass-cli share list --output json` — list shares/access grants
+- `pass-cli item list --vault-name "Google" --output json` — list items in vault
+- `pass-cli item view pass://SHARE_ID/ITEM_ID` — access by URI
+- `pass-cli run --env-file .env -- <cmd>` — inject secrets into commands
 
 ## Key env vars
 
@@ -130,6 +162,37 @@ Configured in `src/plugins/index.ts`: redirects, nested-docs (categories), SEO, 
 This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
 
 Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
+
+## Accessibility — Contrast (NON-NEGOTIABLE)
+
+Readability and contrast are top priorities. Every color used for text must meet **WCAG AA minimum** (4.5:1 for normal text, 3:1 for large text ≥18px or bold ≥14px).
+
+### Candera color token contrast on `#f5f2ed` (vellum background)
+
+| Token                  | Hex       | Ratio on vellum | Use for text?                        |
+| ---------------------- | --------- | --------------- | ------------------------------------ |
+| `candera-obsidian`     | `#141412` | ~16:1           | ✅ Yes — headings, body              |
+| `candera-sage-text`    | `#5f6459` | ~5.2:1          | ✅ Yes — secondary text, eyebrows    |
+| `candera-ember-strong` | `#a8502b` | ~5.5:1          | ✅ Yes — accents, links              |
+| `candera-sage`         | `#7a8174` | ~3.7:1          | ❌ Never for text < 18px             |
+| `candera-stone`        | `#dacbb8` | ~1.3:1          | ❌ Never for text — borders only     |
+| `candera-ash`          | `#e2ddd6` | ~1.1:1          | ❌ Never for text — backgrounds only |
+
+### On dark backgrounds (`#141412` obsidian)
+
+| Usage                     | Minimum opacity | Notes                     |
+| ------------------------- | --------------- | ------------------------- |
+| `text-white/XX` body copy | `/80` minimum   | `/80` = ~11:1 on obsidian |
+| `text-white/XX` captions  | `/70` minimum   | `/70` = ~9:1 on obsidian  |
+| Never use                 | `/50` or below  | Fails AA                  |
+
+### Rules
+
+- **Never use `candera-stone` or `candera-ash` as text colors.** They exist for borders and backgrounds only.
+- **Never use `candera-sage` for text smaller than 18px.** It only passes AA at large/bold sizes.
+- **Always use `candera-sage-text` as the minimum for secondary/muted text** on light backgrounds.
+- **Opacity-based white text on dark: minimum `/75`** for captions, `/80` for body.
+- **Before writing any color class**, mentally check: is this text or decoration? If text, does it pass 4.5:1?
 
 ## Review Checklist
 

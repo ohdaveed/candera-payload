@@ -6,7 +6,7 @@ export const GlobalLayout: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <>
       <Header />
-      <main id="main-content">{children}</main>
+      <main>{children}</main>
       <Footer />
     </>
   )
