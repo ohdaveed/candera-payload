@@ -76,7 +76,7 @@ export default async function ProductsPage({
     : `${products.totalDocs} pieces in the collection`
 
   return (
-    <main className="bg-candera-vellum min-h-screen">
+    <main className="bg-candera-vellum min-h-screen" data-page="products-listing">
       <SetHeaderTheme theme="dark" />
 
       <EditorialPageHero
@@ -87,7 +87,7 @@ export default async function ProductsPage({
       />
 
       {/* ── Collection grid ─────────────────────────────────────────── */}
-      <Section padding="large">
+      <Section padding="large" data-section="collection-grid">
         <Container>
           {/* ProductFilters owns its own Suspense boundary */}
           <ProductFilters />
@@ -101,22 +101,27 @@ export default async function ProductsPage({
             <ProductGrid products={products.docs.map(toGridProduct)} />
           ) : (
             <output aria-live="polite" className="col-span-full py-24 text-center block">
-              <p className="text-lg text-candera-ash mb-2">
-                No products found for &quot;{tag}&quot;.
-              </p>
-              <p className="text-sm text-candera-ash/70">
-                The next batch is still curing.{' '}
-                <Link
-                  href="/products"
-                  className="underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm"
-                >
-                  Clear the filter
-                </Link>
-              </p>
+              {activeTag ? (
+                <>
+                  <p className="text-lg text-candera-ash mb-2">
+                    No products found for &quot;{activeTag}&quot;.
+                  </p>
+                  <p className="text-sm text-candera-ash/70">
+                    <Link
+                      href="/products"
+                      className="underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm"
+                    >
+                      Clear the filter
+                    </Link>
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg text-candera-ash">The next batch is still curing.</p>
+              )}
             </output>
           )}
 
-          {products.totalPages > 1 && products.page && (
+          {products.docs.length > 0 && products.totalPages > 1 && products.page && (
             <div className="mt-16">
               <Pagination
                 basePath="/products"

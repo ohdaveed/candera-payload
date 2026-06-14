@@ -28,7 +28,7 @@ export default async function ContactPage() {
   const contactFormId = formsResult.docs[0]?.id ?? 0
 
   return (
-    <main className="bg-candera-vellum min-h-screen">
+    <main className="bg-candera-vellum min-h-screen" data-page="contact">
       <SetHeaderTheme theme="dark" />
 
       <EditorialPageHero
@@ -47,7 +47,7 @@ export default async function ContactPage() {
       </EditorialPageHero>
 
       {/* ── Content ────────────────────────────────────────────────── */}
-      <Section padding="large">
+      <Section padding="large" data-section="contact-content">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 max-w-[1000px] mx-auto">
             {/* Left — contact info */}

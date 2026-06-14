@@ -25,7 +25,7 @@ export default async function InnerCirclePage() {
   const formId = formsResult.docs[0]?.id?.toString() ?? ''
 
   return (
-    <div className="min-h-screen bg-candera-linen pt-32 pb-32">
+    <div className="min-h-screen bg-candera-linen pt-32 pb-32" data-page="inner-circle">
       <div className="container">
         <div className="max-w-[600px] mx-auto text-center">
           <PageHeader
@@ -45,7 +45,10 @@ export default async function InnerCirclePage() {
             </p>
           </div>
 
-          <div className="mt-24 pt-16 border-t border-candera-stone/20">
+          <div
+            className="mt-24 pt-16 border-t border-candera-stone/20"
+            data-section="benefits-grid"
+          >
             <h2 className="font-display text-2xl text-candera-obsidian mb-10 italic">
               What you&apos;ll receive
             </h2>
