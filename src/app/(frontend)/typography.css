@@ -46,13 +46,13 @@
   }
 
   .hero-heading {
-    @apply font-display font-normal italic text-candera-obsidian text-balance;
+    @apply font-display font-normal italic text-candera-obsidian text-pretty;
     font-optical-sizing: auto;
     font-size: theme('fontSize.hero');
     line-height: theme('lineHeight.hero');
     letter-spacing: theme('letterSpacing.display');
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   h2,

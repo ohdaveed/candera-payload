@@ -43,7 +43,7 @@ const config = {
         '2xl': '1.953rem',
         '3xl': '3rem',
         '4xl': '3.5rem',
-        hero: 'clamp(3rem, 9vw, 7.25rem)',
+        hero: 'clamp(2.5rem, 5vw, 4.5rem)',
       },
 
       /* ---- CANDERA Letter Spacing ---- */
