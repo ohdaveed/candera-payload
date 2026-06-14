@@ -19,6 +19,8 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductDetailSections } from './ProductDetailSections'
 import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
+import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
+import { Eyebrow } from '@/components/ui/eyebrow'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -43,6 +45,16 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   if (!product) return <PayloadRedirects url={url} />
 
   const serverUrl = getServerSideURL()
+
+  const payload = await getPayload({ config: configPromise })
+  const innerCircleFormResult = await payload.find({
+    collection: 'forms',
+    where: { title: { equals: 'Inner Circle Signup' } },
+    limit: 1,
+    depth: 0,
+  })
+  const innerCircleFormId = innerCircleFormResult.docs[0]?.id?.toString() ?? ''
+
   const productImageUrl =
     product.meta?.image && typeof product.meta.image === 'object' && 'url' in product.meta.image
       ? serverUrl + (product.meta.image as Media).url
@@ -229,6 +241,21 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
+      </aside>
+
+      <aside className="bg-candera-obsidian mt-px px-8 py-14 lg:px-16 lg:py-16" data-section="join-the-circle">
+        <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-8">
+          <div className="flex flex-col gap-3">
+            <Eyebrow className="text-candera-ember/80">Inner Circle</Eyebrow>
+            <h2 className="h2 text-candera-vellum m-0">Join the Circle</h2>
+            <p className="body text-candera-vellum/70">
+              Early access to new batches, studio notes, and first look at limited releases.
+            </p>
+          </div>
+          <div className="w-full max-w-md">
+            <InnerCircleEmailForm formId={innerCircleFormId} />
+          </div>
+        </div>
       </aside>
     </Section>
   )
