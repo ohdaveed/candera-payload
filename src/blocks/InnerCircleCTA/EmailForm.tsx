@@ -2,8 +2,6 @@
 
 import React, { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { getClientSideURL } from '@/utilities/getURL'
 
 type FormValues = { email: string }
@@ -61,44 +59,60 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <p className="font-display text-xl text-candera-obsidian italic">
-        You&apos;re in the circle.
-      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <p className="font-sans text-[13px] text-candera-vellum m-0">
+          You&apos;re in. We&apos;ll be in touch before the next batch.
+        </p>
+      </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-[400px]">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex-1">
-          <Input
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div style={{ display: 'flex' }}>
+          <input
+            id="ic-email"
             type="email"
-            placeholder="Your email address"
+            placeholder="you@example.com"
             autoComplete="email"
             aria-label="Email address"
-            aria-required="true"
-            aria-invalid={!!errors.email}
-            className="bg-white border-candera-stone/40 text-candera-obsidian placeholder:text-candera-stone/60"
+            className="ic-email-input"
             {...register('email', {
               required: 'Email is required',
               pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
             })}
           />
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{
+              padding: '13px 24px',
+              background: '#f5f5f5',
+              color: '#0a0a0a',
+              fontSize: '9px',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              border: 'none',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
+              opacity: isLoading ? 0.6 : 1,
+            }}
+          >
+            {isLoading ? '…' : 'Join'}
+          </button>
         </div>
-        <Button type="submit" variant="cta" size="cta" disabled={isLoading}>
-          {isLoading ? 'Joining…' : 'Join the Circle'}
-        </Button>
-      </div>
-      {errors.email && (
-        <p className="mt-2 text-[12px] text-candera-rose" role="alert">
-          {errors.email.message}
-        </p>
-      )}
-      {error && (
-        <p className="mt-2 text-[12px] text-candera-rose" role="alert" aria-live="polite">
-          {error}
-        </p>
-      )}
-    </form>
+        {errors.email && (
+          <p className="font-sans text-[10px] text-red-400 m-0 mt-1">{errors.email.message}</p>
+        )}
+        {error && <p className="font-sans text-[10px] text-red-400 m-0 mt-1">{error}</p>}
+      </form>
+
+      {/* All microcopy consolidated directly below the input */}
+      <p className="font-sans text-[10px] m-0" style={{ color: '#525252' }}>
+        Early access · Studio notes · No spam · Unsubscribe any time
+      </p>
+    </div>
   )
 }
