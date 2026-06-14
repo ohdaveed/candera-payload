@@ -67,7 +67,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <div className="pb-32 bg-candera-linen/30">
+    <div className="pb-32 bg-candera-vellum">
       <SetHeaderTheme theme="light" />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />

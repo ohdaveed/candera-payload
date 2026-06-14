@@ -84,6 +84,18 @@ export const ArchiveBlock: React.FC<
 
   const isPosts = relationTo === 'posts'
 
+  if (!data.length) {
+    return (
+      <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
+        <Container>
+          <p className="text-center text-sm text-candera-sage-text tracking-[.1em] py-12">
+            Nothing to show yet — check back soon.
+          </p>
+        </Container>
+      </Section>
+    )
+  }
+
   return (
     <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
       {isPosts ? (
