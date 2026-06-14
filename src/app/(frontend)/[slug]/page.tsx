@@ -10,6 +10,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getServerSideURL } from '@/utilities/getURL'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -66,8 +67,46 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
+  const isHome = decodedSlug === 'home'
+  const serverUrl = getServerSideURL()
+  const siteSchema = isHome
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Candera',
+          url: serverUrl,
+          logo: `${serverUrl}/favicon.svg`,
+          description:
+            'Hand-poured botanical candles, artisan-crafted in California for intentional living.',
+          sameAs: ['https://www.etsy.com/shop/candera', 'https://instagram.com/canderacandles'],
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Candera',
+          url: serverUrl,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: `${serverUrl}/search?q={search_term_string}`,
+            },
+            'query-input': 'required name=search_term_string',
+          },
+        },
+      ]
+    : null
+
   return (
     <div className="pb-32 bg-candera-vellum">
+      {siteSchema?.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
       <SetHeaderTheme theme="light" />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />

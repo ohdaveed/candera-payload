@@ -55,10 +55,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   })
   const innerCircleFormId = innerCircleFormResult.docs[0]?.id?.toString() ?? ''
 
-  const productImageUrl =
-    product.meta?.image && typeof product.meta.image === 'object' && 'url' in product.meta.image
-      ? serverUrl + (product.meta.image as Media).url
-      : undefined
+  const productImageUrl = resolveProductImageUrl(product, serverUrl)
 
   const productSchema = {
     '@context': 'https://schema.org/',
@@ -67,6 +64,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
     image: productImageUrl,
     description: product.meta?.description || product.tagline,
     sku: product.vessel || undefined,
+    brand: {
+      '@type': 'Brand',
+      name: 'Candera',
+    },
     offers: {
       '@type': 'Offer',
       url: `${serverUrl}/products/${product.slug}`,
@@ -243,7 +244,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </Link>
       </aside>
 
-      <aside className="bg-candera-obsidian mt-px px-8 py-14 lg:px-16 lg:py-16" data-section="join-the-circle">
+      <aside
+        className="bg-candera-obsidian mt-px px-8 py-14 lg:px-16 lg:py-16"
+        data-section="join-the-circle"
+      >
         <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-8">
           <div className="flex flex-col gap-3">
             <Eyebrow className="text-candera-ember/80">Inner Circle</Eyebrow>
@@ -261,6 +265,22 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   )
 }
 
+// Resolves the best available image URL for a product, preferring the SEO
+// meta image (og size) and falling back to the first gallery photo so social
+// shares never default to the generic template OG image.
+function resolveProductImageUrl(product: Product, serverUrl: string): string | undefined {
+  const fromMedia = (media: unknown): string | undefined => {
+    if (media && typeof media === 'object' && 'url' in media) {
+      const m = media as Media
+      const ogUrl = m.sizes?.og?.url
+      return ogUrl ? serverUrl + ogUrl : m.url ? serverUrl + m.url : undefined
+    }
+    return undefined
+  }
+
+  return fromMedia(product.meta?.image) ?? fromMedia(product.extraPhotos?.[0])
+}
+
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
@@ -269,6 +289,17 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
   if (product?.title) {
     meta.title = `${product.title} — Candera`
+  }
+
+  // Fall back to a real product photo when no SEO meta image is set, so the
+  // product's social preview shows the candle rather than the template OG.
+  if (product) {
+    // Twitter image is inherited from openGraph.images by Next.js when not
+    // explicitly set, so overriding openGraph alone updates both.
+    const imageUrl = resolveProductImageUrl(product, getServerSideURL())
+    if (imageUrl && meta.openGraph) {
+      meta.openGraph.images = [{ url: imageUrl }]
+    }
   }
 
   return meta
