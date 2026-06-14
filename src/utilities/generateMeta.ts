@@ -34,8 +34,12 @@ export const generateMeta = async (args: {
 
   const description = doc?.meta?.description || (doc as { tagline?: string })?.tagline
 
+  const slugPath = Array.isArray(doc?.slug) ? doc.slug.join('/') : (doc?.slug ?? '/')
+  const canonical = slugPath === 'home' ? '/' : `/${slugPath}`
+
   return {
     description,
+    alternates: { canonical },
     openGraph: mergeOpenGraph({
       description: description || '',
       images: ogImage
@@ -46,7 +50,7 @@ export const generateMeta = async (args: {
           ]
         : undefined,
       title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+      url: canonical,
     }),
     title,
   }

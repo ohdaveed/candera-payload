@@ -8,6 +8,7 @@ import type { Media } from '@/payload-types'
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { searchContent } from '@/lib/queries/search'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 type Args = {
   searchParams: Promise<{
@@ -80,5 +81,12 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 export function generateMetadata(): Metadata {
   return {
     title: 'Search — Candera',
+    description: 'Search the Candera collection by scent note, atmosphere, or ritual mood.',
+    alternates: { canonical: '/search' },
+    openGraph: mergeOpenGraph({
+      title: 'Search — Candera',
+      description: 'Search the Candera collection by scent note, atmosphere, or ritual mood.',
+      url: '/search',
+    }),
   }
 }

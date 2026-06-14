@@ -218,7 +218,12 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             className="text-center mb-16"
           >
             <Eyebrow className="text-candera-ember/80 mb-4">{quiz.title}</Eyebrow>
-            <div className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden">
+            <div
+              role="status"
+              aria-live="polite"
+              aria-label={`Question ${step + 1} of ${questions.length}`}
+              className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden"
+            >
               <motion.div
                 className="absolute top-0 left-0 h-full bg-candera-ember"
                 initial={{ width: 0 }}
@@ -359,6 +364,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   />
                   {errors.email && (
                     <motion.p
+                      role="alert"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-4 text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
@@ -377,7 +383,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   {isLoading ? 'Sending Invitation…' : 'Unlock My Profile'}
                 </Button>
                 {submitError && (
-                  <p className="text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]">
+                  <p
+                    role="alert"
+                    className="text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                  >
                     {submitError}
                   </p>
                 )}

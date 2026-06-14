@@ -78,34 +78,6 @@ export async function Footer() {
                   key={i}
                 />
               ))}
-              {assistanceItems.length === 0 && (
-                <ul className="flex flex-col gap-0 list-none p-0 m-0">
-                  <li>
-                    <Link
-                      href="/shipping-and-returns"
-                      className="body text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Shipping & Returns
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/wholesale"
-                      className="body text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Wholesale
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/contact"
-                      className="body text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
-                    >
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              )}
             </Section>
           </Section>
 
@@ -133,25 +105,6 @@ export async function Footer() {
                 key={i}
               />
             ))}
-            {footerLinks.length === 0 && (
-              <>
-                <Link
-                  href="/privacy-policy"
-                  className="caption text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-                >
-                  Privacy Policy
-                </Link>
-                <Section as="span" padding="none" className="text-candera-stone self-center">
-                  ·
-                </Section>
-                <Link
-                  href="/terms-of-service"
-                  className="caption text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
-                >
-                  Terms of Service
-                </Link>
-              </>
-            )}
           </Section>
         </Section>
       </Container>

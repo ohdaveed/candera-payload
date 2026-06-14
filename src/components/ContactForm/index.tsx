@@ -94,7 +94,6 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           <div
             className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-[13px] font-medium"
             role="alert"
-            aria-live="polite"
           >
             {error}
           </div>

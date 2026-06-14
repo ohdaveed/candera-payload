@@ -86,6 +86,8 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           <button
             type="submit"
             disabled={isLoading}
+            aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
+            aria-busy={isLoading}
             style={{
               padding: '13px 24px',
               background: '#f5f5f5',
@@ -104,9 +106,15 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           </button>
         </div>
         {errors.email && (
-          <p className="font-sans text-[10px] text-red-400 m-0 mt-1">{errors.email.message}</p>
+          <p role="alert" className="font-sans text-[10px] text-red-400 m-0 mt-1">
+            {errors.email.message}
+          </p>
         )}
-        {error && <p className="font-sans text-[10px] text-red-400 m-0 mt-1">{error}</p>}
+        {error && (
+          <p role="alert" className="font-sans text-[10px] text-red-400 m-0 mt-1">
+            {error}
+          </p>
+        )}
       </form>
 
       {/* All microcopy consolidated directly below the input */}
