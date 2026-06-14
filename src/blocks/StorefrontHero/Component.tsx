@@ -8,9 +8,7 @@ import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { FilmGrain } from '@/components/FilmGrain'
 
-type Props = StorefrontHeroBlockType & {
-  disableInnerContainer?: boolean
-}
+type Props = StorefrontHeroBlockType
 
 export const StorefrontHeroBlock: React.FC<Props> = ({
   heroTag,
@@ -133,14 +131,41 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
                 {/* Two-column grid metrics */}
                 <div className="grid grid-cols-2 gap-4 items-end">
-                  {/* Left Column */}
-                  <div>
-                    <span className="block text-[9px] font-bold uppercase tracking-[.22em] text-candera-stone/50 mb-1">
-                      {statusCardStatus || 'Limited Batch'}
-                    </span>
-                    <span className="text-sm font-semibold text-candera-vellum">
-                      {statusCardShips || '47 units total'}
-                    </span>
+                  {/* Left Column — batch status info */}
+                  <div className="flex flex-col gap-3">
+                    {statusCardStatus || statusCardShips ? (
+                      <>
+                        {statusCardStatus && (
+                          <div>
+                            <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
+                              Status
+                            </span>
+                            <span className="text-sm font-semibold text-candera-vellum">
+                              {statusCardStatus}
+                            </span>
+                          </div>
+                        )}
+                        {statusCardShips && (
+                          <div>
+                            <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
+                              Ships
+                            </span>
+                            <span className="text-sm font-semibold text-candera-vellum">
+                              {statusCardShips}
+                            </span>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
+                          Limited Batch
+                        </span>
+                        <span className="text-sm font-semibold text-candera-vellum">
+                          47 units total
+                        </span>
+                      </>
+                    )}
                   </div>
                   {/* Right Column */}
                   <div className="text-right">

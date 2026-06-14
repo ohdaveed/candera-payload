@@ -112,13 +112,9 @@ export default async function Post({ params: paramsPromise }: Args) {
       {post.relatedPosts && post.relatedPosts.length > 0 && (
         <Section padding="large" data-section="related-posts">
           <Container>
-            {/* Ruled eyebrow */}
-            <div className="flex items-center gap-4 mb-16">
-              <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
-              <Eyebrow as="h4" className="text-candera-sage-text">
-                Further Reflections
-              </Eyebrow>
-              <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
+            <div className="mb-16">
+              <h2 className="h3 text-candera-obsidian">Further Reflections</h2>
+              <span className="block w-12 h-px bg-candera-stone/25 mt-3" aria-hidden="true" />
             </div>
 
             <RelatedPosts

@@ -23,7 +23,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   ].join(' ')
 
   const iconBtnClass = [
-    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-full transition-colors hover:text-candera-ember-strong hover:bg-candera-obsidian/5',
+    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] transition-colors hover:text-candera-ember-strong hover:bg-candera-obsidian/5',
     transparent ? 'text-candera-vellum/90 hover:bg-candera-vellum/10' : 'text-candera-sage-text',
   ].join(' ')
 

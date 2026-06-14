@@ -7,7 +7,7 @@ import type { InnerCircleCTABlock as InnerCircleCTABlockType } from '@/payload-t
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 
-type Props = InnerCircleCTABlockType & { disableInnerContainer?: boolean }
+type Props = InnerCircleCTABlockType
 
 const getInnerCircleFormId = cache(async () => {
   const payload = await getPayload({ config: configPromise })
@@ -29,10 +29,6 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-16">
           {/* Left — heading + body only (spans columns 1-6) */}
           <div className="lg:col-span-6 flex flex-col gap-3.5">
-            <div className="flex items-center gap-2">
-              <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
-              <p className="eyebrow text-candera-stone">Join the Inner Circle</p>
-            </div>
             <h2 className="h2 text-candera-vellum m-0">{headline}</h2>
             {description && <p className="body text-candera-vellum/70 m-0">{description}</p>}
           </div>

@@ -70,7 +70,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   return (
     <div className="flex flex-col gap-6 w-full">
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
-        <div className="flex items-center rounded-full border border-candera-stone/30 bg-[#171717]/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
+        <div className="flex items-center border border-candera-stone/30 bg-[#171717]/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
             type="email"
@@ -89,7 +89,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             disabled={isLoading}
             aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
             aria-busy={isLoading}
-            className={`text-xs font-bold uppercase tracking-widest py-3 px-8 rounded-full bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
+            className={`text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
             {isLoading ? '…' : 'Join'}
           </button>
