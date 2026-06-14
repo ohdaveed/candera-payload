@@ -65,7 +65,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           createParagraph(COLLECTION_BODY),
         ]),
         populateBy: 'collection',
-        relationTo: 'posts',
+        relationTo: 'products',
         limit: 6,
       },
       {
