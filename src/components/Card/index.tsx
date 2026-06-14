@@ -34,7 +34,7 @@ export type CardContainerVariants = VariantProps<typeof cardContainerVariants>
 
 export type CardPostData = Pick<
   Post,
-  'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt'
+  'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt' | 'heroImage'
 > & {
   extraPhotos?: Product['extraPhotos']
   etsyListingId?: Product['etsyListingId']
@@ -74,6 +74,7 @@ export const Card: React.FC<{
     price,
     populatedAuthors,
     publishedAt,
+    heroImage,
   } = doc || {}
   const { description, image: metaImage } = meta || {}
 
@@ -81,7 +82,8 @@ export const Card: React.FC<{
   const sanitizedDescription = description?.replace(/\s/g, ' ')
   const href = `/${relationTo}/${slug}`
 
-  const imageToUse = metaImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
+  const imageToUse =
+    metaImage || heroImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
 
   const isPosts = relationTo === 'posts'
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -168,7 +170,7 @@ export const Card: React.FC<{
               <Link
                 href={href}
                 ref={linkRef}
-                className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember transition-colors"
+                className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember-strong transition-colors"
               >
                 {titleToUse}
               </Link>
@@ -177,14 +179,14 @@ export const Card: React.FC<{
 
           {/* Description */}
           {description && (
-            <p className="font-serif italic text-base text-candera-sage-text/80 leading-[1.6] line-clamp-2 m-0">
+            <p className="font-serif italic text-base text-candera-sage-text leading-[1.6] line-clamp-2 min-h-[3.2em] m-0">
               {sanitizedDescription}
             </p>
           )}
 
           {/* Read link */}
           <div className="mt-auto pt-3">
-            <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-stone/60 border-b border-candera-stone/50 pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
+            <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-sage-text border-b border-candera-sage-text/40 pb-px group-hover:text-candera-ember-strong group-hover:border-candera-ember-strong transition-colors">
               Read →
             </span>
           </div>
@@ -192,6 +194,18 @@ export const Card: React.FC<{
       </motion.div>
     )
   }
+
+  // Determine secondary image for crossfade (from extraPhotos list)
+  const secondaryImage =
+    extraPhotos && extraPhotos.length > 1
+      ? extraPhotos[1]
+      : extraPhotos && extraPhotos.length > 0 && extraPhotos[0] !== imageToUse
+        ? extraPhotos[0]
+        : null
+
+  const scentNotesText = [scentProfile?.top, scentProfile?.heart, scentProfile?.base]
+    .filter(Boolean)
+    .join(' · ')
 
   // ── PRODUCT VARIANT ───────────────────────────────────────────
   return (
@@ -204,14 +218,25 @@ export const Card: React.FC<{
       className={cn(cardContainerVariants({ type: 'product' }), className)}
     >
       {/* ── Image ── */}
-      <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/5]">
+      <div className="relative w-full overflow-hidden bg-candera-ash aspect-square">
         {imageToUse && typeof imageToUse !== 'string' ? (
-          <Media
-            fill
-            imgClassName="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-            resource={imageToUse}
-            size="33vw"
-          />
+          <>
+            <Media
+              fill
+              imgClassName="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              resource={imageToUse}
+              size="33vw"
+            />
+            {/* Secondary image for hover crossfade */}
+            {secondaryImage && typeof secondaryImage !== 'string' && (
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[1]"
+                aria-hidden="true"
+              >
+                <Media fill imgClassName="object-cover" resource={secondaryImage} size="33vw" />
+              </div>
+            )}
+          </>
         ) : (
           <div className="absolute inset-0 flex items-end p-5 candle-bg">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -225,22 +250,31 @@ export const Card: React.FC<{
             <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
           </div>
         )}
+
+        {/* Hover slide-up bar for scent notes */}
+        {scentNotesText && (
+          <div className="absolute bottom-0 left-0 right-0 bg-[#121210]/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 py-3 px-4 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white m-0">
+              {scentNotesText}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* ── Body ── */}
       <div className="flex flex-col flex-1 px-5 pt-4 pb-5 border-t border-candera-ash/60">
         {/* Category label */}
         {showCategories && hasCategories && (
-          <div className="flex items-center gap-1 mb-1.5">
+          <div className="flex items-center gap-1 mb-[0.55rem]">
             {categories?.map((category, i) => {
               if (typeof category === 'object' && category !== null) {
                 const isLast = i === categories.length - 1
                 return (
                   <Fragment key={i}>
-                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-candera-stone/60">
+                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-candera-sage-text">
                       {category.title}
                     </span>
-                    {!isLast && <span className="text-candera-stone/60">,&nbsp;</span>}
+                    {!isLast && <span className="text-candera-sage-text">,&nbsp;</span>}
                   </Fragment>
                 )
               }
@@ -251,11 +285,11 @@ export const Card: React.FC<{
 
         {/* Product name */}
         {titleToUse && (
-          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-1">
+          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem]">
             <Link
               href={href}
               ref={linkRef}
-              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember transition-colors"
+              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember-strong transition-colors"
             >
               {titleToUse}
             </Link>
@@ -264,18 +298,18 @@ export const Card: React.FC<{
 
         {/* Tagline */}
         {tagline && (
-          <p className="font-display italic text-sm text-candera-sage-text leading-[1.4] mb-3.5 m-0">
+          <p className="font-display italic text-sm text-candera-sage-text leading-[1.4] mb-[0.55rem] m-0 line-clamp-2 min-h-[2.8em]">
             {tagline}
           </p>
         )}
 
         {/* Divider */}
-        <div className="w-full h-px bg-candera-ash/60 mb-3.5" />
+        <div className="w-full h-px bg-candera-ash/60 mb-[0.55rem]" />
 
         {/* Scent note pills — always visible */}
         {hasScentNotes && (
-          <div className="flex flex-wrap items-center gap-1.5 mb-3.5">
-            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-stone/60 mr-1">
+          <div className="flex flex-wrap items-center gap-1.5 mb-[0.55rem]">
+            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-sage-text mr-1">
               Scent
             </span>
             {scentProfile?.top && (
@@ -308,7 +342,7 @@ export const Card: React.FC<{
           <Link
             href={href}
             onClick={(e) => e.stopPropagation()}
-            className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember hover:border-candera-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             View Details →
           </Link>
