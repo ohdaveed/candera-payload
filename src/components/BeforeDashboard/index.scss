@@ -1,1 +1,76 @@
-/* Styles migrated to Tailwind + shadcn Card in index.tsx, QuickAccessCard.tsx, MetricCard.tsx, DashboardHeader.tsx */
+.quick-access-card {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 6px;
+  background: var(--theme-elevation-0);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: var(--theme-elevation-100);
+    color: var(--theme-elevation-700);
+    flex-shrink: 0;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--theme-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__count {
+    font-size: 0.75rem;
+    color: var(--theme-elevation-700);
+  }
+
+  &__create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    flex-shrink: 0;
+    color: var(--theme-elevation-700);
+    border-left: 1px solid var(--theme-elevation-150);
+    text-decoration: none;
+    transition:
+      color 0.15s,
+      background 0.15s;
+
+    &:hover {
+      color: var(--theme-text);
+      background: var(--theme-elevation-100);
+    }
+  }
+}

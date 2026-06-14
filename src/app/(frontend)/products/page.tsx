@@ -2,14 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { Suspense } from 'react'
 import { Pagination } from '@/components/Pagination'
-import { Eyebrow } from '@/components/ui/eyebrow'
-import PageClient from './page.client'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
-import { PageHeader } from '@/components/PageHeader'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 
@@ -17,6 +15,39 @@ export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
     'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
+}
+
+function toGridProduct(product: Product) {
+  const {
+    id,
+    slug,
+    categories,
+    title,
+    tagline,
+    extraPhotos,
+    scentProfile,
+    burnTime,
+    atmosphere,
+    productTag,
+    vessel,
+    price,
+  } = product
+  return {
+    id,
+    slug,
+    categories: categories?.map((cat) =>
+      typeof cat === 'object' ? { title: cat.title } : cat,
+    ) as Product['categories'],
+    title,
+    tagline,
+    extraPhotos,
+    scentProfile,
+    burnTime,
+    atmosphere,
+    productTag,
+    vessel,
+    price,
+  }
 }
 
 export default async function ProductsPage({
@@ -45,90 +76,64 @@ export default async function ProductsPage({
     : `${products.totalDocs} pieces in the collection`
 
   return (
-    <Section padding="large" className="bg-candera-linen min-h-screen">
-      <PageClient />
+    <main className="bg-candera-vellum min-h-screen">
+      <SetHeaderTheme theme="dark" />
 
-      <Container>
-        <PageHeader
-          className="mb-20"
-          eyebrow="Botanical Study"
-          title="The Collection"
-          description="Small-batch botanical candles, hand-poured in the studio and curated for sensory depth. Each vessel is cured for two weeks in stillness—ensuring a clean, focused burn that transforms your environment."
-        />
+      <EditorialPageHero
+        eyebrow="Botanical Study"
+        title="The Collection"
+        description="Small-batch botanical candles, hand-poured and cured for two weeks in stillness before each release."
+        decorativeWord="Collection"
+      />
 
-        {products.totalDocs > 0 || activeTag ? (
-          <Suspense fallback={null}>
-            <ProductFilters />
-          </Suspense>
-        ) : null}
+      {/* ── Collection grid ─────────────────────────────────────────── */}
+      <Section padding="large">
+        <Container>
+          {/* ProductFilters owns its own Suspense boundary */}
+          <ProductFilters />
 
-        <Eyebrow className="block mb-8">{resultLabel}</Eyebrow>
+          {/* Result count — sage-text on vellum = 5.2:1 ✅ */}
+          <p className="font-sans text-[10px] font-bold uppercase tracking-[.25em] text-candera-sage-text mb-8">
+            {resultLabel}
+          </p>
 
-        <ProductGrid
-          products={products.docs.map((product) => {
-            const {
-              id,
-              slug,
-              categories,
-              title,
-              tagline,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-            } = product
+          {products.docs.length > 0 ? (
+            <ProductGrid products={products.docs.map(toGridProduct)} />
+          ) : (
+            <div className="py-20 text-center">
+              <p
+                className="font-display italic text-candera-obsidian mb-4 m-0"
+                style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
+              >
+                {activeTag
+                  ? `No vessels found for ${activeTag}.`
+                  : 'The next batch is still curing.'}
+              </p>
+              <p className="font-sans text-[15px] text-candera-sage-text max-w-[420px] mx-auto mb-8 m-0 mt-3 leading-relaxed">
+                {activeTag
+                  ? 'Clear the filter to return to the full studio archive.'
+                  : 'Candera releases small batches as they finish their studio rest. Check back soon.'}
+              </p>
+              <Link
+                href="/products"
+                className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+              >
+                View all vessels →
+              </Link>
+            </div>
+          )}
 
-            return {
-              id,
-              slug,
-              categories: categories?.map((cat) =>
-                typeof cat === 'object' ? { title: cat.title } : cat,
-              ) as Product['categories'],
-              title,
-              tagline,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-            }
-          })}
-        />
-
-        {products.docs.length === 0 && (
-          <Section padding="medium" className="text-center">
-            <p className="editorial text-[22px] italic text-candera-sage-text mb-4">
-              {activeTag ? `No vessels found for ${activeTag}.` : 'The next batch is still curing.'}
-            </p>
-            <p className="mx-auto mb-8 max-w-[420px] text-candera-sage-text">
-              {activeTag
-                ? 'Clear the filter to return to the full studio archive.'
-                : 'Candera releases small batches as they finish their studio rest. Check back soon for the next limited pour.'}
-            </p>
-            <Link
-              href="/products"
-              className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
-            >
-              View all vessels →
-            </Link>
-          </Section>
-        )}
-
-        {products.totalPages > 1 && products.page && (
-          <Section padding="none" className="mt-16">
-            <Pagination
-              basePath="/products"
-              page={products.page}
-              totalPages={products.totalPages}
-            />
-          </Section>
-        )}
-      </Container>
-    </Section>
+          {products.totalPages > 1 && products.page && (
+            <div className="mt-16">
+              <Pagination
+                basePath="/products"
+                page={products.page}
+                totalPages={products.totalPages}
+              />
+            </div>
+          )}
+        </Container>
+      </Section>
+    </main>
   )
 }

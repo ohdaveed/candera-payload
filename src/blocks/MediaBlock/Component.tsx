@@ -20,8 +20,6 @@ type Props = MediaBlockProps & {
   disableInnerContainer?: boolean
 }
 
-import { Separator } from '@/components/ui/separator'
-
 export const MediaBlock: React.FC<Props> = (props) => {
   const {
     captionClassName,
@@ -62,7 +60,10 @@ export const MediaBlock: React.FC<Props> = (props) => {
                 captionClassName,
               )}
             >
-              <Separator className="w-12 mx-auto mb-8 bg-candera-stone/40" />
+              <span
+                className="block h-px w-12 mx-auto mb-8 bg-candera-stone/40"
+                aria-hidden="true"
+              />
               <RichText data={caption} enableGutter={false} />
             </figcaption>
           )}

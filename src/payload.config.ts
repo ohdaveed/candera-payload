@@ -49,6 +49,18 @@ const databaseAdapterArgs = {
 const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
   ? vercelPostgresAdapter(databaseAdapterArgs)
   : postgresAdapter(databaseAdapterArgs)
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
+
+if (process.env.VERCEL_ENV === 'production' && !hasValidBlobToken) {
+  throw new Error('BLOB_READ_WRITE_TOKEN must be set to a valid Vercel Blob token in production.')
+}
+
+const corsOrigins: string[] = [
+  getServerSideURL(),
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+  process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : '',
+].filter((origin): origin is string => Boolean(origin))
 
 export default buildConfig({
   admin: {
@@ -121,16 +133,16 @@ export default buildConfig({
     Quizzes,
     ScentProfiles,
   ],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: corsOrigins,
   plugins: [
     ...plugins,
-    ...(process.env.BLOB_READ_WRITE_TOKEN?.startsWith('vercel_blob_rw_')
+    ...(hasValidBlobToken
       ? [
           vercelBlobStorage({
             collections: {
               media: true,
             },
-            token: process.env.BLOB_READ_WRITE_TOKEN,
+            token: blobToken as string,
             // Re-seeding re-uploads the same filenames; the blob store rejects duplicates otherwise
             addRandomSuffix: true,
           }),

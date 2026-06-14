@@ -2,7 +2,7 @@ import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { Search } from '@/search/Component'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import type { CardPostData } from '@/components/Card'
 import type { Media } from '@/payload-types'
 import Link from 'next/link'
@@ -34,7 +34,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
   return (
     <div className="min-h-screen bg-candera-vellum">
-      <PageClient />
+      <SetHeaderTheme theme="light" />
 
       <div className="container pt-40 md:pt-32 pb-16">
         <PageHeader

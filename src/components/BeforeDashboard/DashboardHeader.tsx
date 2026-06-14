@@ -5,14 +5,28 @@ export const DashboardHeader: React.FC = () => {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
   return (
-    <div className="mb-8">
+    <div style={{ marginBottom: '2rem' }}>
       <h1
         suppressHydrationWarning
-        className="font-serif italic font-normal text-[1.75rem] text-foreground m-0 mb-1 leading-[1.2]"
+        style={{
+          fontStyle: 'italic',
+          fontWeight: 400,
+          fontSize: '1.75rem',
+          color: 'var(--theme-text)',
+          margin: '0 0 0.25rem 0',
+          lineHeight: 1.2,
+        }}
       >
         {greeting}
       </h1>
-      <p className="text-[0.875rem] text-muted-foreground m-0 tracking-[0.02em]">
+      <p
+        style={{
+          fontSize: '0.875rem',
+          color: 'var(--theme-elevation-700)',
+          margin: 0,
+          letterSpacing: '0.02em',
+        }}
+      >
         Candera Candles — Store Dashboard
       </p>
     </div>

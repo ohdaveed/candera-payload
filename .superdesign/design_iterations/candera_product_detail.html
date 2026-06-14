@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scarlet Bloom — CANDERA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="luxury_rose_theme.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: rgb(from var(--background) r g b) !important;
+            color: rgb(from var(--foreground) r g b) !important;
+            line-height: 1.6 !important;
+            letter-spacing: var(--tracking-normal) !important;
+        }
+        
+        .serif {
+            font-family: var(--font-serif) !important;
+        }
+        
+        .luxury-rose {
+            color: rgb(from var(--accent) r g b);
+        }
+        
+        .luxury-rose-bg {
+            background-color: rgb(from var(--accent) r g b);
+            color: rgb(from var(--accent-foreground) r g b);
+        }
+        
+        .luxury-border {
+            border-color: rgb(from var(--border) r g b);
+        }
+        
+        .nav-minimal {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .candera-logo {
+            font-family: var(--font-serif);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+        }
+        
+        .product-gallery img {
+            transition: transform 0.3s ease;
+        }
+        
+        .product-gallery img:hover {
+            transform: scale(1.02);
+        }
+        
+        .thumbnail {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .thumbnail.active,
+        .thumbnail:hover {
+            opacity: 1;
+        }
+        
+        .rose-button {
+            border: 1px solid rgb(from var(--accent) r g b);
+            background: transparent;
+            color: rgb(from var(--accent) r g b);
+            padding: 16px 32px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        
+        .rose-button:hover {
+            background: rgb(from var(--accent) r g b);
+            color: rgb(from var(--accent-foreground) r g b);
+        }
+        
+        .etsy-button {
+            background: rgb(from var(--foreground) r g b);
+            color: rgb(from var(--background) r g b);
+            padding: 16px 32px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        
+        .etsy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .section-divider {
+            width: 60px;
+            height: 1px;
+            background: rgb(from var(--accent) r g b);
+            margin: 0 auto;
+        }
+        
+        .price-elegant {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 400;
+        }
+        
+        .cart-badge {
+            background: rgb(from var(--accent) r g b);
+            color: rgb(from var(--accent-foreground) r g b);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-minimal fixed top-0 w-full z-50 border-b luxury-border">
+        <div class="max-w-7xl mx-auto px-8 py-6">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="candera-logo text-2xl font-medium tracking-wider">
+                    <a href="candera_storefront_1.html">CANDERA</a>
+                </div>
+                
+                <!-- Center Navigation -->
+                <div class="hidden md:flex space-x-12 text-sm uppercase tracking-wider">
+                    <a href="candera_collections.html" class="hover:luxury-rose transition-colors">Collections</a>
+                    <a href="candera_collections.html" class="hover:luxury-rose transition-colors">Candles</a>
+                    <a href="candera_storefront_1.html" class="hover:luxury-rose transition-colors">Home</a>
+                    <a href="candera_about.html" class="hover:luxury-rose transition-colors">About</a>
+                </div>
+                
+                <!-- Right Actions -->
+                <div class="flex items-center space-x-6">
+                    <button class="hover:luxury-rose transition-colors">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <button class="hover:luxury-rose transition-colors relative">
+                        <i data-lucide="heart" class="w-5 h-5"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 luxury-rose-bg rounded-full"></span>
+                    </button>
+                    <button class="hover:luxury-rose transition-colors relative">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="absolute -top-2 -right-2 w-4 h-4 cart-badge text-xs flex items-center justify-center text-[10px] rounded-full">2</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <section class="pt-32 pb-8">
+        <div class="max-w-7xl mx-auto px-8">
+            <nav class="text-sm text-gray-500 uppercase tracking-wider">
+                <a href="candera_storefront_1.html" class="hover:luxury-rose transition-colors">Home</a>
+                <span class="mx-3">/</span>
+                <a href="candera_collections.html" class="hover:luxury-rose transition-colors">Candles</a>
+                <span class="mx-3">/</span>
+                <span class="text-gray-900">Scarlet Bloom</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <section class="pb-32">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Product Gallery -->
+                <div class="product-gallery">
+                    <div class="aspect-square mb-6 overflow-hidden">
+                        <img id="mainImage" src="https://images.unsplash.com/photo-1602874801006-e26c4c9d9fb0?w=800&h=800&fit=crop&crop=center" 
+                             alt="Candera Scarlet Bloom Candle" class="w-full h-full object-cover">
+                    </div>
+                    <div class="grid grid-cols-4 gap-4">
+                        <img src="https://images.unsplash.com/photo-1602874801006-e26c4c9d9fb0?w=200&h=200&fit=crop&crop=center" 
+                             alt="Scarlet Bloom View 1" class="thumbnail active aspect-square object-cover cursor-pointer"
+                             onclick="changeImage(this.src.replace('200', '800'))">
+                        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=200&h=200&fit=crop&crop=center" 
+                             alt="Scarlet Bloom View 2" class="thumbnail aspect-square object-cover cursor-pointer"
+                             onclick="changeImage(this.src.replace('200', '800'))">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=200&h=200&fit=crop&crop=center" 
+                             alt="Noir Candle View 3" class="thumbnail aspect-square object-cover cursor-pointer"
+                             onclick="changeImage(this.src.replace('200', '800'))">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=200&h=200&fit=crop&crop=center" 
+                             alt="Noir Candle View 4" class="thumbnail aspect-square object-cover cursor-pointer"
+                             onclick="changeImage(this.src.replace('200', '800'))">
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="lg:pl-8">
+                    <div class="section-divider mb-8 mx-0"></div>
+                    
+                    <h1 class="serif text-4xl md:text-5xl font-medium mb-4">Scarlet Bloom</h1>
+                    <p class="text-lg text-gray-600 mb-6 uppercase tracking-wider">Botanical Brightness & Aged Woods</p>
+                    
+                    <div class="flex items-center mb-8">
+                        <div class="flex text-yellow-400 mr-3">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <span class="text-sm text-gray-600">(127 reviews)</span>
+                    </div>
+                    
+                    <p class="price-elegant text-3xl luxury-rose mb-8">$85</p>
+                    
+                    <div class="mb-8">
+                        <h3 class="font-medium mb-4 uppercase tracking-wider text-sm">Craftsmanship</h3>
+                        <p class="text-lg mb-6">Hand-poured in small batches with quiet magnetism</p>
+                        
+                        <h3 class="font-medium mb-4 uppercase tracking-wider text-sm">Fragrance Notes</h3>
+                        <div class="space-y-2 mb-6">
+                            <p class="text-gray-600"><span class="font-medium">Top:</span> Crisp botanical brightness, fresh greenery, juniper</p>
+                            <p class="text-gray-600"><span class="font-medium">Heart:</span> Subtle touch of dark berries</p>
+                            <p class="text-gray-600"><span class="font-medium">Base:</span> Warm, grounding aged woods, balsam, cedar, cypress</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-8">
+                        <a href="https://etsy.com/shop/candera" target="_blank" class="etsy-button block text-center">
+                            Buy on Etsy
+                        </a>
+                        <button class="rose-button w-full">
+                            <i data-lucide="heart" class="w-4 h-4 inline mr-2"></i>
+                            Add to Wishlist
+                        </button>
+                    </div>
+                    
+                    <div class="border-t luxury-border pt-8">
+                        <h3 class="font-medium mb-4 uppercase tracking-wider text-sm">Product Details</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Premium blend of natural soy wax and pure beeswax</li>
+                            <li>• Real dried flowers & botanicals (deep crimson roses, white blossoms, eucalyptus)</li>
+                            <li>• Infused with natural essential oils</li>
+                            <li>• Cotton wicks for clean, slow, and beautiful burn</li>
+                            <li>• Individually hand-poured in small batches</li>
+                            <li>• Natural elegance with quiet magnetism</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Description -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-8">
+            <div class="text-center mb-12">
+                <div class="section-divider mb-8"></div>
+                <h2 class="serif text-3xl font-medium mb-6">The Story</h2>
+            </div>
+            
+            <div class="prose prose-lg mx-auto text-center">
+                <p class="text-lg leading-relaxed mb-6">
+                    Scarlet Bloom embodies romantic, slightly moody beauty with quiet magnetism. 
+                    Like stepping into a candlelit room lined with warm wood and filled with soft conversation, 
+                    this candle captures the essence of wild and refined femininity.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    A miniature botanical garden preserved in wax, featuring real dried crimson roses, 
+                    airy white blossoms, and eucalyptus leaves. The crisp botanical brightness opens 
+                    with fresh greenery and juniper, while the warm, grounding base of aged woods 
+                    creates an atmosphere of cozy elegance and deeply personal warmth.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="py-32">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <div class="section-divider mb-8"></div>
+                <h2 class="serif text-4xl font-medium mb-6">You Might Also Like</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Related Product 1 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-square relative overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop&crop=center" 
+                             alt="Lumière Candle" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="text-center">
+                        <h3 class="serif text-xl font-medium mb-2">Lumière</h3>
+                        <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Sandalwood & Amber</p>
+                        <p class="price-elegant text-lg luxury-rose">$95</p>
+                    </div>
+                </div>
+
+                <!-- Related Product 2 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-square relative overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop&crop=center" 
+                             alt="Essence Diffuser" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="text-center">
+                        <h3 class="serif text-xl font-medium mb-2">Essence</h3>
+                        <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Reed Diffuser</p>
+                        <p class="price-elegant text-lg luxury-rose">$120</p>
+                    </div>
+                </div>
+
+                <!-- Related Product 3 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-square relative overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center" 
+                             alt="Vessel" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="text-center">
+                        <h3 class="serif text-xl font-medium mb-2">Vessel</h3>
+                        <p class="text-sm text-gray-600 mb-3 uppercase tracking-wider">Handcrafted Ceramic</p>
+                        <p class="price-elegant text-lg luxury-rose">$65</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t luxury-border">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="candera-logo text-2xl font-medium mb-6 tracking-wider">CANDERA</div>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Curating exceptional handcrafted goods for the discerning collector.
+                    </p>
+                    <div class="w-12 h-1 luxury-rose-bg"></div>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Collections</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Candles</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Home Fragrance</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Vessels</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Limited Edition</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Support</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Shipping</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Returns</a></li>
+                        <li><a href="#" class="hover:luxury-rose transition-colors">Care Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4 uppercase tracking-wider text-sm">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:luxury-rose transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t luxury-border pt-8 text-center text-sm text-gray-600 uppercase tracking-wider">
+                © 2024 Candera. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Image gallery functionality
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

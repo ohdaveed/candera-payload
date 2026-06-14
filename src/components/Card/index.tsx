@@ -173,13 +173,8 @@ export const Card: React.FC<{
         <CardHeader className="pt-6 pb-3 px-0">
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-1.5 px-0">
-              {vessel ? (
-                <span className="text-[10px] font-bold uppercase tracking-[.22em] text-candera-sage-text px-0">
-                  BATCH {vessel}
-                </span>
-              ) : null}
               {titleToUse ? (
-                <CardTitle className="m-0 text-balance text-[18px] font-medium leading-tight text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem] border-none p-0 bg-transparent shadow-none">
+                <CardTitle className="m-0 text-balance text-[18px] font-medium leading-snug not-italic text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem] border-none p-0 bg-transparent shadow-none">
                   <Link
                     href={href}
                     ref={linkRef}
@@ -247,7 +242,7 @@ export const Card: React.FC<{
 
           {/* Description for posts */}
           {description && !scentProfile && (
-            <p className="text-[14px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2 px-0">
+            <p className="font-serif italic text-[15px] text-candera-sage-text leading-relaxed line-clamp-2 mt-2 px-0">
               {sanitizedDescription}
             </p>
           )}

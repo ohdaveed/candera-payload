@@ -6,23 +6,30 @@ import type { Post } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { Container } from '@/components/ui/container'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Section } from '@/components/ui/section'
+import { FilmGrain } from '@/components/FilmGrain'
+import Link from 'next/link'
 
 export const PostHero: React.FC<{
   post: Post
-}> = ({ post }) => {
+  readTime?: number
+}> = ({ post, readTime }) => {
   const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
+  const categoryLabels = categories
+    ?.filter((c): c is Extract<typeof c, { title?: string }> => typeof c === 'object' && c !== null)
+    .map((c) => c.title || 'Untitled')
+
   return (
-    <header className="relative -mt-[10.4rem] flex min-h-[70vh] items-center justify-center overflow-hidden bg-candera-obsidian">
+    <header
+      className="relative flex min-h-[80vh] flex-col items-center justify-end overflow-hidden bg-candera-obsidian"
+      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
+    >
       {/* Background image */}
       {heroImage && typeof heroImage !== 'string' && (
-        <figure className="absolute inset-0 -z-10 m-0">
+        <figure className="absolute inset-0 m-0">
           <Media
             fallbackLabel={false}
             fill
@@ -35,77 +42,117 @@ export const PostHero: React.FC<{
 
       {/* Radial scrim */}
       <span
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
+            'radial-gradient(circle at center, rgba(20,20,18,0.15) 0%, rgba(20,20,18,0.65) 100%)',
         }}
         aria-hidden="true"
       />
 
-      {/* Film grain texture */}
+      {/* Bottom gradient — fades to page background */}
       <span
-        className="absolute inset-0 -z-10 pointer-events-none opacity-[0.04] mix-blend-overlay"
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          background: 'linear-gradient(to top, rgba(245,242,237,0.18) 0%, rgba(20,20,18,0.0) 100%)',
         }}
         aria-hidden="true"
       />
 
-      <Container className="z-10 relative text-center max-w-[800px] px-6 pt-32 pb-16">
-        <article className="flex flex-col items-center">
-          <nav className="flex flex-wrap justify-center gap-3 mb-8">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
-                const titleToUse = categoryTitle || 'Untitled category'
-                return (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className="text-white border-white/30 uppercase tracking-[.2em] px-3 py-1 bg-white/5 backdrop-blur-sm"
-                  >
-                    {titleToUse}
-                  </Badge>
-                )
-              }
-              return null
-            })}
-          </nav>
+      <FilmGrain />
 
-          <h1 className="hero-heading text-white mb-10">{title}</h1>
-
-          <Section
-            padding="none"
-            className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-white/70"
+      {/* Back link — top left */}
+      <div className="absolute top-0 left-0 right-0 z-20 pt-8">
+        <Container>
+          <Link
+            href="/posts"
+            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.3em] text-white/70 hover:text-candera-ember transition-colors"
           >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            The Journal
+          </Link>
+        </Container>
+      </div>
+
+      {/* Content — pinned to bottom of hero */}
+      <Container className="relative z-10 max-w-[860px] w-full pb-16 pt-40">
+        {/* Category pills */}
+        {categoryLabels && categoryLabels.length > 0 && (
+          <div className="flex flex-wrap gap-3 mb-8">
+            {categoryLabels.map((label, i) => (
+              <span
+                key={i}
+                className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/30 px-3 py-1.5"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Title */}
+        <h1
+          className="font-display font-normal italic text-white text-balance leading-[1.08] tracking-tight m-0"
+          style={{ fontSize: 'clamp(2.25rem, 6vw, 4.5rem)' }}
+        >
+          {title}
+        </h1>
+
+        {/* Byline */}
+        {(hasAuthors || publishedAt || readTime) && (
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8">
             {hasAuthors && (
-              <span className="flex items-center gap-3">
-                <span className="text-[10px] font-bold uppercase tracking-[.25em]">Written By</span>
-                <span className="editorial text-[15px] italic">
+              <span className="flex items-center gap-2.5">
+                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
+                  By
+                </span>
+                <span className="font-editorial italic text-[14px] text-white/80">
                   {formatAuthors(populatedAuthors)}
                 </span>
               </span>
             )}
+
             {publishedAt && (
-              <span className="flex items-center gap-8">
-                <Separator
-                  orientation="vertical"
-                  className="h-4 bg-white/20 hidden md:block"
-                  aria-hidden="true"
-                />
-                <span className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold uppercase tracking-[.25em]">
+              <>
+                {hasAuthors && (
+                  <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
+                )}
+                <span className="flex items-center gap-2.5">
+                  <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
                     Published
                   </span>
-                  <time className="editorial text-[15px] italic" dateTime={publishedAt}>
+                  <time
+                    className="font-editorial italic text-[14px] text-white/80"
+                    dateTime={publishedAt}
+                  >
                     {formatDateTime(publishedAt)}
                   </time>
                 </span>
-              </span>
+              </>
             )}
-          </Section>
-        </article>
+
+            {readTime && (
+              <>
+                <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
+                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
+                  {readTime} min read
+                </span>
+              </>
+            )}
+          </div>
+        )}
       </Container>
     </header>
   )

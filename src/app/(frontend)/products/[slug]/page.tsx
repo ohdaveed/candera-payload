@@ -9,20 +9,16 @@ import { cache } from 'react'
 
 import type { Media, Product } from '@/payload-types'
 
-import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
-import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
-import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getServerSideURL } from '@/utilities/getURL'
-import PageClient from './page.client'
-import { ProductDetailTabs } from './ProductDetailTabs'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { ProductDetailSections } from './ProductDetailSections'
+import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
-import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -88,7 +84,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   }
 
   return (
-    <Section as="article" padding="large" className="bg-candera-vellum min-h-screen">
+    <Section as="article" padding="large" className="bg-candera-vellum min-h-screen grain">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -98,7 +94,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <PayloadRedirects disableNotFound url={url} />
-      <PageClient />
+      <SetHeaderTheme theme="light" />
 
       <Container>
         {/* Back link */}
@@ -127,83 +123,79 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           padding="none"
           className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-32"
         >
-          {/* Left: image gallery */}
-          <Section as="aside" padding="none" className="lg:col-span-7 relative">
-            {product.productTag && (
-              <Section padding="none" className="absolute top-6 left-6 z-10">
-                <ProductTagBadge tag={product.productTag} />
-              </Section>
-            )}
+          {/* Left: image gallery — sticky on desktop so it stays in view while scrolling details */}
+          <Section
+            as="aside"
+            padding="none"
+            className="lg:col-span-7 relative lg:sticky lg:top-[var(--nav-height)] lg:h-[calc(100vh-var(--nav-height))] lg:overflow-hidden"
+          >
             <ImageGallery
               mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
               extraPhotos={product.extraPhotos as (Media | string)[] | null}
+              productTag={product.productTag ?? null}
             />
           </Section>
 
           {/* Right: details */}
-          <Section as="aside" padding="none" className="lg:col-span-5 flex flex-col gap-16 py-4">
-            {/* Actionable Cluster */}
-            <Card className="rounded-2xl border border-candera-stone/20 bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden">
-              <CardContent className="flex flex-col gap-8 p-8">
-                <Section padding="none" className="flex flex-col gap-3">
-                  {product.vessel && <Eyebrow>Vessel {product.vessel}</Eyebrow>}
-                  <h1 className="text-candera-obsidian text-3xl lg:text-4xl font-display italic leading-tight">
-                    {product.title}
-                  </h1>
-                  {product.tagline && (
-                    <p className="editorial text-[18px] leading-relaxed text-candera-sage-text">
-                      {product.tagline}
-                    </p>
-                  )}
-                </Section>
+          <Section as="aside" padding="none" className="lg:col-span-5 flex flex-col gap-10 py-4">
+            {/* Identity block */}
+            <Section padding="none" className="flex flex-col gap-4">
+              {product.vessel && (
+                <Eyebrow className="text-candera-sage-text tracking-[.3em]">
+                  Vessel {product.vessel}
+                </Eyebrow>
+              )}
+              <h1 className="font-display italic text-candera-obsidian leading-[1.15] text-[clamp(2rem,4vw,3.25rem)]">
+                {product.title}
+              </h1>
+              {product.tagline && (
+                <p className="font-serif italic text-[15px] leading-[1.7] text-candera-sage-text max-w-[40ch]">
+                  {product.tagline}
+                </p>
+              )}
+            </Section>
 
-                <Section padding="none" className="flex items-baseline gap-4">
-                  {product.price != null && (
-                    <p className="price text-[32px] font-semibold text-candera-obsidian">
-                      ${Number(product.price).toFixed(2)}
-                    </p>
-                  )}
-                  <Badge
-                    variant="outline"
-                    className="text-[10px] font-bold uppercase tracking-widest text-candera-stone border-candera-stone/20 rounded-none px-2 py-0.5"
-                  >
-                    In Stock
-                  </Badge>
-                </Section>
+            {/* Price row */}
+            <Section
+              padding="none"
+              className="flex items-baseline gap-4 border-t border-b border-candera-stone/20 py-5"
+            >
+              {product.price != null && (
+                <p className="font-display text-[2.25rem] font-semibold text-candera-obsidian leading-none tracking-tight">
+                  ${Number(product.price).toFixed(2)}
+                </p>
+              )}
+              <Badge
+                variant="outline"
+                className="text-[9px] font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
+              >
+                In Stock
+              </Badge>
+            </Section>
 
-                <Separator className="bg-candera-stone/10" />
+            {/* Customization note */}
+            {product.isCustomizable && (
+              <aside className="border-l-2 border-candera-ember-strong pl-4 flex flex-col gap-1">
+                <p className="text-[9px] font-bold uppercase tracking-[.25em] text-candera-obsidian">
+                  {product.customizationLabel || 'Personalization Available'}
+                </p>
+                <p className="text-[12px] italic text-candera-sage-text leading-relaxed">
+                  This item is made to order. Include your custom text in the order notes and
+                  double-check your spelling — every character is hand-lettered.
+                </p>
+              </aside>
+            )}
 
-                {/* Customization Field */}
-                {product.isCustomizable && (
-                  <Card className="flex flex-col gap-2 rounded-lg border border-candera-stone/20 bg-candera-ash/30 px-4 py-3">
-                    <p className="text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian">
-                      {product.customizationLabel || 'Personalization'}
-                    </p>
-                    <p className="text-[11px] italic text-candera-sage-text">
-                      This item is made to order. Please include your custom text in the order notes
-                      and double-check your spelling.
-                    </p>
-                  </Card>
-                )}
+            {/* CTA + sticky bar (client component owns the sentinel ref) */}
+            <ProductCTASection
+              title={product.title}
+              price={product.price}
+              vessel={product.vessel}
+              etsyListingId={product.etsyListingId}
+            />
 
-                {/* CTA */}
-                {product.etsyListingId && (
-                  <Button
-                    asChild
-                    variant="cta-ember"
-                    size="cta"
-                    className="w-full py-7 text-base bg-candera-ember-strong hover:bg-candera-obsidian"
-                  >
-                    <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
-                      Buy on Etsy
-                    </BoutiqueLink>
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Specifications + Scent Profile Tabs */}
-            <ProductDetailTabs
+            {/* Specifications + Scent Profile — collapsible sections */}
+            <ProductDetailSections
               title={product.title}
               productType={product.productType}
               scentProfile={product.scentProfile}
@@ -214,6 +206,39 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </Section>
         </Section>
       </Container>
+
+      {/* Brand story strip */}
+      <aside className="bg-candera-obsidian mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16">
+        <div className="flex flex-col gap-2 max-w-prose">
+          <h2 className="font-display italic text-white text-2xl leading-snug">
+            Made with intention, in small batches
+          </h2>
+          <p className="text-[13px] text-white/80 leading-relaxed">
+            Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
+            botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
+            they smell in the jar.
+          </p>
+        </div>
+        <Link
+          href="/products"
+          className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[.25em] text-white border-b border-white/30 pb-0.5 hover:border-white transition-colors shrink-0 self-start lg:self-auto"
+        >
+          Explore the collection
+          <svg
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </Link>
+      </aside>
     </Section>
   )
 }

@@ -10,9 +10,8 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { Separator } from '@/components/ui/separator'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -68,22 +67,23 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <article className="pb-32 bg-candera-linen/30">
-      <PageClient />
+    <div className="pb-32 bg-candera-linen/30">
+      <SetHeaderTheme theme="light" />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      <header>
-        <RenderHero {...hero} />
-      </header>
+      <RenderHero {...hero} />
 
-      <main>
-        <Separator className="max-w-[1280px] mx-auto bg-candera-stone/20" />
+      <div id="main-content">
+        <span
+          className="block h-px max-w-[1280px] mx-auto bg-candera-stone/20"
+          aria-hidden="true"
+        />
         <RenderBlocks blocks={layout} />
-      </main>
-    </article>
+      </div>
+    </div>
   )
 }
 

@@ -16,17 +16,17 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   },
   meta: {
     description:
-      'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
-    title: 'Candera Candles | Botanical Scent Studio',
+      'Handcrafted botanical candles made by one maker, one at a time. Real flowers, natural wax, clean burn — designed to bring a little more light and intention into your home.',
+    title: 'Candera Candles | Handmade Botanical Candles',
   },
   title: 'Home',
   layout: [
     {
       blockType: 'storefrontHero',
-      heroTag: 'Hand-Poured in the Studio',
-      headline: 'An invitation to slow down.',
+      heroTag: 'Handmade by Olesia',
+      headline: 'Made to make you stop.',
       subheading:
-        'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+        'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.',
       primaryCtaLabel: 'Explore the Collection',
       primaryCtaUrl: '#collection',
       secondaryCtaLabel: 'Take the Scent Quiz →',
@@ -54,7 +54,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Six vessels. One numbered batch. Your sanctuary.',
+                  text: 'Not manufactured. Made.',
                   version: 1,
                 },
               ],
@@ -73,7 +73,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.',
+                  text: "Every Candera candle is designed, poured, decorated, and finished by hand — by Olesia, the founder and the only maker. The flowers are real. The herbs are real. No two are exactly alike. That's not a limitation — it's the point.",
                   version: 1,
                 },
               ],
@@ -96,41 +96,42 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     } as unknown as ArchiveBlock,
     {
       blockType: 'testimonials',
-      eyebrow: 'From Our Ritualists',
+      eyebrow: 'From Our Community',
       items: [
         {
           quote:
-            'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
+            "I've burned through every trendy candle out there. These are different. You can feel the intention in every detail.",
           author: 'Elena R.',
           location: 'Los Angeles',
-          badge: 'Verified Ritualist',
+          badge: 'Verified Purchase',
         },
         {
           quote:
-            'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
+            'The botanicals are breathtaking. I keep the vessel on my shelf long after the candle is gone.',
           author: 'James T.',
           location: 'Austin',
-          badge: 'Repeat Collector',
+          badge: 'Repeat Customer',
         },
         {
-          quote: 'A ritual I look forward to every evening. This is the soul of my living room.',
+          quote:
+            'Lighting this at the end of the day has become my ritual. It gives me permission to slow down.',
           author: 'Sarah L.',
           location: 'Brooklyn',
-          badge: 'Verified Ritualist',
+          badge: 'Verified Purchase',
         },
       ],
     } as unknown as TestimonialsBlock,
     {
       blockType: 'scentQuiz',
       eyebrow: 'Find Your Scent',
-      headline: 'Which Candera ritual is calling you?',
+      headline: 'Not sure where to start?',
       formId: '',
     } as unknown as ScentQuizBlock,
     {
       blockType: 'innerCircleCTA',
-      headline: 'Never Miss a Batch.',
+      headline: 'Your space deserves this.',
       description:
-        'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
+        "When you light a Candera candle, Olesia's hope is that you feel more than fragrance. She hopes you feel comfort. She hopes you feel present. Join the Inner Circle for early access to every new batch — made by hand, one at a time.",
     } as unknown as InnerCircleCTABlock,
   ],
 }

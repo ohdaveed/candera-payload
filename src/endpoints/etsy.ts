@@ -1,16 +1,36 @@
 import type { Endpoint } from 'payload'
 
 import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClient'
-import { getServerSideURL } from '@/utilities/getURL'
 import { syncEtsyListings } from '@/utilities/syncEtsy'
 
 const getEtsyShopId = () => Number(process.env.ETSY_SHOP_ID) || 25894791
 
-const getEtsyRedirectUri = () => `${getServerSideURL()}/api/etsy/oauth/callback`
+const getEtsyRedirectUri = (req: Parameters<Endpoint['handler']>[0]) => {
+  let requestOrigin: string | undefined
+
+  if (req.url) {
+    try {
+      requestOrigin = new URL(req.url).origin
+    } catch {
+      requestOrigin = undefined
+    }
+  }
+
+  const forwardedHost = req.headers.get('x-forwarded-host')
+  const forwardedProto = req.headers.get('x-forwarded-proto') || 'https'
+  const origin =
+    requestOrigin ||
+    (forwardedHost ? `${forwardedProto}://${forwardedHost}` : undefined) ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    'http://localhost:3000'
+
+  return `${origin}/api/etsy/oauth/callback`
+}
 
 const createEtsyClient = (req: Parameters<Endpoint['handler']>[0]) =>
   new EtsyClient(
-    { redirectUri: getEtsyRedirectUri() },
+    { redirectUri: getEtsyRedirectUri(req) },
     new DefaultPayloadTokenRepository(req.payload),
   )
 
@@ -74,7 +94,9 @@ export const etsyOAuthCallbackEndpoint: Endpoint = {
 
     try {
       await createEtsyClient(req).completeAuthFlow(code)
-      return Response.redirect('/admin')
+      return Response.redirect(
+        `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/admin`,
+      )
     } catch (error) {
       return Response.json({ error: String(error) }, { status: 500 })
     }

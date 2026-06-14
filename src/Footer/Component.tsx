@@ -2,7 +2,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
-import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 
@@ -124,7 +123,7 @@ export async function Footer() {
         </Section>
 
         {/* Bottom Bar */}
-        <Separator className="bg-candera-stone/20 mt-20" />
+        <span className="block h-px bg-candera-stone/20 mt-20" aria-hidden="true" />
         <Section
           padding="none"
           className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"

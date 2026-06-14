@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useRef, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Eyebrow } from '@/components/ui/eyebrow'
@@ -20,18 +21,95 @@ import type {
 
 type EmailFormValues = { email: string }
 
-export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, formId }) => {
-  const [step, setStep] = useState(0)
-  const [scores, setScores] = useState<Record<string, number>>({})
-  const [result, setResult] = useState<ScentProfile | null>(null)
+// Derive scores from recorded answer indices so the URL is the single source of truth.
+function deriveScores(
+  answers: number[],
+  questions: NonNullable<Quiz['questions']>,
+): Record<string, number> {
+  return answers.reduce(
+    (acc, optionIdx, qIdx) => {
+      const option = questions[qIdx]?.options?.[optionIdx]
+      option?.scores?.forEach((s) => {
+        const profileId = String(
+          s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile,
+        )
+        acc[profileId] = (acc[profileId] ?? 0) + (s.points || 0)
+      })
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+}
+
+function deriveResultFromScores(
+  scoreMap: Record<string, number>,
+  questions: NonNullable<Quiz['questions']>,
+): ScentProfile | null {
+  let topId = ''
+  let topScore = -1
+  for (const [id, score] of Object.entries(scoreMap)) {
+    if (score > topScore) {
+      topScore = score
+      topId = id
+    }
+  }
+
+  const foundProfile = questions
+    .flatMap((q) => q.options.flatMap((o) => o.scores || []))
+    .find(
+      (s) =>
+        String(s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile) ===
+        String(topId),
+    )?.profile as ScentProfile | undefined
+
+  return foundProfile || null
+}
+
+// Parse "1-0-2" from the URL into [1, 0, 2]
+function parseAnswers(raw: string | null): number[] {
+  if (!raw) return []
+  return raw
+    .split('-')
+    .map(Number)
+    .filter((n) => Number.isFinite(n) && n >= 0)
+}
+
+type InnerProps = ScentQuizBlockType
+
+const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // URL-driven state — answers and step are derived from the `q` param
+  const answers = useMemo(() => parseAnswers(searchParams.get('q')), [searchParams])
+
+  const quiz = quizData as Quiz | null
+  const questions = useMemo(() => quiz?.questions || [], [quiz])
+
+  const step = Math.min(answers.length, questions.length)
+  const isEmailStep = answers.length >= questions.length
+
+  // Scores and result are always derived — no stale useState mirrors
+  const scores = useMemo(() => deriveScores(answers, questions), [answers, questions])
+  const result = useMemo(
+    () => (isEmailStep ? deriveResultFromScores(scores, questions) : null),
+    [isEmailStep, scores, questions],
+  )
+
+  const revealTimerRef = useRef<number | null>(null)
+  useEffect(
+    () => () => {
+      if (revealTimerRef.current !== null) window.clearTimeout(revealTimerRef.current)
+    },
+    [],
+  )
+
+  // Transient UI state only (not shareable / not needed after refresh)
   const [isRevealing, setIsRevealing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | undefined>()
-
-  const quiz = quizData as Quiz | null
-  const questions = useMemo(() => quiz?.questions || [], [quiz])
-  const isEmailStep = step === questions.length
 
   const {
     register,
@@ -39,53 +117,20 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
     formState: { errors },
   } = useForm<EmailFormValues>()
 
-  const deriveResultFromScores = useCallback(
-    (scoreMap: Record<string, number>) => {
-      let topId: string | number = ''
-      let topScore = -1
-      for (const [id, score] of Object.entries(scoreMap)) {
-        if (score > topScore) {
-          topScore = score
-          topId = id
-        }
-      }
-
-      const foundProfile = questions
-        .flatMap((q) => q.options.flatMap((o) => o.scores || []))
-        .find(
-          (s) => String(typeof s.profile === 'object' ? s.profile.id : s.profile) === String(topId),
-        )?.profile as ScentProfile | undefined
-
-      return foundProfile || null
-    },
-    [questions],
-  )
-
   const handleOptionSelect = useCallback(
-    (option: NonNullable<Quiz['questions']>[number]['options'][number]) => {
-      const newScores = { ...scores }
-      option.scores?.forEach((s) => {
-        const profileId = typeof s.profile === 'object' ? s.profile.id : s.profile
-        if (profileId) {
-          const profileIdStr = String(profileId)
-          newScores[profileIdStr] = (newScores[profileIdStr] ?? 0) + (s.points || 0)
-        }
-      })
-      setScores(newScores)
+    (optionIdx: number) => {
+      const newAnswers = [...answers, optionIdx]
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('q', newAnswers.join('-'))
+      router.push(`${pathname}?${params.toString()}`, { scroll: false })
 
-      if (step < questions.length - 1) {
-        setStep((s) => s + 1)
-      } else {
-        const derived = deriveResultFromScores(newScores)
-        setResult(derived)
+      // Trigger reveal animation only when user actively completes the last question
+      if (newAnswers.length === questions.length) {
         setIsRevealing(true)
-        setTimeout(() => {
-          setIsRevealing(false)
-          setStep(questions.length)
-        }, 2800)
+        revealTimerRef.current = window.setTimeout(() => setIsRevealing(false), 2800)
       }
     },
-    [step, scores, questions, deriveResultFromScores],
+    [answers, questions.length, router, pathname, searchParams],
   )
 
   const onEmailSubmit = useCallback(
@@ -136,7 +181,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
   )
 
   const currentQuestion = questions[step]
-  const progress = (step / questions.length) * 100
+  const progress = (step / Math.max(questions.length, 1)) * 100
 
   if (!quiz) return null
 
@@ -146,7 +191,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
       className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center"
       style={{ background: 'var(--candera-obsidian)' }}
     >
-      {/* Ambient Background Transition */}
+      {/* Ambient background when result is known */}
       <AnimatePresence>
         {result?.ambientImage && (
           <motion.div
@@ -165,7 +210,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
       </AnimatePresence>
 
       <Container className="relative z-10 max-w-[900px]">
-        {/* Header (Hidden when result is revealing or revealed) */}
+        {/* Progress header */}
         {!isRevealing && !isEmailStep && !hasSubmitted && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -229,24 +274,51 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
                 {currentQuestion.prompt}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-                {currentQuestion.options.map((option, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => handleOptionSelect(option)}
-                    className="group relative flex flex-col items-start p-10 border border-candera-stone/10 bg-white/[0.01] text-left transition-all duration-500 hover:border-candera-ember/40 hover:bg-white/[0.03] rounded-[2px] overflow-hidden"
-                  >
-                    {option.image && (
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
-                        <Media fill resource={option.image} imgClassName="object-cover" />
-                      </div>
-                    )}
-                    <div className="absolute top-0 left-0 w-[1px] h-0 bg-candera-ember/60 transition-all duration-700 group-hover:h-full shadow-[0_0_15px_rgba(191,155,103,0.5)]" />
-                    <span className="font-sans text-[16px] leading-relaxed text-candera-linen/60 group-hover:text-candera-linen transition-colors duration-500 tracking-wide">
-                      {option.label}
-                    </span>
-                  </button>
-                ))}
+                {currentQuestion.options.map((option, i) => {
+                  // Highlight the previously-selected answer when navigating back
+                  const isSelected = answers[step] === i
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleOptionSelect(i)}
+                      aria-pressed={isSelected}
+                      className={[
+                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-[2px] overflow-hidden',
+                        isSelected
+                          ? 'border-candera-ember/60 bg-white/[0.05]'
+                          : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember/40 hover:bg-white/[0.03]',
+                      ].join(' ')}
+                    >
+                      {option.image && (
+                        <div
+                          className={[
+                            'absolute inset-0 transition-opacity duration-700 pointer-events-none',
+                            isSelected ? 'opacity-10' : 'opacity-0 group-hover:opacity-10',
+                          ].join(' ')}
+                        >
+                          <Media fill resource={option.image} imgClassName="object-cover" />
+                        </div>
+                      )}
+                      <div
+                        className={[
+                          'absolute top-0 left-0 w-[1px] bg-candera-ember/60 transition-all duration-700 shadow-[0_0_15px_rgba(191,155,103,0.5)]',
+                          isSelected ? 'h-full' : 'h-0 group-hover:h-full',
+                        ].join(' ')}
+                      />
+                      <span
+                        className={[
+                          'font-sans text-[16px] leading-relaxed transition-colors duration-500 tracking-wide',
+                          isSelected
+                            ? 'text-candera-linen'
+                            : 'text-candera-linen/60 group-hover:text-candera-linen',
+                        ].join(' ')}
+                      >
+                        {option.label}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
             </motion.div>
           ) : isEmailStep && result && !hasSubmitted ? (
@@ -396,3 +468,18 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = ({ quiz: quizData, f
     </Section>
   )
 }
+
+// Suspense boundary required by Next.js App Router for useSearchParams()
+export const ScentQuizBlock: React.FC<ScentQuizBlockType> = (props) => (
+  <Suspense
+    fallback={
+      <Section
+        padding="large"
+        className="relative w-full min-h-[800px] flex items-center justify-center"
+        style={{ background: 'var(--candera-obsidian)' }}
+      />
+    }
+  >
+    <ScentQuizInner {...props} />
+  </Suspense>
+)

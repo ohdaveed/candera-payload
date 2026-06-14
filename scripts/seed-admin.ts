@@ -4,7 +4,7 @@ import config from '@payload-config'
 import { seedLogger } from '@/utilities/logger'
 
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@candera.com'
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'password'
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD
 const ADMIN_NAME = process.env.SEED_ADMIN_NAME || 'Admin'
 
 async function seedAdmin(): Promise<void> {
@@ -30,6 +30,13 @@ async function seedAdmin(): Promise<void> {
     return
   }
 
+  if (!ADMIN_PASSWORD || ADMIN_PASSWORD === 'password') {
+    seedLogger.error(
+      'Refusing to seed an admin without a non-default SEED_ADMIN_PASSWORD. Set the env var and rerun manually.',
+    )
+    process.exit(1)
+  }
+
   // No users exist — create the initial admin
   seedLogger.info(`No users found. Creating admin user: ${ADMIN_EMAIL}`)
 
@@ -46,10 +53,6 @@ async function seedAdmin(): Promise<void> {
 
   seedLogger.success('Admin user seeded successfully')
   seedLogger.info(`   Email:    ${ADMIN_EMAIL}`)
-
-  if (ADMIN_PASSWORD === 'password') {
-    seedLogger.warn('Using default password — set SEED_ADMIN_PASSWORD in production!')
-  }
 }
 
 seedAdmin()

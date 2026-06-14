@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { cn } from '@/utilities/ui'
 import { Button } from '@/components/ui/button'
@@ -17,7 +18,13 @@ const SORTS = [
   { label: 'Price: High–Low', value: 'price-desc' },
 ]
 
-export function ProductFilters() {
+function ProductFiltersFallback() {
+  return (
+    <div className="min-h-[44px] mb-12 pb-6 border-b border-candera-stone/20" aria-hidden="true" />
+  )
+}
+
+function ProductFiltersInner() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -81,5 +88,13 @@ export function ProductFilters() {
         </Select>
       </fieldset>
     </nav>
+  )
+}
+
+export function ProductFilters() {
+  return (
+    <Suspense fallback={<ProductFiltersFallback />}>
+      <ProductFiltersInner />
+    </Suspense>
   )
 }
