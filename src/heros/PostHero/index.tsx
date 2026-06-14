@@ -66,7 +66,7 @@ export const PostHero: React.FC<{
         <Container>
           <Link
             href="/posts"
-            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.3em] text-white/70 hover:text-candera-ember transition-colors"
+            className="eyebrow inline-flex items-center gap-2 text-white/70 hover:text-candera-ember transition-colors"
           >
             <svg
               width="12"

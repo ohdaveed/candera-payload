@@ -61,9 +61,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           {/* Ember rule between headline and subheading */}
           <span className="block w-10 h-[1px] bg-candera-ember mt-5 mb-4" aria-hidden="true" />
 
-          {subheading && (
-            <p className="editorial italic text-white/65 max-w-[360px] m-0">{subheading}</p>
-          )}
+          {subheading && <p className="editorial text-white/65 max-w-[360px] m-0">{subheading}</p>}
 
           <nav className="flex flex-wrap items-center gap-4 mt-8">
             {primaryCtaLabel && primaryCtaUrl && (

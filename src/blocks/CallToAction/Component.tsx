@@ -24,7 +24,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
                 className="
                   [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:leading-tight [&_h2]:m-0
                   [&_h2]:text-[clamp(2rem,4vw,3.5rem)]
-                  [&_p]:font-serif [&_p]:italic [&_p]:text-[17px] [&_p]:leading-[1.75] [&_p]:text-candera-sage-text [&_p]:mt-5 [&_p]:m-0
+                  [&_p]:font-editorial [&_p]:italic [&_p]:leading-[1.75] [&_p]:text-candera-sage-text [&_p]:mt-5 [&_p]:m-0
                 "
                 data={richText}
                 enableGutter={false}
