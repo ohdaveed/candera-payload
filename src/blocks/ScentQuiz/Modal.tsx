@@ -118,7 +118,7 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
       {/* Panel */}
       <div
         ref={panelRef}
-        className="relative z-10 w-full max-w-[1100px] max-h-[90dvh] overflow-y-auto mx-4 rounded-[2px] shadow-2xl"
+        className="relative z-10 w-full max-w-[1100px] max-h-[90dvh] overflow-y-auto mx-4 rounded-card shadow-2xl"
       >
         {/* Close button */}
         <button
