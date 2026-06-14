@@ -9,7 +9,6 @@ import { cache } from 'react'
 
 import type { Media, Product } from '@/payload-types'
 
-import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Badge } from '@/components/ui/badge'
 import { Section } from '@/components/ui/section'
@@ -18,9 +17,8 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { getServerSideURL } from '@/utilities/getURL'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductDetailSections } from './ProductDetailSections'
-import { StickyCTABar } from './StickyCTABar'
+import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
-import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -188,24 +186,13 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               </aside>
             )}
 
-            {/* CTA */}
-            {product.etsyListingId && (
-              <Section padding="none" className="flex flex-col gap-2">
-                <Button
-                  asChild
-                  variant="cta-ember"
-                  size="cta"
-                  className="w-full py-5 text-[11px] font-bold tracking-[.2em] uppercase bg-candera-ember-strong hover:bg-candera-obsidian transition-colors"
-                >
-                  <BoutiqueLink href={`https://www.etsy.com/listing/${product.etsyListingId}`}>
-                    Buy on Etsy
-                  </BoutiqueLink>
-                </Button>
-                <p className="text-center text-[10px] text-candera-sage-text tracking-[.1em]">
-                  Ships from California · Handmade in micro-batches
-                </p>
-              </Section>
-            )}
+            {/* CTA + sticky bar (client component owns the sentinel ref) */}
+            <ProductCTASection
+              title={product.title}
+              price={product.price}
+              vessel={product.vessel}
+              etsyListingId={product.etsyListingId}
+            />
 
             {/* Specifications + Scent Profile — collapsible sections */}
             <ProductDetailSections
@@ -252,14 +239,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </svg>
         </Link>
       </aside>
-
-      {/* Sticky CTA bar — appears when the main buy button scrolls out of view */}
-      <StickyCTABar
-        title={product.title}
-        price={product.price}
-        vessel={product.vessel}
-        etsyListingId={product.etsyListingId}
-      />
     </Section>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useMemo, Suspense } from 'react'
+import React, { useState, useCallback, useMemo, useRef, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -30,7 +30,9 @@ function deriveScores(
     (acc, optionIdx, qIdx) => {
       const option = questions[qIdx]?.options?.[optionIdx]
       option?.scores?.forEach((s) => {
-        const profileId = String(typeof s.profile === 'object' ? s.profile.id : s.profile)
+        const profileId = String(
+          s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile,
+        )
         acc[profileId] = (acc[profileId] ?? 0) + (s.points || 0)
       })
       return acc
@@ -54,8 +56,11 @@ function deriveResultFromScores(
 
   const foundProfile = questions
     .flatMap((q) => q.options.flatMap((o) => o.scores || []))
-    .find((s) => String(typeof s.profile === 'object' ? s.profile.id : s.profile) === String(topId))
-    ?.profile as ScentProfile | undefined
+    .find(
+      (s) =>
+        String(s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile) ===
+        String(topId),
+    )?.profile as ScentProfile | undefined
 
   return foundProfile || null
 }
@@ -92,6 +97,14 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
     [isEmailStep, scores, questions],
   )
 
+  const revealTimerRef = useRef<number | null>(null)
+  useEffect(
+    () => () => {
+      if (revealTimerRef.current !== null) window.clearTimeout(revealTimerRef.current)
+    },
+    [],
+  )
+
   // Transient UI state only (not shareable / not needed after refresh)
   const [isRevealing, setIsRevealing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -114,7 +127,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
       // Trigger reveal animation only when user actively completes the last question
       if (newAnswers.length === questions.length) {
         setIsRevealing(true)
-        setTimeout(() => setIsRevealing(false), 2800)
+        revealTimerRef.current = window.setTimeout(() => setIsRevealing(false), 2800)
       }
     },
     [answers, questions.length, router, pathname, searchParams],

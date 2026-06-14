@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 
 type Props = {
@@ -8,13 +8,14 @@ type Props = {
   price: number | null | undefined
   vessel: string | null | undefined
   etsyListingId: number | null | undefined
+  /** Ref attached to the sentinel element placed next to the main buy button in the page */
+  sentinelRef: React.RefObject<HTMLDivElement | null>
 }
 
 const etsyListingUrl = (id: number) => `https://www.etsy.com/listing/${id}`
 
-export function StickyCTABar({ title, price, vessel, etsyListingId }: Props) {
+export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
-  const sentinelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -29,17 +30,13 @@ export function StickyCTABar({ title, price, vessel, etsyListingId }: Props) {
     })
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [])
+  }, [sentinelRef])
 
   if (!etsyListingId) return null
 
   return (
     <>
-      {/* Invisible sentinel placed right after the main CTA button */}
-      <div ref={sentinelRef} aria-hidden="true" />
-
-      <div
-        role="complementary"
+      <aside
         aria-label="Quick purchase"
         className={`
           fixed bottom-0 left-0 right-0 z-50
@@ -80,7 +77,7 @@ export function StickyCTABar({ title, price, vessel, etsyListingId }: Props) {
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </BoutiqueLink>
-      </div>
+      </aside>
     </>
   )
 }

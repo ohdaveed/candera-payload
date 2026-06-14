@@ -115,7 +115,7 @@ export const PostHero: React.FC<{
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8">
             {hasAuthors && (
               <span className="flex items-center gap-2.5">
-                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/50">
+                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
                   By
                 </span>
                 <span className="font-editorial italic text-[14px] text-white/80">
@@ -130,7 +130,7 @@ export const PostHero: React.FC<{
                   <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
                 )}
                 <span className="flex items-center gap-2.5">
-                  <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/50">
+                  <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
                     Published
                   </span>
                   <time
@@ -146,7 +146,7 @@ export const PostHero: React.FC<{
             {readTime && (
               <>
                 <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
-                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/50">
+                <span className="text-[9px] font-bold uppercase tracking-[.25em] text-white/75">
                   {readTime} min read
                 </span>
               </>
