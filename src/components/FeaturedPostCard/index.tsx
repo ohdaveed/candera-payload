@@ -24,7 +24,10 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           />
         )}
 
-        {/* Gradient overlay — obsidian/75 at base keeps text contrast ≥14:1 */}
+        {/* Dark left-to-right gradient for text legibility over bright image areas */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+
+        {/* Bottom-to-top gradient — obsidian/75 at base keeps text contrast ≥14:1 */}
         <div className="absolute inset-0 bg-gradient-to-t from-candera-obsidian/75 via-candera-obsidian/20 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">

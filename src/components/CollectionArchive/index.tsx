@@ -117,9 +117,9 @@ export const CollectionArchive: React.FC<Props> = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-12 bg-candera-vellum py-16 md:py-24">
-      {/* Left sidebar — sticky (spans columns 1-4) */}
-      <div className="md:col-span-4 md:sticky md:top-28 md:self-start flex flex-col gap-4">
+    <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-24 bg-candera-vellum pb-16 md:pb-24">
+      {/* Left sidebar — sticky */}
+      <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
         <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
         <h2 className="text-[1.85rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
           {sidebarTitle || defaultTitle}
@@ -135,8 +135,8 @@ export const CollectionArchive: React.FC<Props> = ({
         </Link>
       </div>
 
-      {/* Right — card grid (spans columns 5-12) */}
-      <div className="md:col-span-8">
+      {/* Right — card grid */}
+      <div className="flex-1 min-w-0">
         <CardList
           posts={posts}
           relationTo={relationTo}

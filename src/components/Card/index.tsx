@@ -103,10 +103,11 @@ export const Card: React.FC<{
         ref={cardRef as React.RefObject<HTMLDivElement>}
         className={cn(cardContainerVariants({ type: 'post' }), className)}
       >
-        <div className="relative w-full overflow-hidden bg-candera-ash aspect-[3/2]">
+        <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/3]">
           {imageToUse && typeof imageToUse !== 'string' ? (
             <Media
               fill
+              pictureClassName="w-full h-full"
               imgClassName="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
               resource={imageToUse}
               size="33vw"
@@ -140,13 +141,13 @@ export const Card: React.FC<{
           </div>
         </div>
 
-        <div className="pt-4 pb-4 px-5 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
+        <div className="pt-5 pb-3 px-4 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
           {/* Date + author row */}
           {(hasAuthors || publishedAt) && (
             <div className="flex items-center gap-2 mb-2">
               {publishedAt && (
                 <time
-                  className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70"
+                  className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
                   dateTime={publishedAt}
                 >
                   {formatDateTime(publishedAt)}
@@ -165,7 +166,7 @@ export const Card: React.FC<{
 
           {/* Title */}
           {titleToUse && (
-            <p className="font-display text-xl font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-2">
+            <p className="font-display text-lg font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-0.5">
               <Link
                 href={href}
                 ref={linkRef}
@@ -178,13 +179,13 @@ export const Card: React.FC<{
 
           {/* Description */}
           {description && (
-            <p className="font-serif italic text-base text-candera-sage-text leading-[1.6] line-clamp-2 min-h-[3.2em] m-0">
+            <p className="font-serif italic text-sm text-candera-sage-text leading-[1.55] line-clamp-2 min-h-[3.1em] m-0">
               {sanitizedDescription}
             </p>
           )}
 
           {/* Read link */}
-          <div className="mt-auto pt-3">
+          <div className="mt-auto pt-6">
             <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-sage-text border-b border-candera-sage-text/40 pb-px group-hover:text-candera-ember-strong group-hover:border-candera-ember-strong transition-colors">
               Read →
             </span>

@@ -5,11 +5,8 @@ import React from 'react'
 import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
-import Link from 'next/link'
-import { SearchIcon } from 'lucide-react'
 
 import { Section } from '@/components/ui/section'
-import { Button } from '@/components/ui/button'
 
 export const HeaderNav: React.FC<{
   data: HeaderType
@@ -27,11 +24,6 @@ export const HeaderNav: React.FC<{
           ? 'text-candera-vellum/90 hover:bg-candera-vellum/10'
           : 'text-candera-sage-text',
     ].join(' ')
-
-  const iconBtnClass = [
-    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] transition-colors hover:text-candera-ember-strong hover:bg-candera-obsidian/5',
-    transparent ? 'text-candera-vellum/90 hover:bg-candera-vellum/10' : 'text-candera-sage-text',
-  ].join(' ')
 
   return (
     <Section
@@ -55,19 +47,6 @@ export const HeaderNav: React.FC<{
         )
         return <CMSLink key={i} {...link} appearance="link" className={linkClass(isActive)} />
       })}
-
-      <Section
-        as="span"
-        padding="none"
-        className="flex items-center gap-1 ml-4 pl-4 border-l border-current/10"
-      >
-        <Button asChild variant="ghost" size="icon" className={iconBtnClass} aria-label="Search">
-          <Link href="/search">
-            <span className="sr-only">Search</span>
-            <SearchIcon aria-hidden="true" className="w-[18px] h-[18px]" />
-          </Link>
-        </Button>
-      </Section>
     </Section>
   )
 }
