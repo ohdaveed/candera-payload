@@ -6,10 +6,31 @@ import React, { Fragment } from 'react'
 
 import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-types'
 
+import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
+
+const cardContainerVariants = cva('group relative flex h-full cursor-pointer flex-col', {
+  variants: {
+    type: {
+      post: '',
+      product: [
+        'bg-candera-linen overflow-hidden',
+        'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
+        'transition-all duration-300 motion-reduce:transition-none',
+        'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
+        'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+      ].join(' '),
+    },
+  },
+  defaultVariants: {
+    type: 'post',
+  },
+})
+
+export type CardContainerVariants = VariantProps<typeof cardContainerVariants>
 
 export type CardPostData = Pick<
   Post,
@@ -79,7 +100,7 @@ export const Card: React.FC<{
         whileTap={prefersReducedMotion ? undefined : 'tap'}
         variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
         ref={cardRef as React.RefObject<HTMLDivElement>}
-        className={cn('group relative flex h-full cursor-pointer flex-col', className)}
+        className={cn(cardContainerVariants({ type: 'post' }), className)}
       >
         <div className="relative w-full overflow-hidden bg-candera-ash aspect-[3/2]">
           {imageToUse && typeof imageToUse !== 'string' ? (
@@ -111,28 +132,30 @@ export const Card: React.FC<{
           <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:pointer-events-auto group-hover:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
             <Link
               href={href}
-              className="flex h-[48px] w-full items-center justify-center bg-white text-xs font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="flex h-[48px] w-full items-center justify-center bg-candera-linen text-xs font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               View Details
             </Link>
           </div>
         </div>
 
-        <div className="pt-4 pb-4 px-5 bg-white flex-1 flex flex-col border-t border-[#ede8e1]">
+        <div className="pt-4 pb-4 px-5 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
           {/* Date + author row */}
           {(hasAuthors || publishedAt) && (
             <div className="flex items-center gap-2 mb-2">
               {publishedAt && (
                 <time
-                  className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-[#b8aa98]"
+                  className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70"
                   dateTime={publishedAt}
                 >
                   {formatDateTime(publishedAt)}
                 </time>
               )}
-              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-sm">·</span>}
+              {hasAuthors && publishedAt && (
+                <span className="text-candera-stone/50 text-sm">·</span>
+              )}
               {hasAuthors && (
-                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-[#b8aa98]">
+                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70">
                   {formatAuthors(populatedAuthors)}
                 </span>
               )}
@@ -154,14 +177,14 @@ export const Card: React.FC<{
 
           {/* Description */}
           {description && (
-            <p className="font-serif italic text-base text-[#7a6c5e] leading-[1.6] line-clamp-2 m-0">
+            <p className="font-serif italic text-base text-candera-sage-text/80 leading-[1.6] line-clamp-2 m-0">
               {sanitizedDescription}
             </p>
           )}
 
           {/* Read link */}
           <div className="mt-auto pt-3">
-            <span className="text-sm font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
+            <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-stone/60 border-b border-candera-stone/50 pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
               Read →
             </span>
           </div>
@@ -178,14 +201,7 @@ export const Card: React.FC<{
       whileTap={prefersReducedMotion ? undefined : 'tap'}
       variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
       ref={cardRef as React.RefObject<HTMLDivElement>}
-      className={cn(
-        'group relative flex h-full cursor-pointer flex-col bg-white overflow-hidden',
-        'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
-        'transition-all duration-300 motion-reduce:transition-none',
-        'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
-        'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-        className,
-      )}
+      className={cn(cardContainerVariants({ type: 'product' }), className)}
     >
       {/* ── Image ── */}
       <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/5]">
@@ -204,7 +220,7 @@ export const Card: React.FC<{
       </div>
 
       {/* ── Body ── */}
-      <div className="flex flex-col flex-1 px-5 pt-4 pb-5 border-t border-[#ede8e1]">
+      <div className="flex flex-col flex-1 px-5 pt-4 pb-5 border-t border-candera-ash/60">
         {/* Category label */}
         {showCategories && hasCategories && (
           <div className="flex items-center gap-1 mb-1.5">
@@ -213,10 +229,10 @@ export const Card: React.FC<{
                 const isLast = i === categories.length - 1
                 return (
                   <Fragment key={i}>
-                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-[#9e9082]">
+                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-candera-stone/60">
                       {category.title}
                     </span>
-                    {!isLast && <span className="text-[#9e9082]">,&nbsp;</span>}
+                    {!isLast && <span className="text-candera-stone/60">,&nbsp;</span>}
                   </Fragment>
                 )
               }
@@ -240,32 +256,32 @@ export const Card: React.FC<{
 
         {/* Tagline */}
         {tagline && (
-          <p className="font-display italic text-sm text-[#5a5048] leading-[1.4] mb-3.5 m-0">
+          <p className="font-display italic text-sm text-candera-sage-text leading-[1.4] mb-3.5 m-0">
             {tagline}
           </p>
         )}
 
         {/* Divider */}
-        <div className="w-full h-px bg-[#ede8e1] mb-3.5" />
+        <div className="w-full h-px bg-candera-ash/60 mb-3.5" />
 
         {/* Scent note pills — always visible */}
         {hasScentNotes && (
           <div className="flex flex-wrap items-center gap-1.5 mb-3.5">
-            <span className="text-xs font-semibold uppercase tracking-[.18em] text-[#9e9082] mr-1">
+            <span className="text-xs font-semibold uppercase tracking-[.18em] text-candera-stone/60 mr-1">
               Scent
             </span>
             {scentProfile?.top && (
-              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
                 {scentProfile.top}
               </span>
             )}
             {scentProfile?.heart && (
-              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
                 {scentProfile.heart}
               </span>
             )}
             {scentProfile?.base && (
-              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5">
                 {scentProfile.base}
               </span>
             )}
