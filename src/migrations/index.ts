@@ -17,6 +17,7 @@ import * as migration_20260612_073101_add_products_to_search from './20260612_07
 import * as migration_20260612_081028_add_site_theme from './20260612_081028_add_site_theme'
 import * as migration_20260612_082000_extend_site_theme from './20260612_082000_extend_site_theme'
 import * as migration_20260614_132108 from './20260614_132108'
+import * as migration_20260614_184500_add_storefront_hero_price_and_link from './20260614_184500_add_storefront_hero_price_and_link'
 
 export const migrations = [
   {
@@ -113,5 +114,10 @@ export const migrations = [
     up: migration_20260614_132108.up,
     down: migration_20260614_132108.down,
     name: '20260614_132108',
+  },
+  {
+    up: migration_20260614_184500_add_storefront_hero_price_and_link.up,
+    down: migration_20260614_184500_add_storefront_hero_price_and_link.down,
+    name: '20260614_184500_add_storefront_hero_price_and_link',
   },
 ]
