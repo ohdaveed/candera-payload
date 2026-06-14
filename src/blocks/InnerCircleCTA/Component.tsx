@@ -22,9 +22,9 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
   const formId = await getInnerCircleFormId()
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 items-center bg-candera-obsidian p-6 md:p-[52px] gap-10 md:gap-[52px]">
+    <section className="grid grid-cols-1 md:grid-cols-2 items-center bg-candera-obsidian p-6 md:p-48 gap-10 md:gap-48">
       {/* Left — heading + body only, no bullets */}
-      <div className="flex flex-col gap-[14px]">
+      <div className="flex flex-col gap-3.5">
         <div className="flex items-center gap-2">
           <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
           <p className="eyebrow text-candera-stone">Join the Inner Circle</p>

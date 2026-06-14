@@ -39,12 +39,12 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
         {secondary.map((t, i) => (
           <div
             key={i}
-            className={`px-6 py-[30px] md:px-10 flex-1 flex flex-col justify-center${i < secondary.length - 1 ? ' border-b border-candera-stone/5' : ''}`}
+            className={`px-6 py-8 md:px-10 flex-1 flex flex-col justify-center${i < secondary.length - 1 ? ' border-b border-candera-stone/5' : ''}`}
           >
             <blockquote className="m-0">
               <p className="editorial text-candera-stone m-0">&ldquo;{t.quote}&rdquo;</p>
             </blockquote>
-            <p className="label text-candera-sage-text m-0 mt-2">
+            <p className="label text-candera-stone/60 m-0 mt-2">
               {t.author}
               {t.location ? ` — ${t.location}` : ''}
               {t.badge ? ` · ${t.badge}` : ''}

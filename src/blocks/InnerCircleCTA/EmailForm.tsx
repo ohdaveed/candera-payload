@@ -88,7 +88,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             disabled={isLoading}
             aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
             aria-busy={isLoading}
-            className={`text-xs font-bold uppercase tracking-[3px] py-[13px] px-24 bg-neutral-100 text-neutral-950 border-0 whitespace-nowrap ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
+            className={`text-xs font-bold uppercase tracking-widest py-3.5 px-8 bg-candera-vellum text-candera-obsidian border-0 whitespace-nowrap transition-opacity ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
             {isLoading ? '…' : 'Join'}
           </button>
@@ -106,7 +106,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
       </form>
 
       {/* All microcopy consolidated directly below the input */}
-      <p className="font-sans text-xs m-0 text-neutral-600">
+      <p className="font-sans text-xs m-0 text-candera-stone/50">
         Early access · Studio notes · No spam · Unsubscribe any time
       </p>
     </div>

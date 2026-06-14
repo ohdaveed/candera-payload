@@ -32,8 +32,7 @@ export const CollectionArchive: React.FC<Props> = ({
     </>
   ) : (
     <>
-      Reflections
-      <br />& Rituals.
+      Reflections <span className="whitespace-nowrap">{'& Rituals.'}</span>
     </>
   )
   const defaultDescription = isProducts
@@ -48,15 +47,15 @@ export const CollectionArchive: React.FC<Props> = ({
         <p className="font-sans text-xs font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
           {sidebarEyebrow || defaultEyebrow}
         </p>
-        <h2 className="font-display text-xl text-candera-obsidian leading-[1.15] m-0">
+        <h2 className="font-display italic text-xl text-candera-obsidian leading-snug text-balance m-0">
           {sidebarTitle || defaultTitle}
         </h2>
-        <p className="font-sans text-sm text-candera-sage-text leading-[1.75] m-0">
+        <p className="font-sans text-sm text-candera-sage-text leading-relaxed m-0">
           {sidebarDescription || defaultDescription}
         </p>
         <Link
           href={collectionPath}
-          className="inline-flex items-center gap-[6px] py-[13px] pr-[20px] pl-0 border-b border-candera-ember w-fit font-sans text-xs font-bold uppercase tracking-[3px] text-candera-obsidian no-underline"
+          className="inline-flex items-center gap-1.5 py-3 pr-5 pl-0 border-b border-candera-ember w-fit font-sans text-xs font-bold uppercase tracking-widest text-candera-obsidian no-underline"
         >
           {sidebarLinkText || defaultLinkText}
         </Link>
