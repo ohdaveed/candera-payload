@@ -509,9 +509,11 @@ export interface StorefrontHeroBlock {
   secondaryCtaUrl?: string | null;
   showStatusCard?: boolean | null;
   statusCardTitle?: string | null;
+  statusCardPrice?: string | null;
   statusCardSubtitle?: string | null;
   statusCardStatus?: string | null;
   statusCardShips?: string | null;
+  statusCardLinkUrl?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'storefrontHero';
@@ -1461,9 +1463,11 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   secondaryCtaUrl?: T;
   showStatusCard?: T;
   statusCardTitle?: T;
+  statusCardPrice?: T;
   statusCardSubtitle?: T;
   statusCardStatus?: T;
   statusCardShips?: T;
+  statusCardLinkUrl?: T;
   id?: T;
   blockName?: T;
 }
