@@ -159,6 +159,7 @@ export function ThemePresetSwitcher() {
                 disabled={isDisabled}
                 aria-pressed={isActive}
                 aria-label={`Apply ${preset.name} theme`}
+                className="preset-card"
                 style={{
                   position: 'relative',
                   padding: '0.875rem',
@@ -173,18 +174,6 @@ export function ThemePresetSwitcher() {
                   opacity: isDisabled && !isLoading ? 0.5 : 1,
                   textAlign: 'left',
                   transition: 'border-color 0.15s, opacity 0.15s, background 0.15s',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isDisabled && !isActive) {
-                    e.currentTarget.style.background = 'var(--theme-elevation-50)'
-                    e.currentTarget.style.borderColor = 'var(--theme-elevation-300)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive && !isDisabled) {
-                    e.currentTarget.style.background = 'var(--theme-elevation-0, transparent)'
-                    e.currentTarget.style.borderColor = 'var(--theme-elevation-150)'
-                  }
                 }}
               >
                 {isLoading && (
@@ -291,7 +280,13 @@ export function ThemePresetSwitcher() {
         </p>
       )}
 
-      <style>{`@keyframes payload-spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes payload-spin { to { transform: rotate(360deg); } }
+        .preset-card:not([disabled]):not([aria-pressed="true"]):hover {
+          background: var(--theme-elevation-50) !important;
+          border-color: var(--theme-elevation-300) !important;
+        }
+      `}</style>
     </section>
   )
 }

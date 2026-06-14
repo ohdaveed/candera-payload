@@ -94,9 +94,7 @@ export const etsyOAuthCallbackEndpoint: Endpoint = {
 
     try {
       await createEtsyClient(req).completeAuthFlow(code)
-      return Response.redirect(
-        `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/admin`,
-      )
+      return Response.redirect(new URL('/admin', url.origin).toString())
     } catch (error) {
       return Response.json({ error: String(error) }, { status: 500 })
     }

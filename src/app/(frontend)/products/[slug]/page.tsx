@@ -197,6 +197,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Specifications + Scent Profile — collapsible sections */}
             <ProductDetailSections
               title={product.title}
+              vessel={product.vessel}
               productType={product.productType}
               scentProfile={product.scentProfile}
               burnTime={product.burnTime}
