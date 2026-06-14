@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candera — Product Detail Redesign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root {
+        --vellum: #f5f0e8;
+        --ash: #ede8df;
+        --stone: #b8a896;
+        --sage: #7d8b75;
+        --obsidian: #1c1917;
+        --ember: #a0402a;
+        --ember-light: #c4614a;
+        --parchment: #faf7f2;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--vellum) !important;
+        font-family: 'DM Sans', sans-serif !important;
+        color: var(--obsidian) !important;
+        min-height: 100vh;
+      }
+
+      /* Grain overlay */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.5;
+      }
+
+      /* ── Typography ── */
+      .font-display {
+        font-family: 'Playfair Display', serif !important;
+      }
+      .font-serif {
+        font-family: 'Libre Baskerville', serif !important;
+      }
+      .font-sans {
+        font-family: 'DM Sans', sans-serif !important;
+      }
+
+      .eyebrow {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--stone);
+      }
+
+      /* ── Nav ── */
+      .site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: rgba(245, 240, 232, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(184, 168, 150, 0.2);
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      /* ── Sticky CTA bar ── */
+      .sticky-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--obsidian);
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 40;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .sticky-bar.visible {
+        transform: translateY(0);
+      }
+
+      /* ── Main layout ── */
+      .product-wrap {
+        padding-top: 64px;
+        min-height: 100vh;
+      }
+
+      /* ── Hero grid ── */
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        min-height: calc(100vh - 64px);
+      }
+
+      @media (min-width: 1024px) {
+        .hero-grid {
+          grid-template-columns: 55% 45%;
+          grid-template-rows: auto;
+          min-height: calc(100vh - 64px);
+        }
+      }
+
+      /* ── Image column ── */
+      .image-col {
+        position: relative;
+        background: var(--ash);
+        overflow: hidden;
+      }
+
+      @media (min-width: 1024px) {
+        .image-col {
+          position: sticky;
+          top: 64px;
+          height: calc(100vh - 64px);
+        }
+      }
+
+      .main-image {
+        width: 100%;
+        height: 100%;
+        min-height: 60vw;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.8s ease;
+      }
+
+      @media (min-width: 1024px) {
+        .main-image {
+          min-height: 100%;
+        }
+      }
+
+      .image-col:hover .main-image {
+        transform: scale(1.02);
+      }
+
+      .product-tag-pill {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        background: var(--obsidian);
+        color: white;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        padding: 0.4rem 0.8rem;
+      }
+
+      /* Thumbnails overlaid on left column bottom */
+      .thumb-strip {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .thumb-btn {
+        width: 52px;
+        height: 52px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 1.5px solid transparent;
+        transition: border-color 0.2s;
+        background: var(--ash);
+      }
+
+      .thumb-btn.active {
+        border-color: var(--obsidian);
+      }
+      .thumb-btn:not(.active) {
+        opacity: 0.65;
+      }
+      .thumb-btn:not(.active):hover {
+        opacity: 1;
+      }
+
+      .thumb-btn img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* ── Detail column ── */
+      .detail-col {
+        padding: 3.5rem 3rem 7rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      @media (min-width: 1024px) {
+        .detail-col {
+          padding: 4rem 3.5rem 8rem;
+        }
+      }
+
+      /* ── Breadcrumb ── */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--stone);
+        text-decoration: none;
+        margin-bottom: 2.5rem;
+        transition: color 0.2s;
+      }
+      .back-link:hover {
+        color: var(--ember);
+      }
+      .back-link svg {
+        transition: transform 0.2s;
+      }
+      .back-link:hover svg {
+        transform: translateX(-3px);
+      }
+
+      /* ── Header block ── */
+      .product-header {
+        margin-bottom: 2rem;
+      }
+
+      .vessel-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--stone);
+        margin-bottom: 0.75rem;
+      }
+
+      .product-title {
+        font-family: 'Playfair Display', serif !important;
+        font-size: clamp(2rem, 4vw, 3.25rem) !important;
+        font-style: italic;
+        line-height: 1.15 !important;
+        color: var(--obsidian) !important;
+        margin-bottom: 1rem;
+      }
+
+      .product-tagline {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--sage);
+        font-style: italic;
+        max-width: 40ch;
+      }
+
+      /* ── Price row ── */
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 1.5rem 0;
+        border-top: 1px solid rgba(184, 168, 150, 0.25);
+        border-bottom: 1px solid rgba(184, 168, 150, 0.25);
+        margin-bottom: 2rem;
+      }
+
+      .price-amount {
+        font-family: 'Playfair Display', serif !important;
+        font-size: 2.25rem !important;
+        font-weight: 600;
+        color: var(--obsidian) !important;
+        letter-spacing: -0.02em;
+      }
+
+      .stock-badge {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--sage);
+        border: 1px solid rgba(125, 139, 117, 0.3);
+        padding: 0.3rem 0.6rem;
+      }
+
+      /* ── Customization note ── */
+      .custom-note {
+        background: rgba(237, 232, 223, 0.6);
+        border-left: 2px solid var(--ember);
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .custom-note-label {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--obsidian);
+        margin-bottom: 0.25rem;
+      }
+
+      .custom-note-body {
+        font-size: 12px;
+        font-style: italic;
+        color: var(--stone);
+        line-height: 1.5;
+      }
+
+      /* ── CTA Button ── */
+      .cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        width: 100%;
+        padding: 1.1rem 2rem;
+        background: var(--ember);
+        color: white !important;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.25s ease,
+          transform 0.15s ease;
+        margin-bottom: 0.75rem;
+      }
+
+      .cta-btn:hover {
+        background: var(--obsidian);
+        transform: translateY(-1px);
+      }
+
+      .cta-btn:active {
+        transform: translateY(0);
+      }
+
+      .cta-subtext {
+        text-align: center;
+        font-size: 10px;
+        color: var(--stone);
+        letter-spacing: 0.1em;
+      }
+
+      /* ── Divider ── */
+      .section-divider {
+        width: 100%;
+        height: 1px;
+        background: rgba(184, 168, 150, 0.2);
+        margin: 2.5rem 0;
+      }
+
+      /* ── Specs block ── */
+      .specs-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+      }
+
+      .specs-list {
+        list-style: none;
+      }
+
+      .spec-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(184, 168, 150, 0.15);
+        gap: 1rem;
+      }
+
+      .spec-row:last-child {
+        border-bottom: none;
+      }
+
+      .spec-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--obsidian);
+        flex-shrink: 0;
+      }
+
+      .spec-value {
+        font-size: 12px;
+        color: var(--stone);
+        text-align: right;
+      }
+
+      /* ── Fragrance section (editorial) ── */
+      .scent-section {
+        margin-top: 0;
+      }
+
+      .scent-section-header {
+        margin-bottom: 1.75rem;
+      }
+
+      .scent-tiers {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 2rem;
+      }
+
+      .scent-tier {
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        gap: 1rem;
+        align-items: start;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid rgba(184, 168, 150, 0.15);
+        position: relative;
+      }
+
+      .scent-tier:first-child {
+        padding-top: 0;
+      }
+
+      .tier-label-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        padding-top: 0.1rem;
+      }
+
+      .tier-name {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--stone);
+      }
+
+      .tier-note-type {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 9px;
+        font-style: italic;
+        color: rgba(184, 168, 150, 0.6);
+        white-space: nowrap;
+      }
+
+      .tier-value {
+        font-family: 'Libre Baskerville', serif !important;
+        font-size: 14px !important;
+        line-height: 1.5;
+        color: var(--obsidian) !important;
+      }
+
+      .scent-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(184, 168, 150, 0.2);
+      }
+
+      .scent-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .scent-meta-label {
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--stone);
+      }
+
+      .scent-meta-value {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 13px;
+        color: var(--obsidian);
+      }
+
+      /* ── Brand story strip ── */
+      .brand-strip {
+        background: var(--obsidian);
+        color: white;
+        padding: 4rem 3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 1024px) {
+        .brand-strip {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      .brand-strip-copy {
+        max-width: 48ch;
+      }
+
+      .brand-strip h3 {
+        font-family: 'Playfair Display', serif !important;
+        font-size: 1.5rem !important;
+        font-style: italic;
+        margin-bottom: 0.5rem;
+        color: white !important;
+      }
+
+      .brand-strip p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.6;
+      }
+
+      .brand-strip-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: white;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 2px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: border-color 0.2s;
+      }
+
+      .brand-strip-cta:hover {
+        border-color: white;
+      }
+
+      /* ── Section toggle (expand/collapse) ── */
+      .section-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--stone);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 0;
+        transition: color 0.2s;
+      }
+      .section-toggle:hover {
+        color: var(--obsidian);
+      }
+
+      .collapsible-content {
+        overflow: hidden;
+        transition:
+          max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.3s ease;
+        max-height: 1000px;
+        opacity: 1;
+      }
+
+      .collapsible-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      /* ── Animations ── */
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-in {
+        animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      .animate-in:nth-child(1) {
+        animation-delay: 0ms;
+      }
+      .animate-in:nth-child(2) {
+        animation-delay: 80ms;
+      }
+      .animate-in:nth-child(3) {
+        animation-delay: 160ms;
+      }
+      .animate-in:nth-child(4) {
+        animation-delay: 240ms;
+      }
+      .animate-in:nth-child(5) {
+        animation-delay: 320ms;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Nav (simplified) -->
+    <nav class="site-nav">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+        <span
+          style="
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--obsidian);
+          "
+          >Candera</span
+        >
+        <div style="display: flex; gap: 2rem; align-items: center">
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              font-weight: 600;
+              color: var(--stone);
+              text-decoration: none;
+            "
+            >Collection</a
+          >
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              font-weight: 600;
+              color: var(--stone);
+              text-decoration: none;
+            "
+            >About</a
+          >
+          <a
+            href="#"
+            style="
+              background: var(--obsidian);
+              color: white;
+              font-size: 9px;
+              font-weight: 600;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              padding: 0.5rem 1rem;
+              text-decoration: none;
+            "
+            >Etsy Shop</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sticky Purchase Bar -->
+    <div class="sticky-bar" id="stickyBar">
+      <div>
+        <div
+          style="
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: white;
+          "
+        >
+          Elderflower & White Cedar
+        </div>
+        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.5); margin-top: 2px">
+          Vessel No. 12 · $38.00
+        </div>
+      </div>
+      <a href="#" class="cta-btn" style="width: auto; margin: 0; padding: 0.75rem 1.5rem">
+        Buy on Etsy
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- Main product layout -->
+    <div class="product-wrap">
+      <div class="hero-grid">
+        <!-- Left: Image column (sticky on desktop) -->
+        <div class="image-col">
+          <!-- Product tag -->
+          <div class="product-tag-pill">New Arrival</div>
+
+          <!-- Main image -->
+          <img
+            class="main-image"
+            id="mainImage"
+            src="https://images.unsplash.com/photo-1608181831718-c9ffe5255441?w=900&q=80"
+            alt="Elderflower & White Cedar candle"
+          />
+
+          <!-- Thumbnail strip overlaid at bottom -->
+          <div class="thumb-strip">
+            <button
+              class="thumb-btn active"
+              onclick="
+                switchImage(
+                  this,
+                  'https://images.unsplash.com/photo-1608181831718-c9ffe5255441?w=900&q=80',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1608181831718-c9ffe5255441?w=200&q=60"
+                alt="1"
+              />
+            </button>
+            <button
+              class="thumb-btn"
+              onclick="
+                switchImage(
+                  this,
+                  'https://images.unsplash.com/photo-1617952236317-0bd127407984?w=900&q=80',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1617952236317-0bd127407984?w=200&q=60"
+                alt="2"
+              />
+            </button>
+            <button
+              class="thumb-btn"
+              onclick="
+                switchImage(
+                  this,
+                  'https://images.unsplash.com/photo-1602874801007-bd458af6d55b?w=900&q=80',
+                )
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1602874801007-bd458af6d55b?w=200&q=60"
+                alt="3"
+              />
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Detail column -->
+        <div class="detail-col">
+          <!-- Back link -->
+          <a href="/products" class="back-link animate-in">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            Return to Collection
+          </a>
+
+          <!-- Product identity -->
+          <div class="product-header animate-in">
+            <div class="vessel-label">Vessel No. 12</div>
+            <h1 class="product-title">Elderflower &amp; White Cedar</h1>
+            <p class="product-tagline">
+              A quiet morning distilled into wax — botanical, unhurried, made by hand in small
+              batches.
+            </p>
+          </div>
+
+          <!-- Price -->
+          <div class="price-row animate-in">
+            <span class="price-amount">$38.00</span>
+            <span class="stock-badge">In Stock</span>
+          </div>
+
+          <!-- Customization note (shown when customizable) -->
+          <div class="custom-note animate-in">
+            <div class="custom-note-label">Personalization Available</div>
+            <div class="custom-note-body">
+              This item is made to order. Include your custom text in the order notes and
+              double-check your spelling — every character is hand-lettered.
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="animate-in">
+            <a href="#" class="cta-btn" id="ctaBtn">
+              Buy on Etsy
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <p class="cta-subtext">Ships from California · Handmade in micro-batches</p>
+          </div>
+
+          <!-- Divider -->
+          <div class="section-divider"></div>
+
+          <!-- Specifications (collapsible) -->
+          <div class="animate-in">
+            <div class="specs-header">
+              <span class="eyebrow">Specifications</span>
+              <button class="section-toggle" onclick="toggleSection('specsBody', this)">
+                <span class="toggle-label">Hide</span>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="toggle-icon"
+                >
+                  <path d="M18 15l-6-6-6 6" />
+                </svg>
+              </button>
+            </div>
+            <div class="collapsible-content" id="specsBody">
+              <ul class="specs-list">
+                <li class="spec-row">
+                  <span class="spec-label">Size &amp; Wax</span>
+                  <span class="spec-value">15 oz · Soy &amp; beeswax blend</span>
+                </li>
+                <li class="spec-row">
+                  <span class="spec-label">Craftsmanship</span>
+                  <span class="spec-value">Hand-labeled · Micro-batch cured</span>
+                </li>
+                <li class="spec-row">
+                  <span class="spec-label">Burn Time</span>
+                  <span class="spec-value">60–75 hours</span>
+                </li>
+                <li class="spec-row">
+                  <span class="spec-label">Origin</span>
+                  <span class="spec-value">Ships from California</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="section-divider"></div>
+
+          <!-- Fragrance Profile (editorial) -->
+          <div class="scent-section animate-in">
+            <div class="specs-header">
+              <span class="eyebrow">Fragrance Profile</span>
+              <button class="section-toggle" onclick="toggleSection('scentBody', this)">
+                <span class="toggle-label">Hide</span>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="toggle-icon"
+                >
+                  <path d="M18 15l-6-6-6 6" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="collapsible-content" id="scentBody">
+              <div class="scent-tiers">
+                <div class="scent-tier">
+                  <div class="tier-label-group">
+                    <span class="tier-name">Top</span>
+                    <span class="tier-note-type">first breath</span>
+                  </div>
+                  <span class="tier-value">Elderflower, green stems, morning dew</span>
+                </div>
+                <div class="scent-tier">
+                  <div class="tier-label-group">
+                    <span class="tier-name">Heart</span>
+                    <span class="tier-note-type">full bloom</span>
+                  </div>
+                  <span class="tier-value">White rose, ylang-ylang, soft violet</span>
+                </div>
+                <div class="scent-tier">
+                  <div class="tier-label-group">
+                    <span class="tier-name">Base</span>
+                    <span class="tier-note-type">lasting memory</span>
+                  </div>
+                  <span class="tier-value">White cedar, dry musk, sandalwood</span>
+                </div>
+              </div>
+
+              <div class="scent-meta">
+                <div class="scent-meta-item">
+                  <span class="scent-meta-label">Intention</span>
+                  <span class="scent-meta-value" style="font-family: 'Libre Baskerville', serif"
+                    >Evening ritual</span
+                  >
+                </div>
+                <div class="scent-meta-item">
+                  <span class="scent-meta-label">Atmosphere</span>
+                  <span class="scent-meta-value" style="font-family: 'Libre Baskerville', serif"
+                    >Serene · Botanical</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand strip (below the fold) -->
+      <div class="brand-strip">
+        <div class="brand-strip-copy">
+          <h3>Made with intention, in small batches</h3>
+          <p>
+            Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
+            botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
+            they smell in the jar.
+          </p>
+        </div>
+        <a href="/products" class="brand-strip-cta">
+          Explore the collection
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Thumbnail switching
+      function switchImage(btn, src) {
+        document.getElementById('mainImage').src = src
+        document.querySelectorAll('.thumb-btn').forEach((b) => b.classList.remove('active'))
+        btn.classList.add('active')
+      }
+
+      // Sticky bar on scroll
+      const stickyBar = document.getElementById('stickyBar')
+      const ctaBtn = document.getElementById('ctaBtn')
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              stickyBar.classList.add('visible')
+            } else {
+              stickyBar.classList.remove('visible')
+            }
+          })
+        },
+        { threshold: 0 },
+      )
+
+      if (ctaBtn) observer.observe(ctaBtn)
+
+      // Collapsible sections
+      function toggleSection(id, btn) {
+        const content = document.getElementById(id)
+        const label = btn.querySelector('.toggle-label')
+        const icon = btn.querySelector('.toggle-icon')
+
+        if (content.classList.contains('collapsed')) {
+          content.classList.remove('collapsed')
+          label.textContent = 'Hide'
+          icon.style.transform = 'rotate(0deg)'
+        } else {
+          content.classList.add('collapsed')
+          label.textContent = 'Show'
+          icon.style.transform = 'rotate(180deg)'
+        }
+      }
+
+      // Initialize Lucide icons
+      if (typeof lucide !== 'undefined') lucide.createIcons()
+    </script>
+  </body>
+</html>

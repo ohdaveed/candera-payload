@@ -163,37 +163,6 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 
 Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
 
-## Accessibility — Contrast (NON-NEGOTIABLE)
-
-Readability and contrast are top priorities. Every color used for text must meet **WCAG AA minimum** (4.5:1 for normal text, 3:1 for large text ≥18px or bold ≥14px).
-
-### Candera color token contrast on `#f5f2ed` (vellum background)
-
-| Token                  | Hex       | Ratio on vellum | Use for text?                        |
-| ---------------------- | --------- | --------------- | ------------------------------------ |
-| `candera-obsidian`     | `#141412` | ~16:1           | ✅ Yes — headings, body              |
-| `candera-sage-text`    | `#5f6459` | ~5.2:1          | ✅ Yes — secondary text, eyebrows    |
-| `candera-ember-strong` | `#a8502b` | ~5.5:1          | ✅ Yes — accents, links              |
-| `candera-sage`         | `#7a8174` | ~3.7:1          | ❌ Never for text < 18px             |
-| `candera-stone`        | `#dacbb8` | ~1.3:1          | ❌ Never for text — borders only     |
-| `candera-ash`          | `#e2ddd6` | ~1.1:1          | ❌ Never for text — backgrounds only |
-
-### On dark backgrounds (`#141412` obsidian)
-
-| Usage                     | Minimum opacity | Notes                     |
-| ------------------------- | --------------- | ------------------------- |
-| `text-white/XX` body copy | `/80` minimum   | `/80` = ~11:1 on obsidian |
-| `text-white/XX` captions  | `/70` minimum   | `/70` = ~9:1 on obsidian  |
-| Never use                 | `/50` or below  | Fails AA                  |
-
-### Rules
-
-- **Never use `candera-stone` or `candera-ash` as text colors.** They exist for borders and backgrounds only.
-- **Never use `candera-sage` for text smaller than 18px.** It only passes AA at large/bold sizes.
-- **Always use `candera-sage-text` as the minimum for secondary/muted text** on light backgrounds.
-- **Opacity-based white text on dark: minimum `/75`** for captions, `/80` for body.
-- **Before writing any color class**, mentally check: is this text or decoration? If text, does it pass 4.5:1?
-
 ## Review Checklist
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.

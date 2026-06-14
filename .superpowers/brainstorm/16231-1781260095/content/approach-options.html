@@ -1,0 +1,290 @@
+<style>
+  .candera-board {
+    font-family: Inter, system-ui, sans-serif;
+  }
+  .direction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+  }
+  @media (max-width: 980px) {
+    .direction-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .direction-card {
+    border: 1px solid rgba(70, 55, 45, 0.16);
+    background: #fffaf6;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .direction-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 50px rgba(170, 110, 120, 0.18);
+    border-color: #d4a5a5;
+  }
+  .mini-site {
+    min-height: 420px;
+    background: #fbf7f2;
+    color: #151210;
+  }
+  .mini-nav {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    border-bottom: 1px solid rgba(80, 60, 50, 0.14);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .mini-logo {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    letter-spacing: 0.2em;
+  }
+  .hero {
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    padding: 28px;
+  }
+  .photo {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 246, 246, 0.78)),
+      url('/candera/scarlet-bloom.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.85);
+  }
+  .hero h4 {
+    position: relative;
+    font-family: Georgia, serif;
+    font-size: 34px;
+    line-height: 0.95;
+    font-weight: 400;
+    margin: 0;
+  }
+  .rose {
+    color: #b28c9c;
+    font-style: italic;
+  }
+  .button-line {
+    position: relative;
+    margin-top: 16px;
+    display: inline-block;
+    border: 1px solid #b28c9c;
+    color: #8a5e72;
+    padding: 8px 18px;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .section-preview {
+    padding: 22px;
+  }
+  .divider {
+    width: 42px;
+    height: 1px;
+    background: #b28c9c;
+    margin: 0 auto 14px;
+  }
+  .product-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .tile {
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+  }
+  .tile:nth-child(1) {
+    background-image: url('/candera/meadowlight-botanical.jpg');
+  }
+  .tile:nth-child(2) {
+    background-image: url('/candera/seashell-garden.jpg');
+  }
+  .tile:nth-child(3) {
+    background-image: url('/candera/crimson-noir.jpg');
+  }
+  .editorial-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 160px;
+  }
+  .editorial-copy {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .editorial-copy h4 {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    line-height: 1.05;
+    margin: 0 0 12px;
+    font-weight: 400;
+  }
+  .editorial-img {
+    background: url('/candera/ever-after-glow.jpg') center/cover;
+    min-height: 160px;
+  }
+  .dark-band {
+    background: #141412;
+    color: #fdfbf7;
+    padding: 28px;
+    text-align: center;
+  }
+  .dark-band h4 {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: 400;
+    margin: 0 0 10px;
+  }
+  .caption-block {
+    padding: 18px 20px 22px;
+    border-top: 1px solid rgba(70, 55, 45, 0.1);
+  }
+  .caption-block h3 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+  }
+  .caption-block p {
+    margin: 0;
+    color: #635c56;
+    line-height: 1.55;
+    font-size: 14px;
+  }
+</style>
+
+<div class="candera-board">
+  <h2>Choose the redesign approach</h2>
+  <p class="subtitle">
+    Based on the `.superdesign` references, current Candera assets, and your scope: homepage +
+    products + about/contact-style pages.
+  </p>
+
+  <div class="direction-grid">
+    <div class="direction-card" data-choice="a-component-system" onclick="toggleSelect(this)">
+      <div class="mini-site">
+        <div class="mini-nav"><span class="mini-logo">CANDERA</span><span>Global polish</span></div>
+        <div class="hero">
+          <div class="photo"></div>
+          <div>
+            <h4>Quiet<br /><span class="rose">Luxury</span></h4>
+            <span class="button-line">Explore</span>
+          </div>
+        </div>
+        <div class="section-preview">
+          <div class="divider"></div>
+          <p style="text-align: center; margin: 0; color: #6a625b">
+            Mostly upgrade reusable blocks/cards/headers. CMS content remains flexible.
+          </p>
+          <div class="product-row">
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-block">
+        <h3>A. Component-system refresh</h3>
+        <p>
+          Fastest and safest: update hero, archive/product cards, headers, forms, and global theme
+          so existing pages inherit the luxury rose storefront language.
+        </p>
+      </div>
+    </div>
+
+    <div class="direction-card" data-choice="b-page-templates" onclick="toggleSelect(this)">
+      <div class="mini-site">
+        <div class="mini-nav"><span class="mini-logo">CANDERA</span><span>Fixed layouts</span></div>
+        <div class="hero">
+          <div class="photo"></div>
+          <div>
+            <h4>Quiet<br /><span class="rose">Luxury</span></h4>
+            <span class="button-line">Explore</span>
+          </div>
+        </div>
+        <div class="editorial-split">
+          <div class="editorial-copy">
+            <h4>Born from a <span class="rose">belief</span></h4>
+            <p style="font-size: 12px; color: #686059; margin: 0">
+              Exact about/contact/collection sections modeled after HTMLs.
+            </p>
+          </div>
+          <div class="editorial-img"></div>
+        </div>
+      </div>
+      <div class="caption-block">
+        <h3>B. Page-specific replicas</h3>
+        <p>
+          Closest to the HTML references: create hand-designed homepage/products/about/contact
+          pages. More pixel-controlled, less CMS-flexible.
+        </p>
+      </div>
+    </div>
+
+    <div class="direction-card" data-choice="c-hybrid-recommended" onclick="toggleSelect(this)">
+      <div class="mini-site">
+        <div class="mini-nav"><span class="mini-logo">CANDERA</span><span>Hybrid</span></div>
+        <div class="hero">
+          <div class="photo"></div>
+          <div>
+            <h4>
+              Quiet<br /><span class="rose">Luxury</span><br /><span
+                style="font-size: 18px; font-style: italic; font-weight: 300"
+                >Intentional Energy</span
+              >
+            </h4>
+            <span class="button-line">Explore Collection</span>
+          </div>
+        </div>
+        <div class="section-preview">
+          <div class="divider"></div>
+          <p style="text-align: center; margin: 0; color: #6a625b">
+            Shared luxury primitives + curated seeded content.
+          </p>
+          <div class="product-row">
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+          </div>
+        </div>
+        <div class="dark-band">
+          <h4>Never Miss a Batch</h4>
+          <p style="margin: 0; color: #d8d5cc; font-size: 12px">
+            Newsletter/ritual CTA in dramatic dark contrast.
+          </p>
+        </div>
+      </div>
+      <div class="caption-block">
+        <h3>C. Hybrid — recommended</h3>
+        <p>
+          Use `.superdesign` as source of truth, implement reusable polished components, and update
+          seeded landing content/about page to match the reference layouts.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,541 @@
+<style>
+  .candera-mock {
+    --rose: #b28c9c;
+    --rose-strong: #8a5e72;
+    --obsidian: #141412;
+    --linen: #fdfbf7;
+    --sage: #5f6459;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--obsidian);
+  }
+  .mock-shell {
+    border: 1px solid rgba(20, 20, 18, 0.14);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--linen);
+    box-shadow: 0 28px 80px rgba(80, 55, 45, 0.15);
+  }
+  .mock-browser {
+    height: 42px;
+    background: #fff;
+    border-bottom: 1px solid rgba(20, 20, 18, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #dacbb8;
+  }
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 34px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(218, 203, 184, 0.55);
+  }
+  .logo {
+    font-family: Georgia, serif;
+    letter-spacing: 0.22em;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .navlinks {
+    display: flex;
+    gap: 32px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #403b36;
+  }
+  .icons {
+    display: flex;
+    gap: 16px;
+    color: #403b36;
+    font-size: 14px;
+  }
+  .hero {
+    min-height: 560px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.96),
+        rgba(255, 247, 247, 0.84) 44%,
+        rgba(255, 255, 255, 0.68)
+      ),
+      url('/candera/scarlet-bloom.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.85) contrast(0.96);
+  }
+  .hero-content {
+    position: relative;
+    text-align: center;
+    width: min(760px, 88%);
+    padding: 70px 0 52px;
+  }
+  .hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(58px, 9vw, 118px);
+    line-height: 0.9;
+    margin: 0 0 26px;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+  }
+  .rose {
+    color: var(--rose);
+    font-style: italic;
+  }
+  .hero .subline {
+    display: block;
+    font-size: 42px;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: #302b28;
+    margin-top: 10px;
+  }
+  .lead {
+    font-size: 19px;
+    line-height: 1.8;
+    max-width: 640px;
+    margin: 0 auto 34px;
+    color: #514c46;
+  }
+  .rose-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--rose);
+    color: var(--rose-strong);
+    background: rgba(255, 255, 255, 0.36);
+    padding: 14px 34px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    font-size: 11px;
+  }
+  .section {
+    padding: 86px 48px;
+  }
+  .section.rosewash {
+    background: linear-gradient(135deg, rgba(178, 140, 156, 0.14), rgba(255, 255, 255, 0.34));
+  }
+  .section.dark {
+    background: var(--obsidian);
+    color: var(--linen);
+  }
+  .center {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 54px;
+  }
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--rose);
+    margin: 0 auto 24px;
+  }
+  .center h2,
+  .editorial h2,
+  .dark h2 {
+    font-family: Georgia, serif;
+    font-size: 48px;
+    line-height: 1.06;
+    font-weight: 400;
+    margin: 0 0 18px;
+  }
+  .center p {
+    font-size: 17px;
+    color: var(--sage);
+    margin: 0;
+    line-height: 1.8;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  .category {
+    background: #fff;
+    border: 1px solid rgba(218, 203, 184, 0.4);
+    overflow: hidden;
+  }
+  .category-img {
+    aspect-ratio: 4/5;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.7s ease;
+  }
+  .category:nth-child(1) .category-img {
+    background-image: url('/candera/meadowlight-botanical.jpg');
+  }
+  .category:nth-child(2) .category-img {
+    background-image: url('/candera/seashell-garden.jpg');
+  }
+  .category:nth-child(3) .category-img {
+    background-image: url('/candera/ever-after-glow.jpg');
+  }
+  .category-copy {
+    padding: 28px;
+    text-align: center;
+  }
+  .category-copy h3 {
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: 400;
+    margin: 0 0 10px;
+  }
+  .category-copy p {
+    margin: 0 0 14px;
+    color: #6a625b;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  .linkish {
+    color: var(--rose-strong);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .product-card {
+    background: #fff;
+    border: 1px solid rgba(218, 203, 184, 0.35);
+    padding: 0 0 18px;
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 52px rgba(178, 140, 156, 0.16);
+  }
+  .product-img {
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.9);
+  }
+  .product-card:nth-child(1) .product-img {
+    background-image: url('/candera/scarlet-bloom.jpg');
+  }
+  .product-card:nth-child(2) .product-img {
+    background-image: url('/candera/seashell-garden.jpg');
+  }
+  .product-card:nth-child(3) .product-img {
+    background-image: url('/candera/crimson-noir.jpg');
+  }
+  .product-card:nth-child(4) .product-img {
+    background-image: url('/candera/anyas-eyes.jpg');
+  }
+  .product-copy {
+    padding: 18px 14px 0;
+  }
+  .product-copy h3 {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0 0 6px;
+  }
+  .product-copy p {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: #746b63;
+    margin: 0 0 8px;
+  }
+  .price {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: var(--rose-strong);
+    font-size: 18px;
+  }
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 58px;
+    align-items: center;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  .editorial-img {
+    aspect-ratio: 4/5;
+    background: url('/candera/ever-after-glow.jpg') center/cover;
+  }
+  .editorial p {
+    color: #625b54;
+    font-size: 17px;
+    line-height: 1.85;
+    margin: 0 0 22px;
+  }
+  .left-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--rose);
+    margin: 0 0 26px;
+  }
+  .about-contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(218, 203, 184, 0.4);
+  }
+  .about-pane {
+    padding: 58px;
+    background: #fff;
+  }
+  .contact-card {
+    margin: 58px;
+    padding: 34px;
+    border: 1px solid rgba(218, 203, 184, 0.55);
+    background: rgba(245, 242, 237, 0.65);
+    border-left: 3px solid var(--rose);
+  }
+  .field {
+    height: 44px;
+    border-bottom: 1px solid rgba(95, 100, 89, 0.34);
+    display: flex;
+    align-items: center;
+    color: #91887f;
+    margin-bottom: 16px;
+  }
+  .dark .center p {
+    color: #d8d5cc;
+  }
+  .email-line {
+    max-width: 420px;
+    margin: 28px auto 0;
+    border-bottom: 1px solid rgba(253, 251, 247, 0.5);
+    padding: 14px 0;
+    color: #d8d5cc;
+    text-align: left;
+  }
+  .notes {
+    margin-top: 18px;
+    padding: 18px 22px;
+    background: #fff;
+    border: 1px solid rgba(218, 203, 184, 0.55);
+    border-radius: 16px;
+    color: #5f6459;
+    line-height: 1.7;
+  }
+  @media (max-width: 900px) {
+    .category-grid,
+    .products,
+    .editorial-grid,
+    .about-contact {
+      grid-template-columns: 1fr;
+    }
+    .products {
+      gap: 18px;
+    }
+    .navlinks {
+      display: none;
+    }
+    .section {
+      padding: 58px 24px;
+    }
+    .site-nav {
+      padding: 0 20px;
+    }
+    .hero h1 {
+      font-size: 64px;
+    }
+    .hero .subline {
+      font-size: 30px;
+    }
+  }
+</style>
+
+<div class="candera-mock">
+  <h2>Detailed redesign mockup</h2>
+  <p class="subtitle">
+    Enhanced `.superdesign` direction, implemented with shadcn primitives (Card, Button, Input,
+    Separator, Badge, Sheet/Dialog where needed) and Tailwind utilities.
+  </p>
+  <div class="mock-shell">
+    <div class="mock-browser">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span
+      ><span style="margin-left: 10px; color: #8a837c; font-size: 12px"
+        >candera landing-page system preview</span
+      >
+    </div>
+    <nav class="site-nav">
+      <div class="logo">CANDERA</div>
+      <div class="navlinks">
+        <span>Collections</span><span>Candles</span><span>Home</span><span>About</span>
+      </div>
+      <div class="icons"><span>⌕</span><span>♡</span><span>Bag</span></div>
+    </nav>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>
+          Quiet<br /><span class="rose">Luxury</span><span class="subline">Intentional Energy</span>
+        </h1>
+        <p class="lead">
+          Hand-poured botanical candles that embody soft femininity and natural elegance. Each flame
+          creates warmth, atmosphere, and peace in your most sacred spaces.
+        </p>
+        <span class="rose-btn">Explore Collection</span>
+      </div>
+    </section>
+    <section class="section">
+      <div class="center">
+        <div class="divider"></div>
+        <h2>Collections</h2>
+        <p>
+          Individually hand-poured in small batches, each candle is a miniature botanical garden
+          preserved in wax.
+        </p>
+      </div>
+      <div class="category-grid">
+        <div class="category">
+          <div class="category-img"></div>
+          <div class="category-copy">
+            <h3>Botanical Candles</h3>
+            <p>Premium soy and beeswax blend with real dried flowers.</p>
+            <span class="linkish">Explore →</span>
+          </div>
+        </div>
+        <div class="category">
+          <div class="category-img"></div>
+          <div class="category-copy">
+            <h3>Quiet Rituals</h3>
+            <p>Woodsy, fresh fragrances infused with natural oils.</p>
+            <span class="linkish">Explore →</span>
+          </div>
+        </div>
+        <div class="category">
+          <div class="category-img"></div>
+          <div class="category-copy">
+            <h3>Thoughtful Gifts</h3>
+            <p>Cozy, elevated, deeply personal home decor.</p>
+            <span class="linkish">Explore →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section rosewash">
+      <div class="center">
+        <div class="divider"></div>
+        <h2>Featured</h2>
+        <p>Wild and refined candles that embody romantic, slightly moody beauty.</p>
+      </div>
+      <div class="products">
+        <div class="product-card">
+          <div class="product-img"></div>
+          <div class="product-copy">
+            <h3>Scarlet Bloom</h3>
+            <p>Botanical brightness & aged woods</p>
+            <span class="price">$85</span>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img"></div>
+          <div class="product-copy">
+            <h3>Seashell Garden</h3>
+            <p>Fresh greenery & warm cedar</p>
+            <span class="price">$95</span>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img"></div>
+          <div class="product-copy">
+            <h3>Crimson Noir</h3>
+            <p>Dark berries & balsam</p>
+            <span class="price">$120</span>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img"></div>
+          <div class="product-copy">
+            <h3>Anya's Eyes</h3>
+            <p>Soft bloom & smoke</p>
+            <span class="price">$90</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section editorial">
+      <div class="editorial-grid">
+        <div>
+          <div class="left-divider"></div>
+          <h2>Born from a Simple<br /><span class="rose">Belief</span></h2>
+          <p>
+            Candera is built around intentional objects and slow atmosphere — small-batch candles
+            designed to mark a season, celebration, or daily ritual.
+          </p>
+          <span class="rose-btn">Our Story</span>
+        </div>
+        <div class="editorial-img"></div>
+      </div>
+    </section>
+    <section class="about-contact">
+      <div class="about-pane editorial">
+        <div class="left-divider"></div>
+        <h2>Connect with<br /><span class="rose">the Studio</span></h2>
+        <p>
+          For order questions, wholesale opportunities, or press inquiries, the contact page keeps
+          this editorial tone while making the form feel like a crafted note.
+        </p>
+      </div>
+      <div class="contact-card">
+        <h3
+          style="font-family: Georgia, serif; font-size: 30px; font-weight: 400; margin: 0 0 24px"
+        >
+          Send a Note
+        </h3>
+        <div class="field">Name</div>
+        <div class="field">Email</div>
+        <div class="field" style="height: 84px; align-items: flex-start; padding-top: 12px">
+          Message
+        </div>
+        <span class="rose-btn">Submit</span>
+      </div>
+    </section>
+    <section class="section dark">
+      <div class="center">
+        <div class="divider"></div>
+        <h2>Never Miss a Batch</h2>
+        <p>
+          Dark editorial CTA, using shadcn form controls styled with Tailwind for a high-contrast
+          newsletter/inner-circle moment.
+        </p>
+        <div class="email-line">Your email address</div>
+      </div>
+    </section>
+  </div>
+  <div class="notes">
+    <strong>Implementation note:</strong> This is visual direction only. In code, sections would use
+    existing `Container`/`Section`, shadcn `Card`, `Button`, `Input`, `Textarea`, `Separator`,
+    `Badge`, `Sheet`, and `Dialog`, styled with Tailwind utilities and Candera tokens.
+  </div>
+</div>
