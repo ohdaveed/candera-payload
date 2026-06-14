@@ -137,7 +137,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const post = await queryPostBySlug({ slug: decodedSlug })
 
-  const meta = await generateMeta({ doc: post })
+  const meta = await generateMeta({ doc: post, pathPrefix: 'posts' })
 
   if (post?.title) {
     meta.title = `${post.title} — Candera`

@@ -248,7 +248,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
 
-  const meta = await generateMeta({ doc: product as unknown as Product })
+  const meta = await generateMeta({ doc: product as unknown as Product, pathPrefix: 'products' })
 
   if (product?.title) {
     meta.title = `${product.title} — Candera`
