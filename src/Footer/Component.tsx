@@ -55,14 +55,14 @@ export async function Footer() {
 
           {/* Navigation */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
               Navigation
             </h5>
-            <Section as="nav" padding="none" className="flex flex-col gap-1">
+            <Section as="nav" padding="none" className="flex flex-col gap-0">
               {navItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                  className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                   key={i}
                 />
               ))}
@@ -71,23 +71,23 @@ export async function Footer() {
 
           {/* Assistance */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
               Assistance
             </h5>
-            <Section as="nav" padding="none" className="flex flex-col gap-1">
+            <Section as="nav" padding="none" className="flex flex-col gap-0">
               {assistanceItems.map(({ link }, i) => (
                 <CMSLink
                   {...link}
-                  className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                  className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                   key={i}
                 />
               ))}
               {assistanceItems.length === 0 && (
-                <ul className="flex flex-col gap-1 list-none p-0 m-0">
+                <ul className="flex flex-col gap-0 list-none p-0 m-0">
                   <li>
                     <Link
                       href="/shipping-and-returns"
-                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                     >
                       Shipping & Returns
                     </Link>
@@ -95,7 +95,7 @@ export async function Footer() {
                   <li>
                     <Link
                       href="/wholesale"
-                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                     >
                       Wholesale
                     </Link>
@@ -103,7 +103,7 @@ export async function Footer() {
                   <li>
                     <Link
                       href="/contact"
-                      className="font-sans text-[14px] font-light text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
+                      className="font-sans text-[14px] font-normal text-candera-obsidian no-underline hover:text-candera-ember-strong transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                     >
                       Contact
                     </Link>
@@ -115,7 +115,7 @@ export async function Footer() {
 
           {/* Settings / Theme */}
           <Section padding="none">
-            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text mb-6">
+            <h5 className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-obsidian mb-6">
               Settings
             </h5>
             <ThemeSelector />
