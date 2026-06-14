@@ -1,8 +1,6 @@
 import type { CollectionAfterChangeHook } from 'payload'
-import { upsertSubscriber } from '@/services/mailchimp'
 import { archiveFormSubmission } from '@/services/supabase'
 
-// Map form title → Mailchimp tag
 const FORM_TAG_MAP: Record<string, string> = {
   'Contact Form': 'contact',
   'Inner Circle Signup': 'inner-circle',
@@ -17,7 +15,6 @@ export const processFormSubmission: CollectionAfterChangeHook = async ({ doc, re
 
     const email = submissionData.find((f) => f.field === 'email')?.value ?? null
 
-    // Resolve parent form title
     const formRelation = doc.form
     const formId = typeof formRelation === 'object' ? formRelation?.id : formRelation
     if (!formId) return doc
@@ -27,11 +24,8 @@ export const processFormSubmission: CollectionAfterChangeHook = async ({ doc, re
     const tag = FORM_TAG_MAP[formTitle] ?? 'general'
 
     const scentResult = submissionData.find((f) => f.field === 'scent-result')?.value ?? null
-    const mergeFields: Record<string, string> = scentResult ? { SCENT: scentResult } : {}
 
-    // Run Mailchimp sync and Supabase archive in parallel — both non-fatal
     const results = await Promise.allSettled([
-      email ? upsertSubscriber(email, [tag], mergeFields) : Promise.resolve(),
       archiveFormSubmission({
         form_title: formTitle,
         email,
