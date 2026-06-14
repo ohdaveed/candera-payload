@@ -8,7 +8,11 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
   ({ as: Component = 'div', className, ...props }, ref) => {
     return (
-      <Component className={cn('container mx-auto px-4 md:px-8', className)} ref={ref} {...props} />
+      <Component
+        className={cn('w-full max-w-[1200px] mx-auto px-[5vw]', className)}
+        ref={ref}
+        {...props}
+      />
     )
   },
 )
