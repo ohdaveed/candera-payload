@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
+import { preventSuspendedLogin } from './hooks/preventSuspendedLogin'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -17,6 +18,9 @@ export const Users: CollectionConfig = {
     group: 'System',
   },
   auth: true,
+  hooks: {
+    beforeLogin: [preventSuspendedLogin],
+  },
   fields: [
     {
       name: 'name',
@@ -52,8 +56,7 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'active',
       admin: {
-        description:
-          'Operational account status. Enforcement can be added after roles are backfilled.',
+        description: 'Suspended accounts are blocked from logging in.',
       },
       options: [
         {
