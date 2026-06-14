@@ -59,8 +59,8 @@
   --destructive-foreground: oklch(63.7% 0.237 25.331deg);
   --border: oklch(26.9% 0 0deg);
   --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
+  --ring: var(--color-candera-ember-strong);
+  --chart-1: oklch(48.8% 0 0deg);
   --chart-2: oklch(69.6% 0.17 162.48deg);
   --chart-3: oklch(76.9% 0.188 70.08deg);
   --chart-4: oklch(62.7% 0.265 303.9deg);
@@ -118,6 +118,20 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+
+  /* Brand Colors */
+  --color-candera-vellum: #f5f2ed;
+  --color-candera-field: #d8d5cc;
+  --color-candera-ash: #e2ddd6;
+  --color-candera-stone: #dacbb8;
+  --color-candera-sage: #7a8174;
+  --color-candera-sage-text: #5f6459;
+  --color-candera-rose: #b28c9c;
+  --color-candera-rose-strong: #8a5e72;
+  --color-candera-ember: #dd7d52;
+  --color-candera-ember-strong: #a8502b;
+  --color-candera-obsidian: #141412;
+  --color-candera-linen: #fdfbf7;
 }
 
 /* Site Theme skins — selected via the Site Theme global in the Payload admin.

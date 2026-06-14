@@ -262,7 +262,14 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const product = await queryProductBySlug({ slug: decodeURIComponent(slug) })
-  return generateMeta({ doc: product as unknown as Product })
+
+  const meta = await generateMeta({ doc: product as unknown as Product })
+
+  if (product?.title) {
+    meta.title = `${product.title} — Candera`
+  }
+
+  return meta
 }
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {

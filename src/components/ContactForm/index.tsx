@@ -79,13 +79,8 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
   if (hasSubmitted) {
     return (
       <div className="py-12 text-center">
-        <p
-          className="font-display italic text-candera-obsidian mb-3 m-0"
-          style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
-        >
-          Your note has been received.
-        </p>
-        <p className="font-sans text-[14px] text-candera-sage-text m-0 mt-2">
+        <p className="h3 mb-3 m-0">Your note has been received.</p>
+        <p className="body text-candera-sage-text m-0 mt-2">
           We respond with intention — expect a reply within 48 hours.
         </p>
       </div>
@@ -112,7 +107,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             rules={{ required: 'Full name is required' }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Full Name{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *
@@ -136,7 +131,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Email{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *
@@ -160,7 +155,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Phone {/* sage-text = 5.2:1 on vellum — passes AA */}
                   <span className="text-candera-sage-text text-[10px] normal-case tracking-normal font-normal ml-1">
                     (optional)
@@ -185,7 +180,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             rules={{ required: 'Message is required' }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
+                <FormLabel className="label">
                   Message{' '}
                   <span className="text-candera-ember" aria-hidden="true">
                     *

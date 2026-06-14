@@ -43,7 +43,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
               className="w-full"
               htmlElement="span"
               imgClassName={cn(
-                'border border-border/40 rounded-none grayscale hover:grayscale-0 transition-all duration-1000 ease-candera-enter',
+                'border border-border/40 rounded-none transition-all duration-1000 ease-candera-enter',
                 imgClassName,
               )}
               resource={media}

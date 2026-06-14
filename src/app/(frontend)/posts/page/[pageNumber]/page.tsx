@@ -31,6 +31,14 @@ export default async function Page({ params: paramsPromise }: Args) {
     limit: 12,
     page: sanitizedPageNumber,
     overrideAccess: false,
+    select: {
+      title: true,
+      slug: true,
+      categories: true,
+      meta: true,
+      populatedAuthors: true,
+      publishedAt: true,
+    },
   })
 
   return (
@@ -64,7 +72,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
-    title: `The Journal — Page ${pageNumber} | Candera Candles`,
+    title: `Journal — Page ${pageNumber} — Candera`,
   }
 }
 

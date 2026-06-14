@@ -84,19 +84,10 @@ export const EditorialPageHero: React.FC<EditorialPageHeroProps> = ({
         </div>
 
         {/* Title — white on obsidian = 18.75:1 */}
-        <h1
-          className="font-display font-normal italic text-white text-balance leading-[1.08] tracking-tight m-0"
-          style={{ fontSize: 'clamp(2.5rem, 6vw, 4.75rem)' }}
-        >
-          {title}
-        </h1>
+        <h1 className="hero-heading text-white m-0 relative z-10">{title}</h1>
 
-        {/* Description — white/75 on obsidian = ~14:1 */}
-        {description && (
-          <p className="font-editorial italic text-white/75 text-[18px] leading-relaxed mt-6 m-0 max-w-[48ch]">
-            {description}
-          </p>
-        )}
+        {/* Description — eb garamond italic */}
+        {description && <p className="editorial text-white/75 mt-6 max-w-[48ch]">{description}</p>}
       </Container>
     </header>
   )

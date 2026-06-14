@@ -5,26 +5,54 @@ import { Card, CardPostData } from '@/components/Card'
 export type Props = {
   posts: CardPostData[]
   relationTo?: 'posts' | 'products'
+  sidebarEyebrow?: string
+  sidebarTitle?: string
+  sidebarDescription?: string
+  sidebarLinkText?: string
 }
 
-export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts' }) => {
-  const collectionPath = relationTo === 'products' ? '/products' : '/posts'
+export const CollectionArchive: React.FC<Props> = ({
+  posts,
+  relationTo = 'posts',
+  sidebarEyebrow,
+  sidebarTitle,
+  sidebarDescription,
+  sidebarLinkText,
+}) => {
+  const isProducts = relationTo === 'products'
+  const collectionPath = isProducts ? '/products' : '/posts'
+
+  // Default sidebar content based on relation
+  const defaultEyebrow = isProducts ? 'The Collection' : 'The Journal'
+  const defaultTitle = isProducts ? (
+    <>
+      Not manufactured.
+      <br />
+      Made.
+    </>
+  ) : (
+    <>
+      Reflections
+      <br />& Rituals.
+    </>
+  )
+  const defaultDescription = isProducts
+    ? 'Every Candera candle designed, poured, and finished by hand — by Olesia, the only maker. No two are exactly alike.'
+    : 'Deep dives into botanical history, studio notes, and the philosophy of slow living.'
+  const defaultLinkText = isProducts ? 'View all →' : 'View all stories →'
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
       {/* Left sidebar — sticky, top-aligned with first image row */}
       <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
         <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
-          The Collection
+          {sidebarEyebrow || defaultEyebrow}
         </p>
         <h2 className="font-display text-[24px] text-candera-obsidian leading-[1.15] m-0">
-          Not manufactured.
-          <br />
-          Made.
+          {sidebarTitle || defaultTitle}
         </h2>
         <p className="font-sans text-[12px] text-candera-sage-text leading-[1.75] m-0">
-          Every Candera candle designed, poured, and finished by hand — by Olesia, the only maker.
-          No two are exactly alike.
+          {sidebarDescription || defaultDescription}
         </p>
         <Link
           href={collectionPath}
@@ -38,7 +66,7 @@ export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts'
             width: 'fit-content',
           }}
         >
-          View all →
+          {sidebarLinkText || defaultLinkText}
         </Link>
       </div>
 
@@ -61,6 +89,8 @@ export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts'
               productTag,
               vessel,
               price,
+              populatedAuthors,
+              publishedAt,
             } = result
 
             const minimizedDoc = {
@@ -78,6 +108,8 @@ export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts'
               productTag,
               vessel,
               price,
+              populatedAuthors,
+              publishedAt,
             }
 
             return (

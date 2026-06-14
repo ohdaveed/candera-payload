@@ -53,13 +53,8 @@ export default async function ContactPage() {
             {/* Left — contact info */}
             <div className="flex flex-col gap-10">
               <div className="flex flex-col gap-5">
-                <h2
-                  className="font-display italic text-candera-obsidian m-0"
-                  style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}
-                >
-                  Inquiries
-                </h2>
-                <p className="font-editorial italic text-[16px] text-candera-sage-text leading-[1.8] m-0">
+                <h2 className="h3">Inquiries</h2>
+                <p className="editorial">
                   For questions about your order, wholesale opportunities, or press — we&apos;d love
                   to hear from you.
                 </p>
@@ -70,13 +65,11 @@ export default async function ContactPage() {
               {/* Contact detail items */}
               <dl className="flex flex-col gap-7">
                 <div>
-                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
-                    Email
-                  </dt>
+                  <dt className="label">Email</dt>
                   <dd className="m-0">
                     <a
                       href="mailto:studio@canderacandles.com"
-                      className="font-sans text-[16px] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+                      className="body hover:text-candera-ember-strong transition-colors"
                     >
                       studio@canderacandles.com
                     </a>
@@ -84,15 +77,13 @@ export default async function ContactPage() {
                 </div>
 
                 <div>
-                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
-                    Social
-                  </dt>
+                  <dt className="label">Social</dt>
                   <dd className="m-0">
                     <a
                       href="https://instagram.com/canderacandles"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-sans text-[16px] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+                      className="body hover:text-candera-ember-strong transition-colors"
                     >
                       @canderacandles
                     </a>
@@ -100,13 +91,9 @@ export default async function ContactPage() {
                 </div>
 
                 <div>
-                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
-                    Studio Hours
-                  </dt>
+                  <dt className="label">Studio Hours</dt>
                   <dd className="m-0">
-                    <p className="font-sans text-[16px] text-candera-obsidian m-0">
-                      By appointment — slow by design.
-                    </p>
+                    <p className="body">By appointment — slow by design.</p>
                   </dd>
                 </div>
               </dl>
@@ -114,21 +101,14 @@ export default async function ContactPage() {
               {/* Footer note */}
               <div className="flex items-center gap-4 mt-auto pt-4">
                 <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-                <span className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text">
-                  Handcrafted in California
-                </span>
+                <span className="eyebrow">Handcrafted in California</span>
               </div>
             </div>
 
             {/* Right — form */}
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-4">
-                <h2
-                  className="font-display italic text-candera-obsidian m-0"
-                  style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}
-                >
-                  Send a Note
-                </h2>
+                <h2 className="h3">Send a Note</h2>
                 <span className="block w-8 h-[2px] bg-candera-ember-strong" aria-hidden="true" />
               </div>
 

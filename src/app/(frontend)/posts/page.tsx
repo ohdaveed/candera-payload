@@ -27,6 +27,8 @@ export default async function Page() {
       slug: true,
       categories: true,
       meta: true,
+      populatedAuthors: true,
+      publishedAt: true,
     },
   })
 
@@ -76,6 +78,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `The Journal | Candera Candles`,
+    title: 'Journal — Candera',
   }
 }

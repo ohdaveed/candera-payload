@@ -52,24 +52,22 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         <CollectionArchive posts={posts} />
       ) : query ? (
         <div className="container pb-32 text-center">
-          <p className="editorial text-[24px] italic text-candera-sage-text mb-8">
-            Nothing found for &ldquo;{query}&rdquo;
-          </p>
+          <p className="h3 text-candera-sage-text mb-8">Nothing found for &ldquo;{query}&rdquo;</p>
           <Link
             href="/products"
-            className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
           >
             ← Return to the Collection
           </Link>
         </div>
       ) : (
         <div className="container pb-32 text-center">
-          <p className="editorial mx-auto mb-8 max-w-[280px] text-[22px] italic text-candera-sage-text sm:max-w-[440px]">
+          <p className="h3 text-candera-sage-text mx-auto mb-8 max-w-[280px] sm:max-w-[440px]">
             Try a note, atmosphere, or ritual mood.
           </p>
           <Link
             href="/products"
-            className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
           >
             Explore the full collection →
           </Link>
@@ -81,6 +79,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Search — Candera`,
+    title: 'Search — Candera',
   }
 }

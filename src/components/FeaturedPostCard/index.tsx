@@ -39,9 +39,7 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           <h2 className="hero-heading text-white mb-3 max-w-[640px]">{post.title}</h2>
 
           {/* white/75 on obsidian/75 base = ~14:1 — passes AA for large/bold text ✅ */}
-          <span className="text-[11px] font-bold uppercase tracking-[.3em] text-white/75">
-            Read the story →
-          </span>
+          <span className="btn-text text-white/75">Read the story →</span>
         </div>
       </article>
     </Link>

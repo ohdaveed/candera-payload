@@ -71,12 +71,12 @@ export default async function Post({ params: paramsPromise }: Args) {
           <RichText
             className="
               max-w-[680px] mx-auto
-              [&_p]:font-serif [&_p]:text-[17px] [&_p]:leading-[1.85] [&_p]:text-candera-obsidian [&_p]:mb-7
-              [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:text-[clamp(1.75rem,3vw,2.5rem)] [&_h2]:leading-tight [&_h2]:mt-16 [&_h2]:mb-6 [&_h2]:m-0
-              [&_h3]:font-display [&_h3]:italic [&_h3]:text-candera-obsidian [&_h3]:text-[1.4rem] [&_h3]:mt-12 [&_h3]:mb-4
-              [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:ml-0 [&_blockquote]:mr-0
-              [&_blockquote_p]:font-display [&_blockquote_p]:italic [&_blockquote_p]:text-[1.5rem] [&_blockquote_p]:leading-snug [&_blockquote_p]:text-candera-obsidian [&_blockquote_p]:mb-0
-              [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:text-candera-obsidian [&_ul_li]:font-serif [&_ul_li]:text-[16px] [&_ul_li]:leading-relaxed
+              [&_p]:body [&_p]:mb-7
+              [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
+              [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4
+              [&_blockquote]:editorial [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
+              [&_blockquote_p]:h3 [&_blockquote_p]:mb-0
+              [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:body
               [&_a]:text-candera-ember-strong [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-candera-obsidian [&_a]:transition-colors
             "
             data={post.content}
@@ -96,10 +96,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           </div>
 
           {/* Headline */}
-          <p
-            className="font-display italic text-white leading-[1.15] max-w-[36rem] m-0"
-            style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
-          >
+          <p className="h2 text-white leading-[1.15] max-w-[36rem] m-0">
             Be the first to know about new batches, scent notes, and studio moments.
           </p>
 
@@ -107,9 +104,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             <Link href="/contact">Join the Circle</Link>
           </Button>
 
-          <p className="text-[10px] uppercase tracking-[.2em] text-white/50 m-0">
-            No noise. Unsubscribe anytime.
-          </p>
+          <p className="caption text-white/50 m-0">No noise. Unsubscribe anytime.</p>
         </Container>
       </aside>
 
@@ -142,7 +137,13 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const post = await queryPostBySlug({ slug: decodedSlug })
 
-  return generateMeta({ doc: post })
+  const meta = await generateMeta({ doc: post })
+
+  if (post?.title) {
+    meta.title = `${post.title} — Candera`
+  }
+
+  return meta
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {

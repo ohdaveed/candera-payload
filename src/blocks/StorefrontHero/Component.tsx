@@ -56,20 +56,13 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             </div>
           )}
 
-          <h1
-            className="text-candera-vellum m-0 font-display font-normal italic tracking-tight leading-[1.0]"
-            style={{ fontSize: 'clamp(3rem, 6.5vw, 4.75rem)' }}
-          >
-            {headline}
-          </h1>
+          <h1 className="hero-heading text-candera-vellum m-0">{headline}</h1>
 
           {/* Ember rule between headline and subheading */}
           <span className="block w-10 h-[1px] bg-candera-ember mt-5 mb-4" aria-hidden="true" />
 
           {subheading && (
-            <p className="font-display italic text-[14px] text-white/65 leading-[1.75] max-w-[360px] m-0">
-              {subheading}
-            </p>
+            <p className="editorial italic text-white/65 max-w-[360px] m-0">{subheading}</p>
           )}
 
           <nav className="flex flex-wrap items-center gap-4 mt-8">
@@ -96,7 +89,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             {secondaryCtaLabel && secondaryCtaUrl && (
               <Link
                 href={secondaryCtaUrl}
-                className="font-sans text-[10px] font-semibold uppercase tracking-[.25em] text-candera-vellum border border-white/40 px-6 py-[14px] hover:border-white/70 transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 outline-none rounded-sm"
+                className="btn-text text-candera-vellum border border-white/40 px-6 py-[14px] hover:border-white/70 transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 outline-none rounded-sm"
               >
                 {secondaryCtaLabel}
               </Link>

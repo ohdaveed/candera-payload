@@ -57,7 +57,7 @@ export const Search: React.FC = () => {
             setValue(event.target.value)
           }}
           placeholder="Sandalwood, citrus, smoke…"
-          className="h-[48px] min-h-[48px] border-candera-stone/50 bg-candera-vellum/60 px-5 py-3 text-center font-sans text-[15px] leading-[1.2]"
+          className="h-[48px] min-h-[48px] border-candera-stone/50 bg-candera-vellum/60 px-5 py-3 text-center"
         />
         <button type="submit" className="sr-only">
           submit

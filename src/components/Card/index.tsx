@@ -11,8 +11,13 @@ import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { ProductTagBadge } from './ProductTagBadge'
 import { QuickViewDialog } from './QuickViewDialog'
+import { formatAuthors } from '@/utilities/formatAuthors'
+import { formatDateTime } from '@/utilities/formatDateTime'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> & {
+export type CardPostData = Pick<
+  Post,
+  'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt'
+> & {
   extraPhotos?: Product['extraPhotos']
   etsyListingId?: Product['etsyListingId']
   tagline?: Product['tagline']
@@ -60,6 +65,8 @@ export const Card: React.FC<{
     specifications,
     isCustomizable,
     customizationLabel,
+    populatedAuthors,
+    publishedAt,
   } = doc || {}
   const { description, image: metaImage } = meta || {}
 
@@ -70,6 +77,10 @@ export const Card: React.FC<{
 
   // For products, use the first extra photo as the image if meta image is missing
   const imageToUse = metaImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
+
+  const isPosts = relationTo === 'posts'
+  const hasAuthors =
+    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
     <motion.div
@@ -85,7 +96,12 @@ export const Card: React.FC<{
           className,
         )}
       >
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-candera-ash">
+        <div
+          className={cn('relative w-full overflow-hidden bg-candera-ash', {
+            'aspect-[4/5]': !isPosts,
+            'aspect-[3/2]': isPosts,
+          })}
+        >
           {!imageToUse ? (
             <div className="flex h-full items-center justify-center px-4 text-center text-sm text-candera-sage-text italic">
               Image unavailable
@@ -203,6 +219,29 @@ export const Card: React.FC<{
                 </Link>
               </CardTitle>
             ) : null}
+
+            {/* Post Metadata — Author & Date */}
+            {isPosts && (hasAuthors || publishedAt) && (
+              <div className="flex items-center gap-2 mt-2">
+                {hasAuthors && (
+                  <span className="font-editorial italic text-candera-sage-text text-[13px]">
+                    By {formatAuthors(populatedAuthors)}
+                  </span>
+                )}
+                {hasAuthors && publishedAt && (
+                  <span className="text-candera-stone/40 text-[10px]">•</span>
+                )}
+                {publishedAt && (
+                  <time
+                    className="font-editorial italic text-candera-sage-text text-[13px]"
+                    dateTime={publishedAt}
+                  >
+                    {formatDateTime(publishedAt)}
+                  </time>
+                )}
+              </div>
+            )}
+
             {/* Price — mid-tone, clear gap */}
             {price != null && (
               <p className="font-sans text-[13px] font-semibold text-[#4a3f34] mt-[10px] m-0 tabular-nums">

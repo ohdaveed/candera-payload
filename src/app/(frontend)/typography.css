@@ -39,8 +39,8 @@
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: theme('fontSize.hero');
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    line-height: theme('lineHeight.hero');
+    letter-spacing: theme('letterSpacing.display');
     margin: 0;
     overflow-wrap: anywhere;
   }
@@ -49,8 +49,8 @@
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: theme('fontSize.hero');
-    line-height: 1.08;
-    letter-spacing: -0.01em;
+    line-height: theme('lineHeight.hero');
+    letter-spacing: theme('letterSpacing.display');
     margin: 0;
     overflow-wrap: anywhere;
   }
@@ -60,38 +60,38 @@
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: theme('fontSize.3xl');
-    line-height: 1.2;
+    line-height: theme('lineHeight.h2');
     margin: 0;
   }
 
   h3,
   .h3 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: 1.75rem;
-    line-height: 1.3;
+    font-size: theme('fontSize.2xl');
+    line-height: theme('lineHeight.h3');
     margin: 0;
   }
 
   h4,
   .h4 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: 1.25rem;
-    line-height: 1.3;
+    font-size: theme('fontSize.xl');
+    line-height: theme('lineHeight.h4');
     margin: 0;
   }
 
   /* Eyebrow / kicker — uppercase, wide tracking */
   .eyebrow {
     @apply font-sans font-bold text-candera-ember-strong uppercase;
-    font-size: 0.64rem;
-    letter-spacing: 0.3em;
+    font-size: theme('fontSize.xs');
+    letter-spacing: theme('letterSpacing.widest');
     margin: 0;
   }
 
   .label {
     @apply font-sans font-semibold text-candera-sage-text uppercase;
-    font-size: 0.64rem;
-    letter-spacing: 0.2em;
+    font-size: theme('fontSize.xs');
+    letter-spacing: theme('letterSpacing.wider');
     margin: 0;
   }
 
@@ -99,8 +99,8 @@
   label,
   .label {
     @apply font-sans font-bold text-candera-sage-text uppercase block mb-2;
-    font-size: 0.64rem;
-    letter-spacing: 0.25em;
+    font-size: theme('fontSize.xs');
+    letter-spacing: theme('letterSpacing.wider');
   }
 
   input[type='text'],
@@ -109,7 +109,7 @@
   textarea,
   select {
     @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-[15px] transition-all duration-300;
-    border-radius: 2px;
+    border-radius: theme('borderRadius.input');
   }
 
   input:focus-visible,
@@ -124,31 +124,31 @@
   p,
   .body {
     @apply font-sans text-candera-obsidian font-light;
-    font-size: 1rem;
-    line-height: 1.75;
+    font-size: theme('fontSize.base');
+    line-height: theme('lineHeight.body');
     text-wrap: pretty;
     margin: 0;
   }
 
   .lead {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: 1.25rem;
-    line-height: 1.75;
+    font-size: theme('fontSize.lg');
+    line-height: theme('lineHeight.body');
     margin: 0;
   }
 
   /* Editorial / pull-quote — EB Garamond italic */
   .editorial {
     @apply font-editorial font-normal italic text-candera-sage-text;
-    font-size: 1.25rem;
-    line-height: 1.7;
+    font-size: theme('fontSize.lg');
+    line-height: theme('lineHeight.relaxed');
     margin: 0;
   }
 
   /* Price — DM Sans, tabular */
   .price {
     @apply font-sans font-light text-candera-obsidian;
-    letter-spacing: 0.1em;
+    letter-spacing: theme('letterSpacing.wide');
     font-variant-numeric: tabular-nums;
     margin: 0;
   }
@@ -156,8 +156,8 @@
   /* Button text */
   .btn-text {
     @apply font-sans font-semibold uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
+    font-size: theme('fontSize.sm');
+    letter-spacing: theme('letterSpacing.wider');
     text-transform: uppercase;
   }
 
@@ -165,7 +165,7 @@
   .caption,
   .small {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: 0.8rem;
+    font-size: theme('fontSize.sm');
     line-height: 1.5;
     margin: 0;
   }

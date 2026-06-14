@@ -66,6 +66,7 @@ const config = {
         h2: '1.1',
         h3: '1.15',
         h4: '1.2',
+        body: '1.75',
       },
 
       /* ---- CANDERA Spacing (8px base) ---- */
