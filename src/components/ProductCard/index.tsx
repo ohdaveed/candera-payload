@@ -100,7 +100,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, showCategorie
           <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-1">
             <Link
               href={href}
-              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember-strong transition-colors"
+              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
             >
               {title}
             </Link>

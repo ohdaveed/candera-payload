@@ -55,7 +55,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             {heroTag && (
               <div className="flex items-center gap-3 mb-6">
                 <span className="block w-7 h-[1px] bg-candera-ember" aria-hidden="true" />
-                <Eyebrow className="text-[#EAD8C0]">{heroTag}</Eyebrow>
+                <Eyebrow className="text-candera-linen/70">{heroTag}</Eyebrow>
               </div>
             )}
 
@@ -129,53 +129,19 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
                 <div className="h-px bg-candera-vellum/10" />
 
-                {/* Two-column grid metrics */}
-                <div className="grid grid-cols-2 gap-4 items-end">
-                  {/* Left Column — batch status info */}
-                  <div className="flex flex-col gap-3">
-                    {statusCardStatus || statusCardShips ? (
-                      <>
-                        {statusCardStatus && (
-                          <div>
-                            <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
-                              Status
-                            </span>
-                            <span className="text-sm font-semibold text-candera-vellum">
-                              {statusCardStatus}
-                            </span>
-                          </div>
-                        )}
-                        {statusCardShips && (
-                          <div>
-                            <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
-                              Ships
-                            </span>
-                            <span className="text-sm font-semibold text-candera-vellum">
-                              {statusCardShips}
-                            </span>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <span className="block text-[11px] font-bold uppercase tracking-[.18em] text-candera-stone/50 mb-1">
-                          Limited Batch
-                        </span>
-                        <span className="text-sm font-semibold text-candera-vellum">
-                          47 units total
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  {/* Right Column */}
-                  <div className="text-right">
-                    <Link
-                      href={statusCardLinkUrl || '/products/wild-lilac'}
-                      className="text-xs font-bold uppercase tracking-[.18em] text-[#EAD8C0] hover:text-white transition-colors underline decoration-1 underline-offset-4"
-                    >
-                      View Scent →
-                    </Link>
-                  </div>
+                {/* Status summary — single line */}
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-candera-vellum/70">
+                    {statusCardStatus || statusCardShips
+                      ? [statusCardStatus, statusCardShips].filter(Boolean).join(' · ')
+                      : 'Limited Batch · 47 units total'}
+                  </span>
+                  <Link
+                    href={statusCardLinkUrl || '/products/wild-lilac'}
+                    className="text-xs font-bold uppercase tracking-[.18em] text-candera-linen/70 hover:text-white transition-colors underline decoration-1 underline-offset-4"
+                  >
+                    View Scent →
+                  </Link>
                 </div>
               </div>
             </div>

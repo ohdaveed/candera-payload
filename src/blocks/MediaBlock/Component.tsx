@@ -11,7 +11,6 @@ import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 
 type Props = MediaBlockProps & {
-  breakout?: boolean
   captionClassName?: string
   className?: string
   enableGutter?: boolean

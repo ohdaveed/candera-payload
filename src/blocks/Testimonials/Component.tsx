@@ -25,7 +25,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
                   &ldquo;{item.quote.replace(/^["\u201C\u201D]+|["\u201C\u201D]+$/g, '')}&rdquo;
                 </p>
               </blockquote>
-              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#EAD8C0] mt-auto">
+              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-candera-linen/70 mt-auto">
                 {item.author}
                 {item.location ? ` — ${item.location}` : ''}
               </p>

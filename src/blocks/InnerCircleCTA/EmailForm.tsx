@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { getClientSideURL } from '@/utilities/getURL'
 
@@ -77,7 +78,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             placeholder="you@example.com"
             autoComplete="email"
             aria-label="Email address"
-            className="flex-1 bg-transparent px-6 py-2.5 text-candera-vellum placeholder-candera-stone/50 font-sans text-sm outline-none border-none focus:outline-none focus:ring-0"
+            className="flex-1 bg-transparent px-6 py-2.5 text-candera-vellum placeholder-candera-stone/50 font-sans text-sm outline-none border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
             spellCheck={false}
             {...register('email', {
               required: 'Email is required',
@@ -108,7 +109,13 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
       {/* All microcopy consolidated directly below the input */}
       <p className="font-sans text-xs m-0 text-candera-stone/50 px-4">
-        Early access · Studio notes · No spam · Unsubscribe any time
+        Early access · Studio notes · No spam · Unsubscribe any time ·{' '}
+        <Link
+          href="/privacy-policy"
+          className="underline underline-offset-2 hover:text-candera-vellum/60 transition-colors"
+        >
+          Privacy Policy
+        </Link>
       </p>
     </div>
   )

@@ -292,9 +292,28 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-16 leading-tight max-w-3xl">
+              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-8 leading-tight max-w-3xl">
                 {currentQuestion.prompt}
               </h2>
+              {step > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const prevAnswers = [...answers]
+                    prevAnswers.pop()
+                    const params = new URLSearchParams(searchParams.toString())
+                    if (prevAnswers.length > 0) {
+                      params.set('q', prevAnswers.join('-'))
+                    } else {
+                      params.delete('q')
+                    }
+                    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+                  }}
+                  className="font-sans text-xs text-candera-linen/40 hover:text-candera-linen/70 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+                >
+                  ← Back
+                </button>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                 {currentQuestion.options.map((option, i) => {
                   // Highlight the previously-selected answer when navigating back
@@ -566,6 +585,18 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   </Button>
                 </motion.div>
               )}
+              <motion.button
+                type="button"
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString())
+                  params.delete('q')
+                  router.push(`${pathname}?${params.toString()}`, { scroll: false })
+                }}
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                className="font-sans text-xs text-candera-linen/30 hover:text-candera-linen/60 uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+              >
+                Retake the Quiz
+              </motion.button>
             </motion.div>
           ) : null}
         </AnimatePresence>
