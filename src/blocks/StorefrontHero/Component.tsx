@@ -21,6 +21,13 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   primaryCtaUrl,
   secondaryCtaLabel,
   secondaryCtaUrl,
+  showStatusCard,
+  statusCardTitle,
+  statusCardPrice = '$38',
+  statusCardSubtitle,
+  statusCardStatus,
+  statusCardShips,
+  statusCardLinkUrl = '/products/wild-lilac',
 }) => {
   return (
     <Section
@@ -31,10 +38,11 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       {media && typeof media === 'object' && (
         <div className="absolute inset-0" aria-hidden="true">
           <Media fill imgClassName="object-cover brightness-[0.38]" priority resource={media} />
+          <div className="absolute inset-0 bg-black/25" aria-hidden="true" />
         </div>
       )}
 
-      {/* 110deg directional gradient — left heavy, fades to transparent */}
+      {/* Gradient overlay */}
       <span
         className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,6,4,0.95)_0%,rgba(8,6,4,0.55)_50%,transparent_100%)]"
         aria-hidden="true"
@@ -43,55 +51,111 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
       <FilmGrain />
 
       {/* Content */}
-      <Container className="relative z-10 pb-14 pt-32 md:pt-44 max-w-[600px]">
-        <header className="flex flex-col items-start text-left">
-          {heroTag && (
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-7 h-[1px] bg-candera-ember" aria-hidden="true" />
-              <Eyebrow className="text-candera-ember">{heroTag}</Eyebrow>
+      <Container className="relative z-10 pb-14 pt-32 md:pt-44 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-12 items-end justify-between gap-12 md:gap-16">
+          <header className="md:col-span-8 flex flex-col items-start text-left max-w-[640px]">
+            {heroTag && (
+              <div className="flex items-center gap-3 mb-6">
+                <span className="block w-7 h-[1px] bg-candera-ember" aria-hidden="true" />
+                <Eyebrow className="text-[#EAD8C0]">{heroTag}</Eyebrow>
+              </div>
+            )}
+
+            <h1 className="hero-heading text-candera-vellum m-0">{headline}</h1>
+
+            <span className="block w-10 h-[1px] bg-candera-ember mt-5 mb-4" aria-hidden="true" />
+
+            {subheading && (
+              <p className="editorial text-candera-vellum/80 max-w-[420px] m-0">{subheading}</p>
+            )}
+
+            <nav className="flex flex-wrap items-center gap-4 mt-8">
+              {primaryCtaLabel && primaryCtaUrl && (
+                <Button
+                  asChild
+                  variant="cta-ember"
+                  size="cta"
+                  className="bg-candera-ember text-candera-obsidian hover:bg-candera-vellum hover:text-candera-obsidian transition-colors"
+                >
+                  <Link href={primaryCtaUrl}>
+                    {primaryCtaLabel}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </Button>
+              )}
+              {secondaryCtaLabel && secondaryCtaUrl && (
+                <Link
+                  href={secondaryCtaUrl}
+                  className="btn-text text-candera-vellum/85 hover:text-candera-vellum underline-offset-4 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+                >
+                  {secondaryCtaLabel}
+                </Link>
+              )}
+            </nav>
+          </header>
+
+          {/* Right — Status Card */}
+          {showStatusCard && (
+            <div className="md:col-span-4 w-full flex justify-end">
+              <div className="bg-white/[0.02] border border-candera-vellum/15 p-[1.5rem] flex flex-col gap-4 hover:border-candera-vellum/25 transition-all duration-300 rounded-none shadow-xl w-full max-w-[340px]">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <span className="font-display italic text-lg text-candera-vellum">
+                    {statusCardTitle || 'Featured Candle'}
+                  </span>
+                  {statusCardPrice && (
+                    <span className="font-sans font-semibold text-lg text-candera-vellum">
+                      {statusCardPrice}
+                    </span>
+                  )}
+                </div>
+
+                {/* Subtitle */}
+                {statusCardSubtitle && (
+                  <p className="font-editorial italic text-candera-stone/85 text-sm m-0 -mt-1">
+                    {statusCardSubtitle}
+                  </p>
+                )}
+
+                <div className="h-px bg-candera-vellum/10" />
+
+                {/* Two-column grid metrics */}
+                <div className="grid grid-cols-2 gap-4 items-end">
+                  {/* Left Column */}
+                  <div>
+                    <span className="block text-[9px] font-bold uppercase tracking-[.22em] text-candera-stone/50 mb-1">
+                      {statusCardStatus || 'Limited Batch'}
+                    </span>
+                    <span className="text-sm font-semibold text-candera-vellum">
+                      {statusCardShips || '47 units total'}
+                    </span>
+                  </div>
+                  {/* Right Column */}
+                  <div className="text-right">
+                    <Link
+                      href={statusCardLinkUrl || '/products/wild-lilac'}
+                      className="text-xs font-bold uppercase tracking-[.18em] text-[#EAD8C0] hover:text-white transition-colors underline decoration-1 underline-offset-4"
+                    >
+                      View Scent →
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-
-          <h1 className="hero-heading text-candera-vellum m-0">{headline}</h1>
-
-          {/* Ember rule between headline and subheading */}
-          <span className="block w-10 h-[1px] bg-candera-ember mt-5 mb-4" aria-hidden="true" />
-
-          {subheading && (
-            <p className="editorial text-candera-vellum/65 max-w-[360px] m-0">{subheading}</p>
-          )}
-
-          <nav className="flex flex-wrap items-center gap-4 mt-8">
-            {primaryCtaLabel && primaryCtaUrl && (
-              <Button asChild variant="cta-ember" size="cta">
-                <Link href={primaryCtaUrl}>
-                  {primaryCtaLabel}
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </Button>
-            )}
-            {secondaryCtaLabel && secondaryCtaUrl && (
-              <Link
-                href={secondaryCtaUrl}
-                className="btn-text text-candera-vellum/70 hover:text-candera-vellum underline-offset-4 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
-              >
-                {secondaryCtaLabel}
-              </Link>
-            )}
-          </nav>
-        </header>
+        </div>
       </Container>
     </Section>
   )
