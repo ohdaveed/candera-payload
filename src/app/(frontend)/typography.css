@@ -1,10 +1,10 @@
 @layer base {
-  /* Font CSS custom properties for use in Tailwind config prose styles */
+  /* Font CSS custom properties for use in prose styles */
   :root {
-    --font-sans: theme('fontFamily.sans');
-    --font-display: theme('fontFamily.display');
-    --font-editorial: theme('fontFamily.editorial');
-    --font-mono: theme('fontFamily.mono');
+    --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+    --font-display: var(--font-fraunces), Georgia, serif;
+    --font-editorial: var(--font-eb-garamond), Georgia, serif;
+    --font-mono: var(--font-geist-mono), monospace;
   }
 
   h1,
@@ -38,9 +38,9 @@
   .h1 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.hero');
-    line-height: theme('lineHeight.hero');
-    letter-spacing: theme('letterSpacing.display');
+    font-size: var(--font-size-hero);
+    line-height: var(--leading-hero);
+    letter-spacing: var(--tracking-display);
     margin: 0;
     overflow-wrap: anywhere;
   }
@@ -48,9 +48,9 @@
   .hero-heading {
     @apply font-display font-normal italic text-candera-obsidian text-pretty;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.hero');
-    line-height: theme('lineHeight.hero');
-    letter-spacing: theme('letterSpacing.display');
+    font-size: var(--font-size-hero);
+    line-height: var(--leading-hero);
+    letter-spacing: var(--tracking-display);
     margin: 0;
     overflow-wrap: break-word;
   }
@@ -59,39 +59,39 @@
   .h2 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: theme('fontSize.3xl');
-    line-height: theme('lineHeight.h2');
+    font-size: var(--font-size-3xl);
+    line-height: var(--leading-h2);
     margin: 0;
   }
 
   h3,
   .h3 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: theme('fontSize.2xl');
-    line-height: theme('lineHeight.h3');
+    font-size: var(--font-size-2xl);
+    line-height: var(--leading-h3);
     margin: 0;
   }
 
   h4,
   .h4 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
-    font-size: theme('fontSize.xl');
-    line-height: theme('lineHeight.h4');
+    font-size: var(--font-size-xl);
+    line-height: var(--leading-h4);
     margin: 0;
   }
 
   /* Eyebrow / kicker — uppercase, wide tracking */
   .eyebrow {
     @apply font-sans font-bold text-candera-ember-strong uppercase;
-    font-size: theme('fontSize.xs');
-    letter-spacing: theme('letterSpacing.widest');
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-widest);
     margin: 0;
   }
 
   .label {
     @apply font-sans font-semibold text-candera-sage-text uppercase;
-    font-size: theme('fontSize.xs');
-    letter-spacing: theme('letterSpacing.wider');
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wider);
     margin: 0;
   }
 
@@ -99,8 +99,8 @@
   label,
   .label {
     @apply font-sans font-bold text-candera-sage-text uppercase block mb-2;
-    font-size: theme('fontSize.xs');
-    letter-spacing: theme('letterSpacing.wider');
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wider);
   }
 
   input[type='text'],
@@ -109,14 +109,14 @@
   textarea,
   select {
     @apply bg-candera-vellum/50 border border-candera-stone/30 px-4 py-3 font-sans font-light text-base transition-all duration-300;
-    border-radius: theme('borderRadius.input');
+    border-radius: var(--radius-input);
   }
 
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    @apply border-candera-ember-strong/50 bg-white shadow-sm;
-    outline: 2px solid theme('colors.candera.ember.strong / 50%');
+    @apply border-candera-ember-strong/50 bg-candera-linen shadow-sm;
+    outline: 2px solid color-mix(in oklch, var(--color-candera-ember-strong) 50%, transparent);
     outline-offset: 2px;
   }
 
@@ -124,31 +124,31 @@
   p,
   .body {
     @apply font-sans text-candera-obsidian font-light;
-    font-size: theme('fontSize.base');
-    line-height: theme('lineHeight.body');
+    font-size: var(--font-size-base);
+    line-height: var(--leading-body);
     text-wrap: pretty;
     margin: 0;
   }
 
   .lead {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: theme('fontSize.lg');
-    line-height: theme('lineHeight.body');
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-body);
     margin: 0;
   }
 
   /* Editorial / pull-quote — EB Garamond italic */
   .editorial {
     @apply font-editorial font-normal italic text-candera-sage-text;
-    font-size: theme('fontSize.lg');
-    line-height: theme('lineHeight.relaxed');
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-relaxed);
     margin: 0;
   }
 
   /* Price — DM Sans, tabular */
   .price {
     @apply font-sans font-light text-candera-obsidian;
-    letter-spacing: theme('letterSpacing.wide');
+    letter-spacing: var(--tracking-wide);
     font-variant-numeric: tabular-nums;
     margin: 0;
   }
@@ -156,8 +156,8 @@
   /* Button text */
   .btn-text {
     @apply font-sans font-semibold uppercase;
-    font-size: theme('fontSize.sm');
-    letter-spacing: theme('letterSpacing.wider');
+    font-size: var(--font-size-sm);
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
   }
 
@@ -165,7 +165,7 @@
   .caption,
   .small {
     @apply font-sans text-candera-sage-text font-light;
-    font-size: theme('fontSize.sm');
+    font-size: var(--font-size-sm);
     line-height: 1.5;
     margin: 0;
   }
