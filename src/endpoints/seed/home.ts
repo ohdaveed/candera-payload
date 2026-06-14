@@ -42,7 +42,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         primaryCtaUrl: '/products',
         secondaryCtaLabel: 'Take the Scent Quiz →',
         secondaryCtaUrl: '#scent-quiz',
-        showStatusCard: true,
+        showStatusCard: false,
         statusCardTitle: 'Studio Status',
         statusCardSubtitle: 'Hand-pouring series 01',
         statusCardStatus: 'In Progress',
