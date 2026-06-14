@@ -85,7 +85,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             {secondaryCtaLabel && secondaryCtaUrl && (
               <Link
                 href={secondaryCtaUrl}
-                className="btn-text text-candera-vellum border border-white/40 px-6 py-3.5 hover:border-white/70 transition-colors focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 outline-none rounded-none"
+                className="btn-text text-candera-vellum/70 hover:text-candera-vellum underline-offset-4 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
               >
                 {secondaryCtaLabel}
               </Link>

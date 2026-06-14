@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -77,6 +77,7 @@ function parseAnswers(raw: string | null): number[] {
 type InnerProps = ScentQuizBlockType
 
 const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
+  const shouldReduceMotion = useReducedMotion()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -200,7 +201,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.15 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 2 }}
             className="absolute inset-0 pointer-events-none"
           >
             <Media fill resource={result.ambientImage} imgClassName="object-cover" />
@@ -227,7 +228,11 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 className="absolute top-0 left-0 h-full bg-candera-ember"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 50, damping: 20 }
+                }
               />
             </div>
           </motion.div>
@@ -246,17 +251,29 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 <motion.div
                   className="absolute inset-0 border border-candera-ember/20 rounded-full"
                   animate={{ scale: [1, 2, 1], opacity: [0.2, 0, 0.2] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 3,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'easeInOut',
+                  }}
                 />
                 <motion.div
                   className="absolute inset-2 border border-candera-ember/40 rounded-full border-r-transparent border-b-transparent"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 4,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'linear',
+                  }}
                 />
                 <motion.div
                   className="absolute inset-4 border border-candera-ember rounded-full border-l-transparent border-t-transparent"
                   animate={{ rotate: -360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 2,
+                    repeat: shouldReduceMotion ? 0 : Infinity,
+                    ease: 'linear',
+                  }}
                 />
               </div>
               <p className="font-display text-3xl text-candera-linen italic tracking-wide">
@@ -269,7 +286,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
               <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-16 leading-tight max-w-3xl">

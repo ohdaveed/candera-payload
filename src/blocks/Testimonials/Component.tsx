@@ -39,7 +39,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
         {secondary.map((t, i) => (
           <div
             key={i}
-            className={`px-6 py-10 md:px-10 min-h-[160px] flex flex-col justify-start${i < secondary.length - 1 ? ' border-b border-candera-stone/5' : ''}`}
+            className={`px-6 py-10 md:px-10 md:min-h-[160px] flex flex-col justify-start${i < secondary.length - 1 ? ' border-b border-candera-stone/5' : ''}`}
           >
             <blockquote className="m-0">
               <p className="editorial text-candera-stone m-0">&ldquo;{t.quote}&rdquo;</p>
