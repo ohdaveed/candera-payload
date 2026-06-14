@@ -170,4 +170,30 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
+## Known schema/config mismatch risks
+
+This project has had two incidents where a Payload block field was added to the config
+but no migration was created, causing build/prerender failures (StorefrontHero) or
+latent DB write errors (Archive `relation_to` enum). To prevent recurrence:
+
+- **When adding a new field to any collection or block config**, always run
+  `pnpm payload migrate:create` immediately afterward to generate the migration.
+  If `migrate:create` is broken (crypto module resolution), write the `.ts`
+  migration manually following the pattern in `src/migrations/`.
+- **After a `pnpm generate:types`**, verify the migration index at
+  `src/migrations/index.ts` includes the new migration.
+- **Before deploying**, run `pnpm payload migrate` against the target DB
+  (locally or via `pass-cli run --env-file .env -- pnpm payload migrate`).
+
+### Audit checklist (run when changing block/collection fields)
+
+1. `grep -r "status_card_price\|status_card_link_url" src/migrations/` — confirm migration matches config
+2. For any `select` field with DB enum, cross-reference the enum values in the
+   **initial migration** (`20260409_155721_initial`) against the `options` in the
+   config — if new options were added, they need an `ALTER TYPE ... ADD VALUE`
+   migration.
+3. `pnpm payload migrate:create` generates both `.ts` and `.json` files — if only a
+   `.ts` exists without its `.json`, the migration metadata is incomplete (the JSON
+   is the Drizzle Kit snapshot for the migration chain).
+
 <!--VITE PLUS END-->
