@@ -6,9 +6,9 @@ const PageClient: React.FC = () => {
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
-    // Default to light — HighImpactHero overrides to dark via its own useEffect when active
-    setHeaderTheme('light')
+    setHeaderTheme('dark')
   }, [setHeaderTheme])
+
   return <React.Fragment />
 }
 

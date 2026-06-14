@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ContactForm } from '@/components/ContactForm'
-import { PageHeader } from '@/components/PageHeader'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
+import PageClient from './page.client'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,81 +28,115 @@ export default async function ContactPage() {
   const contactFormId = formsResult.docs[0]?.id ?? 0
 
   return (
-    <Section padding="large" className="bg-candera-linen min-h-screen pt-28 md:pt-32">
-      <Container>
-        <Section as="article" padding="none" className="max-w-[800px] mx-auto">
-          <PageHeader
-            align="center"
-            eyebrow="Get in Touch"
-            title="Connect with the Studio"
-            maxWidthClassName="max-w-[800px]"
-            className="mb-12"
-          />
+    <main className="bg-candera-vellum min-h-screen">
+      <PageClient />
 
-          <Section
-            as="section"
-            padding="none"
-            className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mt-14 md:mt-20"
-          >
-            {/* Left column — contact info */}
-            <Section as="section" padding="none">
-              <h2 className="font-display text-2xl mb-6">Inquiries</h2>
-              <p className="editorial text-candera-sage-text leading-relaxed mb-10">
-                For questions regarding your order, wholesale opportunities, or press inquiries,
-                please reach out to us. We strive to respond within 48 hours, though we favor a
-                slower pace in the studio.
-              </p>
+      <EditorialPageHero
+        eyebrow="Candera Studio"
+        title="Begin a conversation."
+        description="We respond with intention — not automation. Expect a reply within 48 hours."
+        decorativeWord="Studio"
+        minHeight="52vh"
+      >
+        {/* Vertical ember rule — drops from nav, unique to the contact page */}
+        <span
+          className="absolute left-1/2 top-[var(--nav-height)] w-[1px] bg-candera-ember-strong/30 pointer-events-none"
+          style={{ height: '4rem' }}
+          aria-hidden="true"
+        />
+      </EditorialPageHero>
 
-              <Section as="section" padding="none" className="flex flex-col gap-6">
-                <Section as="section" padding="none">
-                  <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
+      {/* ── Content ────────────────────────────────────────────────── */}
+      <Section padding="large">
+        <Container>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 max-w-[1000px] mx-auto">
+            {/* Left — contact info */}
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-5">
+                <h2
+                  className="font-display italic text-candera-obsidian m-0"
+                  style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}
+                >
+                  Inquiries
+                </h2>
+                <p className="font-editorial italic text-[16px] text-candera-sage-text leading-[1.8] m-0">
+                  For questions about your order, wholesale opportunities, or press — we&apos;d love
+                  to hear from you.
+                </p>
+              </div>
+
+              <span className="h-[1px] bg-candera-stone/20 block" aria-hidden="true" />
+
+              {/* Contact detail items */}
+              <dl className="flex flex-col gap-7">
+                <div>
+                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
                     Email
-                  </span>
-                  <a
-                    href="mailto:studio@canderacandles.com"
-                    className="font-sans text-lg text-candera-obsidian hover:text-candera-ember-strong transition-colors"
-                  >
-                    studio@canderacandles.com
-                  </a>
-                </Section>
+                  </dt>
+                  <dd className="m-0">
+                    <a
+                      href="mailto:studio@canderacandles.com"
+                      className="font-sans text-[16px] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+                    >
+                      studio@canderacandles.com
+                    </a>
+                  </dd>
+                </div>
 
-                <Section as="section" padding="none">
-                  <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
+                <div>
+                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
                     Social
-                  </span>
-                  <a
-                    href="https://instagram.com/canderacandles"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-sans text-lg text-candera-obsidian hover:text-candera-ember-strong transition-colors"
-                  >
-                    @canderacandles
-                  </a>
-                </Section>
+                  </dt>
+                  <dd className="m-0">
+                    <a
+                      href="https://instagram.com/canderacandles"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-sans text-[16px] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
+                    >
+                      @canderacandles
+                    </a>
+                  </dd>
+                </div>
 
-                <Section as="section" padding="none">
-                  <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em] text-candera-sage-text block mb-1">
+                <div>
+                  <dt className="font-sans text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text mb-1.5">
                     Studio Hours
-                  </span>
-                  <p className="font-sans text-lg text-candera-obsidian">
-                    By appointment — slow by design.
-                  </p>
-                </Section>
-              </Section>
-            </Section>
+                  </dt>
+                  <dd className="m-0">
+                    <p className="font-sans text-[16px] text-candera-obsidian m-0">
+                      By appointment — slow by design.
+                    </p>
+                  </dd>
+                </div>
+              </dl>
 
-            {/* Right column — contact form */}
-            <Section
-              as="aside"
-              padding="none"
-              className="relative bg-candera-vellum/50 p-6 sm:p-8 md:p-10 border border-candera-stone/20 rounded-sm border-l-2 border-l-candera-ember overflow-hidden"
-            >
-              <h2 className="font-display text-2xl mb-8">Send a Note</h2>
+              {/* Footer note */}
+              <div className="flex items-center gap-4 mt-auto pt-4">
+                <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
+                <span className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-sage-text">
+                  Handcrafted in California
+                </span>
+              </div>
+            </div>
+
+            {/* Right — form */}
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4">
+                <h2
+                  className="font-display italic text-candera-obsidian m-0"
+                  style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}
+                >
+                  Send a Note
+                </h2>
+                <span className="block w-8 h-[2px] bg-candera-ember-strong" aria-hidden="true" />
+              </div>
+
               <ContactForm formId={contactFormId} />
-            </Section>
-          </Section>
-        </Section>
-      </Container>
-    </Section>
+            </div>
+          </div>
+        </Container>
+      </Section>
+    </main>
   )
 }
