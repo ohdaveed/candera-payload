@@ -56,7 +56,7 @@ export const PostHero: React.FC<{
         <Container>
           <Link
             href="/posts"
-            className="eyebrow inline-flex items-center gap-2 text-white/70 hover:text-candera-ember transition-colors"
+            className="eyebrow inline-flex items-center gap-2 text-candera-vellum/70 hover:text-candera-ember transition-colors"
           >
             <svg
               width="12"
@@ -93,26 +93,31 @@ export const PostHero: React.FC<{
         )}
 
         {/* Title */}
-        <h1 className="hero-heading text-white m-0">{title}</h1>
+        <h1 className="hero-heading text-candera-vellum m-0">{title}</h1>
 
         {/* Byline */}
         {(hasAuthors || publishedAt || readTime) && (
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8">
             {hasAuthors && (
               <span className="flex items-center gap-2.5">
-                <span className="label text-white/75">By</span>
-                <span className="editorial text-white/80">{formatAuthors(populatedAuthors)}</span>
+                <span className="label text-candera-vellum/75">By</span>
+                <span className="editorial text-candera-vellum/80">
+                  {formatAuthors(populatedAuthors)}
+                </span>
               </span>
             )}
 
             {publishedAt && (
               <>
                 {hasAuthors && (
-                  <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
+                  <span
+                    className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
+                    aria-hidden="true"
+                  />
                 )}
                 <span className="flex items-center gap-2.5">
-                  <span className="label text-white/75">Published</span>
-                  <time className="editorial text-white/80" dateTime={publishedAt}>
+                  <span className="label text-candera-vellum/75">Published</span>
+                  <time className="editorial text-candera-vellum/80" dateTime={publishedAt}>
                     {formatDateTime(publishedAt)}
                   </time>
                 </span>
@@ -121,8 +126,11 @@ export const PostHero: React.FC<{
 
             {readTime && (
               <>
-                <span className="w-[1px] h-3 bg-white/20 hidden md:block" aria-hidden="true" />
-                <span className="label text-white/75">{readTime} min read</span>
+                <span
+                  className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
+                  aria-hidden="true"
+                />
+                <span className="label text-candera-vellum/75">{readTime} min read</span>
               </>
             )}
           </div>
