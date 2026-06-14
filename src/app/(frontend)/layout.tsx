@@ -15,6 +15,7 @@ import { draftMode } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from '@/components/ui/sonner'
+import { BackToTop } from '@/components/BackToTop'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -85,6 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </a>
           <GlobalLayout>{children}</GlobalLayout>
         </Providers>
+        <BackToTop />
         <Toaster position="bottom-right" richColors />
         <Analytics />
         <SpeedInsights />
