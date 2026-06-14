@@ -11,7 +11,7 @@ export const Logo = (props: Props) => {
 
   return (
     <span
-      className={clsx('font-display font-bold text-[24px] tracking-[-0.04em] uppercase', className)}
+      className={clsx('font-display font-bold text-xl tracking-[-0.04em] uppercase', className)}
     >
       CANDERA
     </span>

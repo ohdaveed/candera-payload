@@ -16,6 +16,7 @@ import * as migration_20260610_060333_user_table_metadata from './20260610_06033
 import * as migration_20260612_073101_add_products_to_search from './20260612_073101_add_products_to_search'
 import * as migration_20260612_081028_add_site_theme from './20260612_081028_add_site_theme'
 import * as migration_20260612_082000_extend_site_theme from './20260612_082000_extend_site_theme'
+import * as migration_20260614_132108 from './20260614_132108'
 
 export const migrations = [
   {
@@ -107,5 +108,10 @@ export const migrations = [
     up: migration_20260612_082000_extend_site_theme.up,
     down: migration_20260612_082000_extend_site_theme.down,
     name: '20260612_082000_extend_site_theme',
+  },
+  {
+    up: migration_20260614_132108.up,
+    down: migration_20260614_132108.down,
+    name: '20260614_132108',
   },
 ]

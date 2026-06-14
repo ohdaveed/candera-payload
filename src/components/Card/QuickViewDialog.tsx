@@ -8,7 +8,6 @@ import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { FragranceProfile } from '@/components/FragranceProfile'
-import { ProductTagBadge } from './ProductTagBadge'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 
 type QuickViewDialogProps = {
@@ -35,13 +34,11 @@ export function QuickViewDialog({
   slug,
   extraPhotos,
   price,
-  vessel,
   tagline,
   scentProfile,
   burnTime,
   atmosphere,
   etsyListingId,
-  productTag,
   children,
 }: QuickViewDialogProps) {
   const heroImage = extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null
@@ -64,26 +61,18 @@ export function QuickViewDialog({
                 Image unavailable
               </div>
             )}
-            {productTag && (
-              <div className="absolute top-4 left-4 z-10">
-                <ProductTagBadge tag={productTag} />
-              </div>
-            )}
           </div>
 
           {/* Right: details */}
           <div className="flex flex-col gap-6 p-8 overflow-y-auto max-h-[560px]">
-            {vessel && <span className="eyebrow">Vessel {vessel}</span>}
-            <h2 className="font-display text-[28px] font-normal italic leading-tight text-candera-obsidian">
+            <h2 className="font-display text-xl font-normal italic leading-tight text-candera-obsidian">
               {title}
             </h2>
             {price != null && (
-              <p className="price text-[24px] font-medium">${Number(price).toFixed(2)}</p>
+              <p className="price text-xl font-medium">${Number(price).toFixed(2)}</p>
             )}
             {tagline && (
-              <p className="editorial text-[15px] leading-[1.7] text-candera-sage-text">
-                {tagline}
-              </p>
+              <p className="editorial text-base leading-[1.7] text-candera-sage-text">{tagline}</p>
             )}
 
             <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
@@ -99,7 +88,7 @@ export function QuickViewDialog({
               {slug && (
                 <Link
                   href={`/products/${slug}`}
-                  className="text-center text-[11px] font-bold uppercase tracking-[.25em] text-candera-sage-text hover:text-candera-ember-strong transition-colors"
+                  className="text-center text-xs font-bold uppercase tracking-[.25em] text-candera-sage-text hover:text-candera-ember-strong transition-colors"
                 >
                   View Full Details →
                 </Link>

@@ -93,7 +93,7 @@ export default async function ProductsPage({
           <ProductFilters />
 
           {/* Result count — sage-text on vellum = 5.2:1 ✅ */}
-          <p className="font-sans text-[10px] font-bold uppercase tracking-[.25em] text-candera-sage-text mb-8">
+          <p className="font-sans text-xs font-bold uppercase tracking-[.25em] text-candera-sage-text mb-8">
             {resultLabel}
           </p>
 

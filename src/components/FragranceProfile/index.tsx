@@ -38,20 +38,17 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
           {tiers.map(({ label, value }, i) => (
             <div
               key={label}
-              className={`grid gap-4 py-4 ${i < tiers.length - 1 ? 'border-b border-candera-stone/15' : ''}`}
-              style={{ gridTemplateColumns: '64px 1fr' }}
+              className={`grid grid-cols-[64px_1fr] gap-4 py-4 ${i < tiers.length - 1 ? 'border-b border-candera-stone/15' : ''}`}
             >
               <div className="flex flex-col gap-0.5 pt-0.5">
-                <span className="text-[8px] font-bold uppercase tracking-[.3em] text-candera-sage-text">
+                <span className="text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text">
                   {label}
                 </span>
-                <span className="text-[9px] italic text-candera-sage-text font-serif whitespace-nowrap">
+                <span className="text-xs italic text-candera-sage-text font-serif whitespace-nowrap">
                   {tierMeta[label]}
                 </span>
               </div>
-              <span className="font-serif text-[14px] leading-snug text-candera-obsidian">
-                {value}
-              </span>
+              <span className="font-serif text-sm leading-snug text-candera-obsidian">{value}</span>
             </div>
           ))}
         </div>
@@ -63,20 +60,18 @@ export const FragranceProfile: React.FC<Props> = ({ profile, burnTime, atmospher
         >
           {burnTime && (
             <div className="flex flex-col gap-1">
-              <span className="text-[8px] font-bold uppercase tracking-[.3em] text-candera-sage-text">
+              <span className="text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text">
                 Intention
               </span>
-              <span className="font-serif text-[13px] text-candera-obsidian">{burnTime}</span>
+              <span className="font-serif text-sm text-candera-obsidian">{burnTime}</span>
             </div>
           )}
           {atmosphereDisplay && (
             <div className="flex flex-col gap-1">
-              <span className="text-[8px] font-bold uppercase tracking-[.3em] text-candera-sage-text">
+              <span className="text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text">
                 Atmosphere
               </span>
-              <span className="font-serif text-[13px] text-candera-obsidian">
-                {atmosphereDisplay}
-              </span>
+              <span className="font-serif text-sm text-candera-obsidian">{atmosphereDisplay}</span>
             </div>
           )}
         </div>

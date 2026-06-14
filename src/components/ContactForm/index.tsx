@@ -92,7 +92,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {error && (
           <div
-            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-[13px] font-medium"
+            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-sm font-medium"
             role="alert"
           >
             {error}
@@ -116,7 +116,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   <Input placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
                 {/* ember-strong = 5.5:1 on vellum — passes AA */}
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -144,7 +144,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -156,7 +156,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               <FormItem>
                 <FormLabel className="label">
                   Phone {/* sage-text = 5.2:1 on vellum — passes AA */}
-                  <span className="text-candera-sage-text text-[10px] normal-case tracking-normal font-normal ml-1">
+                  <span className="text-candera-sage-text text-xs normal-case tracking-normal font-normal ml-1">
                     (optional)
                   </span>
                 </FormLabel>
@@ -168,7 +168,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -188,7 +188,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <Textarea placeholder="How can we help?" rows={5} {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />

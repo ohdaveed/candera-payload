@@ -36,12 +36,11 @@ export default async function ContactPage() {
         title="Begin a conversation."
         description="We respond with intention — not automation. Expect a reply within 48 hours."
         decorativeWord="Studio"
-        minHeight="52vh"
+        minHeightClass="min-h-[52vh]"
       >
         {/* Vertical ember rule — drops from nav, unique to the contact page */}
         <span
-          className="absolute left-1/2 top-[var(--nav-height)] w-[1px] bg-candera-ember-strong/30 pointer-events-none"
-          style={{ height: '4rem' }}
+          className="absolute left-1/2 top-[var(--nav-height)] w-[1px] h-[4rem] bg-candera-ember-strong/30 pointer-events-none"
           aria-hidden="true"
         />
       </EditorialPageHero>

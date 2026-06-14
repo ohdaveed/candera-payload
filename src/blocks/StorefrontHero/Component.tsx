@@ -36,11 +36,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
       {/* 110deg directional gradient — left heavy, fades to transparent */}
       <span
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(110deg, rgba(8,6,4,0.95) 0%, rgba(8,6,4,0.55) 50%, transparent 100%)',
-        }}
+        className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,6,4,0.95)_0%,rgba(8,6,4,0.55)_50%,transparent_100%)]"
         aria-hidden="true"
       />
 

@@ -137,7 +137,7 @@ export const FormBlock: React.FC<
           {error ? (
             <Section
               padding="none"
-              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
+              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-sm font-medium"
               aria-live="polite"
               role="alert"
             >

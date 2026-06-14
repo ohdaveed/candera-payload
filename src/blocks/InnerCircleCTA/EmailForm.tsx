@@ -59,8 +59,8 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <p className="font-sans text-[13px] text-candera-vellum m-0">
+      <div className="flex flex-col gap-8">
+        <p className="font-sans text-sm text-candera-vellum m-0">
           You&apos;re in. We&apos;ll be in touch before the next batch.
         </p>
       </div>
@@ -68,9 +68,9 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div className="flex flex-col gap-12">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div style={{ display: 'flex' }}>
+        <div className="flex">
           <input
             id="ic-email"
             type="email"
@@ -88,37 +88,25 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             disabled={isLoading}
             aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
             aria-busy={isLoading}
-            style={{
-              padding: '13px 24px',
-              background: '#f5f5f5',
-              color: '#0a0a0a',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '3px',
-              textTransform: 'uppercase',
-              border: 'none',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              whiteSpace: 'nowrap',
-              opacity: isLoading ? 0.6 : 1,
-            }}
+            className={`text-xs font-bold uppercase tracking-[3px] py-[13px] px-24 bg-neutral-100 text-neutral-950 border-0 whitespace-nowrap ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
             {isLoading ? '…' : 'Join'}
           </button>
         </div>
         {errors.email && (
-          <p role="alert" className="font-sans text-[10px] text-red-400 m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-red-400 m-0 mt-1">
             {errors.email.message}
           </p>
         )}
         {error && (
-          <p role="alert" className="font-sans text-[10px] text-red-400 m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-red-400 m-0 mt-1">
             {error}
           </p>
         )}
       </form>
 
       {/* All microcopy consolidated directly below the input */}
-      <p className="font-sans text-[10px] m-0" style={{ color: '#525252' }}>
+      <p className="font-sans text-xs m-0 text-neutral-600">
         Early access · Studio notes · No spam · Unsubscribe any time
       </p>
     </div>

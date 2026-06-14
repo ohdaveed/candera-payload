@@ -23,10 +23,7 @@ export const PostHero: React.FC<{
     .map((c) => c.title || 'Untitled')
 
   return (
-    <header
-      className="relative flex min-h-[80vh] flex-col items-center justify-end overflow-hidden bg-candera-obsidian"
-      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
-    >
+    <header className="relative flex min-h-[80vh] flex-col items-center justify-end overflow-hidden bg-candera-obsidian -mt-[var(--nav-height)]">
       {/* Background image */}
       {heroImage && typeof heroImage !== 'string' && (
         <figure className="absolute inset-0 m-0">
@@ -42,20 +39,13 @@ export const PostHero: React.FC<{
 
       {/* Radial scrim */}
       <span
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(20,20,18,0.15) 0%, rgba(20,20,18,0.65) 100%)',
-        }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,20,18,0.15)_0%,rgba(20,20,18,0.65)_100%)]"
         aria-hidden="true"
       />
 
       {/* Bottom gradient — fades to page background */}
       <span
-        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to top, rgba(245,242,237,0.18) 0%, rgba(20,20,18,0.0) 100%)',
-        }}
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none bg-[linear-gradient(to_top,rgba(245,242,237,0.18)_0%,rgba(20,20,18,0)_100%)]"
         aria-hidden="true"
       />
 
@@ -94,7 +84,7 @@ export const PostHero: React.FC<{
             {categoryLabels.map((label, i) => (
               <span
                 key={i}
-                className="text-[9px] font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/30 px-3 py-1.5"
+                className="text-xs font-bold uppercase tracking-[.3em] text-candera-ember border border-candera-ember/30 px-3 py-1.5"
               >
                 {label}
               </span>

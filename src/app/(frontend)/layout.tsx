@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
-import { Fraunces, DM_Sans } from 'next/font/google'
+import { Fraunces, DM_Sans, EB_Garamond } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -33,6 +33,14 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
+const ebGaramond = EB_Garamond({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  weight: ['400', '500'],
+  variable: '--font-eb-garamond',
+  display: 'swap',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
   const siteTheme = await getCachedGlobal('site-theme')()
@@ -40,7 +48,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(GeistMono.variable, fraunces.variable, dmSans.variable, 'scroll-smooth')}
+      className={cn(
+        GeistMono.variable,
+        fraunces.variable,
+        dmSans.variable,
+        ebGaramond.variable,
+        'scroll-smooth',
+      )}
       data-fontset={theme.fontSet}
       data-skin={theme.colorScheme}
       data-hero-layout={theme.heroLayout}

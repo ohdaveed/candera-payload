@@ -14,7 +14,7 @@ type Props = {
 
 const etsyListingUrl = (id: number) => `https://www.etsy.com/listing/${id}`
 
-export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef }: Props) {
+export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -47,18 +47,17 @@ export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef 
       `}
     >
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="font-display italic text-white text-[1rem] leading-tight truncate">
+        <span className="font-display italic text-white text-base leading-tight truncate">
           {title}
         </span>
-        <span className="text-[10px] text-white/75 tracking-[.1em]">
-          {vessel ? `Vessel ${vessel} · ` : ''}
+        <span className="text-xs text-white/75 tracking-[.1em]">
           {price != null ? `$${Number(price).toFixed(2)}` : ''}
         </span>
       </div>
 
       <BoutiqueLink
         href={etsyListingUrl(etsyListingId)}
-        className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-white hover:text-candera-obsidian text-white text-[10px] font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
+        className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-white hover:text-candera-obsidian text-white text-xs font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
       >
         Buy on Etsy
         <svg

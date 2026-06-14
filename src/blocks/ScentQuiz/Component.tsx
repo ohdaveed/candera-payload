@@ -188,8 +188,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   return (
     <Section
       padding="large"
-      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center"
-      style={{ background: 'var(--candera-obsidian)' }}
+      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center bg-candera-obsidian"
     >
       {/* Ambient background when result is known */}
       <AnimatePresence>
@@ -250,16 +249,14 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                 />
                 <motion.div
-                  className="absolute inset-2 border border-candera-ember/40 rounded-full"
+                  className="absolute inset-2 border border-candera-ember/40 rounded-full border-r-transparent border-b-transparent"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                  style={{ borderRightColor: 'transparent', borderBottomColor: 'transparent' }}
                 />
                 <motion.div
-                  className="absolute inset-4 border border-candera-ember rounded-full"
+                  className="absolute inset-4 border border-candera-ember rounded-full border-l-transparent border-t-transparent"
                   animate={{ rotate: -360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                  style={{ borderLeftColor: 'transparent', borderTopColor: 'transparent' }}
                 />
               </div>
               <p className="font-display text-3xl text-candera-linen italic tracking-wide">
@@ -313,7 +310,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       />
                       <span
                         className={[
-                          'font-sans text-[16px] leading-relaxed transition-colors duration-500 tracking-wide',
+                          'font-sans text-base leading-relaxed transition-colors duration-500 tracking-wide',
                           isSelected
                             ? 'text-candera-linen'
                             : 'text-candera-linen/60 group-hover:text-candera-linen',
@@ -338,7 +335,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 <h3 className="font-display text-4xl text-candera-linen italic mb-8">
                   Your atmosphere study is complete.
                 </h3>
-                <p className="font-sans text-[15px] text-candera-linen/50 leading-relaxed mb-12 tracking-wide">
+                <p className="font-sans text-base text-candera-linen/50 leading-relaxed mb-12 tracking-wide">
                   To preserve this ritual and receive your full botanical profile, join our inner
                   circle. We will send the results and early access to the next numbered batch
                   directly to your inbox.
@@ -367,7 +364,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       role="alert"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-4 text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                      className="mt-4 text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
                     >
                       {errors.email.message}
                     </motion.p>
@@ -385,7 +382,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 {submitError && (
                   <p
                     role="alert"
-                    className="text-[11px] text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
+                    className="text-xs text-candera-rose text-center font-bold uppercase tracking-[0.2em]"
                   >
                     {submitError}
                   </p>
@@ -430,7 +427,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="editorial text-candera-linen/90 text-[20px] md:text-[24px] leading-relaxed mb-12 italic max-w-2xl mx-auto"
+                className="editorial text-candera-linen/90 text-lg md:text-xl leading-relaxed mb-12 italic max-w-2xl mx-auto"
               >
                 &ldquo;{result.editorial}&rdquo;
               </motion.p>
@@ -440,10 +437,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 className="flex flex-col gap-12 items-center"
               >
                 <div className="flex flex-col gap-4">
-                  <p className="font-sans text-[12px] font-bold uppercase tracking-[0.5em] text-candera-ember">
+                  <p className="font-sans text-sm font-bold uppercase tracking-[0.5em] text-candera-ember">
                     Botanical Composition
                   </p>
-                  <p className="font-sans text-[16px] text-candera-linen/50 tracking-[0.2em] font-light">
+                  <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
                     {result.notes}
                   </p>
                 </div>
@@ -484,8 +481,7 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = (props) => (
     fallback={
       <Section
         padding="large"
-        className="relative w-full min-h-[800px] flex items-center justify-center"
-        style={{ background: 'var(--candera-obsidian)' }}
+        className="relative w-full min-h-[800px] flex items-center justify-center bg-candera-obsidian"
       />
     }
   >

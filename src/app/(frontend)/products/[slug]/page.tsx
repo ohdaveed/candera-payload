@@ -9,7 +9,6 @@ import { cache } from 'react'
 
 import type { Media, Product } from '@/payload-types'
 
-import { Eyebrow } from '@/components/ui/eyebrow'
 import { Badge } from '@/components/ui/badge'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -105,7 +104,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         {/* Back link */}
         <Link
           href="/products"
-          className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
+          className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
         >
           <svg
             width="14"
@@ -139,7 +138,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <ImageGallery
               mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
               extraPhotos={product.extraPhotos as (Media | string)[] | null}
-              productTag={product.productTag ?? null}
             />
           </Section>
 
@@ -152,16 +150,11 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           >
             {/* Identity block */}
             <Section padding="none" className="flex flex-col gap-4">
-              {product.vessel && (
-                <Eyebrow className="text-candera-sage-text tracking-[.3em]">
-                  Vessel {product.vessel}
-                </Eyebrow>
-              )}
               <h1 className="font-display italic text-candera-obsidian leading-[1.15] text-[clamp(2rem,4vw,3.25rem)]">
                 {product.title}
               </h1>
               {product.tagline && (
-                <p className="font-serif italic text-[15px] leading-[1.7] text-candera-sage-text max-w-[40ch]">
+                <p className="font-serif italic text-base leading-[1.7] text-candera-sage-text max-w-[40ch]">
                   {product.tagline}
                 </p>
               )}
@@ -173,13 +166,13 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               className="flex items-baseline gap-4 border-t border-b border-candera-stone/20 py-5"
             >
               {product.price != null && (
-                <p className="font-display text-[2.25rem] font-semibold text-candera-obsidian leading-none tracking-tight">
+                <p className="font-display text-2xl font-semibold text-candera-obsidian leading-none tracking-tight">
                   ${Number(product.price).toFixed(2)}
                 </p>
               )}
               <Badge
                 variant="outline"
-                className="text-[9px] font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
+                className="text-xs font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
               >
                 In Stock
               </Badge>
@@ -188,10 +181,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Customization note */}
             {product.isCustomizable && (
               <aside className="border-l-2 border-candera-ember-strong pl-4 flex flex-col gap-1">
-                <p className="text-[9px] font-bold uppercase tracking-[.25em] text-candera-obsidian">
+                <p className="text-xs font-bold uppercase tracking-[.25em] text-candera-obsidian">
                   {product.customizationLabel || 'Personalization Available'}
                 </p>
-                <p className="text-[12px] italic text-candera-sage-text leading-relaxed">
+                <p className="text-sm italic text-candera-sage-text leading-relaxed">
                   This item is made to order. Include your custom text in the order notes and
                   double-check your spelling — every character is hand-lettered.
                 </p>
@@ -229,7 +222,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <h2 className="font-display italic text-white text-2xl leading-snug">
             Made with intention, in small batches
           </h2>
-          <p className="text-[13px] text-white/80 leading-relaxed">
+          <p className="text-sm text-white/80 leading-relaxed">
             Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
             botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
             they smell in the jar.
@@ -237,7 +230,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[.25em] text-white border-b border-white/30 pb-0.5 hover:border-white transition-colors shrink-0 self-start lg:self-auto"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.25em] text-white border-b border-white/30 pb-0.5 hover:border-white transition-colors shrink-0 self-start lg:self-auto"
         >
           Explore the collection
           <svg

@@ -45,26 +45,18 @@ export const CollectionArchive: React.FC<Props> = ({
     <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
       {/* Left sidebar — sticky, top-aligned with first image row */}
       <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
-        <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
+        <p className="font-sans text-xs font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
           {sidebarEyebrow || defaultEyebrow}
         </p>
-        <h2 className="font-display text-[24px] text-candera-obsidian leading-[1.15] m-0">
+        <h2 className="font-display text-xl text-candera-obsidian leading-[1.15] m-0">
           {sidebarTitle || defaultTitle}
         </h2>
-        <p className="font-sans text-[12px] text-candera-sage-text leading-[1.75] m-0">
+        <p className="font-sans text-sm text-candera-sage-text leading-[1.75] m-0">
           {sidebarDescription || defaultDescription}
         </p>
         <Link
           href={collectionPath}
-          className="font-sans text-[9px] font-bold uppercase tracking-[3px] text-candera-obsidian no-underline"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '13px 20px 13px 0',
-            borderBottom: '1px solid var(--candera-ember)',
-            width: 'fit-content',
-          }}
+          className="inline-flex items-center gap-[6px] py-[13px] pr-[20px] pl-0 border-b border-candera-ember w-fit font-sans text-xs font-bold uppercase tracking-[3px] text-candera-obsidian no-underline"
         >
           {sidebarLinkText || defaultLinkText}
         </Link>

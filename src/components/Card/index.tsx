@@ -8,7 +8,6 @@ import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
-import { ProductTagBadge } from './ProductTagBadge'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 
@@ -51,8 +50,6 @@ export const Card: React.FC<{
     tagline,
     extraPhotos,
     scentProfile,
-    productTag,
-    vessel,
     price,
     populatedAuthors,
     publishedAt,
@@ -93,76 +90,28 @@ export const Card: React.FC<{
               size="33vw"
             />
           ) : (
-            <div
-              className="absolute inset-0 flex items-end p-5"
-              style={{
-                background: 'linear-gradient(160deg, #2a1f14 0%, #3d2a18 35%, #1a110a 100%)',
-              }}
-            >
+            <div className="absolute inset-0 flex items-end p-5 candle-bg">
               {/* Candle flame — pure CSS */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative flex flex-col items-center" style={{ marginBottom: '8%' }}>
+                <div className="relative flex flex-col items-center mb-[8%]">
                   {/* Flame */}
-                  <div
-                    style={{
-                      width: 18,
-                      height: 28,
-                      background:
-                        'radial-gradient(ellipse at 50% 80%, #fff5cc 0%, #ffd060 30%, #e8700a 65%, transparent 100%)',
-                      borderRadius: '50% 50% 30% 30% / 60% 60% 40% 40%',
-                      filter: 'blur(1.5px)',
-                      opacity: 0.92,
-                    }}
-                  />
+                  <div className="candle-flame" />
                   {/* Glow */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: -8,
-                      width: 48,
-                      height: 48,
-                      background:
-                        'radial-gradient(ellipse, rgba(255,200,80,0.28) 0%, transparent 70%)',
-                      borderRadius: '50%',
-                    }}
-                  />
+                  <div className="candle-glow" />
                   {/* Wick */}
-                  <div
-                    style={{
-                      width: 2,
-                      height: 10,
-                      background: '#2a1a0a',
-                      borderRadius: 1,
-                      marginTop: -2,
-                    }}
-                  />
+                  <div className="candle-wick" />
                   {/* Candle body */}
-                  <div
-                    style={{
-                      width: 28,
-                      height: 64,
-                      background:
-                        'linear-gradient(to right, #e8ddd0 0%, #f5f0e8 40%, #e0d5c5 100%)',
-                      borderRadius: '2px 2px 0 0',
-                      boxShadow: '0 0 20px rgba(255,180,60,0.15)',
-                      marginTop: 0,
-                    }}
-                  />
+                  <div className="candle-body" />
                 </div>
               </div>
               {/* Warm floor glow */}
-              <div
-                className="absolute bottom-0 left-0 right-0 h-16"
-                style={{
-                  background: 'linear-gradient(to top, rgba(255,160,40,0.08), transparent)',
-                }}
-              />
+              <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
             </div>
           )}
           <div className="absolute inset-0 flex items-center justify-center bg-candera-obsidian/10 p-6 opacity-0 pointer-events-none transition-opacity duration-500 group-hover:pointer-events-auto group-hover:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100">
             <Link
               href={href}
-              className="flex h-[48px] w-full items-center justify-center bg-white text-[10px] font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="flex h-[48px] w-full items-center justify-center bg-white text-xs font-bold uppercase tracking-[.3em] text-candera-obsidian shadow-xl transition-colors hover:bg-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               View Details
             </Link>
@@ -175,15 +124,15 @@ export const Card: React.FC<{
             <div className="flex items-center gap-2 mb-2">
               {publishedAt && (
                 <time
-                  className="font-sans text-[13px] font-semibold uppercase tracking-[.14em] text-[#b8aa98]"
+                  className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-[#b8aa98]"
                   dateTime={publishedAt}
                 >
                   {formatDateTime(publishedAt)}
                 </time>
               )}
-              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-[13px]">·</span>}
+              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-sm">·</span>}
               {hasAuthors && (
-                <span className="font-sans text-[13px] font-semibold uppercase tracking-[.14em] text-[#b8aa98]">
+                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-[#b8aa98]">
                   {formatAuthors(populatedAuthors)}
                 </span>
               )}
@@ -192,7 +141,7 @@ export const Card: React.FC<{
 
           {/* Title */}
           {titleToUse && (
-            <p className="font-display text-[22px] font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-2">
+            <p className="font-display text-xl font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-2">
               <Link
                 href={href}
                 ref={linkRef}
@@ -205,14 +154,14 @@ export const Card: React.FC<{
 
           {/* Description */}
           {description && (
-            <p className="font-serif italic text-[15px] text-[#7a6c5e] leading-[1.6] line-clamp-2 m-0">
+            <p className="font-serif italic text-base text-[#7a6c5e] leading-[1.6] line-clamp-2 m-0">
               {sanitizedDescription}
             </p>
           )}
 
           {/* Read link */}
           <div className="mt-auto pt-3">
-            <span className="text-[13px] font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
+            <span className="text-sm font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
               Read →
             </span>
           </div>
@@ -252,20 +201,6 @@ export const Card: React.FC<{
             Image unavailable
           </div>
         )}
-
-        {/* Product tag — top left */}
-        {productTag && (
-          <div className="absolute top-3.5 left-3.5 z-10">
-            <ProductTagBadge tag={productTag} />
-          </div>
-        )}
-
-        {/* Batch badge — top right */}
-        {vessel && (
-          <span className="absolute top-3.5 right-3.5 z-10 text-[8px] font-semibold uppercase tracking-[.15em] px-2.5 py-1 bg-candera-vellum/[0.92] text-candera-obsidian backdrop-blur-sm">
-            Batch {vessel}
-          </span>
-        )}
       </div>
 
       {/* ── Body ── */}
@@ -278,7 +213,7 @@ export const Card: React.FC<{
                 const isLast = i === categories.length - 1
                 return (
                   <Fragment key={i}>
-                    <span className="text-[9px] font-semibold uppercase tracking-[.22em] text-[#9e9082]">
+                    <span className="text-xs font-semibold uppercase tracking-[.22em] text-[#9e9082]">
                       {category.title}
                     </span>
                     {!isLast && <span className="text-[#9e9082]">,&nbsp;</span>}
@@ -292,7 +227,7 @@ export const Card: React.FC<{
 
         {/* Product name */}
         {titleToUse && (
-          <p className="font-display text-[20px] font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-1">
+          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-1">
             <Link
               href={href}
               ref={linkRef}
@@ -305,7 +240,7 @@ export const Card: React.FC<{
 
         {/* Tagline */}
         {tagline && (
-          <p className="font-display italic text-[14px] text-[#5a5048] leading-[1.4] mb-3.5 m-0">
+          <p className="font-display italic text-sm text-[#5a5048] leading-[1.4] mb-3.5 m-0">
             {tagline}
           </p>
         )}
@@ -316,21 +251,21 @@ export const Card: React.FC<{
         {/* Scent note pills — always visible */}
         {hasScentNotes && (
           <div className="flex flex-wrap items-center gap-1.5 mb-3.5">
-            <span className="text-[9px] font-semibold uppercase tracking-[.18em] text-[#9e9082] mr-1">
+            <span className="text-xs font-semibold uppercase tracking-[.18em] text-[#9e9082] mr-1">
               Scent
             </span>
             {scentProfile?.top && (
-              <span className="text-[10px] text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
                 {scentProfile.top}
               </span>
             )}
             {scentProfile?.heart && (
-              <span className="text-[10px] text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
                 {scentProfile.heart}
               </span>
             )}
             {scentProfile?.base && (
-              <span className="text-[10px] text-[#5a5048] bg-candera-vellum px-2 py-0.5">
+              <span className="text-xs text-[#5a5048] bg-candera-vellum px-2 py-0.5">
                 {scentProfile.base}
               </span>
             )}
@@ -340,7 +275,7 @@ export const Card: React.FC<{
         {/* Price + CTA */}
         <div className="flex items-center justify-between mt-auto">
           {price != null && (
-            <span className="text-[16px] font-semibold text-candera-obsidian tabular-nums">
+            <span className="text-base font-semibold text-candera-obsidian tabular-nums">
               {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                 Number(price),
               )}
@@ -349,7 +284,7 @@ export const Card: React.FC<{
           <Link
             href={href}
             onClick={(e) => e.stopPropagation()}
-            className="text-[9px] font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember hover:border-candera-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember hover:border-candera-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             View Details →
           </Link>

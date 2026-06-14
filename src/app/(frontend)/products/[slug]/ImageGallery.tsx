@@ -3,16 +3,14 @@
 import React, { useState } from 'react'
 import type { Media } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
-import { ProductTagBadge } from '@/components/Card/ProductTagBadge'
 import { cn } from '@/utilities/ui'
 
 type Props = {
   mainImage: Media | string | null | undefined
   extraPhotos?: (Media | string)[] | null
-  productTag?: string | null
 }
 
-export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos, productTag }) => {
+export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
   // extraPhotos already contains mainImage as its first entry,
   // so use extraPhotos as the full list when available; otherwise fall back to mainImage alone.
   const allImages: (Media | string)[] =
@@ -63,12 +61,6 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos, productT
         ) : (
           <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
             Image unavailable
-          </div>
-        )}
-        {/* Product tag anchored to image top-left */}
-        {productTag && (
-          <div className="absolute top-5 left-5 z-20">
-            <ProductTagBadge tag={productTag} />
           </div>
         )}
         {/* Thumbnails overlaid at bottom-left on desktop */}

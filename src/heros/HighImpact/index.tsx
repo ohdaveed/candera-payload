@@ -19,8 +19,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian"
-      style={{ marginTop: 'calc(-1 * var(--nav-height))' }}
+      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-candera-obsidian -mt-[var(--nav-height)]"
       data-theme="dark"
     >
       {/* Background image */}
@@ -37,13 +36,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       )}
 
       {/* Radial scrim */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(20,20,18,0.2) 0%, rgba(20,20,18,0.7) 100%)',
-        }}
-      />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(20,20,18,0.2)_0%,rgba(20,20,18,0.7)_100%)]" />
 
       <FilmGrain />
 

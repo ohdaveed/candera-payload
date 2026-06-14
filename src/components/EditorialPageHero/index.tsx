@@ -12,8 +12,8 @@ interface EditorialPageHeroProps {
   description?: string
   /** Large ghost word rendered as atmospheric background decoration */
   decorativeWord?: string
-  /** Minimum height of the hero. Defaults to '48vh'. */
-  minHeight?: string
+  /** Tailwind min-height class for the hero. Defaults to 'min-h-[48vh]'. */
+  minHeightClass?: string
   /** Slot for additional content rendered below the description */
   children?: React.ReactNode
 }
@@ -29,32 +29,23 @@ export const EditorialPageHero: React.FC<EditorialPageHeroProps> = ({
   title,
   description,
   decorativeWord,
-  minHeight = '48vh',
+  minHeightClass = 'min-h-[48vh]',
   children,
 }) => {
   return (
     <header
-      className="relative flex flex-col items-center justify-end overflow-hidden bg-candera-obsidian"
-      style={{
-        marginTop: 'calc(-1 * var(--nav-height))',
-        minHeight,
-      }}
+      className={`relative flex flex-col items-center justify-end overflow-hidden bg-candera-obsidian -mt-[var(--nav-height)] ${minHeightClass}`}
     >
       {/* Radial depth scrim */}
       <span
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse at 35% 75%, rgba(20,20,18,0) 0%, rgba(20,20,18,0.65) 100%)',
-        }}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_35%_75%,rgba(20,20,18,0)_0%,rgba(20,20,18,0.65)_100%)]"
         aria-hidden="true"
       />
 
       {/* Atmospheric decorative word — white/4 = ~0.7:1, purely decorative */}
       {decorativeWord && (
         <div
-          className="absolute right-[-0.05em] bottom-[-0.1em] leading-none select-none pointer-events-none font-display italic text-white/[0.04]"
-          style={{ fontSize: 'clamp(8rem, 18vw, 16rem)' }}
+          className="absolute right-[-0.05em] bottom-[-0.1em] leading-none select-none pointer-events-none font-display italic text-white/[0.04] text-[clamp(8rem,18vw,16rem)]"
           aria-hidden="true"
         >
           {decorativeWord}
@@ -63,10 +54,7 @@ export const EditorialPageHero: React.FC<EditorialPageHeroProps> = ({
 
       {/* Bottom fade to page background (vellum) */}
       <span
-        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to top, rgba(245,242,237,0.12) 0%, rgba(20,20,18,0) 100%)',
-        }}
+        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none bg-[linear-gradient(to_top,rgba(245,242,237,0.12)_0%,rgba(20,20,18,0)_100%)]"
         aria-hidden="true"
       />
 
