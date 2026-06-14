@@ -18,8 +18,7 @@ export function StickyCTABar({ title, price, vessel, etsyListingId, sentinelRef 
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // Observe the sentinel placed in the DOM right after the main CTA button
-    const sentinel = document.getElementById('sticky-cta-sentinel')
+    const sentinel = sentinelRef.current
     if (!sentinel) return
     if (!window.IntersectionObserver) {
       setVisible(true)
