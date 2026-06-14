@@ -72,10 +72,12 @@ export const EditorialPageHero: React.FC<EditorialPageHeroProps> = ({
         </div>
 
         {/* Title — white on obsidian = 18.75:1 */}
-        <h1 className="hero-heading text-white m-0 relative z-10">{title}</h1>
+        <h1 className="hero-heading text-candera-vellum m-0 relative z-10">{title}</h1>
 
         {/* Description — eb garamond italic */}
-        {description && <p className="editorial text-white/75 mt-6 max-w-[48ch]">{description}</p>}
+        {description && (
+          <p className="editorial text-candera-vellum/75 mt-6 max-w-[48ch]">{description}</p>
+        )}
       </Container>
     </header>
   )
