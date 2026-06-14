@@ -27,11 +27,14 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Candera'
-    : (doc as { title?: string })?.title
-      ? (doc as { title?: string })?.title + ' | Candera'
-      : 'Candera | Botanical Scent Studio'
+  // Append the brand suffix only when it isn't already part of the title,
+  // so titles like "Candera Candles | Botanical Scent Studio" don't become
+  // "... | Botanical Scent Studio | Candera".
+  const withBrand = (value: string) => (/candera/i.test(value) ? value : `${value} | Candera`)
+
+  const rawTitle =
+    doc?.meta?.title || (doc as { title?: string })?.title || 'Candera | Botanical Scent Studio'
+  const title = withBrand(rawTitle)
 
   const description = doc?.meta?.description || (doc as { tagline?: string })?.tagline
 
