@@ -34,6 +34,7 @@ export const Quizzes: CollectionConfig = {
           name: 'options',
           type: 'array',
           required: true,
+          minRows: 1,
           fields: [
             {
               type: 'row',
@@ -59,6 +60,7 @@ export const Quizzes: CollectionConfig = {
             {
               name: 'scores',
               type: 'array',
+              minRows: 1,
               fields: [
                 {
                   type: 'row',
