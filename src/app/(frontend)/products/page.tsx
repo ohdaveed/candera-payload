@@ -100,27 +100,20 @@ export default async function ProductsPage({
           {products.docs.length > 0 ? (
             <ProductGrid products={products.docs.map(toGridProduct)} />
           ) : (
-            <div className="py-20 text-center">
-              <p
-                className="font-display italic text-candera-obsidian mb-4 m-0"
-                style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
-              >
-                {activeTag
-                  ? `No vessels found for ${activeTag}.`
-                  : 'The next batch is still curing.'}
+            <output aria-live="polite" className="col-span-full py-24 text-center block">
+              <p className="text-lg text-candera-ash mb-2">
+                No products found for &quot;{tag}&quot;.
               </p>
-              <p className="font-sans text-[15px] text-candera-sage-text max-w-[420px] mx-auto mb-8 m-0 mt-3 leading-relaxed">
-                {activeTag
-                  ? 'Clear the filter to return to the full studio archive.'
-                  : 'Candera releases small batches as they finish their studio rest. Check back soon.'}
+              <p className="text-sm text-candera-ash/70">
+                The next batch is still curing.{' '}
+                <Link
+                  href="/products"
+                  className="underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm"
+                >
+                  Clear the filter
+                </Link>
               </p>
-              <Link
-                href="/products"
-                className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
-              >
-                View all vessels →
-              </Link>
-            </div>
+            </output>
           )}
 
           {products.totalPages > 1 && products.page && (

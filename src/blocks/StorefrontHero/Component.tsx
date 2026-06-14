@@ -181,28 +181,25 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
             </nav>
           </header>
 
-          {/* Right: editorial stat cluster — visible on desktop only */}
+          {/* Right: editorial studio facts — visible on desktop only */}
           <aside
-            className="hidden md:flex flex-col gap-8 items-end text-right shrink-0 pb-2"
+            className="hidden md:flex flex-col gap-3 items-end text-right shrink-0 pb-2"
             aria-label="Studio facts"
           >
-            {[
-              { value: 'Small', label: 'Micro-batch' },
-              { value: 'Hand', label: 'Poured & labeled' },
-              { value: 'CA', label: 'Ships from' },
-            ].map(({ value, label }) => (
-              <div key={label} className="flex flex-col gap-0.5">
-                <span
-                  className="font-display italic text-white leading-none"
-                  style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)' }}
-                >
-                  {value}
-                </span>
-                <span className="text-[9px] font-bold uppercase tracking-[.3em] text-white/60">
-                  {label}
-                </span>
+            <dl className="flex flex-col gap-2 text-sm text-right">
+              <div className="flex gap-1.5 justify-end">
+                <dt className="text-white/60">Format</dt>
+                <dd className="text-white font-medium">Small batch</dd>
               </div>
-            ))}
+              <div className="flex gap-1.5 justify-end">
+                <dt className="text-white/60">Made</dt>
+                <dd className="text-white font-medium">Hand poured &amp; labeled</dd>
+              </div>
+              <div className="flex gap-1.5 justify-end">
+                <dt className="text-white/60">Ships from</dt>
+                <dd className="text-white font-medium">CA</dd>
+              </div>
+            </dl>
             <div className="w-[1px] h-16 bg-candera-ember/40 self-end mt-2" aria-hidden="true" />
           </aside>
         </Container>

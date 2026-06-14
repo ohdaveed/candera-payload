@@ -10,11 +10,14 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StorefrontHeroBlock } from '@/blocks/StorefrontHero/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
-import { ScentQuizModal } from '@/blocks/ScentQuiz/Modal'
-
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => m.FormBlock), {
   ssr: true,
 })
+
+const ScentQuizModal = dynamic(
+  () => import('@/blocks/ScentQuiz/Component').then((m) => m.ScentQuizBlock),
+  { ssr: false, loading: () => null },
+)
 
 const blockComponents = {
   archive: ArchiveBlock,

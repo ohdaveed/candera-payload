@@ -6,7 +6,7 @@ import React, { Fragment } from 'react'
 
 import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-types'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { ProductTagBadge } from './ProductTagBadge'
@@ -38,6 +38,7 @@ export const Card: React.FC<{
   showCategories?: boolean
   title?: string
 }> = (props) => {
+  const prefersReducedMotion = useReducedMotion()
   const { cardRef, linkRef } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
@@ -221,15 +222,17 @@ export const Card: React.FC<{
             scentProfile &&
             (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
               <motion.div
-                variants={{
-                  initial: { height: 0, opacity: 0, marginTop: 0 },
-                  hover: { height: 'auto', opacity: 1, marginTop: 8 },
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 300,
-                  damping: 30,
-                }}
+                variants={
+                  prefersReducedMotion
+                    ? {}
+                    : {
+                        initial: { height: 0, opacity: 0, marginTop: 0 },
+                        hover: { height: 'auto', opacity: 1, marginTop: 8 },
+                      }
+                }
+                transition={
+                  prefersReducedMotion ? {} : { type: 'spring', stiffness: 300, damping: 30 }
+                }
                 className="mt-auto overflow-hidden pointer-events-none group-hover:pointer-events-auto"
               >
                 <FragranceProfile
