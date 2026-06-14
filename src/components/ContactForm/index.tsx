@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Section } from '@/components/ui/section'
 import { submitForm } from '@/app/actions/submitForm'
 
 type FormValues = {
@@ -79,14 +78,17 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <Section padding="none" className="py-12 text-center">
-        <p className="font-display text-2xl text-candera-obsidian mb-3 italic">
+      <div className="py-12 text-center">
+        <p
+          className="font-display italic text-candera-obsidian mb-3 m-0"
+          style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
+        >
           Your note has been received.
         </p>
-        <p className="font-sans text-sm text-candera-sage-text">
+        <p className="font-sans text-[14px] text-candera-sage-text m-0 mt-2">
           We respond with intention — expect a reply within 48 hours.
         </p>
-      </Section>
+      </div>
     )
   }
 
@@ -94,17 +96,16 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {error && (
-          <Section
-            padding="none"
-            className="mb-6 p-4 bg-candera-rose/10 text-candera-rose text-[13px] font-medium"
+          <div
+            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-[13px] font-medium"
             role="alert"
             aria-live="polite"
           >
             {error}
-          </Section>
+          </div>
         )}
 
-        <Section padding="none" className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <FormField
             control={control}
             name="full-name"
@@ -120,7 +121,8 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <Input placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+                {/* ember-strong = 5.5:1 on vellum — passes AA */}
+                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -148,7 +150,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -159,8 +161,8 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="block mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-candera-sage-text">
-                  Phone{' '}
-                  <span className="text-candera-stone/60 text-[10px] normal-case tracking-normal font-normal ml-1">
+                  Phone {/* sage-text = 5.2:1 on vellum — passes AA */}
+                  <span className="text-candera-sage-text text-[10px] normal-case tracking-normal font-normal ml-1">
                     (optional)
                   </span>
                 </FormLabel>
@@ -172,7 +174,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -192,17 +194,17 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <Textarea placeholder="How can we help?" rows={5} {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-[12px] text-candera-rose" />
+                <FormMessage className="mt-1.5 text-[12px] text-candera-ember-strong" />
               </FormItem>
             )}
           />
-        </Section>
+        </div>
 
-        <Section padding="none" className="mt-8">
+        <div className="mt-8">
           <Button type="submit" variant="cta-ember" size="cta" disabled={isLoading}>
             {isLoading ? 'Sending…' : 'Send Correspondence'}
           </Button>
-        </Section>
+        </div>
       </form>
     </Form>
   )

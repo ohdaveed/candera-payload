@@ -10,7 +10,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StorefrontHeroBlock } from '@/blocks/StorefrontHero/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
-import { ScentQuizBlock } from '@/blocks/ScentQuiz/Component'
+import { ScentQuizModal } from '@/blocks/ScentQuiz/Modal'
 
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => m.FormBlock), {
   ssr: true,
@@ -25,7 +25,7 @@ const blockComponents = {
   storefrontHero: StorefrontHeroBlock,
   testimonials: TestimonialsBlock,
   innerCircleCTA: InnerCircleCTABlock,
-  scentQuiz: ScentQuizBlock,
+  scentQuiz: ScentQuizModal,
 }
 
 export const RenderBlocks: React.FC<{
@@ -35,7 +35,7 @@ export const RenderBlocks: React.FC<{
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
-  const fullBleedBlocks = new Set(['storefrontHero', 'testimonials', 'innerCircleCTA', 'scentQuiz'])
+  const fullBleedBlocks = new Set(['storefrontHero', 'testimonials', 'innerCircleCTA'])
 
   if (hasBlocks) {
     return (
@@ -49,6 +49,14 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              // scentQuiz renders as a modal portal — no wrapper div needed
+              if (blockType === 'scentQuiz') {
+                return (
+                  // @ts-expect-error there may be some mismatch between the expected types here
+                  <Block key={index} {...block} />
+                )
+              }
+
               const isFullBleed = fullBleedBlocks.has(blockType)
               return (
                 <div
@@ -58,13 +66,7 @@ export const RenderBlocks: React.FC<{
                   ]
                     .filter(Boolean)
                     .join(' ')}
-                  id={
-                    blockType === 'archive'
-                      ? 'collection'
-                      : blockType === 'scentQuiz'
-                        ? 'scent-quiz'
-                        : undefined
-                  }
+                  id={blockType === 'archive' ? 'collection' : undefined}
                   key={index}
                 >
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
