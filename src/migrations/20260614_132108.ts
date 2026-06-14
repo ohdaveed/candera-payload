@@ -25,6 +25,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_site_theme_color_scheme" AS ENUM('rose-conversion', 'black-gold-rose', 'amethyst-amber', 'ink-orchid-coral', 'plum-sage-coral', 'lavender-trust-rose', 'ink-orchid', 'lavender-noir', 'porcelain-pop', 'default');
   ALTER TABLE "site_theme" ALTER COLUMN "color_scheme" SET DEFAULT 'rose-conversion'::"public"."enum_site_theme_color_scheme";
   ALTER TABLE "site_theme" ALTER COLUMN "color_scheme" SET DATA TYPE "public"."enum_site_theme_color_scheme" USING "color_scheme"::"public"."enum_site_theme_color_scheme";
+  UPDATE "media" SET "alt" = '' WHERE "alt" IS NULL;
   ALTER TABLE "media" ALTER COLUMN "alt" SET NOT NULL;
   ALTER TABLE "site_theme" ALTER COLUMN "font_set" SET DEFAULT 'playfair-inter';
   ALTER TABLE "products" ADD COLUMN "currency" "enum_products_currency" DEFAULT 'USD';
