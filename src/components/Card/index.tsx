@@ -175,15 +175,15 @@ export const Card: React.FC<{
             <div className="flex items-center gap-2 mb-2">
               {publishedAt && (
                 <time
-                  className="font-sans text-[10px] font-semibold uppercase tracking-[.18em] text-[#b8aa98]"
+                  className="font-sans text-[13px] font-semibold uppercase tracking-[.14em] text-[#b8aa98]"
                   dateTime={publishedAt}
                 >
                   {formatDateTime(publishedAt)}
                 </time>
               )}
-              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-[10px]">·</span>}
+              {hasAuthors && publishedAt && <span className="text-[#c8bdb0] text-[13px]">·</span>}
               {hasAuthors && (
-                <span className="font-sans text-[10px] font-semibold uppercase tracking-[.18em] text-[#b8aa98]">
+                <span className="font-sans text-[13px] font-semibold uppercase tracking-[.14em] text-[#b8aa98]">
                   {formatAuthors(populatedAuthors)}
                 </span>
               )}
@@ -192,7 +192,7 @@ export const Card: React.FC<{
 
           {/* Title */}
           {titleToUse && (
-            <p className="font-display text-[20px] font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-2">
+            <p className="font-display text-[22px] font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-2">
               <Link
                 href={href}
                 ref={linkRef}
@@ -205,14 +205,14 @@ export const Card: React.FC<{
 
           {/* Description */}
           {description && (
-            <p className="font-serif italic text-[14px] text-[#7a6c5e] leading-[1.65] line-clamp-2 m-0">
+            <p className="font-serif italic text-[15px] text-[#7a6c5e] leading-[1.6] line-clamp-2 m-0">
               {sanitizedDescription}
             </p>
           )}
 
           {/* Read link */}
           <div className="mt-auto pt-3">
-            <span className="text-[9px] font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
+            <span className="text-[13px] font-bold uppercase tracking-[.2em] text-[#9e9082] border-b border-[#d4c9bc] pb-px group-hover:text-candera-ember group-hover:border-candera-ember transition-colors">
               Read →
             </span>
           </div>
