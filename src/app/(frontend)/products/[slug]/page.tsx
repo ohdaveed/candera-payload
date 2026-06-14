@@ -85,8 +85,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   return (
     <Section
       as="article"
-      padding="large"
-      className="bg-candera-vellum min-h-screen grain"
+      padding="none"
+      className="bg-candera-vellum min-h-screen grain pt-32 md:pt-40 pb-20"
       data-page="product-detail"
     >
       <script
@@ -125,7 +125,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         <Section
           as="article"
           padding="none"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-32"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-10"
           data-section="product-layout-grid"
         >
           {/* Left: image gallery — sticky on desktop so it stays in view while scrolling details */}
@@ -150,13 +150,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           >
             {/* Identity block */}
             <Section padding="none" className="flex flex-col gap-4">
-              <h1 className="font-display italic text-candera-obsidian leading-[1.15] text-[clamp(2rem,4vw,3.25rem)]">
-                {product.title}
-              </h1>
+              <h1 className="h1 text-candera-obsidian">{product.title}</h1>
               {product.tagline && (
-                <p className="font-serif italic text-base leading-[1.7] text-candera-sage-text max-w-[40ch]">
-                  {product.tagline}
-                </p>
+                <p className="editorial text-candera-sage-text max-w-[40ch]">{product.tagline}</p>
               )}
             </Section>
 
@@ -166,9 +162,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               className="flex items-baseline gap-4 border-t border-b border-candera-stone/20 py-5"
             >
               {product.price != null && (
-                <p className="font-display text-2xl font-semibold text-candera-obsidian leading-none tracking-tight">
-                  ${Number(product.price).toFixed(2)}
-                </p>
+                <p className="price text-2xl">${Number(product.price).toFixed(2)}</p>
               )}
               <Badge
                 variant="outline"
@@ -181,10 +175,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Customization note */}
             {product.isCustomizable && (
               <aside className="border-l-2 border-candera-ember-strong pl-4 flex flex-col gap-1">
-                <p className="text-xs font-bold uppercase tracking-[.25em] text-candera-obsidian">
+                <p className="eyebrow text-candera-obsidian">
                   {product.customizationLabel || 'Personalization Available'}
                 </p>
-                <p className="text-sm italic text-candera-sage-text leading-relaxed">
+                <p className="editorial text-candera-sage-text">
                   This item is made to order. Include your custom text in the order notes and
                   double-check your spelling — every character is hand-lettered.
                 </p>
@@ -219,10 +213,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         data-section="brand-story-strip"
       >
         <div className="flex flex-col gap-2 max-w-prose">
-          <h2 className="font-display italic text-candera-vellum text-2xl leading-snug">
-            Made with intention, in small batches
-          </h2>
-          <p className="text-sm text-candera-vellum/80 leading-relaxed">
+          <h2 className="h3 text-candera-vellum">Made with intention, in small batches</h2>
+          <p className="body text-candera-vellum/80">
             Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
             botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
             they smell in the jar.
@@ -230,7 +222,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.25em] text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto"
+          className="btn-text text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto inline-flex items-center gap-2"
         >
           Explore the collection
           <svg

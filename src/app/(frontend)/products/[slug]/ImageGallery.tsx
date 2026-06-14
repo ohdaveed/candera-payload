@@ -59,8 +59,16 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
         {activeImage && typeof activeImage !== 'string' ? (
           <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
-          <div className="flex h-full items-center justify-center text-candera-sage-text text-sm italic">
-            Image unavailable
+          <div className="absolute inset-0 flex items-end p-5 candle-bg">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative flex flex-col items-center mb-[8%]">
+                <div className="candle-flame" />
+                <div className="candle-glow" />
+                <div className="candle-wick" />
+                <div className="candle-body" />
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
           </div>
         )}
         {/* Thumbnails overlaid at bottom-left on desktop */}

@@ -54,7 +54,7 @@ export const EditorialPageHero: React.FC<EditorialPageHeroProps> = ({
 
       {/* Bottom fade to page background (vellum) */}
       <span
-        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none bg-[linear-gradient(to_top,rgba(245,242,237,0.12)_0%,rgba(20,20,18,0)_100%)]"
+        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none bg-[linear-gradient(to_top,color-mix(in_oklch,var(--color-candera-vellum)_12%,transparent)_0%,transparent_100%)]"
         aria-hidden="true"
       />
 

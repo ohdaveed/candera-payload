@@ -66,7 +66,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       <PostHero post={post} readTime={readTime} />
 
       {/* Article body */}
-      <Section padding="large" data-section="article-body">
+      <Section padding="medium" data-section="article-body">
         <Container>
           <RichText
             className="
@@ -96,9 +96,9 @@ export default async function Post({ params: paramsPromise }: Args) {
           </div>
 
           {/* Headline */}
-          <p className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
+          <h2 className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
             Be the first to know about new batches, scent notes, and studio moments.
-          </p>
+          </h2>
 
           <Button asChild variant="cta-ember" size="cta" className="mt-2">
             <Link href="/contact">Join the Circle</Link>

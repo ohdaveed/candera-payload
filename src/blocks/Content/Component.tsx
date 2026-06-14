@@ -19,7 +19,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   }
 
   return (
-    <Section padding="large">
+    <Section padding="medium">
       <Container>
         <article className="grid grid-cols-4 lg:grid-cols-12 gap-y-16 gap-x-16 lg:gap-x-24 items-start">
           {columns &&
@@ -44,7 +44,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   {richText && (
                     <Section
                       padding="none"
-                      className="editorial-prose [&_h2]:mb-8 [&_p]:mb-6 [&_p:last-child]:mb-0 [&_h2]:text-[clamp(1.75rem,3vw,2.5rem)]"
+                      className="editorial-prose [&_h2]:mb-8 [&_p]:mb-6 [&_p:last-child]:mb-0"
                     >
                       <span
                         className="block h-px w-16 mb-8 bg-candera-stone/20"

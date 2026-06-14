@@ -15,13 +15,13 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        cta: 'bg-candera-obsidian text-white hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+        cta: 'bg-candera-obsidian text-candera-vellum hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-ember':
-          'bg-candera-ember text-white hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+          'bg-candera-ember text-candera-vellum hover:bg-candera-ember-strong text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-inverse':
-          'bg-white text-candera-obsidian hover:bg-candera-vellum text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+          'bg-candera-linen text-candera-obsidian hover:bg-candera-vellum text-xs font-bold uppercase tracking-[.3em] rounded-[2px] shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-ghost-dark':
-          'border border-white/40 text-white hover:bg-white hover:text-candera-obsidian text-xs font-bold uppercase tracking-[.3em] rounded-[2px] hover:shadow-md hover:-translate-y-0.5',
+          'border border-candera-vellum/40 text-candera-vellum hover:bg-candera-linen hover:text-candera-obsidian text-xs font-bold uppercase tracking-[.3em] rounded-[2px] hover:shadow-md hover:-translate-y-0.5',
       },
       size: {
         clear: '',

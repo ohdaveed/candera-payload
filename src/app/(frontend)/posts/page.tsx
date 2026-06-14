@@ -6,10 +6,10 @@ import { Pagination } from '@/components/Pagination'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
-import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -37,20 +37,17 @@ export default async function Page() {
 
   return (
     <main className="bg-candera-vellum" data-page="posts-listing">
-      <SetHeaderTheme theme="light" />
+      <SetHeaderTheme theme="dark" />
 
-      <Section padding="large" className="pt-32 pb-16" data-section="page-header">
-        <Container>
-          <PageHeader
-            eyebrow="Candera Stories"
-            title="The Journal"
-            description="Reflections on intentional living, the art of scent, and the stories behind our seasonal batches."
-          />
-        </Container>
-      </Section>
+      <EditorialPageHero
+        eyebrow="Candera Stories"
+        title="The Journal"
+        description="Reflections on intentional living, the art of scent, and the stories behind our seasonal batches."
+        decorativeWord="Journal"
+      />
 
       {featuredPost && (
-        <Section padding="none" className="mb-20" data-section="featured-post">
+        <Section padding="none" className="mt-16 mb-20" data-section="featured-post">
           <Container>
             <FeaturedPostCard post={featuredPost} />
           </Container>

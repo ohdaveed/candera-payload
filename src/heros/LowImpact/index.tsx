@@ -20,7 +20,7 @@ export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText 
   return (
     <Section
       padding="none"
-      className="bg-candera-vellum pt-32 md:pt-48 pb-16 md:pb-24 border-b border-candera-stone/10"
+      className="bg-candera-vellum pt-32 md:pt-36 pb-16 md:pb-24 border-b border-candera-stone/20"
     >
       <Container className="max-w-[800px] text-center">
         {/* We use a specialized rich text styling wrapper for the low impact hero to enforce editorial scale */}

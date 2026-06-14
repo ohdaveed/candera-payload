@@ -36,7 +36,7 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           </Badge>
 
           {/* hero-heading at vellum = 18.75:1 on obsidian ✅ */}
-          <h2 className="hero-heading text-candera-vellum mb-3 max-w-[640px]">{post.title}</h2>
+          <h2 className="h2 text-candera-vellum mb-3 max-w-[640px]">{post.title}</h2>
 
           {/* vellum/75 on obsidian/75 base = ~14:1 — passes AA for large/bold text ✅ */}
           <span className="btn-text text-candera-vellum/75">Read the story →</span>

@@ -45,7 +45,7 @@ export const PostHero: React.FC<{
 
       {/* Bottom gradient — fades to page background */}
       <span
-        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none bg-[linear-gradient(to_top,rgba(245,242,237,0.18)_0%,rgba(20,20,18,0)_100%)]"
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none bg-[linear-gradient(to_top,color-mix(in_oklch,var(--color-candera-vellum)_18%,transparent)_0%,transparent_100%)]"
         aria-hidden="true"
       />
 

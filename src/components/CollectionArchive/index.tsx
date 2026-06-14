@@ -44,18 +44,14 @@ export const CollectionArchive: React.FC<Props> = ({
     <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
       {/* Left sidebar — sticky, top-aligned with first image row */}
       <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
-        <p className="font-sans text-xs font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
-          {sidebarEyebrow || defaultEyebrow}
-        </p>
-        <h2 className="font-display italic text-xl text-candera-obsidian leading-snug text-balance m-0">
-          {sidebarTitle || defaultTitle}
-        </h2>
+        <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
+        <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
         <p className="font-sans text-sm text-candera-sage-text leading-relaxed m-0">
           {sidebarDescription || defaultDescription}
         </p>
         <Link
           href={collectionPath}
-          className="inline-flex items-center gap-1.5 py-3 pr-5 pl-0 border-b border-candera-ember w-fit font-sans text-xs font-bold uppercase tracking-widest text-candera-obsidian no-underline"
+          className="btn-text text-candera-obsidian no-underline border-b border-candera-ember pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember transition-colors"
         >
           {sidebarLinkText || defaultLinkText}
         </Link>

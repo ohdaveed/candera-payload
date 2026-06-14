@@ -52,7 +52,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         'fixed top-0 left-0 right-0 z-[120] transition-[background-color,padding,box-shadow,border-color,backdrop-filter] duration-500',
         isTransparent
           ? 'bg-transparent py-[18px]'
-          : 'bg-white/95 backdrop-blur-[10px] py-0 shadow-[0_1px_2px_rgba(20,20,18,.04)] border-b border-[#f0ede7]',
+          : 'bg-candera-linen/95 backdrop-blur-[10px] py-0 shadow-[0_1px_2px_rgba(20,20,18,.04)] border-b border-candera-ash/70',
       ].join(' ')}
       {...(theme ? { 'data-theme': theme } : {})}
     >
@@ -62,7 +62,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           aria-label="Candera Home"
           className={[
             'font-display font-bold text-xl tracking-[-0.04em] transition-colors',
-            isTransparent ? 'text-white' : 'text-candera-obsidian',
+            isTransparent ? 'text-candera-vellum' : 'text-candera-obsidian',
           ].join(' ')}
           href="/"
         >

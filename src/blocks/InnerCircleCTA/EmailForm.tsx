@@ -94,12 +94,12 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           </button>
         </div>
         {errors.email && (
-          <p role="alert" className="font-sans text-xs text-red-400 m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-1">
             {errors.email.message}
           </p>
         )}
         {error && (
-          <p role="alert" className="font-sans text-xs text-red-400 m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-1">
             {error}
           </p>
         )}

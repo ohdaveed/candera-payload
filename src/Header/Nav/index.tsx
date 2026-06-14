@@ -18,13 +18,13 @@ export const HeaderNav: React.FC<{ data: HeaderType; transparent?: boolean }> = 
   const navItems = data?.navItems || []
 
   const linkClass = [
-    'text-xs font-bold uppercase tracking-[.3em] transition-[background-color,color] duration-200 hover:text-candera-ember-strong px-4 py-2 rounded-md hover:bg-black/5 min-h-[44px] inline-flex items-center',
-    transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
+    'text-xs font-bold uppercase tracking-[.3em] transition-[background-color,color] duration-200 hover:text-candera-ember-strong px-4 py-2 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] inline-flex items-center',
+    transparent ? 'text-candera-vellum/90 hover:bg-candera-vellum/10' : 'text-candera-sage-text',
   ].join(' ')
 
   const iconBtnClass = [
-    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-full transition-colors hover:text-candera-ember-strong hover:bg-black/5',
-    transparent ? 'text-white/90 hover:bg-white/10' : 'text-candera-sage-text',
+    'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-full transition-colors hover:text-candera-ember-strong hover:bg-candera-obsidian/5',
+    transparent ? 'text-candera-vellum/90 hover:bg-candera-vellum/10' : 'text-candera-sage-text',
   ].join(' ')
 
   return (

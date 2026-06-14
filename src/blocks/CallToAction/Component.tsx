@@ -23,7 +23,6 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
               <RichText
                 className="
                   [&_h2]:font-display [&_h2]:italic [&_h2]:text-candera-obsidian [&_h2]:leading-tight [&_h2]:m-0
-                  [&_h2]:text-3xl [&_h2]:lg:text-4xl
                   [&_p]:font-editorial [&_p]:italic [&_p]:leading-relaxed [&_p]:text-candera-sage-text [&_p]:mt-5 [&_p]:m-0
                 "
                 data={richText}
