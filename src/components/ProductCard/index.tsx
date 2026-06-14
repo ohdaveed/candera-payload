@@ -15,6 +15,7 @@ export type ProductCardData = {
   extraPhotos?: Product['extraPhotos']
   scentProfile?: Product['scentProfile']
   price?: Product['price']
+  currency?: Product['currency']
   categories?: Array<{ title?: string | null } | string | number> | null
 }
 
@@ -26,7 +27,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, showCategories, className }) => {
   const prefersReducedMotion = useReducedMotion()
-  const { slug, title, tagline, extraPhotos, scentProfile, price, categories } = product
+  const { slug, title, tagline, extraPhotos, scentProfile, price, currency, categories } = product
 
   const href = `/products/${slug}`
   const image = extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null
@@ -144,9 +145,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, showCategorie
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-candera-ash/60">
           {price != null && (
             <span className="text-base font-semibold text-candera-obsidian tabular-nums">
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                Number(price),
-              )}
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency ?? 'USD',
+              }).format(Number(price))}
             </span>
           )}
 

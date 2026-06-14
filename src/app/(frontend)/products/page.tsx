@@ -27,6 +27,7 @@ function toGridProduct(product: Product): ProductCardData {
     extraPhotos: product.extraPhotos,
     scentProfile: product.scentProfile,
     price: product.price,
+    currency: product.currency,
     categories: product.categories?.map((cat) =>
       typeof cat === 'object' && cat !== null ? { title: cat.title } : cat,
     ),
