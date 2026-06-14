@@ -22,28 +22,11 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
   const formId = await getInnerCircleFormId()
 
   return (
-    <section
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        alignItems: 'center',
-        background: 'var(--candera-obsidian)',
-        padding: '52px',
-        gap: '52px',
-      }}
-    >
+    <section className="grid grid-cols-1 md:grid-cols-2 items-center bg-candera-obsidian p-6 md:p-[52px] gap-10 md:gap-[52px]">
       {/* Left — heading + body only, no bullets */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div className="flex flex-col gap-[14px]">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span
-            style={{
-              display: 'block',
-              width: '24px',
-              height: '1px',
-              background: 'var(--candera-ember)',
-            }}
-            aria-hidden="true"
-          />
+          <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
           <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-[#6b5e50] m-0">
             Join the Inner Circle
           </p>
@@ -52,9 +35,7 @@ export async function InnerCircleCTABlock({ headline, description }: Props) {
           {headline}
         </h2>
         {description && (
-          <p className="font-sans text-[14px] leading-[1.75] m-0" style={{ color: '#a3a3a3' }}>
-            {description}
-          </p>
+          <p className="font-sans text-[14px] leading-[1.75] m-0 text-[#a3a3a3]">{description}</p>
         )}
       </div>
 

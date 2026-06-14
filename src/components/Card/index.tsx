@@ -220,16 +220,14 @@ export const Card: React.FC<{
             scentProfile &&
             (scentProfile.top || scentProfile.heart || scentProfile.base || burnTime) && (
               <motion.div
-                variants={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        initial: { height: 0, opacity: 0, marginTop: 0 },
-                        hover: { height: 'auto', opacity: 1, marginTop: 8 },
-                      }
-                }
+                variants={{
+                  initial: { height: 0, opacity: 0, marginTop: 0 },
+                  hover: { height: 'auto', opacity: 1, marginTop: 8 },
+                }}
                 transition={
-                  prefersReducedMotion ? {} : { type: 'spring', stiffness: 300, damping: 30 }
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 300, damping: 30 }
                 }
                 className="mt-auto overflow-hidden pointer-events-none group-hover:pointer-events-auto"
               >

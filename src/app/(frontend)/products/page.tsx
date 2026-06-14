@@ -103,10 +103,10 @@ export default async function ProductsPage({
             <output aria-live="polite" className="col-span-full py-24 text-center block">
               {activeTag ? (
                 <>
-                  <p className="text-lg text-candera-ash mb-2">
+                  <p className="text-lg text-candera-obsidian mb-2">
                     No products found for &quot;{activeTag}&quot;.
                   </p>
-                  <p className="text-sm text-candera-ash/70">
+                  <p className="text-sm text-candera-sage-text">
                     <Link
                       href="/products"
                       className="underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm"
@@ -116,7 +116,7 @@ export default async function ProductsPage({
                   </p>
                 </>
               ) : (
-                <p className="text-lg text-candera-ash">The next batch is still curing.</p>
+                <p className="text-lg text-candera-obsidian">The next batch is still curing.</p>
               )}
             </output>
           )}

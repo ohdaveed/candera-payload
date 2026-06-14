@@ -11,27 +11,9 @@ export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts'
   const collectionPath = relationTo === 'products' ? '/products' : '/posts'
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '280px 1fr',
-        background: 'var(--candera-vellum)',
-      }}
-    >
+    <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
       {/* Left sidebar — sticky, top-aligned with first image row */}
-      <div
-        style={{
-          padding: '28px 36px 28px 52px',
-          borderRight: '1px solid rgba(180,160,130,0.18)',
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'start',
-          background: 'var(--candera-vellum)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '14px',
-        }}
-      >
+      <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
         <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-candera-sage-text m-0">
           The Collection
         </p>
@@ -61,17 +43,8 @@ export const CollectionArchive: React.FC<Props> = ({ posts, relationTo = 'posts'
       </div>
 
       {/* Right — 3-column product grid */}
-      <div style={{ padding: '28px 52px 28px 0' }}>
-        <ul
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '12px',
-            listStyle: 'none',
-            padding: 0,
-            margin: 0,
-          }}
-        >
+      <div className="p-6 md:pt-7 md:pb-7 md:pr-[52px] md:pl-0">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 list-none p-0 m-0">
           {posts?.map((result, index) => {
             if (typeof result !== 'object' || result === null) return null
 

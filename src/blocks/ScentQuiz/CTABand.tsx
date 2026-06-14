@@ -14,17 +14,7 @@ export const ScentQuizCTABand: React.FC<Props> = ({
   headline = 'Not sure where to start?',
   body = "Answer a few questions and we'll match you to the candle that fits your space, your mood, and your ritual — before you have to browse.",
 }) => (
-  <section
-    style={{
-      background: 'var(--candera-obsidian)',
-      display: 'grid',
-      gridTemplateColumns: '1fr auto',
-      alignItems: 'center',
-      gap: '40px',
-      padding: '48px 52px',
-      borderBottom: '1px solid rgba(196,168,130,0.12)',
-    }}
-  >
+  <section className="grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-10 px-6 py-12 md:px-[52px] md:py-12 bg-candera-obsidian border-b border-[rgba(196,168,130,0.12)]">
     <div className="flex flex-col gap-2">
       {eyebrow && (
         <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-[#6b5e50] m-0">

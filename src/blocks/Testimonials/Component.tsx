@@ -10,23 +10,9 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   const secondary = rest.slice(0, 2)
 
   return (
-    <section
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        background: 'var(--candera-obsidian)',
-      }}
-    >
+    <section className="grid grid-cols-1 md:grid-cols-2 bg-candera-obsidian">
       {/* Left — featured quote */}
-      <div
-        style={{
-          padding: '52px 48px',
-          borderRight: '1px solid rgba(196,168,130,0.1)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="p-6 md:p-12 border-b md:border-b-0 md:border-r border-[rgba(196,168,130,0.1)] flex flex-col justify-center">
         {eyebrow && (
           <p className="font-sans text-[9px] font-bold uppercase tracking-[4px] text-[#6b5e50] m-0 mb-6">
             {eyebrow}
@@ -56,18 +42,11 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
       </div>
 
       {/* Right — two stacked secondary quotes */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="flex flex-col">
         {secondary.map((t, i) => (
           <div
             key={i}
-            style={{
-              padding: '30px 40px',
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              borderBottom: i < secondary.length - 1 ? '1px solid rgba(196,168,130,0.07)' : 'none',
-            }}
+            className={`px-6 py-[30px] md:px-10 flex-1 flex flex-col justify-center${i < secondary.length - 1 ? ' border-b border-[rgba(196,168,130,0.07)]' : ''}`}
           >
             <blockquote className="m-0">
               <p className="font-display italic text-[13px] text-[#b0a090] leading-[1.65] m-0">
