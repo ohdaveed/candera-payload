@@ -68,16 +68,17 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   }
 
   return (
-    <div className="flex flex-col gap-12">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="flex">
+    <div className="flex flex-col gap-6 w-full">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
+        <div className="flex items-center rounded-full border border-candera-stone/30 bg-[#171717]/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
             type="email"
             placeholder="you@example.com"
             autoComplete="email"
             aria-label="Email address"
-            className="ic-email-input"
+            className="flex-1 bg-transparent px-6 py-2.5 text-candera-vellum placeholder-candera-stone/50 font-sans text-sm outline-none border-none focus:outline-none focus:ring-0"
+            spellCheck={false}
             {...register('email', {
               required: 'Email is required',
               pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
@@ -88,25 +89,25 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             disabled={isLoading}
             aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
             aria-busy={isLoading}
-            className={`text-xs font-bold uppercase tracking-widest py-3.5 px-8 bg-candera-vellum text-candera-obsidian border-0 whitespace-nowrap transition-opacity ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
+            className={`text-xs font-bold uppercase tracking-widest py-3 px-8 rounded-full bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
             {isLoading ? '…' : 'Join'}
           </button>
         </div>
         {errors.email && (
-          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-2 px-4">
             {errors.email.message}
           </p>
         )}
         {error && (
-          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-1">
+          <p role="alert" className="font-sans text-xs text-candera-rose m-0 mt-2 px-4">
             {error}
           </p>
         )}
       </form>
 
       {/* All microcopy consolidated directly below the input */}
-      <p className="font-sans text-xs m-0 text-candera-stone/50">
+      <p className="font-sans text-xs m-0 text-candera-stone/50 px-4">
         Early access · Studio notes · No spam · Unsubscribe any time
       </p>
     </div>
