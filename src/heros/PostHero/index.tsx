@@ -7,7 +7,7 @@ import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { Container } from '@/components/ui/container'
 import { FilmGrain } from '@/components/FilmGrain'
-import Link from 'next/link'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 export const PostHero: React.FC<{
   post: Post
@@ -53,28 +53,17 @@ export const PostHero: React.FC<{
 
       <FilmGrain />
 
-      {/* Back link — top left */}
+      {/* Breadcrumb — top left */}
       <div className="absolute top-0 left-0 right-0 z-20 pt-8">
         <Container>
-          <Link
-            href="/posts"
-            className="eyebrow inline-flex items-center gap-2 text-candera-vellum/70 hover:text-candera-ember transition-colors"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-            The Journal
-          </Link>
+          <Breadcrumbs
+            className="text-candera-vellum/70"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Journal', href: '/posts' },
+              { label: title },
+            ]}
+          />
         </Container>
       </div>
 

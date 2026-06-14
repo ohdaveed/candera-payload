@@ -15,6 +15,7 @@ import { Container } from '@/components/ui/container'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getServerSideURL } from '@/utilities/getURL'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductDetailSections } from './ProductDetailSections'
 import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
@@ -101,26 +102,15 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       <SetHeaderTheme theme="light" />
 
       <Container>
-        {/* Back link */}
-        <Link
-          href="/products"
-          className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors mb-16 group"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="transition-transform group-hover:-translate-x-1"
-          >
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          Return to Collection
-        </Link>
+        {/* Breadcrumb */}
+        <Breadcrumbs
+          className="mb-16 text-candera-sage-text"
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Collection', href: '/products' },
+            { label: product.title },
+          ]}
+        />
 
         <Section
           as="article"
