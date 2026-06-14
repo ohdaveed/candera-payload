@@ -4,10 +4,11 @@ import React from 'react'
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   as?: React.ElementType
   padding?: 'none' | 'small' | 'medium' | 'large'
+  tinted?: boolean
 }
 
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
-  ({ as: Component = 'section', className, padding = 'medium', ...props }, ref) => {
+  ({ as: Component = 'section', className, padding = 'medium', tinted, ...props }, ref) => {
     const paddingClasses = {
       none: '',
       small: 'py-12 md:py-16',
@@ -15,7 +16,13 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       large: 'py-32 md:py-48',
     }
 
-    return <Component className={cn(paddingClasses[padding], className)} ref={ref} {...props} />
+    return (
+      <Component
+        className={cn(paddingClasses[padding], tinted && 'bg-candera-linen', className)}
+        ref={ref}
+        {...props}
+      />
+    )
   },
 )
 
