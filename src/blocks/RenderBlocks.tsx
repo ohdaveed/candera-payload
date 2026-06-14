@@ -14,10 +14,8 @@ const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => m.
   ssr: true,
 })
 
-const ScentQuizModal = dynamic(
-  () => import('@/blocks/ScentQuiz/Component').then((m) => m.ScentQuizBlock),
-  { ssr: false, loading: () => null },
-)
+import { ScentQuizClientBlock as ScentQuizModal } from '@/blocks/ScentQuiz/ClientBlock'
+import { ScentQuizCTABand } from '@/blocks/ScentQuiz/CTABand'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -52,11 +50,19 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              // scentQuiz renders as a modal portal — no wrapper div needed
+              // scentQuiz: render CTA band above the modal portal
               if (blockType === 'scentQuiz') {
+                const sq = block as unknown as {
+                  eyebrow?: string
+                  headline?: string
+                  body?: string
+                }
                 return (
-                  // @ts-expect-error there may be some mismatch between the expected types here
-                  <Block key={index} {...block} />
+                  <Fragment key={index}>
+                    <ScentQuizCTABand eyebrow={sq.eyebrow} headline={sq.headline} body={sq.body} />
+                    {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                    <Block {...block} />
+                  </Fragment>
                 )
               }
 
@@ -70,6 +76,8 @@ export const RenderBlocks: React.FC<{
                     .filter(Boolean)
                     .join(' ')}
                   id={blockType === 'archive' ? 'collection' : undefined}
+                  data-block={blockType}
+                  data-block-index={index}
                   key={index}
                 >
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}

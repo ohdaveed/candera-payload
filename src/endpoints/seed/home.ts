@@ -49,6 +49,14 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         statusCardShips: 'Coming Soon',
       } satisfies StorefrontHeroBlock & { blockType: 'storefrontHero'; blockName?: string },
       {
+        blockName: 'Scent Quiz',
+        blockType: 'scentQuiz',
+        eyebrow: 'Find Your Scent',
+        headline: 'Not sure where to start?',
+        quiz: scentQuizId,
+        formId: scentQuizFormId,
+      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
+      {
         blockName: 'Product Archive',
         blockType: 'archive',
         categories: [],
@@ -89,14 +97,6 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         ],
         richText: createRichText([createHeading(CTA_HEADING, 'h3'), createParagraph(CTA_BODY)]),
       },
-      {
-        blockName: 'Scent Quiz',
-        blockType: 'scentQuiz',
-        eyebrow: 'Find Your Scent',
-        headline: 'Not sure where to start?',
-        quiz: scentQuizId,
-        formId: scentQuizFormId,
-      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {
         blockName: 'Inner Circle CTA',
         blockType: 'innerCircleCTA',
