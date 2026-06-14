@@ -194,9 +194,13 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               etsyListingId={product.etsyListingId}
             />
 
+            {/* Sentinel for StickyCTABar — must sit immediately after the buy button */}
+            <div id="sticky-cta-sentinel" aria-hidden="true" />
+
             {/* Specifications + Scent Profile — collapsible sections */}
             <ProductDetailSections
               title={product.title}
+              vessel={product.vessel}
               productType={product.productType}
               scentProfile={product.scentProfile}
               burnTime={product.burnTime}

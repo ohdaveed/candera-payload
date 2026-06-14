@@ -15,9 +15,12 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
   const close = useCallback(() => {
     setIsOpen(false)
     document.body.style.overflow = ''
-    // Remove the hash without a page jump; fall back if replaceState is unavailable
+    // Remove the hash and quiz state param without a page jump
     try {
-      history.replaceState(null, '', window.location.pathname + window.location.search)
+      const params = new URLSearchParams(window.location.search)
+      params.delete('q')
+      const search = params.toString()
+      history.replaceState(null, '', window.location.pathname + (search ? `?${search}` : ''))
     } catch {
       window.location.hash = ''
     }
