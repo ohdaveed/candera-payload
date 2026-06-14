@@ -38,7 +38,7 @@
   .h1 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: clamp(2.5rem, 14vw, 7.25rem);
+    font-size: theme('fontSize.hero');
     line-height: 1.15;
     letter-spacing: -0.01em;
     margin: 0;
@@ -48,7 +48,7 @@
   .hero-heading {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: clamp(2.5rem, 13vw, 7.25rem);
+    font-size: theme('fontSize.hero');
     line-height: 1.08;
     letter-spacing: -0.01em;
     margin: 0;
@@ -59,7 +59,7 @@
   .h2 {
     @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
-    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-size: theme('fontSize.3xl');
     line-height: 1.2;
     margin: 0;
   }
@@ -116,6 +116,8 @@
   textarea:focus-visible,
   select:focus-visible {
     @apply border-candera-ember-strong/50 bg-white shadow-sm;
+    outline: 2px solid theme('colors.candera.ember.strong / 50%');
+    outline-offset: 2px;
   }
 
   /* Body text */

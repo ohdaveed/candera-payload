@@ -2,14 +2,7 @@ import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
-import {
-  Fraunces,
-  DM_Sans,
-  EB_Garamond,
-  Playfair_Display,
-  Inter,
-  Space_Grotesk,
-} from 'next/font/google'
+import { Fraunces, DM_Sans } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -40,33 +33,6 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
-const ebGaramond = EB_Garamond({
-  subsets: ['latin'],
-  weight: 'variable',
-  style: ['normal', 'italic'],
-  variable: '--font-eb-garamond',
-  display: 'swap',
-})
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  style: ['normal', 'italic'],
-  variable: '--font-playfair',
-  display: 'swap',
-})
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-})
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
   const siteTheme = await getCachedGlobal('site-theme')()
@@ -74,16 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(
-        GeistMono.variable,
-        fraunces.variable,
-        dmSans.variable,
-        ebGaramond.variable,
-        playfair.variable,
-        inter.variable,
-        spaceGrotesk.variable,
-        'scroll-smooth',
-      )}
+      className={cn(GeistMono.variable, fraunces.variable, dmSans.variable, 'scroll-smooth')}
       data-fontset={theme.fontSet}
       data-skin={theme.colorScheme}
       data-hero-layout={theme.heroLayout}

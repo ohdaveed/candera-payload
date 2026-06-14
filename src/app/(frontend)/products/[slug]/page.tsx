@@ -84,7 +84,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   }
 
   return (
-    <Section as="article" padding="large" className="bg-candera-vellum min-h-screen grain">
+    <Section
+      as="article"
+      padding="large"
+      className="bg-candera-vellum min-h-screen grain"
+      data-page="product-detail"
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -122,12 +127,14 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           as="article"
           padding="none"
           className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-32"
+          data-section="product-layout-grid"
         >
           {/* Left: image gallery — sticky on desktop so it stays in view while scrolling details */}
           <Section
             as="aside"
             padding="none"
             className="lg:col-span-7 relative lg:sticky lg:top-[var(--nav-height)] lg:h-[calc(100vh-var(--nav-height))] lg:overflow-hidden"
+            data-section="image-gallery"
           >
             <ImageGallery
               mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
@@ -137,7 +144,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </Section>
 
           {/* Right: details */}
-          <Section as="aside" padding="none" className="lg:col-span-5 flex flex-col gap-10 py-4">
+          <Section
+            as="aside"
+            padding="none"
+            className="lg:col-span-5 flex flex-col gap-10 py-4"
+            data-section="product-details"
+          >
             {/* Identity block */}
             <Section padding="none" className="flex flex-col gap-4">
               {product.vessel && (
@@ -209,7 +221,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       </Container>
 
       {/* Brand story strip */}
-      <aside className="bg-candera-obsidian mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16">
+      <aside
+        className="bg-candera-obsidian mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16"
+        data-section="brand-story-strip"
+      >
         <div className="flex flex-col gap-2 max-w-prose">
           <h2 className="font-display italic text-white text-2xl leading-snug">
             Made with intention, in small batches

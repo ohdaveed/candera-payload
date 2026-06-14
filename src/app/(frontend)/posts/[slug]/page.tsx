@@ -57,7 +57,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const readTime = Math.max(1, Math.round(wordCount / 200))
 
   return (
-    <article className="bg-candera-vellum min-h-screen">
+    <article className="bg-candera-vellum min-h-screen" data-page="post-detail">
       <SetHeaderTheme theme="dark" />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
@@ -66,7 +66,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       <PostHero post={post} readTime={readTime} />
 
       {/* Article body */}
-      <Section padding="large">
+      <Section padding="large" data-section="article-body">
         <Container>
           <RichText
             className="
@@ -86,7 +86,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       </Section>
 
       {/* Inner Circle CTA — full-bleed editorial dark strip */}
-      <aside className="bg-candera-obsidian grain">
+      <aside className="bg-candera-obsidian grain" data-section="inner-circle-cta">
         <Container className="py-20 md:py-28 flex flex-col items-center text-center gap-8">
           {/* Eyebrow with flanking rules */}
           <div className="flex items-center gap-4">
@@ -115,7 +115,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {/* Related posts */}
       {post.relatedPosts && post.relatedPosts.length > 0 && (
-        <Section padding="large">
+        <Section padding="large" data-section="related-posts">
           <Container>
             {/* Ruled eyebrow */}
             <div className="flex items-center gap-4 mb-16">

@@ -42,6 +42,7 @@ const config = {
         xl: '1.563rem',
         '2xl': '1.953rem',
         '3xl': '3rem',
+        '4xl': '3.5rem',
         hero: 'clamp(3rem, 9vw, 7.25rem)',
       },
 
@@ -52,6 +53,8 @@ const config = {
         wide: '0.1em',
         wider: '0.2em',
         widest: '0.3em',
+        display: '-0.02em',
+        heading: '-0.01em',
       },
 
       /* ---- CANDERA Line Heights ---- */
@@ -59,6 +62,10 @@ const config = {
         tight: '1.08',
         snug: '1.3',
         relaxed: '1.7',
+        hero: '1.0',
+        h2: '1.1',
+        h3: '1.15',
+        h4: '1.2',
       },
 
       /* ---- CANDERA Spacing (8px base) ---- */

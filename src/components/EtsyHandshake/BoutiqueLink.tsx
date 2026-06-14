@@ -15,8 +15,8 @@ export const BoutiqueLink: React.FC<BoutiqueLinkProps> = ({
   ...props
 }) => {
   const handleClick = () => {
-    toast.info('Redirecting to Studio Boutique...', {
-      description: 'Preparing your ritual transition.',
+    toast.info('Opening on Etsy', {
+      description: 'Taking you to the product listing.',
       duration: 1500,
     })
   }

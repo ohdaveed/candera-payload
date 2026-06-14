@@ -28,7 +28,6 @@
     "dump-and-show-public-schema": "pnpm run dump-public-schema && pnpm run show-public-schema"
   },
   "dependencies": {
-    "@chenglou/pretext": "^0.0.7",
     "@inferencesh/sdk": "^0.6.10",
     "@payloadcms/admin-bar": "3.85.0",
     "@payloadcms/db-postgres": "3.85.0",

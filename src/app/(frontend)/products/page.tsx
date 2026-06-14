@@ -76,7 +76,7 @@ export default async function ProductsPage({
     : `${products.totalDocs} pieces in the collection`
 
   return (
-    <main className="bg-candera-vellum min-h-screen">
+    <main className="bg-candera-vellum min-h-screen" data-page="products-listing">
       <SetHeaderTheme theme="dark" />
 
       <EditorialPageHero
@@ -87,7 +87,7 @@ export default async function ProductsPage({
       />
 
       {/* ── Collection grid ─────────────────────────────────────────── */}
-      <Section padding="large">
+      <Section padding="large" data-section="collection-grid">
         <Container>
           {/* ProductFilters owns its own Suspense boundary */}
           <ProductFilters />
@@ -100,30 +100,28 @@ export default async function ProductsPage({
           {products.docs.length > 0 ? (
             <ProductGrid products={products.docs.map(toGridProduct)} />
           ) : (
-            <div className="py-20 text-center">
-              <p
-                className="font-display italic text-candera-obsidian mb-4 m-0"
-                style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
-              >
-                {activeTag
-                  ? `No vessels found for ${activeTag}.`
-                  : 'The next batch is still curing.'}
-              </p>
-              <p className="font-sans text-[15px] text-candera-sage-text max-w-[420px] mx-auto mb-8 m-0 mt-3 leading-relaxed">
-                {activeTag
-                  ? 'Clear the filter to return to the full studio archive.'
-                  : 'Candera releases small batches as they finish their studio rest. Check back soon.'}
-              </p>
-              <Link
-                href="/products"
-                className="text-[11px] font-bold uppercase tracking-[.3em] text-candera-obsidian hover:text-candera-ember-strong transition-colors"
-              >
-                View all vessels →
-              </Link>
-            </div>
+            <output aria-live="polite" className="col-span-full py-24 text-center block">
+              {activeTag ? (
+                <>
+                  <p className="text-lg text-candera-obsidian mb-2">
+                    No products found for &quot;{activeTag}&quot;.
+                  </p>
+                  <p className="text-sm text-candera-sage-text">
+                    <Link
+                      href="/products"
+                      className="underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm"
+                    >
+                      Clear the filter
+                    </Link>
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg text-candera-obsidian">The next batch is still curing.</p>
+              )}
+            </output>
           )}
 
-          {products.totalPages > 1 && products.page && (
+          {products.docs.length > 0 && products.totalPages > 1 && products.page && (
             <div className="mt-16">
               <Pagination
                 basePath="/products"

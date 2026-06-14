@@ -70,7 +70,7 @@ function ProductFiltersInner() {
         <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
           <SelectTrigger
             id="product-sort"
-            className="h-[44px] border-candera-stone/40 bg-transparent text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus:ring-candera-ember-strong/20"
+            className="h-[44px] border-candera-stone/40 bg-transparent text-[10px] font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus-visible:ring-candera-ember-strong/20"
           >
             <SelectValue placeholder="Sort Batch" />
           </SelectTrigger>

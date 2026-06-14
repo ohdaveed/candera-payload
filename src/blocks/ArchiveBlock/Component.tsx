@@ -84,10 +84,11 @@ export const ArchiveBlock: React.FC<
 
   return (
     <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
-      {serializedIntroContent && (
+      {/* Only show introContent for posts (blog) — products use the CollectionArchive sidebar */}
+      {serializedIntroContent && relationTo !== 'products' && (
         <Container className="mb-12">
           <RichText
-            className="ms-0 max-w-[560px] 
+            className="ms-0 max-w-[560px]
               [&_h3]:h2 [&_h3]:mb-4
               [&_p]:editorial [&_p]:text-candera-sage-text"
             data={serializedIntroContent}

@@ -6,7 +6,7 @@ import React, { Fragment } from 'react'
 
 import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-types'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { ProductTagBadge } from './ProductTagBadge'
@@ -38,6 +38,7 @@ export const Card: React.FC<{
   showCategories?: boolean
   title?: string
 }> = (props) => {
+  const prefersReducedMotion = useReducedMotion()
   const { cardRef, linkRef } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
@@ -74,10 +75,8 @@ export const Card: React.FC<{
     <motion.div
       initial="initial"
       whileHover="hover"
-      whileTap="tap"
-      variants={{
-        tap: { scale: 0.98 },
-      }}
+      whileTap={prefersReducedMotion ? undefined : 'tap'}
+      variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
       ref={cardRef as React.RefObject<HTMLDivElement>}
     >
       <ShadcnCard
@@ -170,52 +169,52 @@ export const Card: React.FC<{
           )}
         </div>
 
-        <CardHeader className="pt-6 pb-3 px-0">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-col gap-1.5 px-0">
-              {titleToUse ? (
-                <CardTitle className="m-0 text-balance text-[18px] font-medium leading-snug not-italic text-candera-obsidian transition-colors group-hover:text-candera-ember-strong line-clamp-2 min-h-[3rem] border-none p-0 bg-transparent shadow-none">
-                  <Link
-                    href={href}
-                    ref={linkRef}
-                    className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
-                  >
-                    {titleToUse}
-                  </Link>
-                </CardTitle>
-              ) : null}
-            </div>
+        <CardHeader className="pt-4 pb-2 px-4">
+          <div className="flex flex-col">
+            {/* Category — faint, de-emphasized (for products) */}
+            {showCategories && hasCategories && relationTo === 'products' && (
+              <div className="flex items-center gap-1 mb-1">
+                {categories?.map((category, i) => {
+                  if (typeof category === 'object' && category !== null) {
+                    const { title: titleOfCategory } = category
+                    const isLast = i === categories.length - 1
+                    return (
+                      <Fragment key={i}>
+                        <p className="font-sans text-[9px] font-normal uppercase tracking-[3px] text-[#b8aa98] m-0">
+                          {titleOfCategory}
+                        </p>
+                        {!isLast && <span className="text-[#b8aa98]">,&nbsp;</span>}
+                      </Fragment>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+            )}
+            {/* Title — darkest */}
+            {titleToUse ? (
+              <CardTitle className="m-0 font-display text-[16px] font-normal not-italic leading-[1.3] text-[#0f0d0b] border-none p-0 bg-transparent shadow-none">
+                <Link
+                  href={href}
+                  ref={linkRef}
+                  className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none hover:text-candera-ember transition-colors"
+                >
+                  {titleToUse}
+                </Link>
+              </CardTitle>
+            ) : null}
+            {/* Price — mid-tone, clear gap */}
             {price != null && (
-              <span className="price text-[15px] font-medium shrink-0 pt-4 px-0">
+              <p className="font-sans text-[13px] font-semibold text-[#4a3f34] mt-[10px] m-0 tabular-nums">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   Number(price),
                 )}
-              </span>
+              </p>
             )}
           </div>
         </CardHeader>
 
         <CardContent className="pt-0 pb-2 px-0 flex flex-col flex-grow">
-          {/* Categories fallback for posts */}
-          {showCategories && hasCategories && !scentProfile && (
-            <div className="uppercase text-[10px] font-bold tracking-widest text-candera-sage-text mt-auto px-0">
-              {categories?.map((category, index) => {
-                if (category && typeof category === 'object') {
-                  const { title: titleFromCategory } = category
-                  const categoryTitle = titleFromCategory || 'Untitled category'
-                  const isLast = index === categories.length - 1
-                  return (
-                    <Fragment key={index}>
-                      {categoryTitle}
-                      {!isLast && <Fragment> &bull; </Fragment>}
-                    </Fragment>
-                  )
-                }
-                return null
-              })}
-            </div>
-          )}
-
           {/* Fragrance profile for products - Strict conditional check */}
           {relationTo === 'products' &&
             scentProfile &&
@@ -225,11 +224,11 @@ export const Card: React.FC<{
                   initial: { height: 0, opacity: 0, marginTop: 0 },
                   hover: { height: 'auto', opacity: 1, marginTop: 8 },
                 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 300,
-                  damping: 30,
-                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 300, damping: 30 }
+                }
                 className="mt-auto overflow-hidden pointer-events-none group-hover:pointer-events-auto"
               >
                 <FragranceProfile

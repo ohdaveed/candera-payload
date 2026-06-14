@@ -34,10 +34,10 @@ export default async function Page() {
   const remainingPosts = posts.docs.slice(1)
 
   return (
-    <main className="bg-candera-vellum">
+    <main className="bg-candera-vellum" data-page="posts-listing">
       <SetHeaderTheme theme="light" />
 
-      <Section padding="large" className="pt-32 pb-16">
+      <Section padding="large" className="pt-32 pb-16" data-section="page-header">
         <Container>
           <PageHeader
             eyebrow="Candera Stories"
@@ -48,14 +48,14 @@ export default async function Page() {
       </Section>
 
       {featuredPost && (
-        <Section padding="none" className="mb-20">
+        <Section padding="none" className="mb-20" data-section="featured-post">
           <Container>
             <FeaturedPostCard post={featuredPost} />
           </Container>
         </Section>
       )}
 
-      <Section padding="large" className="bg-candera-vellum">
+      <Section padding="large" className="bg-candera-vellum" data-section="post-archive">
         {featuredPost && remainingPosts.length > 0 && (
           <Container>
             <Eyebrow className="block mb-8">More from the Journal</Eyebrow>
