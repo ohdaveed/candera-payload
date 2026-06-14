@@ -45,9 +45,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
           {richText && (
             <RichText
               className="mb-10 
-                [&_h1]:hero-heading [&_h1]:text-white [&_h1]:mb-6 [&_h1]:text-balance
-                [&_h2]:h1 [&_h2]:text-white [&_h2]:mb-6 [&_h2]:text-balance
-                [&_p]:editorial [&_p]:text-white/80 [&_p]:max-w-[32rem] [&_p]:mx-auto"
+                [&_h1]:hero-heading [&_h1]:text-candera-vellum [&_h1]:mb-6 [&_h1]:text-balance
+                [&_h2]:h1 [&_h2]:text-candera-vellum [&_h2]:mb-6 [&_h2]:text-balance
+                [&_p]:editorial [&_p]:text-candera-vellum/80 [&_p]:max-w-[32rem] [&_p]:mx-auto"
               data={richText}
               enableGutter={false}
             />

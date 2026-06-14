@@ -219,10 +219,10 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         data-section="brand-story-strip"
       >
         <div className="flex flex-col gap-2 max-w-prose">
-          <h2 className="font-display italic text-white text-2xl leading-snug">
+          <h2 className="font-display italic text-candera-vellum text-2xl leading-snug">
             Made with intention, in small batches
           </h2>
-          <p className="text-sm text-white/80 leading-relaxed">
+          <p className="text-sm text-candera-vellum/80 leading-relaxed">
             Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
             botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
             they smell in the jar.
@@ -230,7 +230,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.25em] text-white border-b border-white/30 pb-0.5 hover:border-white transition-colors shrink-0 self-start lg:self-auto"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.25em] text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto"
         >
           Explore the collection
           <svg

@@ -6,7 +6,7 @@ export function ProductCardSkeleton({ className }: { className?: string }) {
   return (
     <Card
       className={cn(
-        'flex flex-col h-full bg-white rounded-none border-none shadow-none',
+        'flex flex-col h-full bg-candera-linen rounded-none border-none shadow-none',
         className,
       )}
     >

@@ -35,7 +35,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
             aria-label="Open navigation menu"
             className={[
               'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] transition-colors',
-              transparent ? 'text-white' : 'text-candera-obsidian',
+              transparent ? 'text-candera-vellum' : 'text-candera-obsidian',
             ].join(' ')}
           >
             <Menu className="w-5 h-5" aria-hidden="true" />

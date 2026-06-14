@@ -96,7 +96,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           </div>
 
           {/* Headline */}
-          <p className="h2 text-white leading-[1.15] max-w-[36rem] m-0">
+          <p className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
             Be the first to know about new batches, scent notes, and studio moments.
           </p>
 
@@ -104,7 +104,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             <Link href="/contact">Join the Circle</Link>
           </Button>
 
-          <p className="caption text-white/50 m-0">No noise. Unsubscribe anytime.</p>
+          <p className="caption text-candera-vellum/50 m-0">No noise. Unsubscribe anytime.</p>
         </Container>
       </aside>
 

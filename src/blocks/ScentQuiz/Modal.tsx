@@ -125,7 +125,7 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
           type="button"
           onClick={close}
           aria-label="Close quiz"
-          className="absolute top-5 right-5 z-20 flex items-center justify-center w-10 h-10 text-white/60 hover:text-white transition-colors"
+          className="absolute top-5 right-5 z-20 flex items-center justify-center w-10 h-10 text-candera-vellum/60 hover:text-candera-vellum transition-colors"
         >
           <svg
             width="20"

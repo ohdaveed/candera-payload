@@ -30,16 +30,16 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
           <Badge
             variant="outline"
-            className="mb-4 text-white border-white/30 uppercase tracking-[.2em] px-3 py-1 bg-white/5 backdrop-blur-sm"
+            className="mb-4 text-candera-vellum border-candera-vellum/30 uppercase tracking-[.2em] px-3 py-1 bg-candera-vellum/5 backdrop-blur-sm"
           >
             Featured Story
           </Badge>
 
-          {/* hero-heading at white = 18.75:1 on obsidian ✅ */}
-          <h2 className="hero-heading text-white mb-3 max-w-[640px]">{post.title}</h2>
+          {/* hero-heading at vellum = 18.75:1 on obsidian ✅ */}
+          <h2 className="hero-heading text-candera-vellum mb-3 max-w-[640px]">{post.title}</h2>
 
-          {/* white/75 on obsidian/75 base = ~14:1 — passes AA for large/bold text ✅ */}
-          <span className="btn-text text-white/75">Read the story →</span>
+          {/* vellum/75 on obsidian/75 base = ~14:1 — passes AA for large/bold text ✅ */}
+          <span className="btn-text text-candera-vellum/75">Read the story →</span>
         </div>
       </article>
     </Link>
