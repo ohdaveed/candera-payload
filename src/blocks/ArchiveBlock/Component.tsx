@@ -82,23 +82,39 @@ export const ArchiveBlock: React.FC<
     traverseAndReplace(serializedIntroContent.root)
   }
 
+  const isPosts = relationTo === 'posts'
+
   return (
     <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
-      {/* Only show introContent for posts (blog) — products use the CollectionArchive sidebar */}
-      {serializedIntroContent && relationTo !== 'products' && (
-        <Container className="mb-12">
-          <RichText
-            className="ms-0 max-w-[560px]
-              [&_h3]:h2 [&_h3]:mb-4
-              [&_p]:editorial [&_p]:text-candera-sage-text"
-            data={serializedIntroContent}
-            enableGutter={false}
-          />
+      {isPosts ? (
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-12">
+            {/* Left — sticky editorial sidebar */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-24 flex flex-col gap-4">
+                {serializedIntroContent && (
+                  <RichText
+                    className="ms-0
+                      [&_h3]:h2 [&_h3]:mb-4
+                      [&_p]:editorial [&_p]:text-candera-sage-text"
+                    data={serializedIntroContent}
+                    enableGutter={false}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Right — 3-column card grid */}
+            <div className="lg:col-span-3">
+              <CollectionArchive posts={data as CardPostData[]} relationTo="posts" hideSidebar />
+            </div>
+          </div>
+        </Container>
+      ) : (
+        <Container>
+          <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
         </Container>
       )}
-      <Container>
-        <CollectionArchive posts={data as CardPostData[]} relationTo={relationTo || 'products'} />
-      </Container>
     </Section>
   )
 }

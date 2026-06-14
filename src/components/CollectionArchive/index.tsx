@@ -5,15 +5,80 @@ import { Card, CardPostData } from '@/components/Card'
 export type Props = {
   posts: CardPostData[]
   relationTo?: 'posts' | 'products'
+  hideSidebar?: boolean
   sidebarEyebrow?: string
   sidebarTitle?: string
   sidebarDescription?: string
   sidebarLinkText?: string
 }
 
+const CardList: React.FC<{
+  posts: CardPostData[]
+  relationTo: 'posts' | 'products'
+  className?: string
+}> = ({
+  posts,
+  relationTo,
+  className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3',
+}) => (
+  <ul className={`${className} list-none p-0 m-0`}>
+    {posts?.map((result, index) => {
+      if (typeof result !== 'object' || result === null) return null
+
+      const {
+        slug,
+        categories,
+        meta,
+        title,
+        tagline,
+        extraPhotos,
+        scentProfile,
+        burnTime,
+        atmosphere,
+        productTag,
+        vessel,
+        price,
+        populatedAuthors,
+        publishedAt,
+      } = result
+
+      const minimizedDoc = {
+        slug,
+        categories: categories?.map((cat) =>
+          typeof cat === 'object' ? { title: cat.title } : cat,
+        ),
+        meta: { description: meta?.description, image: meta?.image },
+        title,
+        tagline,
+        extraPhotos,
+        scentProfile,
+        burnTime,
+        atmosphere,
+        productTag,
+        vessel,
+        price,
+        populatedAuthors,
+        publishedAt,
+      }
+
+      return (
+        <li key={index}>
+          <Card
+            className="h-full"
+            doc={minimizedDoc as CardPostData}
+            relationTo={relationTo}
+            showCategories
+          />
+        </li>
+      )
+    })}
+  </ul>
+)
+
 export const CollectionArchive: React.FC<Props> = ({
   posts,
   relationTo = 'posts',
+  hideSidebar = false,
   sidebarEyebrow,
   sidebarTitle,
   sidebarDescription,
@@ -22,7 +87,6 @@ export const CollectionArchive: React.FC<Props> = ({
   const isProducts = relationTo === 'products'
   const collectionPath = isProducts ? '/products' : '/posts'
 
-  // Default sidebar content based on relation
   const defaultEyebrow = isProducts ? 'The Collection' : 'The Journal'
   const defaultTitle = isProducts ? (
     <>
@@ -40,9 +104,19 @@ export const CollectionArchive: React.FC<Props> = ({
     : 'Deep dives into botanical history, studio notes, and the philosophy of slow living.'
   const defaultLinkText = isProducts ? 'View all →' : 'View all stories →'
 
+  if (hideSidebar) {
+    return (
+      <CardList
+        posts={posts}
+        relationTo={relationTo}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      />
+    )
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-candera-vellum">
-      {/* Left sidebar — sticky, top-aligned with first image row */}
+      {/* Left sidebar — sticky */}
       <div className="p-6 md:pt-7 md:pb-7 md:pl-[52px] md:pr-9 border-b md:border-b-0 md:border-r border-[rgba(180,160,130,0.18)] md:sticky md:top-0 md:self-start bg-candera-vellum flex flex-col gap-[14px]">
         <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
         <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
@@ -57,60 +131,9 @@ export const CollectionArchive: React.FC<Props> = ({
         </Link>
       </div>
 
-      {/* Right — 3-column product grid */}
+      {/* Right — card grid */}
       <div className="p-6 md:pt-7 md:pb-7 md:pr-[52px] md:pl-0">
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 list-none p-0 m-0">
-          {posts?.map((result, index) => {
-            if (typeof result !== 'object' || result === null) return null
-
-            const {
-              slug,
-              categories,
-              meta,
-              title,
-              tagline,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-              populatedAuthors,
-              publishedAt,
-            } = result
-
-            const minimizedDoc = {
-              slug,
-              categories: categories?.map((cat) =>
-                typeof cat === 'object' ? { title: cat.title } : cat,
-              ),
-              meta: { description: meta?.description, image: meta?.image },
-              title,
-              tagline,
-              extraPhotos,
-              scentProfile,
-              burnTime,
-              atmosphere,
-              productTag,
-              vessel,
-              price,
-              populatedAuthors,
-              publishedAt,
-            }
-
-            return (
-              <li key={index}>
-                <Card
-                  className="h-full"
-                  doc={minimizedDoc as CardPostData}
-                  relationTo={relationTo}
-                  showCategories
-                />
-              </li>
-            )
-          })}
-        </ul>
+        <CardList posts={posts} relationTo={relationTo} />
       </div>
     </div>
   )
