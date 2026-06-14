@@ -56,12 +56,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       ].join(' ')}
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <Container className="max-w-[1280px] py-4 flex items-center justify-between px-6 md:px-10">
-        {/* Left-aligned logo */}
+      <Container className="py-4 flex items-center justify-between">
+        {/* Left-aligned logo with visual offset */}
         <Link
           aria-label="Candera Home"
           className={[
-            'font-display font-bold text-xl tracking-[-0.04em] transition-colors',
+            'font-display font-bold text-xl tracking-[-0.04em] transition-colors pl-0.5',
             isTransparent ? 'text-candera-vellum' : 'text-candera-obsidian',
           ].join(' ')}
           href="/"
