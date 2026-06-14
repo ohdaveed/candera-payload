@@ -10,7 +10,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   const secondary = rest.slice(0, 2)
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 bg-candera-obsidian">
+    <section className="grid grid-cols-1 md:grid-cols-2 bg-candera-obsidian md:min-h-[480px]">
       {/* Left — featured quote */}
       <div className="p-6 md:p-12 border-b md:border-b-0 md:border-r border-candera-stone/10 flex flex-col justify-center">
         {eyebrow && <p className="eyebrow text-candera-stone mb-6">{eyebrow}</p>}
@@ -35,11 +35,11 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
       </div>
 
       {/* Right — two stacked secondary quotes */}
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full">
         {secondary.map((t, i) => (
           <div
             key={i}
-            className={`px-6 py-10 md:px-10 md:min-h-[160px] flex flex-col justify-start${i < secondary.length - 1 ? ' border-b border-candera-stone/5' : ''}`}
+            className={`px-6 py-10 md:px-10 flex-1 flex flex-col justify-center${i < secondary.length - 1 ? ' border-b border-candera-stone/10' : ''}`}
           >
             <blockquote className="m-0">
               <p className="editorial text-candera-stone m-0">&ldquo;{t.quote}&rdquo;</p>
