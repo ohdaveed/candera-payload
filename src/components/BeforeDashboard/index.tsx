@@ -1,9 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
 import './index.scss'
-import { Package, Tags, Inbox } from 'lucide-react'
+import { Package, Tags, Inbox, BookOpen } from 'lucide-react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import type { Documentation as DocumentationType } from '@/payload-types'
 
 import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
@@ -18,16 +19,19 @@ const BeforeDashboard: React.FC = async () => {
   let categoryCount = 0
   let formSubmissionsCount = 0
   let newSubmissions = 0
+  let docs: DocumentationType[] = []
 
   try {
-    const [products, categories, submissions] = await Promise.all([
+    const [products, categories, submissions, documentation] = await Promise.all([
       payload.find({ collection: 'products', limit: 0, depth: 0 }),
       payload.find({ collection: 'categories', limit: 0, depth: 0 }),
       payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
+      payload.find({ collection: 'documentation', limit: 5, sort: 'order', depth: 0 }),
     ])
     productCount = products.totalDocs
     categoryCount = categories.totalDocs
     formSubmissionsCount = submissions.totalDocs
+    docs = documentation.docs as unknown as DocumentationType[]
 
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
     const recent = await payload.find({
@@ -82,6 +86,33 @@ const BeforeDashboard: React.FC = async () => {
           />
         </div>
       </section>
+
+      {docs.length > 0 && (
+        <section className="mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <h2
+              className="text-[0.7rem] font-semibold uppercase tracking-[0.12em]"
+              style={{ color: 'var(--theme-elevation-700)' }}
+            >
+              User Documentation
+            </h2>
+            <SectionTooltip
+              title="User Documentation"
+              content="Help guides and documentation to help you manage your store effectively. These articles cover common tasks and best practices."
+            />
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3">
+            {docs.map((doc) => (
+              <QuickAccessCard
+                key={doc.id}
+                label={doc.title}
+                icon={BookOpen}
+                href={`/admin/collections/documentation/${doc.id}`}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mb-8">
         <div className="flex items-center gap-2 mb-3">

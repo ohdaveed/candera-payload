@@ -5,9 +5,9 @@ import type { LucideIcon } from 'lucide-react'
 type QuickAccessCardProps = {
   label: string
   icon: LucideIcon
-  count: number
+  count?: number
   href: string
-  createHref: string
+  createHref?: string
 }
 
 export const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
@@ -25,26 +25,30 @@ export const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
         </div>
         <div className="quick-access-card__text">
           <span className="quick-access-card__label">{label}</span>
-          <span className="quick-access-card__count">{count}</span>
+          {typeof count !== 'undefined' && (
+            <span className="quick-access-card__count">{count}</span>
+          )}
         </div>
       </Link>
-      <Link
-        href={createHref}
-        aria-label={`Create new ${label.toLowerCase()}`}
-        className="quick-access-card__create"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
+      {createHref && (
+        <Link
+          href={createHref}
+          aria-label={`Create new ${label.toLowerCase()}`}
+          className="quick-access-card__create"
         >
-          <path d="M8 3v10M3 8h10" />
-        </svg>
-      </Link>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path d="M8 3v10M3 8h10" />
+          </svg>
+        </Link>
+      )}
     </div>
   )
 }
