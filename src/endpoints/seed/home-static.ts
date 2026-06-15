@@ -24,9 +24,9 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockType: 'storefrontHero',
       heroTag: 'Handmade by Olesia',
-      headline: 'Made to make you stop.',
+      headline: 'The Art of the Quiet Ritual.',
       subheading:
-        'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.',
+        'Thoughtfully handcrafted botanical candles designed to bring light, warmth, and intention to your everyday moments.',
       primaryCtaLabel: 'Explore the Collection',
       primaryCtaUrl: '#collection',
       secondaryCtaLabel: 'Take the Scent Quiz →',

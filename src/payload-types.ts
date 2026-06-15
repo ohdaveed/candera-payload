@@ -78,6 +78,7 @@ export interface Config {
     briefs: Brief;
     quizzes: Quiz;
     'scent-profiles': ScentProfile;
+    documentation: Documentation;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -106,6 +107,7 @@ export interface Config {
     briefs: BriefsSelect<false> | BriefsSelect<true>;
     quizzes: QuizzesSelect<false> | QuizzesSelect<true>;
     'scent-profiles': ScentProfilesSelect<false> | ScentProfilesSelect<true>;
+    documentation: DocumentationSelect<false> | DocumentationSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1084,6 +1086,37 @@ export interface Brief {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documentation".
+ */
+export interface Documentation {
+  id: number;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  order?: number | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1320,6 +1353,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'scent-profiles';
         value: number | ScentProfile;
+      } | null)
+    | ({
+        relationTo: 'documentation';
+        value: number | Documentation;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1878,6 +1915,19 @@ export interface ScentProfilesSelect<T extends boolean = true> {
   editorial?: T;
   featuredProduct?: T;
   ambientImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documentation_select".
+ */
+export interface DocumentationSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  order?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
