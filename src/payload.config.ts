@@ -35,6 +35,7 @@ import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
+import { Documentation } from './collections/Documentation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -134,6 +135,7 @@ export default buildConfig({
     Briefs,
     Quizzes,
     ScentProfiles,
+    Documentation,
   ],
   cors: corsOrigins,
   plugins: [
