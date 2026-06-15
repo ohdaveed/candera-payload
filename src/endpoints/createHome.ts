@@ -242,9 +242,9 @@ export const createHomeEndpoint: Endpoint = {
           {
             blockType: 'storefrontHero',
             heroTag: 'Hand-Poured in the Studio',
-            headline: 'An invitation to slow down.',
+            headline: 'The Art of the Quiet Ritual.',
             subheading:
-              'Limited Release: Batch 014 now curing in the studio. Hand-poured with pressed botanicals.',
+              'Thoughtfully handcrafted botanical candles designed to bring light, warmth, and intention to your everyday moments.',
             media: heroMedia?.id,
             primaryCtaLabel: 'Explore the Collection',
             primaryCtaUrl: '#collection',
