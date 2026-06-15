@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link'
 
 type Props = {
   eyebrow?: string | null
@@ -33,12 +32,12 @@ export const ScentQuizCTABand: React.FC<Props> = ({
           {body}
         </p>
       )}
-      <Link
+      <a
         href="#scent-quiz"
         className="btn-text bg-candera-ember text-candera-obsidian px-8 py-4 no-underline whitespace-nowrap hover:bg-candera-vellum hover:text-candera-obsidian transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-none"
       >
         Take the Scent Quiz →
-      </Link>
+      </a>
     </div>
   </section>
 )

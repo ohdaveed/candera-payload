@@ -1973,6 +1973,29 @@ export const scent_profiles = pgTable(
   ],
 )
 
+export const documentation = pgTable(
+  'documentation',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title').notNull(),
+    content: jsonb('content').notNull(),
+    order: numeric('order', { mode: 'number' }).default(0),
+    generateSlug: boolean('generate_slug').default(true),
+    slug: varchar('slug').notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => [
+    uniqueIndex('documentation_slug_idx').on(columns.slug),
+    index('documentation_updated_at_idx').on(columns.updatedAt),
+    index('documentation_created_at_idx').on(columns.createdAt),
+  ],
+)
+
 export const redirects = pgTable(
   'redirects',
   {
@@ -2604,6 +2627,7 @@ export const payload_locked_documents_rels = pgTable(
     briefsID: integer('briefs_id'),
     quizzesID: integer('quizzes_id'),
     'scent-profilesID': integer('scent_profiles_id'),
+    documentationID: integer('documentation_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -2625,6 +2649,7 @@ export const payload_locked_documents_rels = pgTable(
     index('payload_locked_documents_rels_briefs_id_idx').on(columns.briefsID),
     index('payload_locked_documents_rels_quizzes_id_idx').on(columns.quizzesID),
     index('payload_locked_documents_rels_scent_profiles_id_idx').on(columns['scent-profilesID']),
+    index('payload_locked_documents_rels_documentation_id_idx').on(columns.documentationID),
     index('payload_locked_documents_rels_redirects_id_idx').on(columns.redirectsID),
     index('payload_locked_documents_rels_forms_id_idx').on(columns.formsID),
     index('payload_locked_documents_rels_form_submissions_id_idx').on(
@@ -2691,6 +2716,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['scent-profilesID']],
       foreignColumns: [scent_profiles.id],
       name: 'payload_locked_documents_rels_scent_profiles_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['documentationID']],
+      foreignColumns: [documentation.id],
+      name: 'payload_locked_documents_rels_documentation_fk',
     }).onDelete('cascade'),
     foreignKey({
       columns: [columns['redirectsID']],
@@ -3738,6 +3768,7 @@ export const relations_scent_profiles = relations(scent_profiles, ({ one }) => (
     relationName: 'ambientImage',
   }),
 }))
+export const relations_documentation = relations(documentation, () => ({}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -4028,6 +4059,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [scent_profiles.id],
       relationName: 'scent-profiles',
     }),
+    documentationID: one(documentation, {
+      fields: [payload_locked_documents_rels.documentationID],
+      references: [documentation.id],
+      relationName: 'documentation',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -4278,6 +4314,7 @@ type DatabaseSchema = {
   quizzes_questions: typeof quizzes_questions
   quizzes: typeof quizzes
   scent_profiles: typeof scent_profiles
+  documentation: typeof documentation
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -4373,6 +4410,7 @@ type DatabaseSchema = {
   relations_quizzes_questions: typeof relations_quizzes_questions
   relations_quizzes: typeof relations_quizzes
   relations_scent_profiles: typeof relations_scent_profiles
+  relations_documentation: typeof relations_documentation
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox
