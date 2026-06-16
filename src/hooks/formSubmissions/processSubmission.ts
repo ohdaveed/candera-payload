@@ -1,5 +1,6 @@
 import type { CollectionAfterChangeHook } from 'payload'
 import { archiveFormSubmission } from '@/services/supabase'
+import { sendToFormSubmit } from '@/services/formsubmit'
 
 const FORM_TAG_MAP: Record<string, string> = {
   'Contact Form': 'contact',
@@ -33,6 +34,11 @@ export const processFormSubmission: CollectionAfterChangeHook = async ({ doc, re
         tags: [tag],
         scent_result: scentResult,
         payload_submission_id: String(doc.id),
+      }),
+      sendToFormSubmit({
+        formTitle,
+        email,
+        submissionData,
       }),
     ])
 
