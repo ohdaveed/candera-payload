@@ -7,7 +7,7 @@
   "scripts": {
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
-    "ci": "node -e \"const u=process.env.POSTGRES_URL||'';const m=u.match(/:([^:@]+)@/);console.log('PW_LEN:',(m?m[1]:'NONE').length,'PW_CHARS:',m?(m[1].slice(0,4)+'...'):'NONE')\" && payload migrate && pnpm build",
+    "ci": "payload migrate && pnpm build",
     "ci:build": "pnpm build",
     "dev": "next dev",
     "dev:prod": "rm -rf .next && pnpm build && pnpm start",

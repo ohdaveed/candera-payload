@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run ci",
+  "buildCommand": "pnpm run ci:build",
   "installCommand": "pnpm install",
   "crons": [
     {
