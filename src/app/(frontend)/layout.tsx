@@ -14,10 +14,9 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { normalizeSiteThemeSettings } from '@/utilities/siteTheme'
 import { draftMode } from 'next/headers'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from '@/components/ui/sonner'
 import { BackToTop } from '@/components/BackToTop'
+import { AnalyticsScripts } from '@/components/AnalyticsScripts'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -45,8 +44,10 @@ const ebGaramond = EB_Garamond({
 })
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
-  const siteTheme = await getCachedGlobal('site-theme')()
+  const [{ isEnabled }, siteTheme] = await Promise.all([
+    draftMode(),
+    getCachedGlobal('site-theme')(),
+  ])
   const theme = normalizeSiteThemeSettings(siteTheme)
 
   return (
@@ -90,8 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Providers>
         <BackToTop />
         <Toaster position="bottom-right" richColors />
-        <Analytics />
-        <SpeedInsights />
+        <AnalyticsScripts />
       </body>
     </html>
   )

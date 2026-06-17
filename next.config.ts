@@ -42,6 +42,9 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   async headers() {
