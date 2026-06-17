@@ -16,7 +16,9 @@ export function shouldUseVercelPostgresAdapter(connectionString: string): boolea
 
   try {
     const hostname = new URL(connectionString).hostname.toLowerCase()
-    return hostname === 'neon.tech' || hostname.endsWith('.neon.tech')
+    // Force standard adapter — vercel adapter's HTTP proxy auth has issues
+    void hostname
+    return false
   } catch {
     return false
   }
