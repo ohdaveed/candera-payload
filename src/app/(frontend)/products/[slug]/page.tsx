@@ -23,15 +23,7 @@ import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const products = await payload.find({
-    collection: 'products',
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: { slug: true },
-  })
-  return products.docs.map(({ slug }) => ({ slug }))
+  return []
 }
 
 type Args = { params: Promise<{ slug?: string }> }
