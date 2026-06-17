@@ -7,7 +7,7 @@
   "scripts": {
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
-    "ci": "payload migrate && pnpm build",
+    "ci": "node -e \"const u=process.env.POSTGRES_URL||'';console.log('DB_HOST:',u.split('@')[1]?.split('/')[0]||'EMPTY')\" && payload migrate && pnpm build",
     "ci:build": "pnpm build",
     "dev": "next dev",
     "dev:prod": "rm -rf .next && pnpm build && pnpm start",
