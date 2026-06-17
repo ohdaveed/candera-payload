@@ -34,14 +34,16 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   const url = '/products/' + decodedSlug
 
   const productPromise = queryProductBySlug({ slug: decodedSlug })
-  const formPromise = getPayload({ config: configPromise }).then((p) =>
-    p.find({
-      collection: 'forms',
-      where: { title: { equals: 'Inner Circle Signup' } },
-      limit: 1,
-      depth: 0,
-    }),
-  )
+  const formPromise = getPayload({ config: configPromise })
+    .then((p) =>
+      p.find({
+        collection: 'forms',
+        where: { title: { equals: 'Inner Circle Signup' } },
+        limit: 1,
+        depth: 0,
+      }),
+    )
+    .catch(() => null)
 
   const product = await productPromise
   if (!product) return <PayloadRedirects url={url} />
@@ -49,7 +51,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   const serverUrl = getServerSideURL()
 
   const innerCircleFormResult = await formPromise
-  const innerCircleFormId = innerCircleFormResult.docs[0]?.id?.toString() ?? ''
+  const innerCircleFormId = innerCircleFormResult?.docs[0]?.id?.toString() ?? ''
 
   const productImageUrl = resolveProductImageUrl(product, serverUrl)
 
