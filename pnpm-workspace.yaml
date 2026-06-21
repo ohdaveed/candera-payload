@@ -1,5 +1,4 @@
-settings:
-  shamefullyHoist: true
+shamefullyHoist: true
 
 allowBuilds:
   bufferutil: false
