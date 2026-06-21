@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { logger } from '@/utilities/logger'
 
 export const maxDuration = 300
 
@@ -23,9 +24,11 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: 'Invalid signature' }, { status: 403 })
   }
 
-  const event = JSON.parse(rawBody) as {
-    type: string
-    payload: { target?: string; meta?: { deploymentId?: string } }
+  let event: { type: string; payload: { target?: string; deployment?: { id?: string } } }
+  try {
+    event = JSON.parse(rawBody)
+  } catch {
+    return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
   if (event.type !== 'deployment.succeeded') {
@@ -36,8 +39,14 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ skipped: true, reason: 'not a production deployment' })
   }
 
-  const payload = await getPayload({ config: configPromise })
-  await payload.db.migrate()
+  const deploymentId = event.payload.deployment?.id ?? 'unknown'
 
-  return Response.json({ ok: true })
+  try {
+    const payload = await getPayload({ config: configPromise })
+    await payload.db.migrate()
+    return Response.json({ ok: true })
+  } catch (err) {
+    logger.error(err, `vercel-deploy webhook: migration failed (deploymentId: ${deploymentId})`)
+    return Response.json({ error: 'Migration failed', deploymentId }, { status: 500 })
+  }
 }

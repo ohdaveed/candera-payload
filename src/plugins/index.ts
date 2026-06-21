@@ -13,6 +13,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { processFormSubmission } from '@/hooks/formSubmissions/processSubmission'
+import { revalidateForm, revalidateFormOnDelete } from '@/hooks/forms/revalidateForm'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -65,6 +66,10 @@ export const plugins: Plugin[] = [
     formOverrides: {
       admin: {
         group: 'Inquiries',
+      },
+      hooks: {
+        afterChange: [revalidateForm],
+        afterDelete: [revalidateFormOnDelete],
       },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
