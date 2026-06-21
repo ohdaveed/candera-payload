@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@inferencesh/sdk": "^0.6.10",
+    "@neondatabase/serverless": "^1.1.0",
     "@payloadcms/admin-bar": "3.85.1",
     "@payloadcms/db-postgres": "3.85.1",
     "@payloadcms/db-vercel-postgres": "3.85.1",
@@ -103,7 +104,7 @@
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@11.5.2",
+  "packageManager": "pnpm@11.8.0",
   "engines": {
     "node": "24.x"
   }

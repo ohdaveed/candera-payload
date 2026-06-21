@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { ContactForm } from '@/components/ContactForm'
+import { getCachedFormByTitle } from '@/utilities/getForms'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Contact — Candera',
@@ -16,16 +15,8 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const payload = await getPayload({ config: configPromise })
-
-  const formsResult = await payload.find({
-    collection: 'forms',
-    where: { title: { equals: 'Contact Form' } },
-    limit: 1,
-    depth: 0,
-  })
-
-  const contactFormId = formsResult.docs[0]?.id ?? 0
+  const contactForm = await getCachedFormByTitle('Contact Form')()
+  const contactFormId = contactForm?.id ?? 0
 
   return (
     <main className="bg-candera-vellum min-h-screen" data-page="contact">

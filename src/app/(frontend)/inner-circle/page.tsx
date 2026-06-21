@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
+import { getCachedFormByTitle } from '@/utilities/getForms'
 import { PageHeader } from '@/components/PageHeader'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'The Inner Circle — Candera',
@@ -13,16 +12,8 @@ export const metadata: Metadata = {
 }
 
 export default async function InnerCirclePage() {
-  const payload = await getPayload({ config: configPromise })
-
-  const formsResult = await payload.find({
-    collection: 'forms',
-    where: { title: { equals: 'Inner Circle Signup' } },
-    limit: 1,
-    depth: 0,
-  })
-
-  const formId = formsResult.docs[0]?.id?.toString() ?? ''
+  const form = await getCachedFormByTitle('Inner Circle Signup')()
+  const formId = form?.id?.toString() ?? ''
 
   return (
     <div className="min-h-screen bg-candera-linen pt-32 pb-32" data-page="inner-circle">

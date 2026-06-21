@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getCachedFormByTitle } from '@/utilities/getForms'
 import { getServerSideURL } from '@/utilities/getURL'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
@@ -34,24 +35,15 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   const url = '/products/' + decodedSlug
 
   const productPromise = queryProductBySlug({ slug: decodedSlug })
-  const formPromise = getPayload({ config: configPromise })
-    .then((p) =>
-      p.find({
-        collection: 'forms',
-        where: { title: { equals: 'Inner Circle Signup' } },
-        limit: 1,
-        depth: 0,
-      }),
-    )
-    .catch(() => null)
+  const formPromise = getCachedFormByTitle('Inner Circle Signup')()
 
   const product = await productPromise
   if (!product) return <PayloadRedirects url={url} />
 
   const serverUrl = getServerSideURL()
 
-  const innerCircleFormResult = await formPromise
-  const innerCircleFormId = innerCircleFormResult?.docs[0]?.id?.toString() ?? ''
+  const innerCircleForm = await formPromise
+  const innerCircleFormId = innerCircleForm?.id?.toString() ?? ''
 
   const productImageUrl = resolveProductImageUrl(product, serverUrl)
 
