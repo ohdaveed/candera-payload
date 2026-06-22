@@ -75,7 +75,7 @@ const publishingFirstPost: Doc = {
     ),
     heading('Draft, Preview, and Publish', 'h2'),
     para(
-      'The post starts in Draft status. Click Save Draft to preserve your work — the autosave fires every two seconds while you type. To preview, click the Preview button in the top-right sidebar panel; this opens the live frontend at the post URL. When the content is ready, switch the Status toggle from Draft to Published and click Save.',
+      'The post starts in Draft status. Click Save Draft to preserve your work. To preview, click the Preview button in the top-right sidebar panel; this opens the live frontend at the post URL. When the content is ready, switch the Status toggle from Draft to Published and click Save.',
     ),
     heading('Quick Checklist', 'h2'),
     bulletList(
