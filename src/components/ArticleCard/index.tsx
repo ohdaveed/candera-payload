@@ -9,6 +9,7 @@ interface ArticleCardProps {
   date?: string | null
   imageUrl?: string | null
   imageAlt?: string | null
+  pathPrefix?: string
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({
@@ -18,8 +19,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   date,
   imageUrl,
   imageAlt,
+  pathPrefix = '/posts',
 }) => (
-  <Link href={`/posts/${slug}`} className="block group">
+  <Link href={`${pathPrefix}/${slug}`} className="block group">
     <article className="flex flex-col h-full">
       <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/3]">
         {imageUrl ? (

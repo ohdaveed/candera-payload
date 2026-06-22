@@ -11,6 +11,8 @@ import { contactForm as contactFormData } from './contact-form'
 import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
 import { seedScentQuiz } from './scent-quiz'
+import { seedHowToGuides } from './how-to-guides'
+import { seedAdminDocs } from './admin-docs'
 import { contact as contactPageData } from './contact-page'
 import { about as aboutPageData } from './about-page'
 import { home } from './home'
@@ -36,6 +38,8 @@ const collections: CollectionSlug[] = [
   'search',
   'quizzes',
   'scent-profiles',
+  'how-to-guides',
+  'documentation',
 ]
 
 const _globals: GlobalSlug[] = ['header', 'footer']
@@ -295,6 +299,14 @@ export const seed = async ({
     },
   })
 
+  await seedHowToGuides(payload, {
+    image1Doc: image1Doc as Media,
+    image2Doc: image2Doc as Media,
+    image3Doc: image3Doc as Media,
+  })
+
+  await seedAdminDocs(payload)
+
   payload.logger.info(`— Seeding products...`)
 
   // atmosphere is a relationship to scent-profiles seeded later; linked in a second pass below
@@ -518,6 +530,13 @@ export const seed = async ({
               type: 'custom',
               label: 'Journal',
               url: '/posts',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'How To',
+              url: '/how-to',
             },
           },
           {

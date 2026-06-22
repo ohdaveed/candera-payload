@@ -9,10 +9,16 @@ import { Container } from '@/components/ui/container'
 import { FilmGrain } from '@/components/FilmGrain'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
+export type PostHeroDoc = Pick<Post, 'categories' | 'heroImage' | 'publishedAt' | 'title'> & {
+  populatedAuthors?: Post['populatedAuthors']
+}
+
 export const PostHero: React.FC<{
-  post: Post
+  post: PostHeroDoc
   readTime?: number
-}> = ({ post, readTime }) => {
+  breadcrumbLabel?: string
+  breadcrumbHref?: string
+}> = ({ post, readTime, breadcrumbLabel = 'Journal', breadcrumbHref = '/posts' }) => {
   const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
   const hasAuthors =
@@ -60,7 +66,7 @@ export const PostHero: React.FC<{
             className="text-candera-vellum/70"
             items={[
               { label: 'Home', href: '/' },
-              { label: 'Journal', href: '/posts' },
+              { label: breadcrumbLabel, href: breadcrumbHref },
               { label: title },
             ]}
           />

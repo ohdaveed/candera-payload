@@ -265,3 +265,15 @@ export const pageRevalidateHooks = createCollectionHooks('pages')
 export const postRevalidateHooks = createCollectionHooks('posts')
 export const productRevalidateHooks = createCollectionHooks('products')
 export const redirectRevalidateHooks = createCollectionHooks('redirects')
+
+// 5. How-To Guides Rule
+globalRevalidator.registerRule(
+  createSlugRevalidationRule<{ slug?: string | null; _status?: string }>({
+    name: 'how-tos-revalidation',
+    collections: ['how-to-guides'],
+    groupTag: 'how-tos-sitemap',
+    formatPaths: (slug) => [`/how-to/${slug}`, '/how-to'],
+  }),
+)
+
+export const howToGuidesRevalidateHooks = createCollectionHooks('how-to-guides')
