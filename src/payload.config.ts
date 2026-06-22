@@ -37,7 +37,15 @@ import { Documentation } from './collections/Documentation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseAdapter = vercelPostgresAdapter({ push: false })
+// Prefer DATABASE_URI (manually managed, valid credentials) over POSTGRES_URL,
+// which the Neon Vercel integration injects and can override with a stale
+// password. Passing an explicit connectionString forces VercelPool to use it
+// instead of falling back to the integration-managed POSTGRES_URL env var.
+const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
+const databaseAdapter = vercelPostgresAdapter({
+  push: false,
+  ...(databaseConnectionString ? { pool: { connectionString: databaseConnectionString } } : {}),
+})
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
