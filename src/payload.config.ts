@@ -1,5 +1,4 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import { payloadLogger } from './utilities/logger'
 
@@ -31,7 +30,6 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { etsyEndpoints } from './endpoints/etsy'
-import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
@@ -49,9 +47,7 @@ const databaseAdapterArgs = {
   },
   push: false,
 }
-const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
-  ? vercelPostgresAdapter(databaseAdapterArgs)
-  : postgresAdapter(databaseAdapterArgs)
+const databaseAdapter = postgresAdapter(databaseAdapterArgs)
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
