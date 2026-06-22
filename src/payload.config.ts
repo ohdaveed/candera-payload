@@ -1,4 +1,4 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import { payloadLogger } from './utilities/logger'
 
@@ -38,17 +38,10 @@ import { Documentation } from './collections/Documentation'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
-const databaseAdapterArgs = {
-  pool: {
-    connectionString: databaseConnectionString,
-    ssl: { rejectUnauthorized: false },
-    max: 10,
-    idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
-  },
+const databaseAdapter = vercelPostgresAdapter({
+  pool: { connectionString: databaseConnectionString },
   push: false,
-}
-const databaseAdapter = postgresAdapter(databaseAdapterArgs)
+})
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
