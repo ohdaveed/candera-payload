@@ -14,6 +14,7 @@ import Link from 'next/link'
 
 import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
+import type { PostHeroDoc } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -84,7 +85,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
       />
 
       <PostHero
-        post={guide as unknown as Post}
+        post={guide as PostHeroDoc}
         readTime={readTime}
         breadcrumbLabel="How-To Guides"
         breadcrumbHref="/how-to"

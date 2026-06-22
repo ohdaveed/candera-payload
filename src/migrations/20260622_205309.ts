@@ -100,7 +100,9 @@ export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): P
 
 export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
-   ALTER TABLE "how_to_guides" DISABLE ROW LEVEL SECURITY;
+   DROP INDEX IF EXISTS "payload_locked_documents_rels_how_to_guides_id_idx";
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN IF EXISTS "how_to_guides_id";
+  ALTER TABLE "how_to_guides" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "how_to_guides_rels" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "_how_to_guides_v" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "_how_to_guides_v_rels" DISABLE ROW LEVEL SECURITY;
@@ -108,11 +110,8 @@ export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs
   DROP TABLE "how_to_guides_rels" CASCADE;
   DROP TABLE "_how_to_guides_v" CASCADE;
   DROP TABLE "_how_to_guides_v_rels" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_how_to_guides_fk";
-  DROP INDEX "payload_locked_documents_rels_how_to_guides_id_idx";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "how_to_guides_id";
   ALTER TABLE "documentation" DROP COLUMN IF EXISTS "category";
-  DROP TYPE "public"."enum_documentation_category";
-  DROP TYPE "public"."enum_how_to_guides_status";
-  DROP TYPE "public"."enum__how_to_guides_v_version_status";`)
+  DROP TYPE IF EXISTS "public"."enum_documentation_category";
+  DROP TYPE IF EXISTS "public"."enum_how_to_guides_status";
+  DROP TYPE IF EXISTS "public"."enum__how_to_guides_v_version_status";`)
 }

@@ -14,7 +14,6 @@ export const candleCare101 = ({ heroImage }: { heroImage: Media }): HowToGuide =
   slug: 'candle-care-101',
   _status: 'draft',
   heroImage: heroImage.id,
-  publishedAt: new Date('2026-06-22').toISOString(),
   content: createRichText([
     createHeading('Trim Your Wick Before Every Burn', 'h2'),
     createParagraph(
@@ -57,7 +56,6 @@ export const firstBurnRitual = ({ heroImage }: { heroImage: Media }): HowToGuide
   slug: 'the-first-burn-ritual',
   _status: 'draft',
   heroImage: heroImage.id,
-  publishedAt: new Date('2026-06-22').toISOString(),
   content: createRichText([
     createHeading('Why the First Burn Matters', 'h2'),
     createParagraph(
@@ -95,7 +93,6 @@ export const readingScentProfile = ({ heroImage }: { heroImage: Media }): HowToG
   slug: 'reading-your-scent-profile',
   _status: 'draft',
   heroImage: heroImage.id,
-  publishedAt: new Date('2026-06-22').toISOString(),
   content: createRichText([
     createHeading('The Architecture of Fragrance', 'h2'),
     createParagraph(

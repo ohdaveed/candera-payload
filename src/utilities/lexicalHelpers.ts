@@ -100,19 +100,6 @@ export const createParagraph = (text: string): LexicalParagraphNode => ({
   version: 1,
 })
 
-export const createRichText = (
-  children: (LexicalHeadingNode | LexicalParagraphNode | LexicalListNode)[],
-): LexicalRichText => ({
-  root: {
-    type: 'root',
-    children,
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    version: 1,
-  },
-})
-
 export const createListItem = (text: string, value: number): LexicalListItemNode => ({
   type: 'listitem',
   children: [createTextNode(text)],
@@ -133,4 +120,17 @@ export const createBulletList = (...items: string[]): LexicalListNode => ({
   start: 1,
   tag: 'ul',
   version: 1,
+})
+
+export const createRichText = (
+  children: (LexicalHeadingNode | LexicalParagraphNode | LexicalListNode)[],
+): LexicalRichText => ({
+  root: {
+    type: 'root',
+    children,
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    version: 1,
+  },
 })

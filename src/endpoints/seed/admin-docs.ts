@@ -28,7 +28,7 @@ const publishingFirstPost: Doc = {
     ),
     createHeading('Draft, Preview, and Publish', 'h2'),
     createParagraph(
-      'The post starts in Draft status. Click Save Draft to preserve your work. To preview, click the Preview button in the top-right sidebar panel; this opens the live frontend at the post URL. When the content is ready, switch the Status toggle from Draft to Published and click Save.',
+      'The post starts in Draft status. Click Save Draft to preserve your work — autosave fires continuously while you type. To preview, click the Preview button in the top-right sidebar panel; this opens the live frontend at the post URL. When the content is ready, switch the Status toggle from Draft to Published and click Save.',
     ),
     createHeading('Quick Checklist', 'h2'),
     createBulletList(
@@ -53,7 +53,7 @@ const managingEtsySync: Doc = {
     ),
     createHeading('Running a Sync', 'h2'),
     createParagraph(
-      'Syncs can be triggered by calling the POST /api/etsy/sync endpoint while authenticated as an admin. The endpoint refreshes the access token if necessary, fetches all active listings, and upserts each product document by its etsyListingId. Check the server logs for success or error messages.',
+      'Syncs can be triggered by calling GET /api/sync-etsy while authenticated as an admin. The endpoint refreshes the access token if necessary, fetches all active listings, and upserts each product document by its etsyListingId. Check the server logs for success or error messages.',
     ),
     createHeading('After Sync: What to Edit', 'h2'),
     createParagraph(
@@ -98,7 +98,7 @@ const runningSeedProcess: Doc = {
     ),
     createHeading('How to Run', 'h2'),
     createParagraph(
-      'With the app running, send an authenticated POST request to /api/seed. The endpoint is protected — you must be logged in as an admin, or include a valid CRON_SECRET Bearer token. The seed takes 30–90 seconds depending on image upload speed.',
+      'With the app running, send an authenticated POST request to /next/seed. The endpoint is protected — you must be logged in as an admin. The seed takes 30–90 seconds depending on image upload speed.',
     ),
     createHeading('After Seeding', 'h2'),
     createParagraph(
@@ -115,7 +115,7 @@ const usingDraftsAndPreview: Doc = {
   content: createRichText([
     createHeading('Draft Mode', 'h2'),
     createParagraph(
-      'Every post, product, and how-to guide starts in Draft status. Drafts are invisible on the public frontend — only authenticated admin users can see them via the preview URL. Autosave fires every two seconds while you type, so your work is never lost.',
+      'Every post, product, and how-to guide starts in Draft status. Drafts are invisible on the public frontend — only authenticated admin users can see them via the preview URL. Autosave fires continuously while you type, so your work is never lost.',
     ),
     createHeading('Scheduling a Publish Date', 'h2'),
     createParagraph(
