@@ -35,9 +35,31 @@ type LexicalParagraphNode = {
   version: 1
 }
 
+type LexicalListItemNode = {
+  type: 'listitem'
+  children: [LexicalTextNode]
+  direction: 'ltr'
+  format: ''
+  indent: 0
+  value: number
+  version: 1
+}
+
+type LexicalListNode = {
+  type: 'list'
+  children: LexicalListItemNode[]
+  direction: 'ltr'
+  format: ''
+  indent: 0
+  listType: 'bullet' | 'number'
+  start: 1
+  tag: 'ul' | 'ol'
+  version: 1
+}
+
 type LexicalRootNode = {
   type: 'root'
-  children: (LexicalHeadingNode | LexicalParagraphNode)[]
+  children: (LexicalHeadingNode | LexicalParagraphNode | LexicalListNode)[]
   direction: 'ltr'
   format: ''
   indent: 0
@@ -79,7 +101,7 @@ export const createParagraph = (text: string): LexicalParagraphNode => ({
 })
 
 export const createRichText = (
-  children: (LexicalHeadingNode | LexicalParagraphNode)[],
+  children: (LexicalHeadingNode | LexicalParagraphNode | LexicalListNode)[],
 ): LexicalRichText => ({
   root: {
     type: 'root',
@@ -89,4 +111,26 @@ export const createRichText = (
     indent: 0,
     version: 1,
   },
+})
+
+export const createListItem = (text: string, value: number): LexicalListItemNode => ({
+  type: 'listitem',
+  children: [createTextNode(text)],
+  direction: 'ltr',
+  format: '',
+  indent: 0,
+  value,
+  version: 1,
+})
+
+export const createBulletList = (...items: string[]): LexicalListNode => ({
+  type: 'list',
+  children: items.map((text, i) => createListItem(text, i + 1)),
+  direction: 'ltr',
+  format: '',
+  indent: 0,
+  listType: 'bullet',
+  start: 1,
+  tag: 'ul',
+  version: 1,
 })
