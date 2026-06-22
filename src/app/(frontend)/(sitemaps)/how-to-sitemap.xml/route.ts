@@ -33,7 +33,7 @@ const getHowToSitemap = unstable_cache(
 
     const dateFallback = new Date().toISOString()
 
-    const sitemap = results.docs
+    const detailPages = results.docs
       ? results.docs
           .filter((guide) => Boolean(guide?.slug))
           .map((guide) => ({
@@ -42,7 +42,7 @@ const getHowToSitemap = unstable_cache(
           }))
       : []
 
-    return sitemap
+    return [{ loc: `${SITE_URL}/how-to`, lastmod: dateFallback }, ...detailPages]
   },
   ['how-tos-sitemap'],
   {
