@@ -37,11 +37,7 @@ import { Documentation } from './collections/Documentation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
-const databaseAdapter = vercelPostgresAdapter({
-  pool: { connectionString: databaseConnectionString },
-  push: false,
-})
+const databaseAdapter = vercelPostgresAdapter({ push: false })
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
