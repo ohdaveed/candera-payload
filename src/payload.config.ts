@@ -41,6 +41,7 @@ const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABAS
 const databaseAdapterArgs = {
   pool: {
     connectionString: databaseConnectionString,
+    ssl: { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 5_000,
