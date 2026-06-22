@@ -34,6 +34,7 @@ import { etsyEndpoints } from './endpoints/etsy'
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
+import { HowToGuides } from './collections/HowToGuides'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -130,6 +131,7 @@ export default buildConfig({
     Quizzes,
     ScentProfiles,
     Documentation,
+    HowToGuides,
   ],
   cors: corsOrigins,
   plugins: [
