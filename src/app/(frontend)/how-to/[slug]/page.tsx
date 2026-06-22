@@ -36,7 +36,16 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
 
   if (!guide) return <PayloadRedirects url={url} />
 
-  const wordCount = guide.content ? JSON.stringify(guide.content).split(/\s+/).length : 0
+  const extractText = (node: unknown): string => {
+    if (!node || typeof node !== 'object') return ''
+    const n = node as Record<string, unknown>
+    if (typeof n.text === 'string') return n.text
+    if (Array.isArray(n.children)) return n.children.map(extractText).join(' ')
+    if (n.root) return extractText(n.root)
+    return ''
+  }
+  const plainText = guide.content ? extractText(guide.content) : ''
+  const wordCount = plainText ? plainText.trim().split(/\s+/).length : 0
   const readTime = Math.max(1, Math.round(wordCount / 200))
 
   const heroImageUrl =
@@ -71,7 +80,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <PostHero
@@ -125,12 +134,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const guide = await queryGuideBySlug({ slug: decodedSlug })
 
+  if (!guide) return { title: 'Guide Not Found — Candera' }
+
   const meta = await generateMeta({ doc: guide as unknown as Partial<Post>, pathPrefix: 'how-to' })
-
-  if (guide?.title) {
-    meta.title = `${guide.title} — Candera`
-  }
-
+  meta.title = `${guide.title} — Candera`
   return meta
 }
 
