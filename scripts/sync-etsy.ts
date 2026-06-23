@@ -33,7 +33,12 @@ async function runSync(): Promise<void> {
     if (result.success) {
       syncLogger.success(`Etsy sync completed successfully! Synced ${result.count} items.`)
     } else {
-      syncLogger.error('Etsy sync failed.')
+      syncLogger.error(
+        `Etsy sync completed with ${result.failures.length} failure(s) (synced ${result.count}).`,
+      )
+      for (const failure of result.failures) {
+        syncLogger.error(`  • listing ${failure.listingId}: ${failure.error}`)
+      }
     }
   } catch (err) {
     syncLogger.error('Error during Etsy sync:', err)

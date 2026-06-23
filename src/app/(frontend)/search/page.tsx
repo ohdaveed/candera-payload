@@ -27,10 +27,13 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     getCachedGlobal('studio-info')(),
   ])
 
-  const suggestions =
-    studioInfo?.searchSuggestions && studioInfo.searchSuggestions.length > 0
-      ? studioInfo.searchSuggestions.map((s) => s.term)
-      : FALLBACK_SUGGESTIONS
+  const suggestions = Array.from(
+    new Set(
+      studioInfo?.searchSuggestions && studioInfo.searchSuggestions.length > 0
+        ? studioInfo.searchSuggestions.map((s) => s.term)
+        : FALLBACK_SUGGESTIONS,
+    ),
+  )
 
   const posts: CardPostData[] = results.map((r) => ({
     title: r.title ?? '',
@@ -72,7 +75,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}
@@ -95,7 +98,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}

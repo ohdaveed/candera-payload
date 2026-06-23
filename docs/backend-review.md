@@ -27,8 +27,8 @@ documented as bypassing Payload hooks — were verified to already use the Local
 | C | Inner Circle benefit cards hardcoded | Content | Medium | **Fixed** |
 | D | Search suggestion tags hardcoded (duplicated) | Content | Medium | **Fixed** |
 | E | "Form submissions bypass Payload hooks" | Forms | — | **OK** (doc corrected) |
-| F | `products` exposes drafts via public API | Access control | Medium | **Recommended** |
-| G | Etsy sync swallows errors / always reports success | Etsy sync | Medium | **Recommended** |
+| F | `products` exposes drafts via public API | Access control | Medium | **Fixed** |
+| G | Etsy sync swallows errors / always reports success | Etsy sync | Medium | **Fixed** |
 
 ---
 
@@ -116,29 +116,18 @@ already uses `payload.create({ collection: 'form-submissions', ... })` (the Loca
 so the hook fires for storefront submissions exactly as for admin-created ones. The stale
 note and diagram in `ARCHITECTURE.md` were corrected. No code change required.
 
-### F. `products` exposes drafts via the public API — Medium — Recommended
-`src/collections/Products.ts` enables drafts (`versions.drafts`) but sets `read: anyone`,
+### F. `products` exposes drafts via the public API — Medium — Fixed
+`src/collections/Products.ts` enabled drafts (`versions.drafts`) but used `read: anyone`,
 which returns `true` unconditionally. Unlike `pages`/`posts` (which use
-`authenticatedOrPublished`), **unpublished/draft products are readable by anyone** through
+`authenticatedOrPublished`), **unpublished/draft products were readable by anyone** through
 the REST/GraphQL API. ScentProfiles and Quizzes also use `read: anyone` but have no drafts,
-so only published data exists — lower risk.
+so only published data exists — left as-is (lower risk).
 
-**Recommended fix** (one line, mirrors Pages/Posts):
-```ts
-import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
-// ...
-access: {
-  create: authenticated,
-  delete: authenticated,
-  read: authenticatedOrPublished,
-  update: authenticated,
-},
-```
-Published reads continue to work for the storefront; admin live-preview uses an
-authenticated session, so draft preview is unaffected. *Left for confirmation — it
-changes public API exposure semantics.*
+**Fix applied** — `products` read access now uses `authenticatedOrPublished` (mirrors
+Pages/Posts). Published reads continue to work for the storefront; admin live-preview uses
+an authenticated session, so draft preview is unaffected.
 
-### G. Etsy sync swallows errors and always reports success — Medium — Recommended
+### G. Etsy sync swallowed errors and always reported success — Medium — Fixed
 `src/utilities/syncEtsy.ts` / `src/utilities/etsyClient.ts`:
 
 1. **No rate-limit handling.** `EtsyClient.request()` throws a generic
@@ -153,15 +142,21 @@ changes public API exposure semantics.*
    `failures` array entirely (returns only `{ success, count }`), so callers/endpoints
    cannot observe partial failures.
 
-Inventory-mismatch handling is otherwise reasonable: Zod-invalid shop listings are logged
+Inventory-mismatch handling was otherwise reasonable: Zod-invalid shop listings are logged
 and skipped; per-listing processing errors and image-download failures are caught, logged,
 and collected into `failures[]`; upserts run inside a transaction with rollback.
 
-**Recommended fixes:** (a) handle 429 in `request()` with a bounded `Retry-After`-aware
-retry; (b) log in the empty `catch {}`; (c) set `success: failures.length === 0` and
-propagate `failures` through `syncEtsyListings()` so the sync endpoint/cron can surface
-drift. *Left for confirmation — touches the sync write path and has test coverage in
-`tests/int/syncEtsy.int.spec.ts`.*
+**Fixes applied:**
+- **(a) 429 handling** — `EtsyClient.request()` now retries on HTTP 429 up to 3 times,
+  honoring the `Retry-After` header (falling back to exponential backoff) and logging each
+  retry, instead of failing the whole sync on a transient throttle.
+- **(b) No more silent drops** — the per-listing fallback and batch-fetch failure paths in
+  `ProductionEtsySourceAdapter.fetchListings` now log each dropped/failed listing.
+- **(c) Honest success signal** — `EtsySyncEngine.sync()` returns
+  `success: failures.length === 0`, and `syncEtsyListings()` now propagates the `failures`
+  array, so the `/sync-etsy` endpoint and `scripts/sync-etsy.ts` surface partial failures
+  (the latter logs each failing listing). Test coverage updated in
+  `tests/int/syncEtsy.int.spec.ts`.
 
 ---
 
@@ -173,8 +168,7 @@ drift. *Left for confirmation — touches the sync write path and has test cover
 - Integration tests — 43 passed (10 files).
 - `pnpm build` — production build, prerender, and sitemap generation succeed.
 
-## Recommended follow-ups (not done in this branch)
-1. **F** — tighten `products` read access to `authenticatedOrPublished`.
-2. **G** — Etsy 429/retry handling and propagate sync failures.
-3. Minor: document `ETSY_API_KEY` / `ETSY_SHARED_SECRET` / `ETSY_REDIRECT_URI` in
-   `.env.example`.
+## Recommended follow-ups
+All findings from this review (A–G) are addressed in this branch. Documented `ETSY_API_KEY`
+/ `ETSY_SHARED_SECRET` / `ETSY_REDIRECT_URI` / `ETSY_SHOP_ID` in `.env.example`. No
+outstanding items.

@@ -22,7 +22,7 @@ export const StudioInfo: GlobalConfig = {
           fields: [
             {
               name: 'email',
-              type: 'text',
+              type: 'email',
               required: true,
               defaultValue: 'studio@canderacandles.com',
               admin: { description: 'Primary studio inbox (rendered as a mailto link).' },
@@ -64,7 +64,9 @@ export const StudioInfo: GlobalConfig = {
               type: 'array',
               label: 'Benefits',
               labels: { singular: 'Benefit', plural: 'Benefits' },
-              minRows: 1,
+              // No minRows: on existing deploys the seed endpoint doesn't run, so this
+              // starts empty. The storefront falls back to FALLBACK_BENEFITS when empty,
+              // and editors must still be able to save the global without recreating rows.
               maxRows: 6,
               fields: [
                 { name: 'label', type: 'text', required: true },
@@ -82,7 +84,8 @@ export const StudioInfo: GlobalConfig = {
               type: 'array',
               label: 'Suggestions',
               labels: { singular: 'Suggestion', plural: 'Suggestions' },
-              minRows: 1,
+              // No minRows — see innerCircleBenefits above; the storefront falls back to
+              // FALLBACK_SUGGESTIONS when empty.
               maxRows: 12,
               fields: [{ name: 'term', type: 'text', required: true }],
             },

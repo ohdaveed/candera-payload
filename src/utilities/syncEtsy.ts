@@ -210,7 +210,9 @@ export class EtsySyncEngine {
       }
     }
 
-    return { success: true, count: syncedCount, failures }
+    // `success` reflects whether every listing synced. Partial failures return
+    // `false` so callers can surface drift instead of trusting a blanket `true`.
+    return { success: failures.length === 0, count: syncedCount, failures }
   }
 
   /**
@@ -304,7 +306,9 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
       try {
         const data = await this.client.getListingsBatch(source.listingIds, ['Images'])
         return (data.results || []) as RawEtsyListing[]
-      } catch {
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        syncLogger.warn(`Batch listing fetch failed (${msg}); falling back to per-listing fetch.`)
         const results: RawEtsyListing[] = []
         for (const id of source.listingIds) {
           try {
@@ -312,8 +316,11 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
               params: { includes: 'Images' },
             })
             if (data) results.push(data)
-          } catch {
-            // Allow individual listing failures to keep batch moving
+          } catch (listingErr) {
+            const listingMsg = listingErr instanceof Error ? listingErr.message : String(listingErr)
+            // Keep the batch moving, but log so dropped listings are visible
+            // rather than silently causing drift.
+            syncLogger.warn(`Failed to fetch listing ${id}: ${listingMsg}. Skipping.`)
           }
         }
         return results
@@ -460,5 +467,6 @@ export async function syncEtsyListings(source: number | number[], payload: Paylo
   return {
     success: result.success,
     count: result.count,
+    failures: result.failures,
   }
 }

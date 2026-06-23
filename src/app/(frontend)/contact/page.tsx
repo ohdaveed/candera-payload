@@ -22,9 +22,14 @@ export default async function ContactPage() {
   ])
   const contactFormId = contactForm?.id ?? 0
 
+  const DEFAULT_INSTAGRAM_URL = 'https://instagram.com/canderacandles'
   const email = studioInfo?.email || 'studio@canderacandles.com'
   const instagramHandle = studioInfo?.instagramHandle || '@canderacandles'
-  const instagramUrl = studioInfo?.instagramUrl || 'https://instagram.com/canderacandles'
+  // Editor-controlled URL — only allow http(s) to avoid javascript:/data: hrefs.
+  const rawInstagramUrl = studioInfo?.instagramUrl || DEFAULT_INSTAGRAM_URL
+  const instagramUrl = /^https?:\/\//i.test(rawInstagramUrl)
+    ? rawInstagramUrl
+    : DEFAULT_INSTAGRAM_URL
   const studioHours = studioInfo?.studioHours || 'By appointment — slow by design.'
   const locationTagline = studioInfo?.locationTagline || 'Handcrafted in California'
 

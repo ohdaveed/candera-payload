@@ -219,7 +219,7 @@ describe('EtsySyncEngine', () => {
       { etsySource, productStore, mediaStorage, logger },
     )
 
-    expect(result.success).toBe(true)
+    expect(result.success).toBe(false) // partial failure should not report success
     expect(result.count).toBe(1) // only 1 succeeded
     expect(result.failures.length).toBe(1)
     expect(result.failures[0].listingId).toBe(301)
