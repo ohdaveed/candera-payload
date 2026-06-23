@@ -65,6 +65,15 @@ export const validateSubmission: CollectionBeforeValidateHook = ({ data }) => {
       return { field, value: rawValue }
     })
 
+  // Reject submissions that have no usable fields left after sanitization, so
+  // empty/garbage payloads can't trigger the afterChange fan-out to external
+  // services.
+  if (sanitized.length === 0) {
+    throw new ValidationError({
+      errors: [{ path: 'submissionData', message: 'Submission contained no valid fields.' }],
+    })
+  }
+
   data.submissionData = sanitized
 
   return data

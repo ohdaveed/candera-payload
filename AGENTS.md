@@ -58,7 +58,7 @@ Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts
 
 ## Database & Migrations
 
-**Production:** Neon Serverless Postgres via Vercel integration. `@payloadcms/db-postgres` with `push: false` — migrations always required. Connection string from `DATABASE_URL` (fallback: `POSTGRES_URL`). The Vercel Neon integration auto-provides a pooled connection string; the `@payloadcms/db-vercel-postgres` adapter activates when the URL is a Neon endpoint. `@neondatabase/serverless` is the runtime driver.
+**Production:** Neon Serverless Postgres via Vercel integration. `@payloadcms/db-postgres` with `push: false` — migrations always required. Connection string from `DATABASE_URI` (fallback: `POSTGRES_URL`). The Vercel Neon integration auto-provides a pooled connection string; the `@payloadcms/db-vercel-postgres` adapter activates when the URL is a Neon endpoint. `@neondatabase/serverless` is the runtime driver.
 
 **Local:** Docker Compose Postgres (port 54320). Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Localhost URLs bypass the Vercel adapter and use standard `@payloadcms/db-postgres` directly.
 
@@ -112,7 +112,7 @@ PROTON_PASS_AGENT_REASON="Why this item is needed" pass-cli item view \
 
 | Variable                              | Purpose                                                  |
 | ------------------------------------- | -------------------------------------------------------- |
-| `DATABASE_URL` / `POSTGRES_URL`       | Neon Postgres connection string                          |
+| `DATABASE_URI` / `POSTGRES_URL`       | Neon Postgres connection string                          |
 | `BLOB_READ_WRITE_TOKEN`               | Vercel Blob storage                                      |
 | `PAYLOAD_SECRET`                      | JWT signing                                              |
 | `PREVIEW_SECRET`                      | Live preview URL signing                                 |

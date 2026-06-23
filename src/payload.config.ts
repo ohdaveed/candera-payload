@@ -46,18 +46,23 @@ const dirname = path.dirname(filename)
 // password. Passing an explicit connectionString forces VercelPool to use it
 // instead of falling back to the integration-managed POSTGRES_URL env var.
 const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
+if (!databaseConnectionString) {
+  throw new Error(
+    'DATABASE_URI (or POSTGRES_URL) is not set. Set a Postgres connection string before starting.',
+  )
+}
 // The Vercel adapter speaks Neon's serverless protocol and only works against a
 // Neon-hosted database. Production uses Neon (a `*.neon.tech` host) and keeps the
 // Vercel adapter; plain Postgres (local dev / CI service container) falls back to
 // the standard adapter so the same config runs everywhere.
-const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString ?? '')
+const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
   ? vercelPostgresAdapter({
       push: false,
-      ...(databaseConnectionString ? { pool: { connectionString: databaseConnectionString } } : {}),
+      pool: { connectionString: databaseConnectionString },
     })
   : postgresAdapter({
       push: false,
-      pool: { connectionString: databaseConnectionString ?? '' },
+      pool: { connectionString: databaseConnectionString },
     })
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true

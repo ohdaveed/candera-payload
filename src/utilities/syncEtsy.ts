@@ -437,12 +437,18 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
     if (existingId) return existingId
 
     // Bound the image download so a hung CDN response can't stall the serial sync.
+    // The timer must stay active until the body is fully read: a host can return
+    // headers promptly and then stall mid-body, so clearing it right after `fetch`
+    // resolves would leave `arrayBuffer()` unbounded.
     const IMAGE_TIMEOUT_MS = 20_000
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), IMAGE_TIMEOUT_MS)
-    let response: Response
+    let buffer: Buffer
     try {
-      response = await fetch(imageUrl, { signal: controller.signal })
+      const response = await fetch(imageUrl, { signal: controller.signal })
+      if (!response.ok) throw new Error(`Failed to download image: ${response.statusText}`)
+      const arrayBuffer = await response.arrayBuffer()
+      buffer = Buffer.from(arrayBuffer)
     } catch (err) {
       if (controller.signal.aborted) {
         throw new Error(`Image download timed out after ${IMAGE_TIMEOUT_MS}ms: ${imageUrl}`)
@@ -451,10 +457,6 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
     } finally {
       clearTimeout(timeout)
     }
-    if (!response.ok) throw new Error(`Failed to download image: ${response.statusText}`)
-
-    const arrayBuffer = await response.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
 
     const media = await this.payload.create({
       collection: 'media',
