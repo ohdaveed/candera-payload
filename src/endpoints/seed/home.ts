@@ -1,5 +1,5 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
-import type { Media, StorefrontHeroBlock } from '@/payload-types'
+import type { Media, StorefrontHeroBlock, TheVesselsBlock } from '@/payload-types'
 import { createRichText, createHeading, createParagraph } from '@/utilities/lexicalHelpers'
 
 type HomeArgs = {
@@ -28,7 +28,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
   scentQuizFormId,
   scentQuizId,
 }) => {
-  const vesselImage = (i: number): number | string =>
+  const vesselImage = (i: number): number =>
     (typeof vesselImages[i] === 'object' ? vesselImages[i]?.id : vesselImages[i]) ?? heroImage.id
   return {
     slug: 'home',
@@ -80,7 +80,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
             caption: 'Natural wax, slow-cured',
           },
         ],
-      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
+      } satisfies TheVesselsBlock,
       {
         // Scent Quiz sits right after the visual showcase so undecided
         // visitors can find their match before the deeper storytelling.

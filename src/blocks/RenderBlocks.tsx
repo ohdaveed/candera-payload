@@ -74,9 +74,11 @@ export const RenderBlocks: React.FC<{
 
               const isFullBleed = fullBleedBlocks.has(blockType)
               // Anchor #collection to the product archive only — a posts/journal
-              // archive on the same page must not duplicate the id.
+              // archive (or a selection-populated one with no relationTo) on the
+              // same page must not duplicate the id.
               const isProductArchive =
-                blockType === 'archive' && (block as { relationTo?: string }).relationTo !== 'posts'
+                blockType === 'archive' &&
+                (block as { relationTo?: string }).relationTo === 'products'
               return (
                 <div
                   className={isFullBleed ? '' : 'my-16'}
