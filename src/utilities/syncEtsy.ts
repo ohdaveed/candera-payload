@@ -59,6 +59,7 @@ export interface ProductUpsertInput {
   etsyListingId: number
   price?: number
   productType?: Product['productType']
+  _status?: 'draft' | 'published'
 }
 
 export interface ProductStorePort {
@@ -200,6 +201,10 @@ export class EtsySyncEngine {
           description: this.textToRichText(this.cleanEtsyDescription(description)),
           etsyListingId: listing_id,
           productType,
+          // Etsy active listings are public catalog items. Publish on sync so they
+          // are visible to the storefront, which only reads published products
+          // (products read access is authenticatedOrPublished).
+          _status: 'published',
         }
 
         if (etsyPrice) {

@@ -125,7 +125,9 @@ so only published data exists — left as-is (lower risk).
 
 **Fix applied** — `products` read access now uses `authenticatedOrPublished` (mirrors
 Pages/Posts). Published reads continue to work for the storefront; admin live-preview uses
-an authenticated session, so draft preview is unaffected.
+an authenticated session, so draft preview is unaffected. The Etsy sync now sets
+`_status: 'published'` on upserted products (matching the seed convention) so newly synced
+active listings remain visible in the public catalog under the tighter read rule.
 
 ### G. Etsy sync swallowed errors and always reported success — Medium — Fixed
 `src/utilities/syncEtsy.ts` / `src/utilities/etsyClient.ts`:

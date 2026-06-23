@@ -119,6 +119,8 @@ describe('EtsySyncEngine', () => {
     expect(savedProduct?.title).toBe('Amber Forest Candle')
     expect(savedProduct?.slug).toBe('amber-forest-candle-101')
     expect(savedProduct?.extraPhotos).toEqual(['media-999'])
+    // Synced products must be published so they appear in the public catalog
+    expect(savedProduct?._status).toBe('published')
 
     // Verify Lexical rich text transformation
     expect(savedProduct?.description).toBeDefined()
