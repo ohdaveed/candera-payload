@@ -2,7 +2,6 @@ import React from 'react'
 import type { TestimonialsBlock as TestimonialsBlockType } from '@/payload-types'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
-import { FilmGrain } from '@/components/FilmGrain'
 
 type Props = TestimonialsBlockType
 
@@ -10,17 +9,8 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <Section padding="none" className="relative bg-candera-obsidian">
-      {/* Soft, grainy transition so the warm linen above melts into the dark
-          instead of hitting a razor-sharp "equator" line. */}
-      <div
-        aria-hidden="true"
-        className="relative h-[150px] bg-gradient-to-b from-candera-vellum to-candera-obsidian"
-      >
-        <FilmGrain />
-      </div>
-
-      <Container className="pt-4 pb-16 md:pt-8 md:pb-24">
+    <Section padding="none" className="bg-candera-obsidian">
+      <Container className="py-16 md:py-24">
         {eyebrow && (
           <div className="flex items-center gap-2 mb-12">
             <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />

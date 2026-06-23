@@ -82,6 +82,15 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         ],
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {
+        // Scent Quiz sits right after the visual showcase so undecided
+        // visitors can find their match before the deeper storytelling.
+        blockName: 'Scent Quiz',
+        blockType: 'scentQuiz',
+        headline: 'Not sure where to start?',
+        quiz: scentQuizId,
+        formId: scentQuizFormId,
+      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
+      {
         blockName: 'Testimonials',
         blockType: 'testimonials',
         items: [
@@ -135,13 +144,6 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         relationTo: 'products',
         limit: 6,
       },
-      {
-        blockName: 'Scent Quiz',
-        blockType: 'scentQuiz',
-        headline: 'Not sure where to start?',
-        quiz: scentQuizId,
-        formId: scentQuizFormId,
-      } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
       {
         blockName: 'Inner Circle CTA',
         blockType: 'innerCircleCTA',
