@@ -277,6 +277,19 @@ export const createHomeEndpoint: Endpoint = {
       // still upserts cleanly. Re-running after a quiz exists restores it.
       if (!scentQuizId) {
         pageData.layout = (pageData.layout ?? []).filter((block) => block.blockType !== 'scentQuiz')
+        // The hero's secondary CTA points at the now-removed #scent-quiz
+        // anchor; clear it so the page doesn't show a dead "Take the Scent
+        // Quiz" button (the hero only renders it when label + url are both set).
+        for (const block of pageData.layout) {
+          if (block.blockType === 'storefrontHero') {
+            const hero = block as {
+              secondaryCtaLabel?: string | null
+              secondaryCtaUrl?: string | null
+            }
+            hero.secondaryCtaLabel = null
+            hero.secondaryCtaUrl = null
+          }
+        }
       }
 
       // Unlike the full `yarn seed` (which runs without a Next server and so
