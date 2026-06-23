@@ -42,6 +42,10 @@ export const ArchiveBlock: React.FC<
       collection: relationTo || 'posts',
       depth: 1,
       limit,
+      // Enforce collection read access (anonymous → published only) instead of
+      // the Local API default (overrideAccess: true), so this public-facing
+      // archive can never surface drafts/unpublished docs on the live page.
+      overrideAccess: false,
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
             where: {
