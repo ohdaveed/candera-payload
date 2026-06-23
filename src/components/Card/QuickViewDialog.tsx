@@ -79,11 +79,11 @@ export function QuickViewDialog({
             <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
 
             <div className="flex flex-col gap-3 mt-auto pt-4">
-              {etsyListingId && (
-                <Button asChild variant="cta" size="cta">
-                  <BoutiqueLink href={etsyListingUrl(etsyListingId)}>Buy on Etsy</BoutiqueLink>
-                </Button>
-              )}
+              {/* Always render — etsyListingUrl() resolves to the listing when the
+                  ID is real, or the shop page otherwise, matching the product CTAs. */}
+              <Button asChild variant="cta" size="cta">
+                <BoutiqueLink href={etsyListingUrl(etsyListingId)}>Buy on Etsy</BoutiqueLink>
+              </Button>
               {slug && (
                 <Link
                   href={`/products/${slug}`}
