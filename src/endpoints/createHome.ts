@@ -275,18 +275,20 @@ export const createHomeEndpoint: Endpoint = {
         scentQuizId,
       })
 
+      // Unlike the full `yarn seed` (which runs without a Next server and so
+      // must set disableRevalidate), this endpoint runs inside the live app.
+      // Leaving revalidation on lets the Pages afterChange hook bust the `/`
+      // route cache, so the new home layout shows up without a redeploy.
       if (existing.docs.length > 0) {
         await payload.update({
           collection: 'pages',
           id: existing.docs[0].id,
           data: pageData as RequiredDataFromCollectionSlug<'pages'>,
-          context: { disableRevalidate: true },
         })
       } else {
         await payload.create({
           collection: 'pages',
           data: pageData as RequiredDataFromCollectionSlug<'pages'>,
-          context: { disableRevalidate: true },
         })
       }
 
