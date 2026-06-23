@@ -5,7 +5,7 @@ Candera is a botanical candle storefront built on **Payload CMS** (headless back
 - **Database:** Vercel Postgres (Neon) via `@payloadcms/db-vercel-postgres`
 - **Media storage:** Vercel Blob
 - **Editor:** Lexical rich text
-- **External services:** Etsy API v3, Anthropic (Claude), Mailchimp, Supabase
+- **External services:** Etsy API v3, Anthropic (Claude), Mailchimp
 
 ---
 
@@ -44,7 +44,6 @@ flowchart TB
         Etsy["Etsy API v3"]
         Anthropic["Anthropic / Claude"]
         Mailchimp["Mailchimp"]
-        Supabase["Supabase"]
     end
 
     Visitor --> Frontend
@@ -63,7 +62,6 @@ flowchart TB
 
     Hooks -->|revalidatePath / revalidateTag| Frontend
     Hooks --> Mailchimp
-    Hooks --> Supabase
 
     Etsy -->|sync engine| Collections
 ```
@@ -160,7 +158,6 @@ flowchart TB
         SA --> Hook["processSubmission<br/>afterChange hook"]
         PW["Payload API write<br/>(admin)"] --> Hook
         Hook -->|Promise.allSettled| MC["Mailchimp<br/>upsert subscriber + tags"]
-        Hook --> SB["Supabase<br/>archive submission"]
     end
 
     subgraph AIFlow["AI Product Copy"]
@@ -176,7 +173,7 @@ flowchart TB
     end
 ```
 
-**Note:** the storefront `submitForm` server action (`src/app/actions/submitForm.ts`) writes through Payload's Local API (`payload.create({ collection: 'form-submissions', ... })`), so the `processSubmission` `afterChange` hook — and its Mailchimp/Supabase fan-out — fires for storefront submissions exactly as it does for admin-created ones.
+**Note:** the storefront `submitForm` server action (`src/app/actions/submitForm.ts`) writes through Payload's Local API (`payload.create({ collection: 'form-submissions', ... })`), so the `processSubmission` `afterChange` hook — and its Mailchimp fan-out — fires for storefront submissions exactly as it does for admin-created ones.
 
 **Search:** the Search plugin indexes published posts into a `search` collection via `beforeSyncWithSearch` (`src/search/beforeSync.ts`); `src/lib/queries/search.ts` runs ILIKE queries against it through the Neon SQL client.
 

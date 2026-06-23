@@ -112,7 +112,6 @@ exist for both.
 - **Vercel Blob** — `BLOB_READ_WRITE_TOKEN` (hard-required in production)
 - **Vercel AI Gateway** — for the AI copy route (Claude Haiku 4.5)
 - **Etsy OAuth app** — `ETSY_API_KEY`, `ETSY_SHARED_SECRET`, `ETSY_REDIRECT_URI`, `ETSY_SHOP_ID`
-- **Supabase** — `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (form archiving; service-role key is highly privileged)
 - **FormSubmit.co** — `FORMSUBMIT_EMAIL` (third-party email relay)
 - **SMTP (optional)** — Payload transactional email; silently no-ops to `jsonTransport` if unset
 - **Core** — `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`, `NEXT_PUBLIC_SERVER_URL`

@@ -110,7 +110,7 @@ storefront never serves stale fallbacks. The global is seeded in
 
 ### E. "Storefront form submissions bypass Payload hooks" — Not a defect — Doc corrected
 `docs/ARCHITECTURE.md` claimed the `submitForm` server action wrote `form_submissions`
-via raw SQL, bypassing the `processSubmission` `afterChange` hook (Mailchimp/Supabase
+via raw SQL, bypassing the `processSubmission` `afterChange` hook (Mailchimp
 fan-out). **Verified false against current code:** `src/app/actions/submitForm.ts`
 already uses `payload.create({ collection: 'form-submissions', ... })` (the Local API),
 so the hook fires for storefront submissions exactly as for admin-created ones. The stale
