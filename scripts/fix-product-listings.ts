@@ -21,9 +21,6 @@ dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true }
  * Run with:  pnpm fix:product-listings
  */
 
-// Load .env.local like the other data scripts (scripts/sync-etsy.ts).
-dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
-
 type ProductFix = {
   slug: string
   /** Real CanderaCandles listing id, or null to fall back to the shop URL. */
