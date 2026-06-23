@@ -22,6 +22,7 @@ import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { FORM_TITLES } from '@/constants/forms'
 
 export async function generateStaticParams() {
   return []
@@ -35,7 +36,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   const url = '/products/' + decodedSlug
 
   const productPromise = queryProductBySlug({ slug: decodedSlug })
-  const formPromise = getCachedFormByTitle('Inner Circle Signup')()
+  const formPromise = getCachedFormByTitle(FORM_TITLES.INNER_CIRCLE)()
 
   const product = await productPromise
   if (!product) return <PayloadRedirects url={url} />

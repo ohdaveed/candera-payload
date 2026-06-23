@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { getClientSideURL } from '@/utilities/getURL'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
+import { EMAIL_PATTERN } from '@/constants/validation'
 
 type FormValues = { email: string }
 
@@ -12,9 +13,7 @@ type Props = {
 }
 
 export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<string | undefined>()
+  const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
 
   const {
     register,
@@ -24,38 +23,9 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   const onSubmit = useCallback(
     (data: FormValues) => {
-      const submit = async () => {
-        setError(undefined)
-        setIsLoading(true)
-
-        try {
-          const res = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              form: formId,
-              submissionData: [{ field: 'email', value: data.email }],
-            }),
-          })
-
-          if (res.status >= 400) {
-            const json = await res.json()
-            setError(json.errors?.[0]?.message || 'Something went wrong. Please try again.')
-            setIsLoading(false)
-            return
-          }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-        } catch {
-          setError('Something went wrong. Please try again.')
-          setIsLoading(false)
-        }
-      }
-
-      void submit()
+      void submit(formId, [{ field: 'email', value: data.email }])
     },
-    [formId],
+    [formId, submit],
   )
 
   if (hasSubmitted) {
@@ -82,7 +52,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             spellCheck={false}
             {...register('email', {
               required: 'Email is required',
-              pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
+              pattern: { value: EMAIL_PATTERN, message: 'Please enter a valid email' },
             })}
           />
           <button

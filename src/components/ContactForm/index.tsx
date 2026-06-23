@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { submitForm } from '@/app/actions/submitForm'
+import { EMAIL_PATTERN } from '@/constants/validation'
 
 type FormValues = {
   'full-name': string
@@ -126,7 +127,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             name="email"
             rules={{
               required: 'Email is required',
-              pattern: { value: /^\S[^\s@]*@\S+$/, message: 'Please enter a valid email' },
+              pattern: { value: EMAIL_PATTERN, message: 'Please enter a valid email' },
             }}
             render={({ field }) => (
               <FormItem>

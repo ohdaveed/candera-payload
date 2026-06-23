@@ -1,27 +1,16 @@
 import React from 'react'
-import { cache } from 'react'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { InnerCircleEmailForm } from './EmailForm'
 import type { InnerCircleCTABlock as InnerCircleCTABlockType } from '@/payload-types'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
+import { getCachedFormByTitle } from '@/utilities/getForms'
+import { FORM_TITLES } from '@/constants/forms'
 
 type Props = InnerCircleCTABlockType
 
-const getInnerCircleFormId = cache(async () => {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'forms',
-    where: { title: { equals: 'Inner Circle Signup' } },
-    limit: 1,
-    depth: 0,
-  })
-  return result.docs[0]?.id?.toString() ?? ''
-})
-
 export async function InnerCircleCTABlock({ headline, description }: Props) {
-  const formId = await getInnerCircleFormId()
+  const form = await getCachedFormByTitle(FORM_TITLES.INNER_CIRCLE)()
+  const formId = form?.id?.toString() ?? ''
 
   return (
     <Section padding="none" className="bg-candera-obsidian">

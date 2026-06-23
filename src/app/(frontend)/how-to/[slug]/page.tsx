@@ -19,6 +19,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getServerSideURL } from '@/utilities/getURL'
+import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
 export async function generateStaticParams() {
   return []
@@ -123,7 +124,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
           <Button asChild variant="cta-ember" size="cta" className="mt-2">
             <Link href="/contact">Join the Circle</Link>
           </Button>
-          <p className="caption text-candera-vellum/50 m-0">No noise. Unsubscribe anytime.</p>
+          <p className="caption text-candera-vellum/50 m-0">{NEWSLETTER_MICROCOPY}</p>
         </Container>
       </aside>
     </article>

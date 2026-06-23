@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { revalidateStudioInfo } from './hooks/revalidateStudioInfo'
+import { BRAND } from '@/constants/brand'
 
 export const StudioInfo: GlobalConfig = {
   slug: 'studio-info',
@@ -24,34 +25,34 @@ export const StudioInfo: GlobalConfig = {
               name: 'email',
               type: 'email',
               required: true,
-              defaultValue: 'studio@canderacandles.com',
+              defaultValue: BRAND.email,
               admin: { description: 'Primary studio inbox (rendered as a mailto link).' },
             },
             {
               name: 'instagramHandle',
               type: 'text',
               required: true,
-              defaultValue: '@canderacandles',
+              defaultValue: BRAND.instagramHandle,
               admin: { description: 'Public-facing handle, e.g. "@canderacandles".' },
             },
             {
               name: 'instagramUrl',
               type: 'text',
               required: true,
-              defaultValue: 'https://instagram.com/canderacandles',
+              defaultValue: BRAND.instagramUrl,
               admin: { description: 'Full URL the Instagram handle links to.' },
             },
             {
               name: 'studioHours',
               type: 'text',
               required: true,
-              defaultValue: 'By appointment — slow by design.',
+              defaultValue: BRAND.studioHours,
             },
             {
               name: 'locationTagline',
               type: 'text',
               required: true,
-              defaultValue: 'Handcrafted in California',
+              defaultValue: BRAND.locationTagline,
             },
           ],
         },

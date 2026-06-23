@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 import { StickyCTABar } from './StickyCTABar'
+import { BRAND } from '@/constants/brand'
 
 type Props = {
   title: string
@@ -27,9 +28,7 @@ export function ProductCTASection({ title, price, vessel, etsyListingId }: Props
         >
           <BoutiqueLink
             href={
-              etsyListingId
-                ? `https://www.etsy.com/listing/${etsyListingId}`
-                : 'https://www.etsy.com/shop/candera'
+              etsyListingId ? `https://www.etsy.com/listing/${etsyListingId}` : BRAND.etsyShopUrl
             }
           >
             Buy on Etsy
