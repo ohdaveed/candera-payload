@@ -44,7 +44,9 @@ function ProductFiltersInner() {
     const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
     // Doherty Threshold: surface a pending state while the server re-renders the
     // filtered collection so the interaction never feels unresponsive.
-    startTransition(() => router.replace(nextUrl))
+    // scroll: false keeps the user anchored to the collection instead of jumping
+    // to the top on every filter change.
+    startTransition(() => router.replace(nextUrl, { scroll: false }))
   }
 
   return (
@@ -64,7 +66,8 @@ function ProductFiltersInner() {
             <button
               key={tag}
               onClick={() => update('tag', tag)}
-              className={`text-xs uppercase tracking-[.2em] font-bold py-1.5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 border-b-2 cursor-pointer ${
+              disabled={isPending}
+              className={`text-xs uppercase tracking-[.2em] font-bold py-1.5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 border-b-2 cursor-pointer disabled:cursor-default ${
                 isActive
                   ? 'border-candera-ember-strong text-candera-obsidian'
                   : 'border-transparent text-candera-sage-text hover:text-candera-obsidian'
@@ -90,7 +93,11 @@ function ProductFiltersInner() {
 
         <fieldset className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[180px] border-none p-0 m-0">
           <legend className="sr-only">Sort products</legend>
-          <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
+          <Select
+            value={activeSort}
+            onValueChange={(value) => update('sort', value)}
+            disabled={isPending}
+          >
             <SelectTrigger
               id="product-sort"
               className="h-[40px] border-candera-stone/40 bg-transparent text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus-visible:ring-candera-ember-strong/20"
