@@ -229,6 +229,29 @@ describe('EtsySyncEngine', () => {
     expect(vi.mocked(logger.error)).toHaveBeenCalled()
   })
 
+  it('records requested listings that Etsy never returns as failures', async () => {
+    const engine = new EtsySyncEngine()
+
+    // Requested 501 and 502, but the source only returns 501 (502 failed to fetch)
+    etsySource.mockListings = [
+      {
+        listing_id: 501,
+        title: 'Returned Candle',
+        description: 'Fetched successfully.',
+      },
+    ]
+
+    const result = await engine.sync(
+      { type: 'listings', listingIds: [501, 502] },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    expect(result.success).toBe(false) // 502 never came back
+    expect(result.count).toBe(1)
+    expect(result.failures).toEqual([{ listingId: 502, error: 'Listing not fetched from Etsy' }])
+    expect(productStore.products.has(501)).toBe(true)
+  })
+
   it('skips non-candle listings during sync', async () => {
     const engine = new EtsySyncEngine()
 

@@ -39,6 +39,8 @@ async function runSync(): Promise<void> {
       for (const failure of result.failures) {
         syncLogger.error(`  • listing ${failure.listingId}: ${failure.error}`)
       }
+      // Exit nonzero so automation/cron treats a partial failure as a failure.
+      process.exit(1)
     }
   } catch (err) {
     syncLogger.error('Error during Etsy sync:', err)

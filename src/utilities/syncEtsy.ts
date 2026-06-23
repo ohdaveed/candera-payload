@@ -117,9 +117,22 @@ export class EtsySyncEngine {
 
     ports.logger.info(`Found ${listings.length} listings on Etsy.`)
 
+    // For an explicit listing-ID sync, any requested ID that Etsy never returns
+    // (batch + per-listing fetch both failed) would otherwise vanish silently.
+    // Record it as a failure so `success` is honest and callers see the drift.
+    if (source.type === 'listings') {
+      const fetchedIds = new Set(listings.map((l) => l.listing_id))
+      for (const id of source.listingIds) {
+        if (!fetchedIds.has(id)) {
+          ports.logger.warn(`Requested listing ${id} was not returned by Etsy.`)
+          failures.push({ listingId: id, error: 'Listing not fetched from Etsy' })
+        }
+      }
+    }
+
     if (listings.length === 0) {
       ports.logger.warn('No listings found for the provided source in Etsy API.')
-      return { success: true, count: 0, failures }
+      return { success: failures.length === 0, count: 0, failures }
     }
 
     let syncedCount = 0

@@ -155,7 +155,9 @@ and collected into `failures[]`; upserts run inside a transaction with rollback.
 - **(c) Honest success signal** — `EtsySyncEngine.sync()` returns
   `success: failures.length === 0`, and `syncEtsyListings()` now propagates the `failures`
   array, so the `/sync-etsy` endpoint and `scripts/sync-etsy.ts` surface partial failures
-  (the latter logs each failing listing). Test coverage updated in
+  (the latter logs each failing listing and exits non-zero). For listing-ID syncs, any
+  requested ID Etsy never returns (batch + per-listing fetch both failed) is recorded as a
+  failure so it can't vanish silently. Test coverage updated in
   `tests/int/syncEtsy.int.spec.ts`.
 
 ---
