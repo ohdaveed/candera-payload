@@ -6,7 +6,9 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import type { CardPostData } from '@/components/Card'
 import type { Media } from '@/payload-types'
 import Link from 'next/link'
-import { PageHeader } from '@/components/PageHeader'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 import { searchContent } from '@/lib/queries/search'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -48,20 +50,23 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   }))
 
   return (
-    <div className="min-h-screen bg-candera-vellum">
-      <SetHeaderTheme theme="light" />
+    <main className="min-h-screen bg-candera-vellum" data-page="search">
+      <SetHeaderTheme theme="dark" />
 
-      <div className="container pt-40 md:pt-32 pb-16">
-        <PageHeader
-          align="center"
-          title="Search the Collection"
-          description="Discover your next ritual scent."
-          maxWidthClassName="max-w-[560px]"
-          className="mb-20"
-        >
-          <Search />
-        </PageHeader>
-      </div>
+      <EditorialPageHero
+        eyebrow="The Collection"
+        title="Search the Collection"
+        description="Discover your next ritual scent by note, atmosphere, or mood."
+        decorativeWord="Search"
+      />
+
+      <Section padding="large" data-section="search-input">
+        <Container>
+          <div className="max-w-[560px] mx-auto">
+            <Search />
+          </div>
+        </Container>
+      </Section>
 
       {posts.length > 0 ? (
         <CollectionArchive posts={posts} />
@@ -113,7 +118,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           </Link>
         </div>
       )}
-    </div>
+    </main>
   )
 }
 
