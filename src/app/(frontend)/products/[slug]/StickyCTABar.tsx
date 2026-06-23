@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
+import { etsyListingUrl } from '@/utilities/etsyUrl'
 
 type Props = {
   title: string
@@ -11,9 +12,6 @@ type Props = {
   /** Ref attached to the sentinel element placed next to the main buy button in the page */
   sentinelRef: React.RefObject<HTMLDivElement | null>
 }
-
-const etsyListingUrl = (id: number | null | undefined) =>
-  id ? `https://www.etsy.com/listing/${id}` : 'https://www.etsy.com/shop/candera'
 
 export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
