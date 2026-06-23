@@ -316,15 +316,38 @@ export class EtsyClient {
     for (let attempt = 0; ; attempt++) {
       // Per-attempt timeout so a hung Etsy response can't stall the whole sync
       // (which runs serially) until the platform kills the function.
+      // The timer must stay armed until the response body is fully read: Etsy can
+      // return headers promptly and then stall mid-body, so clearing it right after
+      // `fetch` resolves would leave `res.json()` unbounded.
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-      let res: Response
       try {
-        res = await fetch(url.toString(), {
+        const res = await fetch(url.toString(), {
           ...fetchOptions,
           headers: Object.fromEntries(headers.entries()),
           signal: controller.signal,
         })
+
+        if (res.status === 429 && attempt < maxRetries) {
+          const retryAfter = Number(res.headers.get('retry-after'))
+          const delayMs =
+            Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 2 ** attempt * 1000
+          etsyLogger.warn(
+            `Etsy rate limit hit on ${endpoint} (attempt ${attempt + 1}/${maxRetries + 1}); retrying in ${delayMs}ms.`,
+          )
+          // Clear before backoff so the abort can't fire during the (possibly longer) sleep.
+          clearTimeout(timeout)
+          await new Promise((resolve) => setTimeout(resolve, delayMs))
+          continue
+        }
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}))
+          const msg = errorData.error || errorData.message || res.statusText
+          throw new Error(`Etsy API Error (${res.status}): ${msg}`)
+        }
+
+        return await res.json()
       } catch (err) {
         if (controller.signal.aborted) {
           throw new Error(`Etsy request to ${endpoint} timed out after ${REQUEST_TIMEOUT_MS}ms`)
@@ -333,25 +356,6 @@ export class EtsyClient {
       } finally {
         clearTimeout(timeout)
       }
-
-      if (res.status === 429 && attempt < maxRetries) {
-        const retryAfter = Number(res.headers.get('retry-after'))
-        const delayMs =
-          Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 2 ** attempt * 1000
-        etsyLogger.warn(
-          `Etsy rate limit hit on ${endpoint} (attempt ${attempt + 1}/${maxRetries + 1}); retrying in ${delayMs}ms.`,
-        )
-        await new Promise((resolve) => setTimeout(resolve, delayMs))
-        continue
-      }
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}))
-        const msg = errorData.error || errorData.message || res.statusText
-        throw new Error(`Etsy API Error (${res.status}): ${msg}`)
-      }
-
-      return res.json()
     }
   }
 
