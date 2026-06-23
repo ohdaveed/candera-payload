@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu } from 'lucide-react'
+import { Menu, Search } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
@@ -48,6 +49,14 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
         >
           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
           <Section as="nav" padding="none" className="flex flex-col gap-2 px-6">
+            {/* Search affordance — Jakob's Law: keep search discoverable on mobile */}
+            <Link
+              href="/search"
+              className="flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-4 border-b border-candera-stone/20"
+            >
+              <Search className="w-4 h-4" aria-hidden="true" />
+              Search
+            </Link>
             {navItems.map(({ link }, i) => (
               <CMSLink
                 key={i}

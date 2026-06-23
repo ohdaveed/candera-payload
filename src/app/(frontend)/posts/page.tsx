@@ -7,6 +7,7 @@ import { Pagination } from '@/components/Pagination'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
@@ -111,6 +112,13 @@ export default async function Page() {
           )}
         </Container>
       </Section>
+
+      {/* Peak-End Rule: close the journey on a strong, on-brand conversion moment */}
+      <InnerCircleCTABlock
+        blockType="innerCircleCTA"
+        headline="Stories, straight from the studio."
+        description="Join the Inner Circle for new journal entries, behind-the-scenes notes, and seasonal ritual invitations."
+      />
     </main>
   )
 }

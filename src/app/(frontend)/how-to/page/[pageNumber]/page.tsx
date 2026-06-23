@@ -1,4 +1,5 @@
 import type { Metadata } from 'next/types'
+import { notFound } from 'next/navigation'
 
 import { ArticleCard } from '@/components/ArticleCard'
 import { Container } from '@/components/ui/container'
@@ -10,16 +11,27 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 
-export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page() {
+type Args = {
+  params: Promise<{
+    pageNumber: string
+  }>
+}
+
+export default async function Page({ params: paramsPromise }: Args) {
+  const { pageNumber } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
+
+  const sanitizedPageNumber = Number(pageNumber)
+
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
 
   const guides = await payload.find({
     collection: 'how-to-guides',
     depth: 1,
     limit: 12,
+    page: sanitizedPageNumber,
     overrideAccess: false,
     sort: '-publishedAt',
     select: {
@@ -30,6 +42,8 @@ export default async function Page() {
       heroImage: true,
     },
   })
+
+  if (guides.docs.length === 0) notFound()
 
   return (
     <main className="bg-candera-vellum overflow-x-hidden" data-page="how-to-listing">
@@ -90,8 +104,13 @@ export default async function Page() {
   )
 }
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { pageNumber } = await paramsPromise
   return {
-    title: 'How-To Guides — Candera',
+    title: `How-To Guides — Page ${pageNumber} — Candera`,
   }
+}
+
+export async function generateStaticParams() {
+  return []
 }
