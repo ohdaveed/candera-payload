@@ -81,17 +81,16 @@ function ProductFiltersInner() {
 
       {/* Sort select + pending indicator */}
       <div className="flex items-center gap-4 w-full sm:w-auto">
-        {/* Doherty Threshold / visibility of system status. Persistent live region
-            (kept in the DOM, only text swapped) for reliable polite announcements. */}
-        <span
-          role="status"
-          aria-live="polite"
+        {/* Doherty Threshold / visibility of system status. <output> is an implicit
+            polite live region; kept in the DOM with only its text swapped for
+            reliable announcements. */}
+        <output
           className={`eyebrow text-candera-sage-text whitespace-nowrap transition-opacity duration-200 ${
             isPending ? 'opacity-100' : 'opacity-0'
           }`}
         >
           {isPending ? 'Updating…' : ''}
-        </span>
+        </output>
 
         <fieldset className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[180px] border-none p-0 m-0">
           <legend className="sr-only">Sort products</legend>
