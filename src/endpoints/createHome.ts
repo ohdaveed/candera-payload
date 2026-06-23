@@ -69,6 +69,9 @@ const PRODUCT_DATA = [
   {
     title: 'Ever After Glow',
     slug: 'ever-after-glow',
+    // No Etsy listing — explicit null so the upsert clears any stale id and the CTA
+    // falls back to the shop URL.
+    etsyListingId: null,
     vessel: '004',
     price: 38,
     productTag: 'Bestseller',
@@ -81,6 +84,7 @@ const PRODUCT_DATA = [
   {
     title: "Anya's Eyes",
     slug: 'anyas-eyes',
+    etsyListingId: null,
     vessel: '005',
     price: 38,
     productTag: 'Limited Batch',
@@ -93,6 +97,7 @@ const PRODUCT_DATA = [
   {
     title: 'Scarlet Bloom',
     slug: 'scarlet-bloom',
+    etsyListingId: null,
     vessel: '006',
     price: 38,
     productTag: 'New Release',
