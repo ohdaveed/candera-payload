@@ -6,18 +6,12 @@ import config from '@payload-config'
 
 export const maxDuration = 30
 
-async function requireAuthenticatedUser() {
+export async function POST(req: Request): Promise<Response> {
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
   const { user } = await payload.auth({ headers: requestHeaders })
 
-  return Boolean(user)
-}
-
-export async function POST(req: Request): Promise<Response> {
-  const isAuthenticated = await requireAuthenticatedUser()
-
-  if (!isAuthenticated) {
+  if (!user) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -30,12 +24,23 @@ export async function POST(req: Request): Promise<Response> {
 
   const input = parsed.data
 
-  const { object } = await generateObject({
-    model: gateway('anthropic/claude-haiku-4-5'),
-    system: SYSTEM_PROMPTS[input.tone],
-    prompt: buildUserPrompt(input),
-    schema: outputSchema,
-  })
+  try {
+    const { object } = await generateObject({
+      model: gateway('anthropic/claude-haiku-4-5'),
+      system: SYSTEM_PROMPTS[input.tone],
+      prompt: buildUserPrompt(input),
+      schema: outputSchema,
+    })
 
-  return Response.json(object)
+    return Response.json(object)
+  } catch (err) {
+    // Gateway outage, missing credential, rate limit, or a model output that
+    // fails the schema all land here — log it and return a clean 502 instead of
+    // an opaque unhandled 500.
+    payload.logger.error({ err, msg: 'AI product-copy generation failed' })
+    return Response.json(
+      { error: 'Copy generation is temporarily unavailable. Please try again.' },
+      { status: 502 },
+    )
+  }
 }
