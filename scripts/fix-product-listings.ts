@@ -91,9 +91,13 @@ async function run(): Promise<void> {
             overrideAccess: true,
           })
           if (owners.totalDocs > 0) {
+            // Another product owns this listing — clear the demo row's id (if it
+            // still holds a stale/fake one) so its CTA falls back to the shop link
+            // instead of pointing at a broken listing.
             payload.logger.warn(
-              `fix-product-listings: listing ${fix.etsyListingId} already belongs to another product — leaving "${fix.slug}" id unchanged`,
+              `fix-product-listings: listing ${fix.etsyListingId} already belongs to another product — clearing "${fix.slug}" id to fall back to the shop`,
             )
+            if (currentId !== null) data.etsyListingId = null
           } else {
             data.etsyListingId = fix.etsyListingId
           }

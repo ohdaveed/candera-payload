@@ -176,9 +176,36 @@ export const createHomeEndpoint: Endpoint = {
           where: { slug: { equals: product.slug } },
           limit: 1,
         })
+        const existingId = existing.docs[0]?.id
+
+        // etsyListingId is unique. If another product already owns this listing
+        // (e.g. imported by the Etsy sync under a different slug), fall back to null
+        // so this demo product links to the shop instead of violating the unique index.
+        let etsyListingId = product.etsyListingId
+        if (etsyListingId != null) {
+          const owners = await payload.find({
+            collection: 'products',
+            where: {
+              and: [
+                { etsyListingId: { equals: etsyListingId } },
+                ...(existingId != null ? [{ id: { not_equals: existingId } }] : []),
+              ],
+            },
+            limit: 1,
+            depth: 0,
+          })
+          if (owners.totalDocs > 0) {
+            payload.logger.warn(
+              `[createHome] listing ${etsyListingId} already owned by another product — "${product.slug}" will fall back to the shop`,
+            )
+            etsyListingId = null
+          }
+        }
+
         const mediaDoc = mediaByKey[imageKey]
         const data: unknown = {
           ...product,
+          etsyListingId,
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         }
         if (existing.docs.length > 0) {
