@@ -6,6 +6,7 @@ import type { Media } from '@/payload-types'
 import { contactForm as contactFormData } from './seed/contact-form'
 import { innerCircleForm as innerCircleFormData } from './seed/inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './seed/scent-quiz-form'
+import { home } from './seed/home'
 
 const CANDLE_IMAGES = [
   { key: 'seashell-garden', file: 'seashell-garden.jpg' },
@@ -204,162 +205,25 @@ export const createHomeEndpoint: Endpoint = {
           { status: 400 },
         )
       }
-      const innerCircleMedia = mediaByKey['crimson-noir'] as Media | undefined
       const existing = await payload.find({
         collection: 'pages',
         where: { slug: { equals: 'home' } },
         limit: 1,
       })
 
-      const pageData: unknown = {
-        slug: 'home',
-        _status: 'published',
-        title: 'Home',
-        hero: {
-          type: 'none',
-          richText: {
-            root: {
-              type: 'root',
-              children: [
-                {
-                  type: 'paragraph',
-                  children: [],
-                  direction: 'ltr',
-                  format: '',
-                  indent: 0,
-                  textFormat: 0,
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              version: 1,
-            },
-          },
-        },
-        layout: [
-          {
-            blockType: 'storefrontHero',
-            heroTag: 'Hand-Poured in the Studio',
-            headline: 'The Art of the Quiet Ritual.',
-            subheading:
-              'Thoughtfully handcrafted botanical candles designed to bring light, warmth, and intention to your everyday moments.',
-            media: heroMedia?.id,
-            primaryCtaLabel: 'Explore the Collection',
-            primaryCtaUrl: '#collection',
-            secondaryCtaLabel: 'Take the Scent Quiz →',
-            secondaryCtaUrl: '#scent-quiz',
-            showStatusCard: true,
-            statusCardTitle: 'Batch 014',
-            statusCardSubtitle: '47 units · hand-poured',
-            statusCardStatus: 'Curing',
-            statusCardShips: '~3 weeks',
-          },
-          {
-            blockType: 'archive',
-            categories: [],
-            introContent: {
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: '{{count}} vessels. One batch. Your space.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    tag: 'h2',
-                    version: 1,
-                  },
-                  {
-                    type: 'paragraph',
-                    children: [
-                      {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Numbered vessels. Hand-labeled. Cured for two weeks in studio silence. Each candle carries its batch number like a signature.',
-                        version: 1,
-                      },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    textFormat: 0,
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
-            populateBy: 'collection',
-            relationTo: 'products',
-            limit: 6,
-          },
-          {
-            blockType: 'testimonials',
-            eyebrow: 'From Our Ritualists',
-            items: [
-              {
-                quote:
-                  'The scent profile is unlike anything mass-produced. It fills the room without overwhelming the senses.',
-                author: 'Elena R.',
-                location: 'Los Angeles',
-                badge: 'Verified Ritualist',
-              },
-              {
-                quote:
-                  'I reuse the stoneware vessels for my succulents. They are truly objects of art, even after the burn.',
-                author: 'James T.',
-                location: 'Austin',
-                badge: 'Repeat Collector',
-              },
-              {
-                quote:
-                  'A ritual I look forward to every evening. This is the soul of my living room.',
-                author: 'Sarah L.',
-                location: 'Brooklyn',
-                badge: 'Verified Ritualist',
-              },
-            ],
-          },
-          {
-            blockType: 'scentQuiz',
-            eyebrow: 'Find Your Scent',
-            headline: 'Which Candera ritual is calling you?',
-            formId: scentQuizFormDoc.id.toString(),
-          },
-          {
-            blockType: 'innerCircleCTA',
-            headline: 'Never Miss a Batch.',
-            description:
-              'New batches often sell out within 48 hours. Join to receive 24-hour early access to every limited drop, plus exclusive invitations to our seasonal ritual workshops. No spam, just scent—cancel anytime.',
-            ...(innerCircleMedia ? { media: innerCircleMedia.id } : {}),
-          },
-        ],
-        meta: {
-          description:
-            'Hand-poured botanical candles crafted in numbered micro-batches. Scent, stillness, and ritual objects for your daily practice.',
-          image: heroMedia?.id,
-          title: 'Candera Candles | Botanical Scent Studio',
-        },
-      }
+      // Single source of truth: reuse the same layout the full seed uses
+      // (src/endpoints/seed/home.ts) so this targeted upsert can never drift
+      // from the canonical home design. The three vessel photos and the hero
+      // share the candera media set uploaded above.
+      const vesselImages = (['meadowlight-botanical', 'crimson-noir', 'ever-after-glow'] as const)
+        .map((key) => mediaByKey[key] as Media | undefined)
+        .filter((m): m is Media => Boolean(m))
+
+      const pageData = home({
+        heroImage: heroMedia,
+        vesselImages,
+        scentQuizFormId: scentQuizFormDoc.id,
+      })
 
       if (existing.docs.length > 0) {
         await payload.update({
