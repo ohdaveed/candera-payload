@@ -42,6 +42,9 @@ export default async function Page({ params: paramsPromise }: Args) {
     },
   })
 
+  // Out-of-range page numbers should 404 rather than render an empty grid.
+  if (posts.totalPages > 0 && sanitizedPageNumber > posts.totalPages) notFound()
+
   return (
     <div className="pt-24 pb-24">
       <SetHeaderTheme theme="light" />
@@ -72,8 +75,13 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
+  const title = `Journal — Page ${pageNumber} — Candera`
+  const description =
+    'Stories from the Candera studio — notes on scent, craft, and intentional living.'
   return {
-    title: `Journal — Page ${pageNumber} — Candera`,
+    title,
+    description,
+    openGraph: { title, description, type: 'website' },
   }
 }
 
