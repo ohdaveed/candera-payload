@@ -5,8 +5,8 @@ import { ValidationError } from 'payload'
  * Hard server-side caps for public form submissions.
  *
  * `form-submissions` keeps the form-builder plugin's default of public `create`
- * so the storefront forms work, but every submission fans out to Supabase and an
- * external email relay. These caps blunt the cost/abuse blast radius of bulk or
+ * so the storefront forms work, but every submission is persisted by Payload and
+ * relayed to an external email service. These caps blunt the cost/abuse blast radius of bulk or
  * oversized payloads. They run for *all* write paths — the `submitForm` server
  * action and direct REST `POST /api/form-submissions` alike.
  *

@@ -33,5 +33,5 @@ GitHub issue or pull request for a suspected vulnerability.
 
 In scope: this application and its API/admin endpoints. Out of scope: findings
 that require physical access, social engineering of staff, or vulnerabilities in
-third-party platforms we depend on (Vercel, Neon, Etsy, Supabase) — please report
+third-party platforms we depend on (Vercel, Neon, Etsy) — please report
 those to the respective vendor.

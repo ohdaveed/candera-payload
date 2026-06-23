@@ -1,12 +1,5 @@
 import type { CollectionAfterChangeHook } from 'payload'
-import { archiveFormSubmission } from '@/services/supabase'
 import { sendToFormSubmit } from '@/services/formsubmit'
-
-const FORM_TAG_MAP: Record<string, string> = {
-  'Contact Form': 'contact',
-  'Inner Circle Signup': 'inner-circle',
-  'Scent Quiz': 'scent-quiz',
-}
 
 type SubmissionField = { field: string; value: string }
 
@@ -22,19 +15,8 @@ export const processFormSubmission: CollectionAfterChangeHook = async ({ doc, re
 
     const form = await req.payload.findByID({ collection: 'forms', id: formId, depth: 0 })
     const formTitle: string = form.title
-    const tag = FORM_TAG_MAP[formTitle] ?? 'general'
-
-    const scentResult = submissionData.find((f) => f.field === 'scent-result')?.value ?? null
 
     const results = await Promise.allSettled([
-      archiveFormSubmission({
-        form_title: formTitle,
-        email,
-        submission_data: submissionData,
-        tags: [tag],
-        scent_result: scentResult,
-        payload_submission_id: String(doc.id),
-      }),
       sendToFormSubmit({
         formTitle,
         email,
