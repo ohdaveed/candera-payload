@@ -22,6 +22,7 @@ import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { ArrowRight } from 'lucide-react'
 import { FORM_TITLES } from '@/constants/forms'
 
 export async function generateStaticParams() {
@@ -219,19 +220,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           className="btn-text text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto inline-flex items-center gap-2"
         >
           Explore the collection
-          <svg
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          <ArrowRight width={11} height={11} strokeWidth={2} aria-hidden="true" />
         </Link>
       </aside>
 

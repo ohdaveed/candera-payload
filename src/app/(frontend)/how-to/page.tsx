@@ -9,6 +9,7 @@ import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { getMetaImage } from '@/utilities/getMetaImage'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -50,11 +51,9 @@ export default async function Page() {
         <Container>
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 list-none p-0 m-0 mt-8">
             {guides.docs.map((guide) => {
-              const image = guide.meta?.image || guide.heroImage
-              const imageUrl =
-                image && typeof image === 'object' && 'url' in image ? image.url : null
-              const imageAlt =
-                image && typeof image === 'object' && 'alt' in image ? image.alt : null
+              const { url: imageUrl, alt: imageAlt } = getMetaImage(
+                guide.meta?.image || guide.heroImage,
+              )
 
               return (
                 <li key={guide.slug}>

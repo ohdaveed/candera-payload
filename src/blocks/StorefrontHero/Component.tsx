@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
@@ -77,19 +78,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                 >
                   <Link href={primaryCtaUrl}>
                     {primaryCtaLabel}
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                    <ArrowRight width={14} height={14} strokeWidth={1.5} aria-hidden="true" />
                   </Link>
                 </Button>
               )}
