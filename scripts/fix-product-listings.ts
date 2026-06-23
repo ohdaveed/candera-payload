@@ -29,14 +29,14 @@ type ProductFix = {
   imageKey: string
 }
 
-// The 3 real listing ids are the verified CanderaCandles listings (see scripts/sync-etsy.ts).
+// Real CanderaCandles listing ids, verified against the live Etsy shop.
 const PRODUCT_FIXES: ProductFix[] = [
   { slug: 'seashell-garden-glow', etsyListingId: 1717226844, imageKey: 'seashell-garden' },
-  { slug: 'meadowlight-botanical', etsyListingId: 1731408433, imageKey: 'meadowlight-botanical' },
-  { slug: 'crimson-noir', etsyListingId: 1731418441, imageKey: 'crimson-noir' },
-  { slug: 'ever-after-glow', etsyListingId: null, imageKey: 'ever-after-glow' },
-  { slug: 'anyas-eyes', etsyListingId: null, imageKey: 'anyas-eyes' },
-  { slug: 'scarlet-bloom', etsyListingId: null, imageKey: 'scarlet-bloom' },
+  { slug: 'meadowlight-botanical', etsyListingId: 4464556279, imageKey: 'meadowlight-botanical' },
+  { slug: 'crimson-noir', etsyListingId: 4493763314, imageKey: 'crimson-noir' },
+  { slug: 'ever-after-glow', etsyListingId: 4457787997, imageKey: 'ever-after-glow' },
+  { slug: 'anyas-eyes', etsyListingId: 4496981320, imageKey: 'anyas-eyes' },
+  { slug: 'scarlet-bloom', etsyListingId: 4468801228, imageKey: 'scarlet-bloom' },
 ]
 
 function loadCanderaImage(imageKey: string) {
