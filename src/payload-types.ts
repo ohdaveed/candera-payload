@@ -129,11 +129,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-theme': SiteTheme;
+    'studio-info': StudioInfo;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-theme': SiteThemeSelect<false> | SiteThemeSelect<true>;
+    'studio-info': StudioInfoSelect<false> | StudioInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2417,6 +2419,44 @@ export interface SiteTheme {
   createdAt?: string | null;
 }
 /**
+ * Editorial content surfaced across the storefront — contact details, Inner Circle benefits, and search suggestions.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studio-info".
+ */
+export interface StudioInfo {
+  id: number;
+  /**
+   * Primary studio inbox (rendered as a mailto link).
+   */
+  email: string;
+  /**
+   * Public-facing handle, e.g. "@canderacandles".
+   */
+  instagramHandle: string;
+  /**
+   * Full URL the Instagram handle links to.
+   */
+  instagramUrl: string;
+  studioHours: string;
+  locationTagline: string;
+  innerCircleBenefits?:
+    | {
+        label: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  searchSuggestions?:
+    | {
+        term: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2501,6 +2541,33 @@ export interface SiteThemeSelect<T extends boolean = true> {
   productCardDensity?: T;
   sectionMood?: T;
   ctaStyle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studio-info_select".
+ */
+export interface StudioInfoSelect<T extends boolean = true> {
+  email?: T;
+  instagramHandle?: T;
+  instagramUrl?: T;
+  studioHours?: T;
+  locationTagline?: T;
+  innerCircleBenefits?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  searchSuggestions?:
+    | T
+    | {
+        term?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

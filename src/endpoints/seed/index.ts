@@ -637,6 +637,42 @@ export const seed = async ({
         ],
       },
     }),
+    payload.updateGlobal({
+      slug: 'studio-info',
+      context: {
+        disableRevalidate: true,
+      },
+      data: {
+        email: 'studio@canderacandles.com',
+        instagramHandle: '@canderacandles',
+        instagramUrl: 'https://instagram.com/canderacandles',
+        studioHours: 'By appointment — slow by design.',
+        locationTagline: 'Handcrafted in California',
+        innerCircleBenefits: [
+          {
+            label: 'Early Access',
+            description: '24-hour advance notice before every new batch goes public.',
+          },
+          {
+            label: 'Ritual Invitations',
+            description: 'Seasonal studio events and workshops, extended to members only.',
+          },
+          {
+            label: 'Studio Notes',
+            description:
+              'Behind-the-scenes updates from the curing room and new scent development.',
+          },
+        ],
+        searchSuggestions: [
+          { term: 'Sandalwood' },
+          { term: 'Citrus' },
+          { term: 'Smoke' },
+          { term: 'Woodland' },
+          { term: 'Lavender' },
+          { term: 'Ember' },
+        ],
+      },
+    }),
   ])
 
   payload.logger.info('Seeded database successfully!')
