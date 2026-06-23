@@ -4,6 +4,7 @@ import { buildHomePage } from './home-layout'
 
 type HomeArgs = {
   heroImage: Media
+  vesselImages?: Media[]
   scentQuizFormId?: string | number
   scentQuizId?: string | number
 }
@@ -11,7 +12,13 @@ type HomeArgs = {
 // Seeded homepage — content/structure lives in ./home-layout (single source of truth).
 export const home = ({
   heroImage,
+  vesselImages = [],
   scentQuizFormId,
   scentQuizId,
 }: HomeArgs): RequiredDataFromCollectionSlug<'pages'> =>
-  buildHomePage({ heroImageId: heroImage.id, scentQuizFormId, scentQuizId })
+  buildHomePage({
+    heroImageId: heroImage.id,
+    vesselImageIds: vesselImages.map((media) => media.id),
+    scentQuizFormId,
+    scentQuizId,
+  })

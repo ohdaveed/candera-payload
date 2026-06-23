@@ -151,6 +151,18 @@ export const enum__products_v_version_status = pgEnum('enum__products_v_version_
 ])
 export const enum_users_roles = pgEnum('enum_users_roles', ['admin', 'editor'])
 export const enum_users_status = pgEnum('enum_users_status', ['active', 'suspended'])
+export const enum_documentation_category = pgEnum('enum_documentation_category', [
+  'CMS Usage',
+  'Seeding & Data',
+  'Etsy Integration',
+  'Publishing Workflow',
+  'Design & Theming',
+])
+export const enum_how_to_guides_status = pgEnum('enum_how_to_guides_status', ['draft', 'published'])
+export const enum__how_to_guides_v_version_status = pgEnum('enum__how_to_guides_v_version_status', [
+  'draft',
+  'published',
+])
 export const enum_redirects_to_type = pgEnum('enum_redirects_to_type', ['reference', 'custom'])
 export const enum_forms_confirmation_type = pgEnum('enum_forms_confirmation_type', [
   'message',
@@ -309,6 +321,53 @@ export const pages_blocks_storefront_hero = pgTable(
       columns: [columns['_parentID']],
       foreignColumns: [pages.id],
       name: 'pages_blocks_storefront_hero_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_the_vessels_items = pgTable(
+  'pages_blocks_the_vessels_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    image: integer('image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    label: varchar('label'),
+    caption: varchar('caption'),
+  },
+  (columns) => [
+    index('pages_blocks_the_vessels_items_order_idx').on(columns._order),
+    index('pages_blocks_the_vessels_items_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_the_vessels_items_image_idx').on(columns.image),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages_blocks_the_vessels.id],
+      name: 'pages_blocks_the_vessels_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_the_vessels = pgTable(
+  'pages_blocks_the_vessels',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    eyebrow: varchar('eyebrow').default('The Vessels'),
+    heading: varchar('heading'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('pages_blocks_the_vessels_order_idx').on(columns._order),
+    index('pages_blocks_the_vessels_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_the_vessels_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages.id],
+      name: 'pages_blocks_the_vessels_parent_id_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -728,6 +787,55 @@ export const _pages_v_blocks_storefront_hero = pgTable(
       columns: [columns['_parentID']],
       foreignColumns: [_pages_v.id],
       name: '_pages_v_blocks_storefront_hero_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _pages_v_blocks_the_vessels_items = pgTable(
+  '_pages_v_blocks_the_vessels_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    image: integer('image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    label: varchar('label'),
+    caption: varchar('caption'),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => [
+    index('_pages_v_blocks_the_vessels_items_order_idx').on(columns._order),
+    index('_pages_v_blocks_the_vessels_items_parent_id_idx').on(columns._parentID),
+    index('_pages_v_blocks_the_vessels_items_image_idx').on(columns.image),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v_blocks_the_vessels.id],
+      name: '_pages_v_blocks_the_vessels_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _pages_v_blocks_the_vessels = pgTable(
+  '_pages_v_blocks_the_vessels',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: serial('id').primaryKey(),
+    eyebrow: varchar('eyebrow').default('The Vessels'),
+    heading: varchar('heading'),
+    _uuid: varchar('_uuid'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('_pages_v_blocks_the_vessels_order_idx').on(columns._order),
+    index('_pages_v_blocks_the_vessels_parent_id_idx').on(columns._parentID),
+    index('_pages_v_blocks_the_vessels_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v.id],
+      name: '_pages_v_blocks_the_vessels_parent_id_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -1979,6 +2087,7 @@ export const documentation = pgTable(
     id: serial('id').primaryKey(),
     title: varchar('title').notNull(),
     content: jsonb('content').notNull(),
+    category: enum_documentation_category('category'),
     order: numeric('order', { mode: 'number' }).default(0),
     generateSlug: boolean('generate_slug').default(true),
     slug: varchar('slug').notNull(),
@@ -1993,6 +2102,154 @@ export const documentation = pgTable(
     uniqueIndex('documentation_slug_idx').on(columns.slug),
     index('documentation_updated_at_idx').on(columns.updatedAt),
     index('documentation_created_at_idx').on(columns.createdAt),
+  ],
+)
+
+export const how_to_guides = pgTable(
+  'how_to_guides',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title'),
+    heroImage: integer('hero_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    content: jsonb('content'),
+    meta_title: varchar('meta_title'),
+    meta_image: integer('meta_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    meta_description: varchar('meta_description'),
+    publishedAt: timestamp('published_at', { mode: 'string', withTimezone: true, precision: 3 }),
+    generateSlug: boolean('generate_slug').default(true),
+    slug: varchar('slug'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    _status: enum_how_to_guides_status('_status').default('draft'),
+  },
+  (columns) => [
+    index('how_to_guides_hero_image_idx').on(columns.heroImage),
+    index('how_to_guides_meta_meta_image_idx').on(columns.meta_image),
+    uniqueIndex('how_to_guides_slug_idx').on(columns.slug),
+    index('how_to_guides_updated_at_idx').on(columns.updatedAt),
+    index('how_to_guides_created_at_idx').on(columns.createdAt),
+    index('how_to_guides__status_idx').on(columns._status),
+  ],
+)
+
+export const how_to_guides_rels = pgTable(
+  'how_to_guides_rels',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order'),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    categoriesID: integer('categories_id'),
+  },
+  (columns) => [
+    index('how_to_guides_rels_order_idx').on(columns.order),
+    index('how_to_guides_rels_parent_idx').on(columns.parent),
+    index('how_to_guides_rels_path_idx').on(columns.path),
+    index('how_to_guides_rels_categories_id_idx').on(columns.categoriesID),
+    foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [how_to_guides.id],
+      name: 'how_to_guides_rels_parent_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['categoriesID']],
+      foreignColumns: [categories.id],
+      name: 'how_to_guides_rels_categories_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const _how_to_guides_v = pgTable(
+  '_how_to_guides_v',
+  {
+    id: serial('id').primaryKey(),
+    parent: integer('parent_id').references(() => how_to_guides.id, {
+      onDelete: 'set null',
+    }),
+    version_title: varchar('version_title'),
+    version_heroImage: integer('version_hero_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    version_content: jsonb('version_content'),
+    version_meta_title: varchar('version_meta_title'),
+    version_meta_image: integer('version_meta_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    version_meta_description: varchar('version_meta_description'),
+    version_publishedAt: timestamp('version_published_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_generateSlug: boolean('version_generate_slug').default(true),
+    version_slug: varchar('version_slug'),
+    version_updatedAt: timestamp('version_updated_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_createdAt: timestamp('version_created_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version__status: enum__how_to_guides_v_version_status('version__status').default('draft'),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    latest: boolean('latest'),
+    autosave: boolean('autosave'),
+  },
+  (columns) => [
+    index('_how_to_guides_v_parent_idx').on(columns.parent),
+    index('_how_to_guides_v_version_version_hero_image_idx').on(columns.version_heroImage),
+    index('_how_to_guides_v_version_meta_version_meta_image_idx').on(columns.version_meta_image),
+    index('_how_to_guides_v_version_version_slug_idx').on(columns.version_slug),
+    index('_how_to_guides_v_version_version_updated_at_idx').on(columns.version_updatedAt),
+    index('_how_to_guides_v_version_version_created_at_idx').on(columns.version_createdAt),
+    index('_how_to_guides_v_version_version__status_idx').on(columns.version__status),
+    index('_how_to_guides_v_created_at_idx').on(columns.createdAt),
+    index('_how_to_guides_v_updated_at_idx').on(columns.updatedAt),
+    index('_how_to_guides_v_latest_idx').on(columns.latest),
+    index('_how_to_guides_v_autosave_idx').on(columns.autosave),
+  ],
+)
+
+export const _how_to_guides_v_rels = pgTable(
+  '_how_to_guides_v_rels',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order'),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    categoriesID: integer('categories_id'),
+  },
+  (columns) => [
+    index('_how_to_guides_v_rels_order_idx').on(columns.order),
+    index('_how_to_guides_v_rels_parent_idx').on(columns.parent),
+    index('_how_to_guides_v_rels_path_idx').on(columns.path),
+    index('_how_to_guides_v_rels_categories_id_idx').on(columns.categoriesID),
+    foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [_how_to_guides_v.id],
+      name: '_how_to_guides_v_rels_parent_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['categoriesID']],
+      foreignColumns: [categories.id],
+      name: '_how_to_guides_v_rels_categories_fk',
+    }).onDelete('cascade'),
   ],
 )
 
@@ -2628,6 +2885,7 @@ export const payload_locked_documents_rels = pgTable(
     quizzesID: integer('quizzes_id'),
     'scent-profilesID': integer('scent_profiles_id'),
     documentationID: integer('documentation_id'),
+    'how-to-guidesID': integer('how_to_guides_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -2650,6 +2908,7 @@ export const payload_locked_documents_rels = pgTable(
     index('payload_locked_documents_rels_quizzes_id_idx').on(columns.quizzesID),
     index('payload_locked_documents_rels_scent_profiles_id_idx').on(columns['scent-profilesID']),
     index('payload_locked_documents_rels_documentation_id_idx').on(columns.documentationID),
+    index('payload_locked_documents_rels_how_to_guides_id_idx').on(columns['how-to-guidesID']),
     index('payload_locked_documents_rels_redirects_id_idx').on(columns.redirectsID),
     index('payload_locked_documents_rels_forms_id_idx').on(columns.formsID),
     index('payload_locked_documents_rels_form_submissions_id_idx').on(
@@ -2721,6 +2980,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['documentationID']],
       foreignColumns: [documentation.id],
       name: 'payload_locked_documents_rels_documentation_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['how-to-guidesID']],
+      foreignColumns: [how_to_guides.id],
+      name: 'payload_locked_documents_rels_how_to_guides_fk',
     }).onDelete('cascade'),
     foreignKey({
       columns: [columns['redirectsID']],
@@ -2997,6 +3261,56 @@ export const site_theme = pgTable('site_theme', {
   createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
 })
 
+export const studio_info_inner_circle_benefits = pgTable(
+  'studio_info_inner_circle_benefits',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    label: varchar('label').notNull(),
+    description: varchar('description').notNull(),
+  },
+  (columns) => [
+    index('studio_info_inner_circle_benefits_order_idx').on(columns._order),
+    index('studio_info_inner_circle_benefits_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [studio_info.id],
+      name: 'studio_info_inner_circle_benefits_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const studio_info_search_suggestions = pgTable(
+  'studio_info_search_suggestions',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    term: varchar('term').notNull(),
+  },
+  (columns) => [
+    index('studio_info_search_suggestions_order_idx').on(columns._order),
+    index('studio_info_search_suggestions_parent_id_idx').on(columns._parentID),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [studio_info.id],
+      name: 'studio_info_search_suggestions_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const studio_info = pgTable('studio_info', {
+  id: serial('id').primaryKey(),
+  email: varchar('email').notNull().default('studio@canderacandles.com'),
+  instagramHandle: varchar('instagram_handle').notNull().default('@canderacandles'),
+  instagramUrl: varchar('instagram_url').notNull().default('https://instagram.com/canderacandles'),
+  studioHours: varchar('studio_hours').notNull().default('By appointment — slow by design.'),
+  locationTagline: varchar('location_tagline').notNull().default('Handcrafted in California'),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
+  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
+})
+
 export const relations_folders = relations(folders, ({ one }) => ({
   folder: one(payload_folders, {
     fields: [folders.folder],
@@ -3023,6 +3337,34 @@ export const relations_pages_blocks_storefront_hero = relations(
       fields: [pages_blocks_storefront_hero.media],
       references: [media.id],
       relationName: 'media',
+    }),
+  }),
+)
+export const relations_pages_blocks_the_vessels_items = relations(
+  pages_blocks_the_vessels_items,
+  ({ one }) => ({
+    _parentID: one(pages_blocks_the_vessels, {
+      fields: [pages_blocks_the_vessels_items._parentID],
+      references: [pages_blocks_the_vessels.id],
+      relationName: 'items',
+    }),
+    image: one(media, {
+      fields: [pages_blocks_the_vessels_items.image],
+      references: [media.id],
+      relationName: 'image',
+    }),
+  }),
+)
+export const relations_pages_blocks_the_vessels = relations(
+  pages_blocks_the_vessels,
+  ({ one, many }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_the_vessels._parentID],
+      references: [pages.id],
+      relationName: '_blocks_theVessels',
+    }),
+    items: many(pages_blocks_the_vessels_items, {
+      relationName: 'items',
     }),
   }),
 )
@@ -3186,6 +3528,9 @@ export const relations_pages = relations(pages, ({ one, many }) => ({
   _blocks_storefrontHero: many(pages_blocks_storefront_hero, {
     relationName: '_blocks_storefrontHero',
   }),
+  _blocks_theVessels: many(pages_blocks_the_vessels, {
+    relationName: '_blocks_theVessels',
+  }),
   _blocks_cta: many(pages_blocks_cta, {
     relationName: '_blocks_cta',
   }),
@@ -3241,6 +3586,34 @@ export const relations__pages_v_blocks_storefront_hero = relations(
       fields: [_pages_v_blocks_storefront_hero.media],
       references: [media.id],
       relationName: 'media',
+    }),
+  }),
+)
+export const relations__pages_v_blocks_the_vessels_items = relations(
+  _pages_v_blocks_the_vessels_items,
+  ({ one }) => ({
+    _parentID: one(_pages_v_blocks_the_vessels, {
+      fields: [_pages_v_blocks_the_vessels_items._parentID],
+      references: [_pages_v_blocks_the_vessels.id],
+      relationName: 'items',
+    }),
+    image: one(media, {
+      fields: [_pages_v_blocks_the_vessels_items.image],
+      references: [media.id],
+      relationName: 'image',
+    }),
+  }),
+)
+export const relations__pages_v_blocks_the_vessels = relations(
+  _pages_v_blocks_the_vessels,
+  ({ one, many }) => ({
+    _parentID: one(_pages_v, {
+      fields: [_pages_v_blocks_the_vessels._parentID],
+      references: [_pages_v.id],
+      relationName: '_blocks_theVessels',
+    }),
+    items: many(_pages_v_blocks_the_vessels_items, {
+      relationName: 'items',
     }),
   }),
 )
@@ -3420,6 +3793,9 @@ export const relations__pages_v = relations(_pages_v, ({ one, many }) => ({
   }),
   _blocks_storefrontHero: many(_pages_v_blocks_storefront_hero, {
     relationName: '_blocks_storefrontHero',
+  }),
+  _blocks_theVessels: many(_pages_v_blocks_the_vessels, {
+    relationName: '_blocks_theVessels',
   }),
   _blocks_cta: many(_pages_v_blocks_cta, {
     relationName: '_blocks_cta',
@@ -3769,6 +4145,65 @@ export const relations_scent_profiles = relations(scent_profiles, ({ one }) => (
   }),
 }))
 export const relations_documentation = relations(documentation, () => ({}))
+export const relations_how_to_guides_rels = relations(how_to_guides_rels, ({ one }) => ({
+  parent: one(how_to_guides, {
+    fields: [how_to_guides_rels.parent],
+    references: [how_to_guides.id],
+    relationName: '_rels',
+  }),
+  categoriesID: one(categories, {
+    fields: [how_to_guides_rels.categoriesID],
+    references: [categories.id],
+    relationName: 'categories',
+  }),
+}))
+export const relations_how_to_guides = relations(how_to_guides, ({ one, many }) => ({
+  heroImage: one(media, {
+    fields: [how_to_guides.heroImage],
+    references: [media.id],
+    relationName: 'heroImage',
+  }),
+  meta_image: one(media, {
+    fields: [how_to_guides.meta_image],
+    references: [media.id],
+    relationName: 'meta_image',
+  }),
+  _rels: many(how_to_guides_rels, {
+    relationName: '_rels',
+  }),
+}))
+export const relations__how_to_guides_v_rels = relations(_how_to_guides_v_rels, ({ one }) => ({
+  parent: one(_how_to_guides_v, {
+    fields: [_how_to_guides_v_rels.parent],
+    references: [_how_to_guides_v.id],
+    relationName: '_rels',
+  }),
+  categoriesID: one(categories, {
+    fields: [_how_to_guides_v_rels.categoriesID],
+    references: [categories.id],
+    relationName: 'categories',
+  }),
+}))
+export const relations__how_to_guides_v = relations(_how_to_guides_v, ({ one, many }) => ({
+  parent: one(how_to_guides, {
+    fields: [_how_to_guides_v.parent],
+    references: [how_to_guides.id],
+    relationName: 'parent',
+  }),
+  version_heroImage: one(media, {
+    fields: [_how_to_guides_v.version_heroImage],
+    references: [media.id],
+    relationName: 'version_heroImage',
+  }),
+  version_meta_image: one(media, {
+    fields: [_how_to_guides_v.version_meta_image],
+    references: [media.id],
+    relationName: 'version_meta_image',
+  }),
+  _rels: many(_how_to_guides_v_rels, {
+    relationName: '_rels',
+  }),
+}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -4064,6 +4499,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [documentation.id],
       relationName: 'documentation',
     }),
+    'how-to-guidesID': one(how_to_guides, {
+      fields: [payload_locked_documents_rels['how-to-guidesID']],
+      references: [how_to_guides.id],
+      relationName: 'how-to-guides',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -4205,6 +4645,34 @@ export const relations_footer = relations(footer, ({ many }) => ({
   }),
 }))
 export const relations_site_theme = relations(site_theme, () => ({}))
+export const relations_studio_info_inner_circle_benefits = relations(
+  studio_info_inner_circle_benefits,
+  ({ one }) => ({
+    _parentID: one(studio_info, {
+      fields: [studio_info_inner_circle_benefits._parentID],
+      references: [studio_info.id],
+      relationName: 'innerCircleBenefits',
+    }),
+  }),
+)
+export const relations_studio_info_search_suggestions = relations(
+  studio_info_search_suggestions,
+  ({ one }) => ({
+    _parentID: one(studio_info, {
+      fields: [studio_info_search_suggestions._parentID],
+      references: [studio_info.id],
+      relationName: 'searchSuggestions',
+    }),
+  }),
+)
+export const relations_studio_info = relations(studio_info, ({ many }) => ({
+  innerCircleBenefits: many(studio_info_inner_circle_benefits, {
+    relationName: 'innerCircleBenefits',
+  }),
+  searchSuggestions: many(studio_info_search_suggestions, {
+    relationName: 'searchSuggestions',
+  }),
+}))
 
 type DatabaseSchema = {
   enum_pages_hero_links_link_type: typeof enum_pages_hero_links_link_type
@@ -4241,6 +4709,9 @@ type DatabaseSchema = {
   enum__products_v_version_status: typeof enum__products_v_version_status
   enum_users_roles: typeof enum_users_roles
   enum_users_status: typeof enum_users_status
+  enum_documentation_category: typeof enum_documentation_category
+  enum_how_to_guides_status: typeof enum_how_to_guides_status
+  enum__how_to_guides_v_version_status: typeof enum__how_to_guides_v_version_status
   enum_redirects_to_type: typeof enum_redirects_to_type
   enum_forms_confirmation_type: typeof enum_forms_confirmation_type
   enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug
@@ -4260,6 +4731,8 @@ type DatabaseSchema = {
   folders: typeof folders
   pages_hero_links: typeof pages_hero_links
   pages_blocks_storefront_hero: typeof pages_blocks_storefront_hero
+  pages_blocks_the_vessels_items: typeof pages_blocks_the_vessels_items
+  pages_blocks_the_vessels: typeof pages_blocks_the_vessels
   pages_blocks_cta_links: typeof pages_blocks_cta_links
   pages_blocks_cta: typeof pages_blocks_cta
   pages_blocks_content_columns: typeof pages_blocks_content_columns
@@ -4275,6 +4748,8 @@ type DatabaseSchema = {
   pages_rels: typeof pages_rels
   _pages_v_version_hero_links: typeof _pages_v_version_hero_links
   _pages_v_blocks_storefront_hero: typeof _pages_v_blocks_storefront_hero
+  _pages_v_blocks_the_vessels_items: typeof _pages_v_blocks_the_vessels_items
+  _pages_v_blocks_the_vessels: typeof _pages_v_blocks_the_vessels
   _pages_v_blocks_cta_links: typeof _pages_v_blocks_cta_links
   _pages_v_blocks_cta: typeof _pages_v_blocks_cta
   _pages_v_blocks_content_columns: typeof _pages_v_blocks_content_columns
@@ -4315,6 +4790,10 @@ type DatabaseSchema = {
   quizzes: typeof quizzes
   scent_profiles: typeof scent_profiles
   documentation: typeof documentation
+  how_to_guides: typeof how_to_guides
+  how_to_guides_rels: typeof how_to_guides_rels
+  _how_to_guides_v: typeof _how_to_guides_v
+  _how_to_guides_v_rels: typeof _how_to_guides_v_rels
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -4353,9 +4832,14 @@ type DatabaseSchema = {
   footer: typeof footer
   footer_rels: typeof footer_rels
   site_theme: typeof site_theme
+  studio_info_inner_circle_benefits: typeof studio_info_inner_circle_benefits
+  studio_info_search_suggestions: typeof studio_info_search_suggestions
+  studio_info: typeof studio_info
   relations_folders: typeof relations_folders
   relations_pages_hero_links: typeof relations_pages_hero_links
   relations_pages_blocks_storefront_hero: typeof relations_pages_blocks_storefront_hero
+  relations_pages_blocks_the_vessels_items: typeof relations_pages_blocks_the_vessels_items
+  relations_pages_blocks_the_vessels: typeof relations_pages_blocks_the_vessels
   relations_pages_blocks_cta_links: typeof relations_pages_blocks_cta_links
   relations_pages_blocks_cta: typeof relations_pages_blocks_cta
   relations_pages_blocks_content_columns: typeof relations_pages_blocks_content_columns
@@ -4371,6 +4855,8 @@ type DatabaseSchema = {
   relations_pages: typeof relations_pages
   relations__pages_v_version_hero_links: typeof relations__pages_v_version_hero_links
   relations__pages_v_blocks_storefront_hero: typeof relations__pages_v_blocks_storefront_hero
+  relations__pages_v_blocks_the_vessels_items: typeof relations__pages_v_blocks_the_vessels_items
+  relations__pages_v_blocks_the_vessels: typeof relations__pages_v_blocks_the_vessels
   relations__pages_v_blocks_cta_links: typeof relations__pages_v_blocks_cta_links
   relations__pages_v_blocks_cta: typeof relations__pages_v_blocks_cta
   relations__pages_v_blocks_content_columns: typeof relations__pages_v_blocks_content_columns
@@ -4411,6 +4897,10 @@ type DatabaseSchema = {
   relations_quizzes: typeof relations_quizzes
   relations_scent_profiles: typeof relations_scent_profiles
   relations_documentation: typeof relations_documentation
+  relations_how_to_guides_rels: typeof relations_how_to_guides_rels
+  relations_how_to_guides: typeof relations_how_to_guides
+  relations__how_to_guides_v_rels: typeof relations__how_to_guides_v_rels
+  relations__how_to_guides_v: typeof relations__how_to_guides_v
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox
@@ -4449,6 +4939,9 @@ type DatabaseSchema = {
   relations_footer_rels: typeof relations_footer_rels
   relations_footer: typeof relations_footer
   relations_site_theme: typeof relations_site_theme
+  relations_studio_info_inner_circle_benefits: typeof relations_studio_info_inner_circle_benefits
+  relations_studio_info_search_suggestions: typeof relations_studio_info_search_suggestions
+  relations_studio_info: typeof relations_studio_info
 }
 
 declare module '@payloadcms/db-vercel-postgres' {

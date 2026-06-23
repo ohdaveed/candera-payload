@@ -17,19 +17,24 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
             <p className="eyebrow text-candera-stone">{eyebrow}</p>
           </div>
         )}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
           {items.slice(0, 3).map((item, idx) => (
-            <div key={idx} className="lg:col-span-4 flex flex-col items-center text-center gap-4">
+            <figure
+              key={idx}
+              className="lg:col-span-4 flex flex-col items-start text-left gap-0 m-0"
+            >
               <blockquote className="m-0">
                 <p className="font-editorial italic text-base md:text-lg text-candera-vellum leading-relaxed">
-                  &ldquo;{item.quote.replace(/^["\u201C\u201D]+|["\u201C\u201D]+$/g, '')}&rdquo;
+                  &ldquo;{item.quote.replace(/^["“”]+|["“”]+$/g, '')}&rdquo;
                 </p>
               </blockquote>
-              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-candera-linen/70 mt-auto">
+              {/* Signed, polaroid-style attribution: pulled tight beneath the
+                  quote and set in a muted, warm stone gray. */}
+              <figcaption className="font-sans text-xs font-semibold uppercase tracking-widest text-candera-stone-muted mt-1">
                 {item.author}
                 {item.location ? ` — ${item.location}` : ''}
-              </p>
-            </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </Container>

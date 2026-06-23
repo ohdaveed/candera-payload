@@ -361,6 +361,7 @@ export interface Page {
   };
   layout: (
     | StorefrontHeroBlock
+    | TheVesselsBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -523,6 +524,37 @@ export interface StorefrontHeroBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'storefrontHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheVesselsBlock".
+ */
+export interface TheVesselsBlock {
+  eyebrow?: string | null;
+  /**
+   * Optional short heading shown above the showcase.
+   */
+  heading?: string | null;
+  /**
+   * A hyper-minimalist, three-column photography showcase.
+   */
+  items?:
+    | {
+        image: number | Media;
+        /**
+         * e.g. "Vessel 001" or the vessel name.
+         */
+        label?: string | null;
+        /**
+         * Optional material / texture note.
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'theVessels';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1513,6 +1545,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         storefrontHero?: T | StorefrontHeroBlockSelect<T>;
+        theVessels?: T | TheVesselsBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1556,6 +1589,24 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   statusCardStatus?: T;
   statusCardShips?: T;
   statusCardLinkUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheVesselsBlock_select".
+ */
+export interface TheVesselsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        label?: T;
+        caption?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

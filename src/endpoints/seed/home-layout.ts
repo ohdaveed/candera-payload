@@ -7,11 +7,12 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
  * Previously the homepage was defined three times (seed/home.ts, the static
  * fallback in seed/home-static.ts, and the now-removed /create-home endpoint),
  * which drifted apart. Both remaining definitions build from here:
- *  - seed/home.ts        → buildHomePage({ heroImageId, scentQuizFormId, scentQuizId })
+ *  - seed/home.ts        → buildHomePage({ heroImageId, vesselImageIds, scentQuizFormId, scentQuizId })
  *  - seed/home-static.ts → buildHomePage()  (no media/quiz; used as the fallback)
  *
- * Canonical design matches the live page: hero → archive → testimonials →
- * scentQuiz → innerCircleCTA, status card shown, primary CTA → /products.
+ * Canonical design (lead with the object, not the reading):
+ *   hero → The Vessels → scentQuiz → testimonials → journal → product archive →
+ *   innerCircleCTA. Status card shown, primary CTA → /products.
  */
 
 // ── Copy ──────────────────────────────────────────────────────────────────────
@@ -20,11 +21,23 @@ const HERO_HEADLINE = 'Candles made to make you stop.'
 const HERO_SUBHEADING =
   'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.'
 
+const VESSEL_EYEBROW = 'The Vessels'
+const VESSEL_HEADING = 'Unlit. Unhurried.'
+const VESSEL_ITEMS = [
+  { label: 'Vessel 001', caption: 'Hand-finished stoneware' },
+  { label: 'Vessel 002', caption: 'Pressed botanicals, set by hand' },
+  { label: 'Vessel 003', caption: 'Natural wax, slow-cured' },
+]
+
+const SCENT_QUIZ_HEADLINE = 'Not sure where to start?'
+
 const COLLECTION_HEADING = 'Not manufactured. Made.'
 const COLLECTION_BODY =
   "Every Candera candle is designed, poured, decorated, and finished by hand — by Olesia, the founder and the only maker. The flowers are real. The herbs are real. No two are exactly alike. That's not a limitation — it's the point."
 
-const SCENT_QUIZ_HEADLINE = 'Not sure where to start?'
+const JOURNAL_HEADING = 'From the Journal'
+const JOURNAL_BODY =
+  'Field notes from the studio — the science, the botanicals, and the craft behind every pour, from the only maker who pours them.'
 
 const INNER_CIRCLE_HEADLINE = 'Be first to every new batch.'
 const INNER_CIRCLE_DESCRIPTION =
@@ -62,12 +75,34 @@ const TESTIMONIALS = [
 
 type BuildHomeArgs = {
   heroImageId?: string | number
+  vesselImageIds?: (string | number)[]
   scentQuizFormId?: string | number
   scentQuizId?: string | number
 }
 
 export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollectionSlug<'pages'> {
-  const { heroImageId, scentQuizFormId, scentQuizId } = args
+  const { heroImageId, vesselImageIds = [], scentQuizFormId, scentQuizId } = args
+
+  // The Vessels block's item images are required, so only emit it when we have
+  // something to show — each item falls back to the hero image. Omitted from
+  // the static (pre-seed) fallback, which has no media at all.
+  const vesselImage = (i: number) => vesselImageIds[i] ?? heroImageId
+  const vesselsBlock =
+    heroImageId || vesselImageIds.length
+      ? [
+          {
+            blockName: 'The Vessels',
+            blockType: 'theVessels',
+            eyebrow: VESSEL_EYEBROW,
+            heading: VESSEL_HEADING,
+            items: VESSEL_ITEMS.map((item, i) => ({
+              image: vesselImage(i),
+              label: item.label,
+              caption: item.caption,
+            })),
+          },
+        ]
+      : []
 
   const layout = [
     {
@@ -82,10 +117,37 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       secondaryCtaLabel: 'Take the Scent Quiz →',
       secondaryCtaUrl: '#scent-quiz',
       showStatusCard: true,
-      statusCardTitle: 'Batch 014',
-      statusCardSubtitle: '47 units · hand-poured',
-      statusCardStatus: 'Curing',
-      statusCardShips: '~3 weeks',
+      statusCardTitle: 'Current Pour',
+      statusCardSubtitle: 'Series 01 · Batch of 50',
+      statusCardStatus: 'Now Pouring',
+      statusCardShips: 'Ships in 3–5 days',
+      statusCardLinkUrl: '/products/seashell-garden-glow',
+    },
+    // Lead with the object: the photography showcase sits directly under the hero.
+    ...vesselsBlock,
+    {
+      blockName: 'Scent Quiz',
+      blockType: 'scentQuiz',
+      headline: SCENT_QUIZ_HEADLINE,
+      ...(scentQuizId ? { quiz: scentQuizId } : {}),
+      ...(scentQuizFormId ? { formId: scentQuizFormId } : {}),
+    },
+    {
+      blockName: 'Testimonials',
+      blockType: 'testimonials',
+      items: TESTIMONIALS,
+    },
+    {
+      blockName: 'From the Journal',
+      blockType: 'archive',
+      categories: [],
+      introContent: createRichText([
+        createHeading(JOURNAL_HEADING, 'h2'),
+        createParagraph(JOURNAL_BODY),
+      ]),
+      populateBy: 'collection',
+      relationTo: 'posts',
+      limit: 3,
     },
     {
       blockName: 'Product Archive',
@@ -98,18 +160,6 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       populateBy: 'collection',
       relationTo: 'products',
       limit: 6,
-    },
-    {
-      blockName: 'Testimonials',
-      blockType: 'testimonials',
-      items: TESTIMONIALS,
-    },
-    {
-      blockName: 'Scent Quiz',
-      blockType: 'scentQuiz',
-      headline: SCENT_QUIZ_HEADLINE,
-      ...(scentQuizId ? { quiz: scentQuizId } : {}),
-      ...(scentQuizFormId ? { formId: scentQuizFormId } : {}),
     },
     {
       blockName: 'Inner Circle CTA',
