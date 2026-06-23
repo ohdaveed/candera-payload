@@ -47,6 +47,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         statusCardSubtitle: 'Series 01 · Batch of 50',
         statusCardStatus: 'Now Pouring',
         statusCardShips: 'Ships in 3–5 days',
+        statusCardLinkUrl: '/products/seashell-garden-glow',
       } satisfies StorefrontHeroBlock & { blockType: 'storefrontHero'; blockName?: string },
       {
         blockName: 'Scent Quiz',
