@@ -34,7 +34,7 @@ export const ScentQuizCTABand: React.FC<Props> = ({
       )}
       <a
         href="#scent-quiz"
-        className="btn-text bg-candera-ember text-candera-obsidian px-8 py-4 no-underline whitespace-nowrap hover:bg-candera-vellum hover:text-candera-obsidian transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-none"
+        className="btn-text bg-candera-ember text-candera-obsidian px-12 py-5 tracking-[0.2em] no-underline whitespace-nowrap hover:bg-candera-vellum hover:text-candera-obsidian transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-none"
       >
         Take the Scent Quiz →
       </a>
