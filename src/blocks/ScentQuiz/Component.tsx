@@ -117,7 +117,17 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
     error: submitError,
     setError: setSubmitError,
     submit,
+    reset,
   } = useFormSubmission()
+
+  // Restarting the quiz (Retake / clearing answers) returns to step 0; clear the
+  // prior submission so a second completion shows the email step again.
+  useEffect(() => {
+    if (step === 0 && (hasSubmitted || submittedEmail !== null)) {
+      reset()
+      setSubmittedEmail(null)
+    }
+  }, [step, hasSubmitted, submittedEmail, reset])
 
   const {
     register,

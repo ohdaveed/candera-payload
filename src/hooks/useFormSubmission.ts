@@ -10,6 +10,8 @@ type UseFormSubmission = {
   hasSubmitted: boolean
   error: string | undefined
   setError: (error: string | undefined) => void
+  /** Clears loading/submitted/error state (e.g. when a multi-step form restarts). */
+  reset: () => void
   /** POSTs to /api/form-submissions; returns true on success. */
   submit: (
     formId: string | number | null | undefined,
@@ -27,6 +29,12 @@ export function useFormSubmission(): UseFormSubmission {
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string | undefined>()
+
+  const reset = useCallback(() => {
+    setIsLoading(false)
+    setHasSubmitted(false)
+    setError(undefined)
+  }, [])
 
   const submit = useCallback(
     async (formId: string | number | null | undefined, submissionData: SubmissionField[]) => {
@@ -65,5 +73,5 @@ export function useFormSubmission(): UseFormSubmission {
     [],
   )
 
-  return { isLoading, hasSubmitted, error, setError, submit }
+  return { isLoading, hasSubmitted, error, setError, reset, submit }
 }
