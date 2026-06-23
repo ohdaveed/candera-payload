@@ -66,8 +66,10 @@ exist for both.
   review — not final copy.**
 
 ### CI, dependencies, config
-- **Added `.github/workflows/ci.yml`** running lint → migrate → integration tests
-  → build on a Postgres service container (previously only a Trivy scan ran).
+- **CI workflow** running lint → migrate → integration tests → build on a
+  Postgres service container (previously only a Trivy scan ran). The workflow
+  YAML could not be pushed by this automation (OAuth lacks `workflow` scope) — it
+  is provided verbatim in the tracking issue for a maintainer to commit.
 - **Dependency CVEs:** added `pnpm-workspace.yaml` overrides bumping vulnerable
   transitive `undici` and `nodemailer` to patched releases. `pnpm audit --prod`
   dropped from **13 findings (5 high) → 1 low** (an esbuild dev-server-only,
@@ -101,7 +103,8 @@ exist for both.
 | 2 | **Finalize legal/privacy page content.** | The DRAFT boilerplate is generic and non-binding; real copy must be authored/reviewed by counsel. Tracked: issue #4. |
 | 3 | **Provision bot mitigation for public forms** (CAPTCHA/Turnstile + rate limiting via Upstash or edge middleware). | Needs infrastructure/accounts you own; the code-level caps shipped here are not a substitute. Tracked: issue #2. |
 | 4 | **Review residual dependency advisories** and keep `pnpm audit` clean over time. | Tracked: issue #3. |
-| 5 | **Confirm Node 24** in the deploy + local environments (`engines: node 24.x`). | Mismatch can cause subtle runtime differences. |
+| 5 | **Commit the CI workflow** (`.github/workflows/ci.yml`, provided in the tracking issue) with an account that has `workflow` scope. | This automation's OAuth token cannot create workflow files. |
+| 6 | **Confirm Node 24** in the deploy + local environments (`engines: node 24.x`). | Mismatch can cause subtle runtime differences. |
 | 6 | **Confirm ownership of all runtime external services** (below). | Each needs the studio's own credentials. |
 
 ### Runtime external services (the studio must own credentials for)
