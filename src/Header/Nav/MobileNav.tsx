@@ -52,7 +52,8 @@ export const MobileNav: React.FC<MobileNavProps> = ({ data, transparent }) => {
             {/* Search affordance — Jakob's Law: keep search discoverable on mobile */}
             <Link
               href="/search"
-              className="flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-4 border-b border-candera-stone/20"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-candera-sage-text hover:text-candera-ember-strong transition-colors py-4 border-b border-candera-stone/20 outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
               Search

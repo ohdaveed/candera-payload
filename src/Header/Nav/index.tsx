@@ -55,7 +55,7 @@ export const HeaderNav: React.FC<{
         href="/search"
         aria-label="Search the collection"
         className={[
-          'transition-[background-color,color] duration-200 hover:text-candera-ember-strong p-2.5 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center',
+          'transition-[background-color,color] duration-200 hover:text-candera-ember-strong p-2.5 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
           pathname?.startsWith('/search')
             ? 'text-candera-ember-strong bg-candera-ember-strong/8'
             : transparent
