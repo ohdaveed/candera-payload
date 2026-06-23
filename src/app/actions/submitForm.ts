@@ -17,6 +17,18 @@ export async function submitForm(
     return { ok: false, error: 'No submission data.' }
   }
 
+  // Defense-in-depth caps (the `form-submissions` beforeValidate hook enforces the
+  // same limits for every write path; these reject obvious abuse early).
+  if (submissionData.length > 50) {
+    return { ok: false, error: 'Too many fields.' }
+  }
+
+  if (
+    submissionData.some((entry) => typeof entry?.value === 'string' && entry.value.length > 5000)
+  ) {
+    return { ok: false, error: 'A field is too long.' }
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
 

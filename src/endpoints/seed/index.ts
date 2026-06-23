@@ -316,7 +316,7 @@ export const seed = async ({
     {
       title: 'Seashell Garden Glow',
       slug: 'seashell-garden-glow',
-      etsyListingId: 1001,
+      etsyListingId: 1717226844,
       vessel: '001',
       price: 38,
       productTag: 'Bestseller',
@@ -329,7 +329,7 @@ export const seed = async ({
     {
       title: 'Meadowlight Botanical',
       slug: 'meadowlight-botanical',
-      etsyListingId: 1002,
+      etsyListingId: 1731408433,
       vessel: '002',
       price: 38,
       productTag: 'New Release',
@@ -342,7 +342,7 @@ export const seed = async ({
     {
       title: 'Crimson Noir',
       slug: 'crimson-noir',
-      etsyListingId: 1003,
+      etsyListingId: 1731418441,
       vessel: '003',
       price: 38,
       productTag: 'Limited Batch',
@@ -355,7 +355,6 @@ export const seed = async ({
     {
       title: 'Ever After Glow',
       slug: 'ever-after-glow',
-      etsyListingId: 1004,
       vessel: '004',
       price: 38,
       productTag: 'Bestseller',
@@ -368,7 +367,6 @@ export const seed = async ({
     {
       title: "Anya's Eyes",
       slug: 'anyas-eyes',
-      etsyListingId: 1005,
       vessel: '005',
       price: 38,
       productTag: 'Limited Batch',
@@ -381,7 +379,6 @@ export const seed = async ({
     {
       title: 'Scarlet Bloom',
       slug: 'scarlet-bloom',
-      etsyListingId: 1006,
       vessel: '006',
       price: 38,
       productTag: 'New Release',

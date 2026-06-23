@@ -12,5 +12,4 @@ export const BRAND = {
   instagramUrl: 'https://instagram.com/canderacandles',
   studioHours: 'By appointment — slow by design.',
   locationTagline: 'Handcrafted in California',
-  etsyShopUrl: 'https://www.etsy.com/shop/candera',
 } as const

@@ -195,10 +195,10 @@ export const Products: CollectionConfig = {
     {
       name: 'etsyListingId',
       type: 'number',
-      required: true,
       unique: true,
       admin: {
-        description: 'The numeric ID from Etsy (e.g. 123456789)',
+        description:
+          'The numeric ID from Etsy (e.g. 123456789). Optional — products without one fall back to the shop link.',
         position: 'sidebar',
       },
     },
