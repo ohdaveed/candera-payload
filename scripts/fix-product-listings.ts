@@ -52,6 +52,7 @@ async function run(): Promise<void> {
   const { default: config } = await import('@payload-config')
   const payload = await getPayload({ config })
   let updatedCount = 0
+  let failedCount = 0
 
   for (const fix of PRODUCT_FIXES) {
     try {
@@ -137,6 +138,7 @@ async function run(): Promise<void> {
       )
     } catch (err) {
       // Isolate per-product failures so one bad row doesn't abort the whole fix.
+      failedCount += 1
       payload.logger.error(
         `fix-product-listings: failed on "${fix.slug}": ${
           err instanceof Error ? err.message : String(err)
@@ -145,8 +147,10 @@ async function run(): Promise<void> {
     }
   }
 
-  payload.logger.info(`fix-product-listings: done — ${updatedCount} product(s) updated`)
-  process.exit(0)
+  payload.logger.info(`fix-product-listings: done — ${updatedCount} updated, ${failedCount} failed`)
+  // Exit non-zero if any product failed so automation/operators don't read a
+  // partial run as success.
+  process.exit(failedCount > 0 ? 1 : 0)
 }
 
 run().catch((err) => {
