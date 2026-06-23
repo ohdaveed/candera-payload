@@ -436,7 +436,21 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
     const existingId = await this.findMediaByEtsyImageId(etsyImageId)
     if (existingId) return existingId
 
-    const response = await fetch(imageUrl)
+    // Bound the image download so a hung CDN response can't stall the serial sync.
+    const IMAGE_TIMEOUT_MS = 20_000
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), IMAGE_TIMEOUT_MS)
+    let response: Response
+    try {
+      response = await fetch(imageUrl, { signal: controller.signal })
+    } catch (err) {
+      if (controller.signal.aborted) {
+        throw new Error(`Image download timed out after ${IMAGE_TIMEOUT_MS}ms: ${imageUrl}`)
+      }
+      throw err
+    } finally {
+      clearTimeout(timeout)
+    }
     if (!response.ok) throw new Error(`Failed to download image: ${response.statusText}`)
 
     const arrayBuffer = await response.arrayBuffer()

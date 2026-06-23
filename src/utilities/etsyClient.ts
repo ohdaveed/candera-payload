@@ -258,8 +258,14 @@ export class EtsyClient {
         }
 
         return refreshed.access_token
-      } catch {
-        // Fall back to credential-based signature on refresh failure
+      } catch (err) {
+        // Refresh failed: surface it so operators see "re-authenticate with Etsy"
+        // rather than silently falling back to an unauthenticated request.
+        etsyLogger.warn(
+          `Etsy OAuth token refresh failed; subsequent requests will be unauthenticated until re-auth. ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        )
         return null
       }
     }
@@ -284,7 +290,9 @@ export class EtsyClient {
 
     const headers = new Headers()
     headers.set('Accept', 'application/json')
-    headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
+    // Etsy v3 expects only the API keystring here; the shared secret is used
+    // exclusively in the OAuth token endpoints (Basic auth), not on every request.
+    headers.set('x-api-key', this.config.apiKey)
 
     if (options.headers) {
       const inputHeaders = new Headers(options.headers)
@@ -304,11 +312,27 @@ export class EtsyClient {
     // honoring the `Retry-After` header when present so we back off rather than
     // failing the whole sync on a transient throttle.
     const maxRetries = 3
+    const REQUEST_TIMEOUT_MS = 15_000
     for (let attempt = 0; ; attempt++) {
-      const res = await fetch(url.toString(), {
-        ...fetchOptions,
-        headers: Object.fromEntries(headers.entries()),
-      })
+      // Per-attempt timeout so a hung Etsy response can't stall the whole sync
+      // (which runs serially) until the platform kills the function.
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+      let res: Response
+      try {
+        res = await fetch(url.toString(), {
+          ...fetchOptions,
+          headers: Object.fromEntries(headers.entries()),
+          signal: controller.signal,
+        })
+      } catch (err) {
+        if (controller.signal.aborted) {
+          throw new Error(`Etsy request to ${endpoint} timed out after ${REQUEST_TIMEOUT_MS}ms`)
+        }
+        throw err
+      } finally {
+        clearTimeout(timeout)
+      }
 
       if (res.status === 429 && attempt < maxRetries) {
         const retryAfter = Number(res.headers.get('retry-after'))
