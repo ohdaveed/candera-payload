@@ -1,6 +1,8 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
+import { Search } from 'lucide-react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -47,6 +49,22 @@ export const HeaderNav: React.FC<{
         )
         return <CMSLink key={i} {...link} appearance="link" className={linkClass(isActive)} />
       })}
+
+      {/* Persistent search affordance — Jakob's Law: users expect search in the header */}
+      <Link
+        href="/search"
+        aria-label="Search the collection"
+        className={[
+          'transition-[background-color,color] duration-200 hover:text-candera-ember-strong p-2.5 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
+          pathname?.startsWith('/search')
+            ? 'text-candera-ember-strong bg-candera-ember-strong/8'
+            : transparent
+              ? 'text-candera-vellum/90 hover:bg-candera-vellum/10'
+              : 'text-candera-sage-text',
+        ].join(' ')}
+      >
+        <Search className="w-4 h-4" aria-hidden="true" />
+      </Link>
     </Section>
   )
 }
