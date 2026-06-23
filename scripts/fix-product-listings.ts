@@ -2,8 +2,11 @@ import 'dotenv/config'
 import fs from 'fs'
 import path from 'path'
 import { config as dotenvConfig } from 'dotenv'
-import { getPayload } from 'payload'
-import config from '../src/payload.config'
+
+// Load .env.local BEFORE the Payload config is imported. payload.config.ts reads
+// env (PAYLOAD_SECRET, database URL, …) at module-eval time, so the config is
+// imported dynamically inside run() — after this override has been applied.
+dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
 
 /**
  * Idempotent, in-place fix for demo product data — does NOT touch users or any
@@ -39,13 +42,17 @@ const PRODUCT_FIXES: ProductFix[] = [
   { slug: 'scarlet-bloom', etsyListingId: null, imageKey: 'scarlet-bloom' },
 ]
 
-function loadCandleraImage(imageKey: string) {
+function loadCanderaImage(imageKey: string) {
   const filePath = path.join(process.cwd(), 'public', 'candera', `${imageKey}.jpg`)
   const data = fs.readFileSync(filePath)
   return { name: `${imageKey}.jpg`, data, mimetype: 'image/jpeg', size: data.byteLength }
 }
 
 async function run(): Promise<void> {
+  // Imported dynamically so the dotenv override above is applied before
+  // payload.config.ts reads env at module-eval time.
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../src/payload.config')
   const payload = await getPayload({ config })
   let updatedCount = 0
 
@@ -79,7 +86,7 @@ async function run(): Promise<void> {
         const media = await payload.create({
           collection: 'media',
           data: { alt: product.title ?? fix.slug },
-          file: loadCandleraImage(fix.imageKey),
+          file: loadCanderaImage(fix.imageKey),
         })
         data.extraPhotos = [media.id as number]
       } catch (err) {
