@@ -13,7 +13,7 @@ const COLLECTION_BODY =
   "Every Candera candle is designed, poured, decorated, and finished by hand — by Olesia, the founder and the only maker. The flowers are real. The herbs are real. No two are exactly alike. That's not a limitation — it's the point."
 const CTA_HEADING = 'Join the Inner Circle'
 const CTA_BODY =
-  'New batches are made by hand, one at a time. Join to receive early access before each drop opens to the public.'
+  'Batches are poured by hand, one at a time, and often sell out in days. Join for early access before each drop opens to the public.'
 const META_TITLE = 'Candera Candles | Handmade Botanical Candles'
 const META_DESCRIPTION =
   'Handcrafted botanical candles made by one maker, one at a time. Real flowers, natural wax, clean burn — designed to bring a little more light and intention into your home.'
@@ -34,11 +34,11 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         blockName: 'Storefront Hero',
         blockType: 'storefrontHero',
         heroTag: 'Handmade by Olesia',
-        headline: 'Made to make you stop.',
+        headline: 'Candles made to make you stop.',
         subheading:
           'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.',
         media: heroImage.id,
-        primaryCtaLabel: 'Explore the Collection',
+        primaryCtaLabel: 'Shop the Collection',
         primaryCtaUrl: '/products',
         secondaryCtaLabel: 'Take the Scent Quiz →',
         secondaryCtaUrl: '#scent-quiz',
@@ -98,9 +98,9 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'Inner Circle CTA',
         blockType: 'innerCircleCTA',
-        headline: 'Your space deserves this.',
+        headline: 'Be first to every new batch.',
         description:
-          "When you light a Candera candle, Olesia's hope is that you feel more than fragrance. She hopes you feel comfort. She hopes you feel present. Join the Inner Circle for early access to every new batch — made by hand, one at a time.",
+          "Batches are poured by hand, one at a time, and often sell out in days. Join the Inner Circle for early access before each drop — plus studio notes from Olesia as every candle comes to life.",
       } as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'][0],
     ],
     meta: {

@@ -243,7 +243,8 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <Eyebrow className="text-candera-ember/80">Inner Circle</Eyebrow>
             <h2 className="h2 text-candera-vellum m-0">Join the Circle</h2>
             <p className="body text-candera-vellum/70">
-              Early access to new batches, studio notes, and first look at limited releases.
+              Batches sell out in days. Get first access to new pours, studio notes, and limited
+              releases.
             </p>
           </div>
           <div className="w-full max-w-md">
