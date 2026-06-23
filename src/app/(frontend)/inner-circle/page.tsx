@@ -10,15 +10,15 @@ import { Container } from '@/components/ui/container'
 const FALLBACK_BENEFITS = [
   {
     label: 'Early Access',
-    description: '24-hour advance notice before every new batch goes public.',
+    description: 'Shop every new batch a full 24 hours before it opens to the public.',
   },
   {
     label: 'Ritual Invitations',
-    description: 'Seasonal studio events and workshops, extended to members only.',
+    description: 'Reserve your spot at members-only studio events and seasonal workshops.',
   },
   {
     label: 'Studio Notes',
-    description: 'Behind-the-scenes updates from the curing room and new scent development.',
+    description: 'Get first look at new scents in development, straight from the curing room.',
   },
 ]
 

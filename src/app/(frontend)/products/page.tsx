@@ -99,7 +99,14 @@ export default async function ProductsPage({
                   </p>
                 </>
               ) : (
-                <p className="text-lg text-candera-obsidian">The next batch is still curing.</p>
+                <>
+                  <p className="text-lg text-candera-obsidian mb-2">
+                    The next batch is still curing.
+                  </p>
+                  <p className="text-sm text-candera-sage-text">
+                    Join the Inner Circle below and we&apos;ll tell you the moment it&apos;s ready.
+                  </p>
+                </>
               )}
             </output>
           )}
