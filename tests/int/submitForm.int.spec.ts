@@ -25,4 +25,24 @@ describe('submitForm', () => {
       expect(result.error).toBe('No submission data.')
     }
   })
+
+  it('returns error when there are too many fields', async () => {
+    const tooManyFields = Array.from({ length: 51 }, (_, i) => ({
+      field: `field-${i}`,
+      value: 'x',
+    }))
+    const result = await submitForm(1, tooManyFields)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error).toBe('Too many fields.')
+    }
+  })
+
+  it('returns error when a field value is too long', async () => {
+    const result = await submitForm(1, [{ field: 'message', value: 'x'.repeat(5001) }])
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error).toBe('A field is too long.')
+    }
+  })
 })

@@ -17,6 +17,7 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
 export async function generateStaticParams() {
   return []
@@ -88,7 +89,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             <Link href="/contact">Join the Circle</Link>
           </Button>
 
-          <p className="caption text-candera-vellum/50 m-0">No noise. Unsubscribe anytime.</p>
+          <p className="caption text-candera-vellum/50 m-0">{NEWSLETTER_MICROCOPY}</p>
         </Container>
       </aside>
 

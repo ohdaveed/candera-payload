@@ -6,6 +6,8 @@ import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { BRAND } from '@/constants/brand'
+import { FORM_TITLES } from '@/constants/forms'
 
 export const revalidate = 3600
 
@@ -17,21 +19,18 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const [contactForm, studioInfo] = await Promise.all([
-    getCachedFormByTitle('Contact Form')(),
+    getCachedFormByTitle(FORM_TITLES.CONTACT)(),
     getCachedGlobal('studio-info')(),
   ])
   const contactFormId = contactForm?.id ?? 0
 
-  const DEFAULT_INSTAGRAM_URL = 'https://instagram.com/canderacandles'
-  const email = studioInfo?.email || 'studio@canderacandles.com'
-  const instagramHandle = studioInfo?.instagramHandle || '@canderacandles'
+  const email = studioInfo?.email || BRAND.email
+  const instagramHandle = studioInfo?.instagramHandle || BRAND.instagramHandle
   // Editor-controlled URL — only allow http(s) to avoid javascript:/data: hrefs.
-  const rawInstagramUrl = studioInfo?.instagramUrl || DEFAULT_INSTAGRAM_URL
-  const instagramUrl = /^https?:\/\//i.test(rawInstagramUrl)
-    ? rawInstagramUrl
-    : DEFAULT_INSTAGRAM_URL
-  const studioHours = studioInfo?.studioHours || 'By appointment — slow by design.'
-  const locationTagline = studioInfo?.locationTagline || 'Handcrafted in California'
+  const rawInstagramUrl = studioInfo?.instagramUrl || BRAND.instagramUrl
+  const instagramUrl = /^https?:\/\//i.test(rawInstagramUrl) ? rawInstagramUrl : BRAND.instagramUrl
+  const studioHours = studioInfo?.studioHours || BRAND.studioHours
+  const locationTagline = studioInfo?.locationTagline || BRAND.locationTagline
 
   return (
     <main className="bg-candera-vellum min-h-screen" data-page="contact">

@@ -101,7 +101,7 @@ export async function Footer() {
             {footerLinks.map(({ link }, i) => (
               <CMSLink
                 {...link}
-                className="caption text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] min-h-[44px] flex items-center"
+                className="caption text-candera-sage-text no-underline hover:text-candera-obsidian transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 outline-none rounded-sm min-h-[44px] flex items-center"
                 key={i}
               />
             ))}

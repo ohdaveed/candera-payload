@@ -34,6 +34,10 @@ public/sitemap*.xml
 # VS Code local settings
 .vscode/
 
+# Design scratch (superdesign iterations / mockups — not shipped)
+.superdesign/
+**/.superdesign/
+
 # Temporary/blob reports
 /blob-report/
 

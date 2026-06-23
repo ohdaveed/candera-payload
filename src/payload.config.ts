@@ -1,4 +1,6 @@
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
 import { payloadLogger } from './utilities/logger'
 
@@ -28,7 +30,6 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { etsyEndpoints } from './endpoints/etsy'
 
@@ -36,6 +37,7 @@ import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
+import { BRAND } from './constants/brand'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,10 +46,24 @@ const dirname = path.dirname(filename)
 // password. Passing an explicit connectionString forces VercelPool to use it
 // instead of falling back to the integration-managed POSTGRES_URL env var.
 const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
-const databaseAdapter = vercelPostgresAdapter({
-  push: false,
-  ...(databaseConnectionString ? { pool: { connectionString: databaseConnectionString } } : {}),
-})
+if (!databaseConnectionString) {
+  throw new Error(
+    'DATABASE_URI (or POSTGRES_URL) is not set. Set a Postgres connection string before starting.',
+  )
+}
+// The Vercel adapter speaks Neon's serverless protocol and only works against a
+// Neon-hosted database. Production uses Neon (a `*.neon.tech` host) and keeps the
+// Vercel adapter; plain Postgres (local dev / CI service container) falls back to
+// the standard adapter so the same config runs everywhere.
+const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
+  ? vercelPostgresAdapter({
+      push: false,
+      pool: { connectionString: databaseConnectionString },
+    })
+  : postgresAdapter({
+      push: false,
+      pool: { connectionString: databaseConnectionString },
+    })
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
@@ -154,7 +170,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'info@canderacandles.com',
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || BRAND.email,
     defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
     transportOptions: process.env.SMTP_HOST
       ? {
@@ -169,7 +185,7 @@ export default buildConfig({
           jsonTransport: true, // Use a non-network transport if no SMTP_HOST is provided
         },
   }),
-  endpoints: [createHomeEndpoint, ...etsyEndpoints],
+  endpoints: [...etsyEndpoints],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

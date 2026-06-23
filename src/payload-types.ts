@@ -1070,9 +1070,9 @@ export interface Product {
     description?: string | null;
   };
   /**
-   * The numeric ID from Etsy (e.g. 123456789)
+   * The numeric ID from Etsy (e.g. 123456789). Optional — products without one fall back to the shop link.
    */
-  etsyListingId: number;
+  etsyListingId?: number | null;
   slug: string;
   /**
    * Badge shown on product cards.

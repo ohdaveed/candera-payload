@@ -2,20 +2,36 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+This project is deployed as a single rolling release. Security fixes are applied
+to the `main` branch, which is what production runs.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Branch | Supported          |
+| ------ | ------------------ |
+| `main` | :white_check_mark: |
+| other  | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please report security vulnerabilities **privately**. Do **not** open a public
+GitHub issue or pull request for a suspected vulnerability.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+- Email: `security@canderacandles.com` _(confirm/replace with the studio's real
+  security contact before handoff)._
+- Include: a description of the issue, steps to reproduce, affected URL/endpoint,
+  and any relevant logs or proof-of-concept. Please do not include live customer
+  data.
+
+### What to expect
+
+- **Acknowledgement** within 3 business days.
+- **Status update** within 10 business days, including whether the report is
+  accepted, needs more information, or is declined (with reasoning).
+- We will coordinate a disclosure timeline with you once a fix is available and
+  credit reporters who wish to be named.
+
+### Scope
+
+In scope: this application and its API/admin endpoints. Out of scope: findings
+that require physical access, social engineering of staff, or vulnerabilities in
+third-party platforms we depend on (Vercel, Neon, Etsy, Supabase) — please report
+those to the respective vendor.

@@ -12,7 +12,8 @@ import { Tooltip } from '@/components/ui/tooltip'
 import { Media } from '@/components/Media'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
-import { getClientSideURL } from '@/utilities/getURL'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
+import { EMAIL_PATTERN } from '@/constants/validation'
 import type {
   ScentQuizBlock as ScentQuizBlockType,
   Quiz,
@@ -109,10 +110,24 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
   // Transient UI state only (not shareable / not needed after refresh)
   const [isRevealing, setIsRevealing] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [submitError, setSubmitError] = useState<string | undefined>()
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
+  const {
+    isLoading,
+    hasSubmitted,
+    error: submitError,
+    setError: setSubmitError,
+    submit,
+    reset,
+  } = useFormSubmission()
+
+  // Restarting the quiz (Retake / clearing answers) returns to step 0; clear the
+  // prior submission so a second completion shows the email step again.
+  useEffect(() => {
+    if (step === 0 && (hasSubmitted || submittedEmail !== null)) {
+      reset()
+      setSubmittedEmail(null)
+    }
+  }, [step, hasSubmitted, submittedEmail, reset])
 
   const {
     register,
@@ -138,50 +153,15 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
   const onEmailSubmit = useCallback(
     (data: EmailFormValues) => {
-      const submit = async () => {
-        setSubmitError(undefined)
-        setIsLoading(true)
-
-        const finalFormId = typeof formId === 'object' ? formId?.id : formId
-
-        if (!finalFormId) {
-          setSubmitError('Form unavailable — please reach out to us directly.')
-          setIsLoading(false)
-          return
-        }
-
-        try {
-          const res = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              form: finalFormId,
-              submissionData: [
-                { field: 'email', value: data.email },
-                { field: 'scent-result', value: result?.name ?? '' },
-              ],
-            }),
-          })
-
-          if (res.status >= 400) {
-            const json = await res.json()
-            setSubmitError(json.errors?.[0]?.message || 'Something went wrong. Please try again.')
-            setIsLoading(false)
-            return
-          }
-
-          setIsLoading(false)
-          setSubmittedEmail(data.email)
-          setHasSubmitted(true)
-        } catch {
-          setSubmitError('Something went wrong. Please try again.')
-          setIsLoading(false)
-        }
-      }
-
-      void submit()
+      const finalFormId = typeof formId === 'object' ? formId?.id : formId
+      void submit(finalFormId, [
+        { field: 'email', value: data.email },
+        { field: 'scent-result', value: result?.name ?? '' },
+      ]).then((ok) => {
+        if (ok) setSubmittedEmail(data.email)
+      })
     },
-    [formId, result],
+    [formId, result, submit],
   )
 
   const currentQuestion = questions[step]
@@ -448,7 +428,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       {...register('email', {
                         required: 'Email is required',
                         pattern: {
-                          value: /^\S[^\s@]*@\S+$/,
+                          value: EMAIL_PATTERN,
                           message: 'Please enter a valid email',
                         },
                       })}

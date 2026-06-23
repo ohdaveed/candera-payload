@@ -24,6 +24,8 @@ import { post3 } from './post-3'
 import { post4 } from './post-4'
 import { post5 } from './post-5'
 import type { Media } from '@/payload-types'
+import { BRAND } from '@/constants/brand'
+import { DEFAULT_INNER_CIRCLE_BENEFITS } from '@/constants/innerCircle'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -274,7 +276,7 @@ export const seed = async ({
     {
       title: 'Seashell Garden Glow',
       slug: 'seashell-garden-glow',
-      etsyListingId: 1001,
+      etsyListingId: 1717226844,
       vessel: '001',
       price: 38,
       productTag: 'Bestseller',
@@ -287,7 +289,7 @@ export const seed = async ({
     {
       title: 'Meadowlight Botanical',
       slug: 'meadowlight-botanical',
-      etsyListingId: 1002,
+      etsyListingId: 1731408433,
       vessel: '002',
       price: 38,
       productTag: 'New Release',
@@ -300,7 +302,7 @@ export const seed = async ({
     {
       title: 'Crimson Noir',
       slug: 'crimson-noir',
-      etsyListingId: 1003,
+      etsyListingId: 1731418441,
       vessel: '003',
       price: 38,
       productTag: 'Limited Batch',
@@ -313,7 +315,6 @@ export const seed = async ({
     {
       title: 'Ever After Glow',
       slug: 'ever-after-glow',
-      etsyListingId: 1004,
       vessel: '004',
       price: 38,
       productTag: 'Bestseller',
@@ -326,7 +327,6 @@ export const seed = async ({
     {
       title: "Anya's Eyes",
       slug: 'anyas-eyes',
-      etsyListingId: 1005,
       vessel: '005',
       price: 38,
       productTag: 'Limited Batch',
@@ -339,7 +339,6 @@ export const seed = async ({
     {
       title: 'Scarlet Bloom',
       slug: 'scarlet-bloom',
-      etsyListingId: 1006,
       vessel: '006',
       price: 38,
       productTag: 'New Release',
@@ -608,26 +607,12 @@ export const seed = async ({
         disableRevalidate: true,
       },
       data: {
-        email: 'studio@canderacandles.com',
-        instagramHandle: '@canderacandles',
-        instagramUrl: 'https://instagram.com/canderacandles',
-        studioHours: 'By appointment — slow by design.',
-        locationTagline: 'Handcrafted in California',
-        innerCircleBenefits: [
-          {
-            label: 'Early Access',
-            description: '24-hour advance notice before every new batch goes public.',
-          },
-          {
-            label: 'Ritual Invitations',
-            description: 'Seasonal studio events and workshops, extended to members only.',
-          },
-          {
-            label: 'Studio Notes',
-            description:
-              'Behind-the-scenes updates from the curing room and new scent development.',
-          },
-        ],
+        email: BRAND.email,
+        instagramHandle: BRAND.instagramHandle,
+        instagramUrl: BRAND.instagramUrl,
+        studioHours: BRAND.studioHours,
+        locationTagline: BRAND.locationTagline,
+        innerCircleBenefits: DEFAULT_INNER_CIRCLE_BENEFITS,
         searchSuggestions: [
           { term: 'Sandalwood' },
           { term: 'Citrus' },

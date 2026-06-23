@@ -12,6 +12,11 @@ overrides:
   esbuild: ^0.28.0
   vite: 'catalog:'
   vitest: 'catalog:'
+  # Security: bump known-vulnerable transitive ranges to their patched releases
+  # within the same major (CVE remediation — see docs/client-readiness.md).
+  undici@<6.27.0: '>=6.27.0 <7'
+  undici@>=7.0.0 <7.28.0: '>=7.28.0 <8'
+  nodemailer@<9.0.1: '>=9.0.1'
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: npm:@voidzero-dev/vite-plus-test@latest

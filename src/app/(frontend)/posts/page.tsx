@@ -11,6 +11,7 @@ import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { getMetaImage } from '@/utilities/getMetaImage'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -82,11 +83,9 @@ export default async function Page() {
             <div className="flex-1 min-w-0">
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-8 list-none p-0 m-0">
                 {remainingPosts.map((post) => {
-                  const image = post.meta?.image || post.heroImage
-                  const imageUrl =
-                    image && typeof image === 'object' && 'url' in image ? image.url : null
-                  const imageAlt =
-                    image && typeof image === 'object' && 'alt' in image ? image.alt : null
+                  const { url: imageUrl, alt: imageAlt } = getMetaImage(
+                    post.meta?.image || post.heroImage,
+                  )
 
                   return (
                     <li key={post.slug}>
@@ -124,7 +123,12 @@ export default async function Page() {
 }
 
 export function generateMetadata(): Metadata {
+  const title = 'Journal — Candera'
+  const description =
+    'Stories from the Candera studio — notes on scent, craft, and intentional living.'
   return {
-    title: 'Journal — Candera',
+    title,
+    description,
+    openGraph: { title, description, type: 'website' },
   }
 }
