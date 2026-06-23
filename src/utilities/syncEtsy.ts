@@ -59,6 +59,7 @@ export interface ProductUpsertInput {
   etsyListingId: number
   price?: number
   productType?: Product['productType']
+  _status?: 'draft' | 'published'
 }
 
 export interface ProductStorePort {
@@ -117,9 +118,22 @@ export class EtsySyncEngine {
 
     ports.logger.info(`Found ${listings.length} listings on Etsy.`)
 
+    // For an explicit listing-ID sync, any requested ID that Etsy never returns
+    // (batch + per-listing fetch both failed) would otherwise vanish silently.
+    // Record it as a failure so `success` is honest and callers see the drift.
+    if (source.type === 'listings') {
+      const fetchedIds = new Set(listings.map((l) => l.listing_id))
+      for (const id of source.listingIds) {
+        if (!fetchedIds.has(id)) {
+          ports.logger.warn(`Requested listing ${id} was not returned by Etsy.`)
+          failures.push({ listingId: id, error: 'Listing not fetched from Etsy' })
+        }
+      }
+    }
+
     if (listings.length === 0) {
       ports.logger.warn('No listings found for the provided source in Etsy API.')
-      return { success: true, count: 0, failures }
+      return { success: failures.length === 0, count: 0, failures }
     }
 
     let syncedCount = 0
@@ -187,6 +201,10 @@ export class EtsySyncEngine {
           description: this.textToRichText(this.cleanEtsyDescription(description)),
           etsyListingId: listing_id,
           productType,
+          // Etsy active listings are public catalog items. Publish on sync so they
+          // are visible to the storefront, which only reads published products
+          // (products read access is authenticatedOrPublished).
+          _status: 'published',
         }
 
         if (etsyPrice) {
@@ -210,7 +228,9 @@ export class EtsySyncEngine {
       }
     }
 
-    return { success: true, count: syncedCount, failures }
+    // `success` reflects whether every listing synced. Partial failures return
+    // `false` so callers can surface drift instead of trusting a blanket `true`.
+    return { success: failures.length === 0, count: syncedCount, failures }
   }
 
   /**
@@ -304,7 +324,9 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
       try {
         const data = await this.client.getListingsBatch(source.listingIds, ['Images'])
         return (data.results || []) as RawEtsyListing[]
-      } catch {
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        syncLogger.warn(`Batch listing fetch failed (${msg}); falling back to per-listing fetch.`)
         const results: RawEtsyListing[] = []
         for (const id of source.listingIds) {
           try {
@@ -312,8 +334,11 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
               params: { includes: 'Images' },
             })
             if (data) results.push(data)
-          } catch {
-            // Allow individual listing failures to keep batch moving
+          } catch (listingErr) {
+            const listingMsg = listingErr instanceof Error ? listingErr.message : String(listingErr)
+            // Keep the batch moving, but log so dropped listings are visible
+            // rather than silently causing drift.
+            syncLogger.warn(`Failed to fetch listing ${id}: ${listingMsg}. Skipping.`)
           }
         }
         return results
@@ -460,5 +485,6 @@ export async function syncEtsyListings(source: number | number[], payload: Paylo
   return {
     success: result.success,
     count: result.count,
+    failures: result.failures,
   }
 }

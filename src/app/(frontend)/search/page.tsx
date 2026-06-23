@@ -8,7 +8,10 @@ import type { Media } from '@/payload-types'
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { searchContent } from '@/lib/queries/search'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
+const FALLBACK_SUGGESTIONS = ['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember']
 
 type Args = {
   searchParams: Promise<{
@@ -19,7 +22,18 @@ type Args = {
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise
 
-  const results = await searchContent(query ?? '')
+  const [results, studioInfo] = await Promise.all([
+    searchContent(query ?? ''),
+    getCachedGlobal('studio-info')(),
+  ])
+
+  const suggestions = Array.from(
+    new Set(
+      studioInfo?.searchSuggestions && studioInfo.searchSuggestions.length > 0
+        ? studioInfo.searchSuggestions.map((s) => s.term)
+        : FALLBACK_SUGGESTIONS,
+    ),
+  )
 
   const posts: CardPostData[] = results.map((r) => ({
     title: r.title ?? '',
@@ -58,10 +72,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             Try exploring one of our signature profiles:
           </p>
           <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+            {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}
@@ -81,10 +95,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             Try a note, atmosphere, or ritual mood.
           </p>
           <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+            {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}

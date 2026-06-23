@@ -1,7 +1,23 @@
 import type { Metadata } from 'next'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { getCachedFormByTitle } from '@/utilities/getForms'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { PageHeader } from '@/components/PageHeader'
+
+const FALLBACK_BENEFITS = [
+  {
+    label: 'Early Access',
+    description: '24-hour advance notice before every new batch goes public.',
+  },
+  {
+    label: 'Ritual Invitations',
+    description: 'Seasonal studio events and workshops, extended to members only.',
+  },
+  {
+    label: 'Studio Notes',
+    description: 'Behind-the-scenes updates from the curing room and new scent development.',
+  },
+]
 
 export const revalidate = 3600
 
@@ -12,8 +28,16 @@ export const metadata: Metadata = {
 }
 
 export default async function InnerCirclePage() {
-  const form = await getCachedFormByTitle('Inner Circle Signup')()
+  const [form, studioInfo] = await Promise.all([
+    getCachedFormByTitle('Inner Circle Signup')(),
+    getCachedGlobal('studio-info')(),
+  ])
   const formId = form?.id?.toString() ?? ''
+
+  const benefits =
+    studioInfo?.innerCircleBenefits && studioInfo.innerCircleBenefits.length > 0
+      ? studioInfo.innerCircleBenefits
+      : FALLBACK_BENEFITS
 
   return (
     <div className="min-h-screen bg-candera-linen pt-32 pb-32" data-page="inner-circle">
@@ -39,24 +63,12 @@ export default async function InnerCirclePage() {
           >
             <h2 className="h3 mb-10">What you&apos;ll receive</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
-              <div>
-                <p className="label text-candera-ember mb-3">Early Access</p>
-                <p className="editorial">
-                  24-hour advance notice before every new batch goes public.
-                </p>
-              </div>
-              <div>
-                <p className="label text-candera-ember mb-3">Ritual Invitations</p>
-                <p className="editorial">
-                  Seasonal studio events and workshops, extended to members only.
-                </p>
-              </div>
-              <div>
-                <p className="label text-candera-ember mb-3">Studio Notes</p>
-                <p className="editorial">
-                  Behind-the-scenes updates from the curing room and new scent development.
-                </p>
-              </div>
+              {benefits.map((benefit, index) => (
+                <div key={`${benefit.label}-${index}`}>
+                  <p className="label text-candera-ember mb-3">{benefit.label}</p>
+                  <p className="editorial">{benefit.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

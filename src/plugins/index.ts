@@ -16,7 +16,7 @@ import { processFormSubmission } from '@/hooks/formSubmissions/processSubmission
 import { revalidateForm, revalidateFormOnDelete } from '@/hooks/forms/revalidateForm'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | Candera Candles` : 'Candera Candles'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {

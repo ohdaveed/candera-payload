@@ -119,6 +119,8 @@ describe('EtsySyncEngine', () => {
     expect(savedProduct?.title).toBe('Amber Forest Candle')
     expect(savedProduct?.slug).toBe('amber-forest-candle-101')
     expect(savedProduct?.extraPhotos).toEqual(['media-999'])
+    // Synced products must be published so they appear in the public catalog
+    expect(savedProduct?._status).toBe('published')
 
     // Verify Lexical rich text transformation
     expect(savedProduct?.description).toBeDefined()
@@ -219,7 +221,7 @@ describe('EtsySyncEngine', () => {
       { etsySource, productStore, mediaStorage, logger },
     )
 
-    expect(result.success).toBe(true)
+    expect(result.success).toBe(false) // partial failure should not report success
     expect(result.count).toBe(1) // only 1 succeeded
     expect(result.failures.length).toBe(1)
     expect(result.failures[0].listingId).toBe(301)
@@ -227,6 +229,29 @@ describe('EtsySyncEngine', () => {
 
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(vi.mocked(logger.error)).toHaveBeenCalled()
+  })
+
+  it('records requested listings that Etsy never returns as failures', async () => {
+    const engine = new EtsySyncEngine()
+
+    // Requested 501 and 502, but the source only returns 501 (502 failed to fetch)
+    etsySource.mockListings = [
+      {
+        listing_id: 501,
+        title: 'Returned Candle',
+        description: 'Fetched successfully.',
+      },
+    ]
+
+    const result = await engine.sync(
+      { type: 'listings', listingIds: [501, 502] },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    expect(result.success).toBe(false) // 502 never came back
+    expect(result.count).toBe(1)
+    expect(result.failures).toEqual([{ listingId: 502, error: 'Listing not fetched from Etsy' }])
+    expect(productStore.products.has(501)).toBe(true)
   })
 
   it('skips non-candle listings during sync', async () => {

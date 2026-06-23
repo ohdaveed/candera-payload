@@ -22,6 +22,7 @@ import { Folders } from './collections/Folders'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteTheme } from './SiteTheme/config'
+import { StudioInfo } from './StudioInfo/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -149,7 +150,7 @@ export default buildConfig({
         ]
       : []),
   ],
-  globals: [Header, Footer, SiteTheme],
+  globals: [Header, Footer, SiteTheme, StudioInfo],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   email: nodemailerAdapter({
