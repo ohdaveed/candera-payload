@@ -81,8 +81,10 @@ function ProductFiltersInner() {
 
       {/* Sort select + pending indicator */}
       <div className="flex items-center gap-4 w-full sm:w-auto">
-        {/* Doherty Threshold / visibility of system status */}
+        {/* Doherty Threshold / visibility of system status. Persistent live region
+            (kept in the DOM, only text swapped) for reliable polite announcements. */}
         <span
+          role="status"
           aria-live="polite"
           className={`eyebrow text-candera-sage-text whitespace-nowrap transition-opacity duration-200 ${
             isPending ? 'opacity-100' : 'opacity-0'
