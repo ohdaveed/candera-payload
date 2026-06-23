@@ -1,5 +1,6 @@
 import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
+import { userIsAdmin } from '@/access/isAdmin'
 import config from '@payload-config'
 import { headers } from 'next/headers'
 
@@ -12,7 +13,9 @@ export async function POST(): Promise<Response> {
   // Authenticate by passing request headers
   const { user } = await payload.auth({ headers: requestHeaders })
 
-  if (!user) {
+  // Seeding is destructive (it deletes and rewrites every collection), so it is
+  // restricted to admins — not any authenticated editor.
+  if (!user || !userIsAdmin(user)) {
     return new Response('Action forbidden.', { status: 403 })
   }
 

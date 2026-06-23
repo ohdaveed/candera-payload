@@ -258,8 +258,14 @@ export class EtsyClient {
         }
 
         return refreshed.access_token
-      } catch {
-        // Fall back to credential-based signature on refresh failure
+      } catch (err) {
+        // Refresh failed: surface it so operators see "re-authenticate with Etsy"
+        // rather than silently falling back to an unauthenticated request.
+        etsyLogger.warn(
+          `Etsy OAuth token refresh failed; subsequent requests will be unauthenticated until re-auth. ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        )
         return null
       }
     }
@@ -284,7 +290,9 @@ export class EtsyClient {
 
     const headers = new Headers()
     headers.set('Accept', 'application/json')
-    headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
+    // Etsy v3 expects only the API keystring here; the shared secret is used
+    // exclusively in the OAuth token endpoints (Basic auth), not on every request.
+    headers.set('x-api-key', this.config.apiKey)
 
     if (options.headers) {
       const inputHeaders = new Headers(options.headers)
@@ -304,30 +312,50 @@ export class EtsyClient {
     // honoring the `Retry-After` header when present so we back off rather than
     // failing the whole sync on a transient throttle.
     const maxRetries = 3
+    const REQUEST_TIMEOUT_MS = 15_000
     for (let attempt = 0; ; attempt++) {
-      const res = await fetch(url.toString(), {
-        ...fetchOptions,
-        headers: Object.fromEntries(headers.entries()),
-      })
+      // Per-attempt timeout so a hung Etsy response can't stall the whole sync
+      // (which runs serially) until the platform kills the function.
+      // The timer must stay armed until the response body is fully read: Etsy can
+      // return headers promptly and then stall mid-body, so clearing it right after
+      // `fetch` resolves would leave `res.json()` unbounded.
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+      try {
+        const res = await fetch(url.toString(), {
+          ...fetchOptions,
+          headers: Object.fromEntries(headers.entries()),
+          signal: controller.signal,
+        })
 
-      if (res.status === 429 && attempt < maxRetries) {
-        const retryAfter = Number(res.headers.get('retry-after'))
-        const delayMs =
-          Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 2 ** attempt * 1000
-        etsyLogger.warn(
-          `Etsy rate limit hit on ${endpoint} (attempt ${attempt + 1}/${maxRetries + 1}); retrying in ${delayMs}ms.`,
-        )
-        await new Promise((resolve) => setTimeout(resolve, delayMs))
-        continue
+        if (res.status === 429 && attempt < maxRetries) {
+          const retryAfter = Number(res.headers.get('retry-after'))
+          const delayMs =
+            Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 2 ** attempt * 1000
+          etsyLogger.warn(
+            `Etsy rate limit hit on ${endpoint} (attempt ${attempt + 1}/${maxRetries + 1}); retrying in ${delayMs}ms.`,
+          )
+          // Clear before backoff so the abort can't fire during the (possibly longer) sleep.
+          clearTimeout(timeout)
+          await new Promise((resolve) => setTimeout(resolve, delayMs))
+          continue
+        }
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}))
+          const msg = errorData.error || errorData.message || res.statusText
+          throw new Error(`Etsy API Error (${res.status}): ${msg}`)
+        }
+
+        return await res.json()
+      } catch (err) {
+        if (controller.signal.aborted) {
+          throw new Error(`Etsy request to ${endpoint} timed out after ${REQUEST_TIMEOUT_MS}ms`)
+        }
+        throw err
+      } finally {
+        clearTimeout(timeout)
       }
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}))
-        const msg = errorData.error || errorData.message || res.statusText
-        throw new Error(`Etsy API Error (${res.status}): ${msg}`)
-      }
-
-      return res.json()
     }
   }
 

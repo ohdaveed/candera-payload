@@ -33,6 +33,11 @@ export default async function Page({ params: paramsPromise }: Args) {
     overrideAccess: false,
   })
 
+  // Out-of-range page numbers should 404 rather than render an empty grid.
+  // `|| 1` keeps page 1 valid (its empty state) when the collection is empty,
+  // while still 404ing page 2+ in that case.
+  if (sanitizedPageNumber > (products.totalPages || 1)) notFound()
+
   return (
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">
       <SetHeaderTheme theme="light" />
@@ -63,8 +68,13 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
+  const title = `Collection — Page ${pageNumber} — Candera`
+  const description =
+    'Browse the Candera collection — hand-poured botanical candles in numbered, micro-batch releases.'
   return {
-    title: `Collection — Page ${pageNumber} — Candera`,
+    title,
+    description,
+    openGraph: { title, description, type: 'website' },
   }
 }
 

@@ -124,7 +124,12 @@ export default async function Page() {
 }
 
 export function generateMetadata(): Metadata {
+  const title = 'Journal — Candera'
+  const description =
+    'Stories from the Candera studio — notes on scent, craft, and intentional living.'
   return {
-    title: 'Journal — Candera',
+    title,
+    description,
+    openGraph: { title, description, type: 'website' },
   }
 }
