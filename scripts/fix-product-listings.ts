@@ -49,7 +49,7 @@ async function run(): Promise<void> {
   // Imported dynamically so the dotenv override above is applied before
   // payload.config.ts reads env at module-eval time.
   const { getPayload } = await import('payload')
-  const { default: config } = await import('../src/payload.config')
+  const { default: config } = await import('@payload-config')
   const payload = await getPayload({ config })
   let updatedCount = 0
 
