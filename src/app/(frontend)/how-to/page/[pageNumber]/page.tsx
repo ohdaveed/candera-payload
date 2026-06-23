@@ -1,5 +1,5 @@
 import type { Metadata } from 'next/types'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { ArticleCard } from '@/components/ArticleCard'
 import { Container } from '@/components/ui/container'
@@ -11,6 +11,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 
+export const dynamic = 'force-static'
 export const revalidate = 600
 
 type Args = {
@@ -26,6 +27,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   const sanitizedPageNumber = Number(pageNumber)
 
   if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
+
+  // Page 1 duplicates the canonical /how-to route — redirect to avoid duplicate content.
+  if (sanitizedPageNumber === 1) redirect('/how-to')
 
   const guides = await payload.find({
     collection: 'how-to-guides',
