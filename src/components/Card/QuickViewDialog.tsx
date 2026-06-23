@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
+import { etsyListingUrl } from '@/lib/etsy'
 
 type QuickViewDialogProps = {
   title?: string | null
@@ -78,13 +79,9 @@ export function QuickViewDialog({
             <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
 
             <div className="flex flex-col gap-3 mt-auto pt-4">
-              {etsyListingId && (
-                <Button asChild variant="cta" size="cta">
-                  <BoutiqueLink href={`https://www.etsy.com/listing/${etsyListingId}`}>
-                    Buy on Etsy
-                  </BoutiqueLink>
-                </Button>
-              )}
+              <Button asChild variant="cta" size="cta">
+                <BoutiqueLink href={etsyListingUrl(etsyListingId)}>Buy on Etsy</BoutiqueLink>
+              </Button>
               {slug && (
                 <Link
                   href={`/products/${slug}`}

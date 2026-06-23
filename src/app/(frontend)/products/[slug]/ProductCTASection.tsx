@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
+import { etsyListingUrl } from '@/lib/etsy'
 import { StickyCTABar } from './StickyCTABar'
 
 type Props = {
@@ -25,15 +26,7 @@ export function ProductCTASection({ title, price, vessel, etsyListingId }: Props
           size="cta"
           className="w-full py-5 text-xs font-bold tracking-[.2em] uppercase bg-candera-ember-strong hover:bg-candera-obsidian transition-colors"
         >
-          <BoutiqueLink
-            href={
-              etsyListingId
-                ? `https://www.etsy.com/listing/${etsyListingId}`
-                : 'https://www.etsy.com/shop/candera'
-            }
-          >
-            Buy on Etsy
-          </BoutiqueLink>
+          <BoutiqueLink href={etsyListingUrl(etsyListingId)}>Buy on Etsy</BoutiqueLink>
         </Button>
         <p className="text-center text-xs text-candera-sage-text tracking-[.1em]">
           Ships from California · Handmade in micro-batches
