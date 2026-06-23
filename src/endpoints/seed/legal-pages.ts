@@ -1,59 +1,28 @@
 import type { Page } from '@/payload-types'
+import { createHeading, createParagraph, createRichText } from '@/utilities/lexicalHelpers'
 
 // -------------------------------------------------------------------------
-// Lexical node helpers
+// Content builders (reuse the shared Lexical helpers)
 // -------------------------------------------------------------------------
 
-type LexNode = { type: string; version: number; [k: string]: unknown }
-
-const text = (value: string, format = 0): LexNode => ({
-  type: 'text',
-  detail: 0,
-  format,
-  mode: 'normal',
-  style: '',
-  text: value,
-  version: 1,
-})
-
-const paragraph = (nodes: LexNode[]): LexNode => ({
-  type: 'paragraph',
-  children: nodes,
-  direction: 'ltr',
-  format: '',
-  indent: 0,
-  textFormat: 0,
-  version: 1,
-})
-
-const heading = (value: string, tag: 'h2' | 'h3' = 'h2'): LexNode => ({
-  type: 'heading',
-  children: [text(value)],
-  direction: 'ltr',
-  format: '',
-  indent: 0,
-  tag,
-  version: 1,
-})
+type ContentNode = ReturnType<typeof createHeading> | ReturnType<typeof createParagraph>
 
 // A clearly-marked banner so an unreviewed legal page is never mistaken for final
 // copy. Bold (format: 1) to stand out in the rendered page.
-const draftBanner = (): LexNode =>
-  paragraph([
-    text(
-      'DRAFT — placeholder content pending legal review. Replace this page with counsel-reviewed copy before launch.',
-      1,
-    ),
-  ])
+const draftBanner = (): ContentNode =>
+  createParagraph(
+    'DRAFT — placeholder content pending legal review. Replace this page with counsel-reviewed copy before launch.',
+    1,
+  )
 
 type Section = { heading: string; body: string[] }
 
-const sectionsToContent = (sections: Section[]): LexNode[] => {
-  const children: LexNode[] = [draftBanner()]
+const sectionsToContent = (sections: Section[]): ContentNode[] => {
+  const children: ContentNode[] = [draftBanner()]
   for (const section of sections) {
-    children.push(heading(section.heading))
+    children.push(createHeading(section.heading))
     for (const para of section.body) {
-      children.push(paragraph([text(para)]))
+      children.push(createParagraph(para))
     }
   }
   return children
@@ -181,7 +150,7 @@ export const legalPage = (title: string): Partial<Page> => {
   const sections = CONTENT_BY_TITLE[title]
   const contentChildren = sections
     ? sectionsToContent(sections)
-    : [draftBanner(), paragraph([text(`This is the ${title} page. Content pending.`)])]
+    : [draftBanner(), createParagraph(`This is the ${title} page. Content pending.`)]
 
   return {
     title,
@@ -189,36 +158,7 @@ export const legalPage = (title: string): Partial<Page> => {
     _status: 'published',
     hero: {
       type: 'lowImpact',
-      richText: {
-        root: {
-          type: 'root',
-          children: [
-            {
-              type: 'heading',
-              children: [
-                {
-                  type: 'text',
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: title,
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              tag: 'h1',
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
-        },
-      },
+      richText: createRichText([createHeading(title, 'h1')]),
     },
     layout: [
       {
@@ -226,16 +166,7 @@ export const legalPage = (title: string): Partial<Page> => {
         columns: [
           {
             size: 'full',
-            richText: {
-              root: {
-                type: 'root',
-                children: contentChildren,
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            },
+            richText: createRichText(contentChildren),
           },
         ],
       },
