@@ -580,7 +580,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     className="px-16 py-10 text-lg uppercase tracking-[0.2em]"
                   >
                     <Link href={`/products/${(result.featuredProduct as Product).slug}`}>
-                      Explore the Ritual →
+                      Explore the Ritual <span aria-hidden="true">→</span>
                     </Link>
                   </Button>
                 </motion.div>

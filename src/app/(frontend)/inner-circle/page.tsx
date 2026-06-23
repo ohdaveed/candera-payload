@@ -18,7 +18,7 @@ const FALLBACK_BENEFITS = [
   },
   {
     label: 'Studio Notes',
-    description: 'Get first look at new scents in development, straight from the curing room.',
+    description: 'Get a first look at new scents in development, straight from the curing room.',
   },
 ]
 
