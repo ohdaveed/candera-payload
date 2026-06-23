@@ -8,6 +8,7 @@ import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { StorefrontHero } from '../../blocks/StorefrontHero/config'
+import { TheVessels } from '../../blocks/TheVessels/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { InnerCircleCTA } from '../../blocks/InnerCircleCTA/config'
 import { ScentQuiz } from '../../blocks/ScentQuiz/config'
@@ -79,6 +80,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 StorefrontHero,
+                TheVessels,
                 CallToAction,
                 Content,
                 MediaBlock,

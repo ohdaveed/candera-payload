@@ -8,6 +8,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StorefrontHeroBlock } from '@/blocks/StorefrontHero/Component'
+import { TheVesselsBlock } from '@/blocks/TheVessels/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => m.FormBlock), {
@@ -24,6 +25,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   storefrontHero: StorefrontHeroBlock,
+  theVessels: TheVesselsBlock,
   testimonials: TestimonialsBlock,
   innerCircleCTA: InnerCircleCTABlock,
   scentQuiz: ScentQuizModal,
@@ -36,7 +38,13 @@ export const RenderBlocks: React.FC<{
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
-  const fullBleedBlocks = new Set(['storefrontHero', 'testimonials', 'innerCircleCTA', 'scentQuiz'])
+  const fullBleedBlocks = new Set([
+    'storefrontHero',
+    'theVessels',
+    'testimonials',
+    'innerCircleCTA',
+    'scentQuiz',
+  ])
 
   if (hasBlocks) {
     return (
@@ -65,10 +73,14 @@ export const RenderBlocks: React.FC<{
               }
 
               const isFullBleed = fullBleedBlocks.has(blockType)
+              // Anchor #collection to the product archive only — a posts/journal
+              // archive on the same page must not duplicate the id.
+              const isProductArchive =
+                blockType === 'archive' && (block as { relationTo?: string }).relationTo !== 'posts'
               return (
                 <div
                   className={isFullBleed ? '' : 'my-16'}
-                  id={blockType === 'archive' ? 'collection' : undefined}
+                  id={isProductArchive ? 'collection' : undefined}
                   data-block={blockType}
                   data-block-index={index}
                   key={index}

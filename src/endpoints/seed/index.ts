@@ -401,6 +401,11 @@ export const seed = async ({
       },
       data: home({
         heroImage: (candleraMediaDocs['seashell-garden'] as unknown as Media) || imageHomeDoc,
+        vesselImages: [
+          (candleraMediaDocs['meadowlight-botanical'] as unknown as Media) || (image1Doc as Media),
+          (candleraMediaDocs['crimson-noir'] as unknown as Media) || (image2Doc as Media),
+          (candleraMediaDocs['ever-after-glow'] as unknown as Media) || (image3Doc as Media),
+        ],
         scentQuizFormId: scentQuizFormDoc.id,
         scentQuizId: quizId,
       }),
