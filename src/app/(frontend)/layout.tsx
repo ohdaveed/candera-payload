@@ -21,6 +21,7 @@ import { AnalyticsScripts } from '@/components/AnalyticsScripts'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { BRAND } from '@/constants/brand'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -102,6 +103,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@canderacandles',
+    creator: BRAND.instagramHandle,
   },
 }

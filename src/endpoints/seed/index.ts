@@ -26,6 +26,8 @@ import { post3 } from './post-3'
 import { post4 } from './post-4'
 import { post5 } from './post-5'
 import type { Media } from '@/payload-types'
+import { BRAND } from '@/constants/brand'
+import { DEFAULT_INNER_CIRCLE_BENEFITS } from '@/constants/innerCircle'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -640,26 +642,12 @@ export const seed = async ({
         disableRevalidate: true,
       },
       data: {
-        email: 'studio@canderacandles.com',
-        instagramHandle: '@canderacandles',
-        instagramUrl: 'https://instagram.com/canderacandles',
-        studioHours: 'By appointment — slow by design.',
-        locationTagline: 'Handcrafted in California',
-        innerCircleBenefits: [
-          {
-            label: 'Early Access',
-            description: '24-hour advance notice before every new batch goes public.',
-          },
-          {
-            label: 'Ritual Invitations',
-            description: 'Seasonal studio events and workshops, extended to members only.',
-          },
-          {
-            label: 'Studio Notes',
-            description:
-              'Behind-the-scenes updates from the curing room and new scent development.',
-          },
-        ],
+        email: BRAND.email,
+        instagramHandle: BRAND.instagramHandle,
+        instagramUrl: BRAND.instagramUrl,
+        studioHours: BRAND.studioHours,
+        locationTagline: BRAND.locationTagline,
+        innerCircleBenefits: DEFAULT_INNER_CIRCLE_BENEFITS,
         searchSuggestions: [
           { term: 'Sandalwood' },
           { term: 'Citrus' },

@@ -1,72 +1,24 @@
 import { RequiredDataFromCollectionSlug } from 'payload'
+import { createRichText, createHeading, createParagraph } from '@/utilities/lexicalHelpers'
+import { FORM_TITLES } from '@/constants/forms'
+import { BRAND } from '@/constants/brand'
 
 export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
-  confirmationMessage: {
-    root: {
-      type: 'root',
-      children: [
-        {
-          type: 'heading',
-          children: [
-            {
-              type: 'text',
-              detail: 0,
-              format: 0,
-              mode: 'normal',
-              style: '',
-              text: 'Your correspondence has reached the studio. We respond with intention — expect a reply within 48 hours.',
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          tag: 'h2',
-          version: 1,
-        },
-      ],
-      direction: 'ltr',
-      format: '',
-      indent: 0,
-      version: 1,
-    },
-  },
+  confirmationMessage: createRichText([
+    createHeading(
+      'Your correspondence has reached the studio. We respond with intention — expect a reply within 48 hours.',
+      'h2',
+    ),
+  ]),
   confirmationType: 'message',
   createdAt: '2023-01-12T21:47:41.374Z',
   emails: [
     {
-      emailFrom: '"Candera Studio" <studio@canderacandles.com>',
+      emailFrom: `"Candera Studio" <${BRAND.email}>`,
       emailTo: '{{email}}',
-      message: {
-        root: {
-          type: 'root',
-          children: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: 'Your contact form submission was successfully received.',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              textFormat: 0,
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
-        },
-      },
+      message: createRichText([
+        createParagraph('Your contact form submission was successfully received.'),
+      ]),
       subject: "You've received a new message.",
     },
   ],
@@ -106,6 +58,6 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
   ],
   redirect: undefined,
   submitButtonLabel: 'Send Correspondence',
-  title: 'Contact Form',
+  title: FORM_TITLES.CONTACT,
   updatedAt: '2023-01-12T21:47:41.374Z',
 }

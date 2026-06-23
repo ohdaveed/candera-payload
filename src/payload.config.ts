@@ -30,7 +30,6 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { etsyEndpoints } from './endpoints/etsy'
 
@@ -38,6 +37,7 @@ import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
+import { BRAND } from './constants/brand'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -170,7 +170,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'info@canderacandles.com',
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || BRAND.email,
     defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
     transportOptions: process.env.SMTP_HOST
       ? {
@@ -185,7 +185,7 @@ export default buildConfig({
           jsonTransport: true, // Use a non-network transport if no SMTP_HOST is provided
         },
   }),
-  endpoints: [createHomeEndpoint, ...etsyEndpoints],
+  endpoints: [...etsyEndpoints],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

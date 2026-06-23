@@ -14,6 +14,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { ETSY_SHOP_URL } from '@/lib/etsy'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { BRAND } from '@/constants/brand'
 
 export async function generateStaticParams() {
   return []
@@ -60,7 +61,7 @@ export default async function Page({ params: paramsPromise }: Args) {
           logo: `${serverUrl}/favicon.svg`,
           description:
             'Hand-poured botanical candles, artisan-crafted in California for intentional living.',
-          sameAs: [ETSY_SHOP_URL, 'https://instagram.com/canderacandles'],
+          sameAs: [ETSY_SHOP_URL, BRAND.instagramUrl],
         },
         {
           '@context': 'https://schema.org',

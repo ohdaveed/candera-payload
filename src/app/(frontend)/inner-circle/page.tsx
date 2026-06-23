@@ -6,21 +6,8 @@ import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
-
-const FALLBACK_BENEFITS = [
-  {
-    label: 'Early Access',
-    description: 'Shop every new batch a full 24 hours before it opens to the public.',
-  },
-  {
-    label: 'Ritual Invitations',
-    description: 'Reserve your spot at members-only studio events and seasonal workshops.',
-  },
-  {
-    label: 'Studio Notes',
-    description: 'Get a first look at new scents in development, straight from the curing room.',
-  },
-]
+import { FORM_TITLES } from '@/constants/forms'
+import { DEFAULT_INNER_CIRCLE_BENEFITS, NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
 export const revalidate = 3600
 
@@ -32,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function InnerCirclePage() {
   const [form, studioInfo] = await Promise.all([
-    getCachedFormByTitle('Inner Circle Signup')(),
+    getCachedFormByTitle(FORM_TITLES.INNER_CIRCLE)(),
     getCachedGlobal('studio-info')(),
   ])
   const formId = form?.id?.toString() ?? ''
@@ -40,7 +27,7 @@ export default async function InnerCirclePage() {
   const benefits =
     studioInfo?.innerCircleBenefits && studioInfo.innerCircleBenefits.length > 0
       ? studioInfo.innerCircleBenefits
-      : FALLBACK_BENEFITS
+      : DEFAULT_INNER_CIRCLE_BENEFITS
 
   return (
     <main className="min-h-screen bg-candera-vellum" data-page="inner-circle">
@@ -58,7 +45,7 @@ export default async function InnerCirclePage() {
           <div className="max-w-[600px] mx-auto text-center">
             <div className="flex flex-col items-center gap-4">
               <InnerCircleEmailForm formId={formId} />
-              <p className="caption text-candera-sage-text mt-2">No spam. Unsubscribe anytime.</p>
+              <p className="caption text-candera-sage-text mt-2">{NEWSLETTER_MICROCOPY}</p>
             </div>
 
             <div

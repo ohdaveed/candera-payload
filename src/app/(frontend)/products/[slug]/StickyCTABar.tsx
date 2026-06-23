@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 import { etsyListingUrl } from '@/lib/etsy'
 
@@ -57,19 +58,7 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
         className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-candera-vellum hover:text-candera-obsidian text-candera-vellum text-xs font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
       >
         Buy on Etsy
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+        <ArrowRight width={12} height={12} strokeWidth={2} aria-hidden="true" />
       </BoutiqueLink>
     </aside>
   )
