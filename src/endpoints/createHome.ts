@@ -182,6 +182,10 @@ export const createHomeEndpoint: Endpoint = {
         const mediaDoc = mediaByKey[imageKey]
         const data: unknown = {
           ...product,
+          // Products default to draft; publish them (as the full seed does) so
+          // the public archives — which now fetch with overrideAccess: false —
+          // can actually show the products this endpoint just upserted.
+          _status: 'published',
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         }
         if (existing.docs.length > 0) {
