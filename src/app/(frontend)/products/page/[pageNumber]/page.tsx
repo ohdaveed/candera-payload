@@ -34,7 +34,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   // Out-of-range page numbers should 404 rather than render an empty grid.
-  if (products.totalPages > 0 && sanitizedPageNumber > products.totalPages) notFound()
+  // `|| 1` keeps page 1 valid (its empty state) when the collection is empty,
+  // while still 404ing page 2+ in that case.
+  if (sanitizedPageNumber > (products.totalPages || 1)) notFound()
 
   return (
     <div className="pt-32 pb-32 bg-candera-linen min-h-screen">

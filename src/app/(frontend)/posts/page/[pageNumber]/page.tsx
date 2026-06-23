@@ -43,7 +43,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   // Out-of-range page numbers should 404 rather than render an empty grid.
-  if (posts.totalPages > 0 && sanitizedPageNumber > posts.totalPages) notFound()
+  // `|| 1` keeps page 1 valid (its empty state) when the collection is empty,
+  // while still 404ing page 2+ in that case.
+  if (sanitizedPageNumber > (posts.totalPages || 1)) notFound()
 
   return (
     <div className="pt-24 pb-24">
