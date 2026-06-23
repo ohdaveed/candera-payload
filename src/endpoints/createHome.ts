@@ -243,16 +243,13 @@ export const createHomeEndpoint: Endpoint = {
         limit: 1,
         depth: 0,
       })
+      // The Scent Quiz block requires a relationship to a quizzes doc. This
+      // endpoint doesn't seed quizzes (seedScentQuiz is not idempotent), so it
+      // reuses the quiz created by the full seed when present. If none exists
+      // yet, we drop the quiz block below rather than failing — this keeps
+      // create-home usable to provision/repair a database that hasn't run the
+      // full seed, instead of 400-ing after media/forms/products were written.
       const scentQuizId = quiz.docs[0]?.id
-      if (!scentQuizId) {
-        return Response.json(
-          {
-            error:
-              'No "Candera Scent Ritual Quiz" found. Run the full seed (POST /next/seed) once to create the quiz and scent profiles, then retry /api/create-home.',
-          },
-          { status: 400 },
-        )
-      }
 
       const existing = await payload.find({
         collection: 'pages',
@@ -275,6 +272,13 @@ export const createHomeEndpoint: Endpoint = {
         scentQuizId,
       })
 
+      // Without a quiz the Scent Quiz block's required `quiz` relationship
+      // can't be satisfied, so omit that one block; the rest of the home page
+      // still upserts cleanly. Re-running after a quiz exists restores it.
+      if (!scentQuizId) {
+        pageData.layout = (pageData.layout ?? []).filter((block) => block.blockType !== 'scentQuiz')
+      }
+
       // Unlike the full `yarn seed` (which runs without a Next server and so
       // must set disableRevalidate), this endpoint runs inside the live app.
       // Leaving revalidation on lets the Pages afterChange hook bust the `/`
@@ -292,7 +296,12 @@ export const createHomeEndpoint: Endpoint = {
         })
       }
 
-      return Response.json({ success: true, message: 'Home page and products created/updated.' })
+      return Response.json({
+        success: true,
+        message: scentQuizId
+          ? 'Home page and products created/updated.'
+          : 'Home page and products created/updated. Scent Quiz block skipped (no quiz found — run the full seed to add it).',
+      })
     } catch (error: unknown) {
       payload.logger.error({ err: error, msg: 'Error in /create-home endpoint' })
       return Response.json(
