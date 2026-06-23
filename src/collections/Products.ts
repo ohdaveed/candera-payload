@@ -4,6 +4,7 @@ import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 
 import { productRevalidateHooks } from '../utilities/revalidate'
+import { PRODUCT_TAGS } from '../lib/productTags'
 
 import {
   MetaDescriptionField,
@@ -213,7 +214,7 @@ export const Products: CollectionConfig = {
     {
       name: 'productTag',
       type: 'select',
-      options: ['Bestseller', 'New Release', 'Limited Batch'],
+      options: [...PRODUCT_TAGS],
       admin: {
         description: 'Badge shown on product cards.',
         position: 'sidebar',

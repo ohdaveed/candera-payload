@@ -1,5 +1,5 @@
 'use client'
-import { Suspense } from 'react'
+import { Suspense, useTransition } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import {
   Select,
@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { PRODUCT_TAGS } from '@/lib/productTags'
 
 const SORTS = [
   { label: 'Newest', value: 'newest' },
@@ -25,6 +26,7 @@ function ProductFiltersInner() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
   const activeSort = searchParams.get('sort') ?? 'newest'
   const activeTag = searchParams.get('tag') ?? 'All'
 
@@ -40,14 +42,23 @@ function ProductFiltersInner() {
     // Reset to page 1 when filter changes
     params.delete('page')
     const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
-    router.replace(nextUrl)
+    // Doherty Threshold: surface a pending state while the server re-renders the
+    // filtered collection so the interaction never feels unresponsive.
+    startTransition(() => router.replace(nextUrl))
   }
 
   return (
-    <nav className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-12 pb-6 border-b border-candera-stone/20 w-full">
+    <nav
+      aria-busy={isPending}
+      className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-12 pb-6 border-b border-candera-stone/20 w-full"
+    >
       {/* Tag filters */}
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-        {['All', 'Bestseller', 'New Release', 'Limited Batch'].map((tag) => {
+      <div
+        className={`flex flex-wrap items-center gap-x-6 gap-y-3 transition-opacity duration-200 ${
+          isPending ? 'opacity-50' : 'opacity-100'
+        }`}
+      >
+        {['All', ...PRODUCT_TAGS].map((tag) => {
           const isActive = activeTag === tag
           return (
             <button
@@ -65,29 +76,41 @@ function ProductFiltersInner() {
         })}
       </div>
 
-      {/* Sort select */}
-      <fieldset className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[180px] border-none p-0 m-0">
-        <legend className="sr-only">Sort products</legend>
-        <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
-          <SelectTrigger
-            id="product-sort"
-            className="h-[40px] border-candera-stone/40 bg-transparent text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus-visible:ring-candera-ember-strong/20"
-          >
-            <SelectValue placeholder="Sort" />
-          </SelectTrigger>
-          <SelectContent className="rounded-none border-candera-stone/20">
-            {SORTS.map((s) => (
-              <SelectItem
-                key={s.value}
-                value={s.value}
-                className="text-xs font-bold uppercase tracking-[.1em]"
-              >
-                {s.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </fieldset>
+      {/* Sort select + pending indicator */}
+      <div className="flex items-center gap-4 w-full sm:w-auto">
+        {/* Doherty Threshold / visibility of system status */}
+        <span
+          aria-live="polite"
+          className={`eyebrow text-candera-sage-text whitespace-nowrap transition-opacity duration-200 ${
+            isPending ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {isPending ? 'Updating…' : ''}
+        </span>
+
+        <fieldset className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[180px] border-none p-0 m-0">
+          <legend className="sr-only">Sort products</legend>
+          <Select value={activeSort} onValueChange={(value) => update('sort', value)}>
+            <SelectTrigger
+              id="product-sort"
+              className="h-[40px] border-candera-stone/40 bg-transparent text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian rounded-none focus-visible:ring-candera-ember-strong/20"
+            >
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent className="rounded-none border-candera-stone/20">
+              {SORTS.map((s) => (
+                <SelectItem
+                  key={s.value}
+                  value={s.value}
+                  className="text-xs font-bold uppercase tracking-[.1em]"
+                >
+                  {s.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </fieldset>
+      </div>
     </nav>
   )
 }
