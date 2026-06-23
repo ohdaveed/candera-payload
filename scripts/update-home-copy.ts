@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 import config from '../src/payload.config'
 import { createRichText, createHeading, createParagraph } from '../src/utilities/lexicalHelpers'
-import type { Page } from '../src/payload-types'
 
 /**
  * Patches the LIVE "home" page copy in place to match the conversion edits in
@@ -27,9 +27,6 @@ const INNER_CIRCLE_HEADLINE = 'Be first to every new batch.'
 const INNER_CIRCLE_DESCRIPTION =
   'Batches are poured by hand, one at a time, and often sell out in days. Join the Inner Circle for early access before each drop — plus studio notes from Olesia as every candle comes to life.'
 
-type Block = NonNullable<Page['layout']>[number]
-type TestimonialsRichText = Extract<Block, { blockType: 'testimonials' }>['richText']
-
 async function main(): Promise<void> {
   const payload = await getPayload({ config })
 
@@ -48,7 +45,7 @@ async function main(): Promise<void> {
   }
 
   let patched = 0
-  const layout = (home.layout ?? []).map((block): Block => {
+  const layout = (home.layout ?? []).map((block) => {
     switch (block.blockType) {
       case 'storefrontHero':
         patched++
@@ -60,7 +57,7 @@ async function main(): Promise<void> {
           richText: createRichText([
             createHeading(TESTIMONIALS_CTA_HEADING, 'h3'),
             createParagraph(TESTIMONIALS_CTA_BODY),
-          ]) as unknown as TestimonialsRichText,
+          ]),
         }
       case 'innerCircleCTA':
         patched++
@@ -79,7 +76,12 @@ async function main(): Promise<void> {
     collection: 'pages',
     id: home.id,
     depth: 0,
-    data: { layout, _status: 'published' },
+    data: {
+      // Round-tripping the read-typed layout back into update; cast to the
+      // collection's input type, matching the pattern used in the seed files.
+      layout: layout as unknown as RequiredDataFromCollectionSlug<'pages'>['layout'],
+      _status: 'published',
+    },
     // Next's revalidatePath can't run from a standalone script; the live page
     // refreshes on the next ISR regeneration or after a redeploy / cache purge.
     context: { disableRevalidate: true },
