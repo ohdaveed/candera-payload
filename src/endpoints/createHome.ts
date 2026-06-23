@@ -30,7 +30,7 @@ const PRODUCT_DATA = [
   {
     title: 'Seashell Garden Glow',
     slug: 'seashell-garden-glow',
-    etsyListingId: 1001,
+    etsyListingId: 1717226844,
     vessel: '001',
     price: 38,
     productTag: 'Bestseller',
@@ -43,7 +43,7 @@ const PRODUCT_DATA = [
   {
     title: 'Meadowlight Botanical',
     slug: 'meadowlight-botanical',
-    etsyListingId: 1002,
+    etsyListingId: 1731408433,
     vessel: '002',
     price: 38,
     productTag: 'New Release',
@@ -56,7 +56,7 @@ const PRODUCT_DATA = [
   {
     title: 'Crimson Noir',
     slug: 'crimson-noir',
-    etsyListingId: 1003,
+    etsyListingId: 1731418441,
     vessel: '003',
     price: 38,
     productTag: 'Limited Batch',
@@ -69,7 +69,9 @@ const PRODUCT_DATA = [
   {
     title: 'Ever After Glow',
     slug: 'ever-after-glow',
-    etsyListingId: 1004,
+    // No Etsy listing — explicit null so the upsert clears any stale id and the CTA
+    // falls back to the shop URL.
+    etsyListingId: null,
     vessel: '004',
     price: 38,
     productTag: 'Bestseller',
@@ -82,7 +84,7 @@ const PRODUCT_DATA = [
   {
     title: "Anya's Eyes",
     slug: 'anyas-eyes',
-    etsyListingId: 1005,
+    etsyListingId: null,
     vessel: '005',
     price: 38,
     productTag: 'Limited Batch',
@@ -95,7 +97,7 @@ const PRODUCT_DATA = [
   {
     title: 'Scarlet Bloom',
     slug: 'scarlet-bloom',
-    etsyListingId: 1006,
+    etsyListingId: null,
     vessel: '006',
     price: 38,
     productTag: 'New Release',
@@ -174,9 +176,36 @@ export const createHomeEndpoint: Endpoint = {
           where: { slug: { equals: product.slug } },
           limit: 1,
         })
+        const existingId = existing.docs[0]?.id
+
+        // etsyListingId is unique. If another product already owns this listing
+        // (e.g. imported by the Etsy sync under a different slug), fall back to null
+        // so this demo product links to the shop instead of violating the unique index.
+        let etsyListingId = product.etsyListingId
+        if (etsyListingId != null) {
+          const owners = await payload.find({
+            collection: 'products',
+            where: {
+              and: [
+                { etsyListingId: { equals: etsyListingId } },
+                ...(existingId != null ? [{ id: { not_equals: existingId } }] : []),
+              ],
+            },
+            limit: 1,
+            depth: 0,
+          })
+          if (owners.totalDocs > 0) {
+            payload.logger.warn(
+              `[createHome] listing ${etsyListingId} already owned by another product — "${product.slug}" will fall back to the shop`,
+            )
+            etsyListingId = null
+          }
+        }
+
         const mediaDoc = mediaByKey[imageKey]
         const data: unknown = {
           ...product,
+          etsyListingId,
           ...(mediaDoc ? { extraPhotos: [mediaDoc.id] } : {}),
         }
         if (existing.docs.length > 0) {
