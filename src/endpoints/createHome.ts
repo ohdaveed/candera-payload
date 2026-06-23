@@ -35,7 +35,7 @@ const PRODUCT_DATA = [
     vessel: '001',
     price: 38,
     productTag: 'Bestseller',
-    atmosphere: 'Coastal & Airy',
+    atmosphereSlug: 'coastal',
     burnTime: '60 Hours',
     tagline: 'Gathered from the tide. A practice in coastal stillness.',
     scentProfile: { top: 'Sea Breeze', heart: 'Driftwood', base: 'Salt Air' },
@@ -48,7 +48,7 @@ const PRODUCT_DATA = [
     vessel: '002',
     price: 38,
     productTag: 'New Release',
-    atmosphere: 'Fresh & Botanical',
+    atmosphereSlug: 'fresh',
     burnTime: '60 Hours',
     tagline: 'Sunlight through wildflowers. A ritual of spring emergence.',
     scentProfile: { top: 'Fresh Green', heart: 'Lily of the Valley', base: 'Morning Dew' },
@@ -61,7 +61,7 @@ const PRODUCT_DATA = [
     vessel: '003',
     price: 38,
     productTag: 'Limited Batch',
-    atmosphere: 'Moody & Intimate',
+    atmosphereSlug: 'moody',
     burnTime: '60 Hours',
     tagline: 'Dusk in the sensory revolution. A deeper, more intimate practice.',
     scentProfile: { top: 'Dark Berry', heart: 'Merlot', base: 'Vetiver' },
@@ -74,7 +74,7 @@ const PRODUCT_DATA = [
     vessel: '004',
     price: 38,
     productTag: 'Bestseller',
-    atmosphere: 'Romantic & Soft',
+    atmosphereSlug: 'romantic',
     burnTime: '60 Hours',
     tagline: 'A garden in full bloom. Radiating elegance and ritual serenity.',
     scentProfile: { top: 'White Lilac', heart: 'Blue Hydrangea', base: 'Soft Musk' },
@@ -87,7 +87,7 @@ const PRODUCT_DATA = [
     vessel: '005',
     price: 38,
     productTag: 'Limited Batch',
-    atmosphere: 'Gentle & Contemplative',
+    atmosphereSlug: 'contemplative',
     burnTime: '60 Hours',
     tagline: 'The quiet beauty of pansies. A contemplative botanical study.',
     scentProfile: { top: 'Lilac', heart: 'Pressed Pansy', base: 'Soft Powder' },
@@ -100,7 +100,7 @@ const PRODUCT_DATA = [
     vessel: '006',
     price: 38,
     productTag: 'New Release',
-    atmosphere: 'Bold & Floral',
+    atmosphereSlug: 'bold',
     burnTime: '60 Hours',
     tagline: 'Botanical architecture. Bold florals grounded in ritual.',
     scentProfile: { top: 'Fresh Florals', heart: 'Botanical Rose', base: 'Green Stem' },
@@ -168,8 +168,12 @@ export const createHomeEndpoint: Endpoint = {
         upsertForm(scentQuizFormData),
       ])
 
-      // Upsert products
-      for (const { imageKey, ...product } of PRODUCT_DATA) {
+      // Upsert products. `atmosphere` is a relationship to scent-profiles,
+      // so it can't be set from the inline string data here — we strip the
+      // atmosphereSlug from the create/update payload and link it in a
+      // second pass below, mirroring the canonical full seed.
+      const productLinks: { id: string | number; atmosphereSlug: string }[] = []
+      for (const { imageKey, atmosphereSlug, ...product } of PRODUCT_DATA) {
         const existing = await payload.find({
           collection: 'products',
           where: { slug: { equals: product.slug } },
@@ -186,12 +190,36 @@ export const createHomeEndpoint: Endpoint = {
             id: existing.docs[0].id,
             data: data as RequiredDataFromCollectionSlug<'products'>,
           })
+          productLinks.push({ id: existing.docs[0].id, atmosphereSlug })
         } else {
-          await payload.create({
+          const created = await payload.create({
             collection: 'products',
             data: data as RequiredDataFromCollectionSlug<'products'>,
           })
+          productLinks.push({ id: created.id, atmosphereSlug })
         }
+      }
+
+      // Second pass: link each product to its atmosphere (scent-profile) by
+      // slug, but only if that profile already exists in the database. This
+      // endpoint does not seed scent-profiles, so a missing profile is simply
+      // skipped rather than failing the whole request.
+      for (const { id, atmosphereSlug } of productLinks) {
+        const profile = await payload.find({
+          collection: 'scent-profiles',
+          where: { slug: { equals: atmosphereSlug } },
+          limit: 1,
+          depth: 0,
+        })
+        const atmosphereId = profile.docs[0]?.id
+        if (!atmosphereId) continue
+        await payload.update({
+          collection: 'products',
+          id,
+          data: {
+            atmosphere: atmosphereId,
+          } as unknown as RequiredDataFromCollectionSlug<'products'>,
+        })
       }
 
       // Upsert home page
