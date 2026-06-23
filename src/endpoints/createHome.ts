@@ -233,6 +233,27 @@ export const createHomeEndpoint: Endpoint = {
           { status: 400 },
         )
       }
+      // The Scent Quiz block requires a relationship to a quizzes doc. This
+      // endpoint doesn't seed quizzes (seedScentQuiz is not idempotent), so we
+      // reuse the quiz created by the full seed. If none exists yet, fail with
+      // a clear message rather than writing an invalid layout.
+      const quiz = await payload.find({
+        collection: 'quizzes',
+        where: { title: { equals: 'Candera Scent Ritual Quiz' } },
+        limit: 1,
+        depth: 0,
+      })
+      const scentQuizId = quiz.docs[0]?.id
+      if (!scentQuizId) {
+        return Response.json(
+          {
+            error:
+              'No "Candera Scent Ritual Quiz" found. Run the full seed (POST /next/seed) once to create the quiz and scent profiles, then retry /api/create-home.',
+          },
+          { status: 400 },
+        )
+      }
+
       const existing = await payload.find({
         collection: 'pages',
         where: { slug: { equals: 'home' } },
@@ -251,6 +272,7 @@ export const createHomeEndpoint: Endpoint = {
         heroImage: heroMedia,
         vesselImages,
         scentQuizFormId: scentQuizFormDoc.id,
+        scentQuizId,
       })
 
       if (existing.docs.length > 0) {
