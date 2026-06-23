@@ -6,7 +6,7 @@
 type LexicalTextNode = {
   type: 'text'
   detail: 0
-  format: 0
+  format: number
   mode: 'normal'
   style: ''
   text: string
@@ -70,10 +70,13 @@ type LexicalRichText = {
   root: LexicalRootNode
 }
 
-export const createTextNode = (text: string): LexicalTextNode => ({
+/**
+ * @param format Lexical text format bitmask (0 = normal, 1 = bold, 2 = italic, …).
+ */
+export const createTextNode = (text: string, format = 0): LexicalTextNode => ({
   type: 'text',
   detail: 0,
-  format: 0,
+  format,
   mode: 'normal',
   style: '',
   text,
@@ -90,9 +93,9 @@ export const createHeading = (text: string, tag: HeadingTag = 'h2'): LexicalHead
   version: 1,
 })
 
-export const createParagraph = (text: string): LexicalParagraphNode => ({
+export const createParagraph = (text: string, format = 0): LexicalParagraphNode => ({
   type: 'paragraph',
-  children: [createTextNode(text)],
+  children: [createTextNode(text, format)],
   direction: 'ltr',
   format: '',
   indent: 0,
