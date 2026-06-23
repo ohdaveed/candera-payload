@@ -36,10 +36,7 @@ export function ProductCTASection({ title, price, vessel, etsyListingId }: Props
           </BoutiqueLink>
         </Button>
         <p className="text-center text-xs text-candera-sage-text tracking-[.1em]">
-          Ships from California · Handmade in micro-batches
-        </p>
-        <p className="text-center text-[11px] text-candera-stone/50 tracking-[.12em] mt-0.5">
-          Authentic handcraft · Secure checkout · 14-day returns
+          Secure checkout · 14-day returns · Ships from California · Handmade in micro-batches
         </p>
       </Section>
 

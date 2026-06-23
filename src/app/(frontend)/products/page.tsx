@@ -11,6 +11,7 @@ import type { Product } from '@/payload-types'
 import type { ProductCardData } from '@/components/ProductCard'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
+import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 
 export const metadata: Metadata = {
   title: 'Collection — Candera',
@@ -98,7 +99,14 @@ export default async function ProductsPage({
                   </p>
                 </>
               ) : (
-                <p className="text-lg text-candera-obsidian">The next batch is still curing.</p>
+                <>
+                  <p className="text-lg text-candera-obsidian mb-2">
+                    The next batch is still curing.
+                  </p>
+                  <p className="text-sm text-candera-sage-text">
+                    Join the Inner Circle below and we&apos;ll tell you the moment it&apos;s ready.
+                  </p>
+                </>
               )}
             </output>
           )}
@@ -114,6 +122,13 @@ export default async function ProductsPage({
           )}
         </Container>
       </Section>
+
+      {/* Peak-End Rule: close the journey on a strong, on-brand conversion moment */}
+      <InnerCircleCTABlock
+        blockType="innerCircleCTA"
+        headline="First access to every new batch."
+        description="Our batches often sell out in days. Join the Inner Circle for advance notice before each release goes public."
+      />
     </main>
   )
 }

@@ -20,6 +20,8 @@ import * as migration_20260614_132108 from './20260614_132108'
 import * as migration_20260614_184500_add_storefront_hero_price_and_link from './20260614_184500_add_storefront_hero_price_and_link'
 import * as migration_20260614_212000_add_products_to_archive_relation_to_enum from './20260614_212000_add_products_to_archive_relation_to_enum'
 import * as migration_20260615_add_documentation_collection from './20260615_add_documentation_collection'
+import * as migration_20260622_205309 from './20260622_205309'
+import * as migration_20260623_001156_add_studio_info from './20260623_001156_add_studio_info'
 
 export const migrations = [
   {
@@ -131,5 +133,15 @@ export const migrations = [
     up: migration_20260615_add_documentation_collection.up,
     down: migration_20260615_add_documentation_collection.down,
     name: '20260615_add_documentation_collection',
+  },
+  {
+    up: migration_20260622_205309.up,
+    down: migration_20260622_205309.down,
+    name: '20260622_205309',
+  },
+  {
+    up: migration_20260623_001156_add_studio_info.up,
+    down: migration_20260623_001156_add_studio_info.down,
+    name: '20260623_001156_add_studio_info',
   },
 ]

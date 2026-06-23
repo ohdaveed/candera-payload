@@ -1,7 +1,26 @@
 import type { Metadata } from 'next'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { getCachedFormByTitle } from '@/utilities/getForms'
-import { PageHeader } from '@/components/PageHeader'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { SetHeaderTheme } from '@/components/SetHeaderTheme'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
+
+const FALLBACK_BENEFITS = [
+  {
+    label: 'Early Access',
+    description: 'Shop every new batch a full 24 hours before it opens to the public.',
+  },
+  {
+    label: 'Ritual Invitations',
+    description: 'Reserve your spot at members-only studio events and seasonal workshops.',
+  },
+  {
+    label: 'Studio Notes',
+    description: 'Get a first look at new scents in development, straight from the curing room.',
+  },
+]
 
 export const revalidate = 3600
 
@@ -12,55 +31,53 @@ export const metadata: Metadata = {
 }
 
 export default async function InnerCirclePage() {
-  const form = await getCachedFormByTitle('Inner Circle Signup')()
+  const [form, studioInfo] = await Promise.all([
+    getCachedFormByTitle('Inner Circle Signup')(),
+    getCachedGlobal('studio-info')(),
+  ])
   const formId = form?.id?.toString() ?? ''
 
+  const benefits =
+    studioInfo?.innerCircleBenefits && studioInfo.innerCircleBenefits.length > 0
+      ? studioInfo.innerCircleBenefits
+      : FALLBACK_BENEFITS
+
   return (
-    <div className="min-h-screen bg-candera-linen pt-32 pb-32" data-page="inner-circle">
-      <div className="container">
-        <div className="max-w-[600px] mx-auto text-center">
-          <PageHeader
-            align="center"
-            eyebrow="The Inner Circle"
-            title="Be the first to know."
-            description="Our studio doors are opening. Join the Inner Circle to receive advance notice of new arrivals, behind-the-scenes updates from the studio, and seasonal ritual invitations."
-            maxWidthClassName="max-w-[600px]"
-            className="mb-14"
-          />
+    <main className="min-h-screen bg-candera-vellum" data-page="inner-circle">
+      <SetHeaderTheme theme="dark" />
 
-          <div className="flex flex-col items-center gap-4">
-            <InnerCircleEmailForm formId={formId} />
-            <p className="caption text-candera-sage-text mt-2">No spam. Unsubscribe anytime.</p>
-          </div>
+      <EditorialPageHero
+        eyebrow="The Inner Circle"
+        title="Be the first to know."
+        description="Our studio doors are opening. Join the Inner Circle for advance notice of new arrivals, studio updates, and seasonal ritual invitations."
+        decorativeWord="Circle"
+      />
 
-          <div
-            className="mt-24 pt-16 border-t border-candera-stone/20"
-            data-section="benefits-grid"
-          >
-            <h2 className="h3 mb-10">What you&apos;ll receive</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
-              <div>
-                <p className="label text-candera-ember mb-3">Early Access</p>
-                <p className="editorial">
-                  24-hour advance notice before every new batch goes public.
-                </p>
-              </div>
-              <div>
-                <p className="label text-candera-ember mb-3">Ritual Invitations</p>
-                <p className="editorial">
-                  Seasonal studio events and workshops, extended to members only.
-                </p>
-              </div>
-              <div>
-                <p className="label text-candera-ember mb-3">Studio Notes</p>
-                <p className="editorial">
-                  Behind-the-scenes updates from the curing room and new scent development.
-                </p>
+      <Section padding="large" data-section="inner-circle-signup">
+        <Container>
+          <div className="max-w-[600px] mx-auto text-center">
+            <div className="flex flex-col items-center gap-4">
+              <InnerCircleEmailForm formId={formId} />
+              <p className="caption text-candera-sage-text mt-2">No spam. Unsubscribe anytime.</p>
+            </div>
+
+            <div
+              className="mt-24 pt-16 border-t border-candera-stone/20"
+              data-section="benefits-grid"
+            >
+              <h2 className="h3 mb-10">What you&apos;ll receive</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
+                {benefits.map((benefit, index) => (
+                  <div key={`${benefit.label}-${index}`}>
+                    <p className="label text-candera-ember mb-3">{benefit.label}</p>
+                    <p className="editorial">{benefit.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </Container>
+      </Section>
+    </main>
   )
 }

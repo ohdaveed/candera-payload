@@ -24,10 +24,10 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockType: 'storefrontHero',
       heroTag: 'Handmade by Olesia',
-      headline: 'The Art of the Quiet Ritual.',
+      headline: 'Candles made to make you stop.',
       subheading:
-        'Thoughtfully handcrafted botanical candles designed to bring light, warmth, and intention to your everyday moments.',
-      primaryCtaLabel: 'Explore the Collection',
+        'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.',
+      primaryCtaLabel: 'Shop the Collection',
       primaryCtaUrl: '#collection',
       secondaryCtaLabel: 'Take the Scent Quiz →',
       secondaryCtaUrl: '#scent-quiz',
@@ -127,9 +127,9 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     } as unknown as ScentQuizBlock,
     {
       blockType: 'innerCircleCTA',
-      headline: 'Your space deserves this.',
+      headline: 'Be first to every new batch.',
       description:
-        "When you light a Candera candle, Olesia's hope is that you feel more than fragrance. She hopes you feel comfort. She hopes you feel present. Join the Inner Circle for early access to every new batch — made by hand, one at a time.",
+        "Batches are poured by hand, one at a time, and often sell out in days. Join the Inner Circle for early access before each drop — plus studio notes from Olesia as every candle comes to life.",
     } as unknown as InnerCircleCTABlock,
   ],
 }

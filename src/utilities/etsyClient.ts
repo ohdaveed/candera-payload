@@ -1,5 +1,6 @@
 import { getPayload, type Payload } from 'payload'
 import configPromise from '@payload-config'
+import { etsyLogger } from './logger'
 
 const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
 const ETSY_OAUTH_URL = 'https://api.etsy.com/v3/public/oauth'
@@ -299,18 +300,35 @@ export class EtsyClient {
       }
     }
 
-    const res = await fetch(url.toString(), {
-      ...fetchOptions,
-      headers: Object.fromEntries(headers.entries()),
-    })
+    // Etsy enforces rate limits (HTTP 429). Retry a bounded number of times,
+    // honoring the `Retry-After` header when present so we back off rather than
+    // failing the whole sync on a transient throttle.
+    const maxRetries = 3
+    for (let attempt = 0; ; attempt++) {
+      const res = await fetch(url.toString(), {
+        ...fetchOptions,
+        headers: Object.fromEntries(headers.entries()),
+      })
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}))
-      const msg = errorData.error || errorData.message || res.statusText
-      throw new Error(`Etsy API Error (${res.status}): ${msg}`)
+      if (res.status === 429 && attempt < maxRetries) {
+        const retryAfter = Number(res.headers.get('retry-after'))
+        const delayMs =
+          Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 2 ** attempt * 1000
+        etsyLogger.warn(
+          `Etsy rate limit hit on ${endpoint} (attempt ${attempt + 1}/${maxRetries + 1}); retrying in ${delayMs}ms.`,
+        )
+        await new Promise((resolve) => setTimeout(resolve, delayMs))
+        continue
+      }
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        const msg = errorData.error || errorData.message || res.statusText
+        throw new Error(`Etsy API Error (${res.status}): ${msg}`)
+      }
+
+      return res.json()
     }
-
-    return res.json()
   }
 
   // --- High leverage helpers for common resource requests ---

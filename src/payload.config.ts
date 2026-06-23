@@ -1,4 +1,3 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import { payloadLogger } from './utilities/logger'
@@ -23,6 +22,7 @@ import { Folders } from './collections/Folders'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteTheme } from './SiteTheme/config'
+import { StudioInfo } from './StudioInfo/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -31,27 +31,23 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { createHomeEndpoint } from './endpoints/createHome'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { etsyEndpoints } from './endpoints/etsy'
-import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 
 import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
+import { HowToGuides } from './collections/HowToGuides'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseConnectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
-const databaseAdapterArgs = {
-  pool: {
-    connectionString: databaseConnectionString,
-    max: 10,
-    idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
-  },
+// Prefer DATABASE_URI (manually managed, valid credentials) over POSTGRES_URL,
+// which the Neon Vercel integration injects and can override with a stale
+// password. Passing an explicit connectionString forces VercelPool to use it
+// instead of falling back to the integration-managed POSTGRES_URL env var.
+const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
+const databaseAdapter = vercelPostgresAdapter({
   push: false,
-}
-const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
-  ? vercelPostgresAdapter(databaseAdapterArgs)
-  : postgresAdapter(databaseAdapterArgs)
+  ...(databaseConnectionString ? { pool: { connectionString: databaseConnectionString } } : {}),
+})
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
 
@@ -136,6 +132,7 @@ export default buildConfig({
     Quizzes,
     ScentProfiles,
     Documentation,
+    HowToGuides,
   ],
   cors: corsOrigins,
   plugins: [
@@ -153,7 +150,7 @@ export default buildConfig({
         ]
       : []),
   ],
-  globals: [Header, Footer, SiteTheme],
+  globals: [Header, Footer, SiteTheme, StudioInfo],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   email: nodemailerAdapter({

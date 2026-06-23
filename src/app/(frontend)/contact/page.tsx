@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ContactForm } from '@/components/ContactForm'
 import { getCachedFormByTitle } from '@/utilities/getForms'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -15,8 +16,22 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const contactForm = await getCachedFormByTitle('Contact Form')()
+  const [contactForm, studioInfo] = await Promise.all([
+    getCachedFormByTitle('Contact Form')(),
+    getCachedGlobal('studio-info')(),
+  ])
   const contactFormId = contactForm?.id ?? 0
+
+  const DEFAULT_INSTAGRAM_URL = 'https://instagram.com/canderacandles'
+  const email = studioInfo?.email || 'studio@canderacandles.com'
+  const instagramHandle = studioInfo?.instagramHandle || '@canderacandles'
+  // Editor-controlled URL — only allow http(s) to avoid javascript:/data: hrefs.
+  const rawInstagramUrl = studioInfo?.instagramUrl || DEFAULT_INSTAGRAM_URL
+  const instagramUrl = /^https?:\/\//i.test(rawInstagramUrl)
+    ? rawInstagramUrl
+    : DEFAULT_INSTAGRAM_URL
+  const studioHours = studioInfo?.studioHours || 'By appointment — slow by design.'
+  const locationTagline = studioInfo?.locationTagline || 'Handcrafted in California'
 
   return (
     <main className="bg-candera-vellum min-h-screen" data-page="contact">
@@ -58,10 +73,10 @@ export default async function ContactPage() {
                   <dt className="label">Email</dt>
                   <dd className="m-0">
                     <a
-                      href="mailto:studio@canderacandles.com"
+                      href={`mailto:${email}`}
                       className="body hover:text-candera-ember-strong transition-colors"
                     >
-                      studio@canderacandles.com
+                      {email}
                     </a>
                   </dd>
                 </div>
@@ -70,12 +85,12 @@ export default async function ContactPage() {
                   <dt className="label">Social</dt>
                   <dd className="m-0">
                     <a
-                      href="https://instagram.com/canderacandles"
+                      href={instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="body hover:text-candera-ember-strong transition-colors"
                     >
-                      @canderacandles
+                      {instagramHandle}
                     </a>
                   </dd>
                 </div>
@@ -83,7 +98,7 @@ export default async function ContactPage() {
                 <div>
                   <dt className="label">Studio Hours</dt>
                   <dd className="m-0">
-                    <p className="body">By appointment — slow by design.</p>
+                    <p className="body">{studioHours}</p>
                   </dd>
                 </div>
               </dl>
@@ -91,7 +106,7 @@ export default async function ContactPage() {
               {/* Footer note */}
               <div className="flex items-center gap-4 mt-auto pt-4">
                 <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-                <span className="eyebrow">Handcrafted in California</span>
+                <span className="eyebrow">{locationTagline}</span>
               </div>
             </div>
 

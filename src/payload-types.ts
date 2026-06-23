@@ -79,6 +79,7 @@ export interface Config {
     quizzes: Quiz;
     'scent-profiles': ScentProfile;
     documentation: Documentation;
+    'how-to-guides': HowToGuide;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -108,6 +109,7 @@ export interface Config {
     quizzes: QuizzesSelect<false> | QuizzesSelect<true>;
     'scent-profiles': ScentProfilesSelect<false> | ScentProfilesSelect<true>;
     documentation: DocumentationSelect<false> | DocumentationSelect<true>;
+    'how-to-guides': HowToGuidesSelect<false> | HowToGuidesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -127,11 +129,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-theme': SiteTheme;
+    'studio-info': StudioInfo;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-theme': SiteThemeSelect<false> | SiteThemeSelect<true>;
+    'studio-info': StudioInfoSelect<false> | StudioInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1106,6 +1110,7 @@ export interface Documentation {
     };
     [k: string]: unknown;
   };
+  category?: ('CMS Usage' | 'Seeding & Data' | 'Etsy Integration' | 'Publishing Workflow' | 'Design & Theming') | null;
   order?: number | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1114,6 +1119,48 @@ export interface Documentation {
   slug: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "how-to-guides".
+ */
+export interface HowToGuide {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1357,6 +1404,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'documentation';
         value: number | Documentation;
+      } | null)
+    | ({
+        relationTo: 'how-to-guides';
+        value: number | HowToGuide;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1925,11 +1976,35 @@ export interface ScentProfilesSelect<T extends boolean = true> {
 export interface DocumentationSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  category?: T;
   order?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "how-to-guides_select".
+ */
+export interface HowToGuidesSelect<T extends boolean = true> {
+  title?: T;
+  heroImage?: T;
+  content?: T;
+  categories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2344,6 +2419,44 @@ export interface SiteTheme {
   createdAt?: string | null;
 }
 /**
+ * Editorial content surfaced across the storefront — contact details, Inner Circle benefits, and search suggestions.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studio-info".
+ */
+export interface StudioInfo {
+  id: number;
+  /**
+   * Primary studio inbox (rendered as a mailto link).
+   */
+  email: string;
+  /**
+   * Public-facing handle, e.g. "@canderacandles".
+   */
+  instagramHandle: string;
+  /**
+   * Full URL the Instagram handle links to.
+   */
+  instagramUrl: string;
+  studioHours: string;
+  locationTagline: string;
+  innerCircleBenefits?:
+    | {
+        label: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  searchSuggestions?:
+    | {
+        term: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2434,6 +2547,33 @@ export interface SiteThemeSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studio-info_select".
+ */
+export interface StudioInfoSelect<T extends boolean = true> {
+  email?: T;
+  instagramHandle?: T;
+  instagramUrl?: T;
+  studioHours?: T;
+  locationTagline?: T;
+  innerCircleBenefits?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  searchSuggestions?:
+    | T
+    | {
+        term?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -2462,6 +2602,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'products';
           value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'how-to-guides';
+          value: number | HowToGuide;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

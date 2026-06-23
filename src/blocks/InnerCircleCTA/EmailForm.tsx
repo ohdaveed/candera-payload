@@ -88,11 +88,11 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           <button
             type="submit"
             disabled={isLoading}
-            aria-label={isLoading ? 'Submitting…' : 'Join the inner circle'}
+            aria-label={isLoading ? 'Submitting…' : 'Join the Circle'}
             aria-busy={isLoading}
             className={`text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
-            {isLoading ? '…' : 'Join'}
+            {isLoading ? '…' : 'Join the Circle'}
           </button>
         </div>
         {errors.email && (

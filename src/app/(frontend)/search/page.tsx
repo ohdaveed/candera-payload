@@ -6,9 +6,14 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import type { CardPostData } from '@/components/Card'
 import type { Media } from '@/payload-types'
 import Link from 'next/link'
-import { PageHeader } from '@/components/PageHeader'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 import { searchContent } from '@/lib/queries/search'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
+const FALLBACK_SUGGESTIONS = ['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember']
 
 type Args = {
   searchParams: Promise<{
@@ -19,7 +24,18 @@ type Args = {
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise
 
-  const results = await searchContent(query ?? '')
+  const [results, studioInfo] = await Promise.all([
+    searchContent(query ?? ''),
+    getCachedGlobal('studio-info')(),
+  ])
+
+  const suggestions = Array.from(
+    new Set(
+      studioInfo?.searchSuggestions && studioInfo.searchSuggestions.length > 0
+        ? studioInfo.searchSuggestions.map((s) => s.term)
+        : FALLBACK_SUGGESTIONS,
+    ),
+  )
 
   const posts: CardPostData[] = results.map((r) => ({
     title: r.title ?? '',
@@ -34,20 +50,23 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   }))
 
   return (
-    <div className="min-h-screen bg-candera-vellum">
-      <SetHeaderTheme theme="light" />
+    <main className="min-h-screen bg-candera-vellum" data-page="search">
+      <SetHeaderTheme theme="dark" />
 
-      <div className="container pt-40 md:pt-32 pb-16">
-        <PageHeader
-          align="center"
-          title="Search the Collection"
-          description="Discover your next ritual scent."
-          maxWidthClassName="max-w-[560px]"
-          className="mb-20"
-        >
-          <Search />
-        </PageHeader>
-      </div>
+      <EditorialPageHero
+        eyebrow="The Collection"
+        title="Search the Collection"
+        description="Discover your next ritual scent by note, atmosphere, or mood."
+        decorativeWord="Search"
+      />
+
+      <Section padding="large" data-section="search-input">
+        <Container>
+          <div className="max-w-[560px] mx-auto">
+            <Search />
+          </div>
+        </Container>
+      </Section>
 
       {posts.length > 0 ? (
         <CollectionArchive posts={posts} />
@@ -58,10 +77,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             Try exploring one of our signature profiles:
           </p>
           <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+            {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}
@@ -81,10 +100,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             Try a note, atmosphere, or ritual mood.
           </p>
           <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {['Sandalwood', 'Citrus', 'Smoke', 'Woodland', 'Lavender', 'Ember'].map((s) => (
+            {suggestions.map((s) => (
               <Link
                 key={s}
-                href={`/search?q=${s}`}
+                href={`/search?q=${encodeURIComponent(s)}`}
                 className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
               >
                 {s}
@@ -99,7 +118,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           </Link>
         </div>
       )}
-    </div>
+    </main>
   )
 }
 
