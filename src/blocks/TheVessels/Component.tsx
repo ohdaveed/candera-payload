@@ -21,7 +21,7 @@ export const TheVesselsBlock: React.FC<Props> = ({ eyebrow, heading, items }) =>
               </div>
             )}
             {heading && (
-              <h2 className="font-display font-normal italic text-candera-obsidian text-3xl md:text-4xl m-0 leading-tight max-w-[640px]">
+              <h2 className="font-display font-normal italic text-candera-obsidian text-4xl md:text-5xl m-0 leading-tight max-w-[640px]">
                 {heading}
               </h2>
             )}

@@ -96,7 +96,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           {/* Right — Status Card */}
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
-              <div className="bg-white/[0.02] border border-candera-vellum/15 p-[1.5rem] flex flex-col gap-4 hover:border-candera-vellum/25 transition-all duration-300 rounded-none shadow-xl w-full max-w-[340px]">
+              <div className="bg-white/[0.02] border border-candera-vellum/15 p-6 flex flex-col gap-4 hover:border-candera-vellum/25 transition-all duration-300 rounded-none shadow-xl w-full max-w-[340px]">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                   <span className="font-display italic text-lg text-candera-vellum">
@@ -118,16 +118,17 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
 
                 <div className="h-px bg-candera-vellum/10" />
 
-                {/* Status summary — single line */}
+                {/* Status summary — single line. Only shown when real batch
+                    data is supplied; we never fabricate a count or status. */}
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-candera-vellum/70">
-                    {statusCardStatus || statusCardShips
-                      ? [statusCardStatus, statusCardShips].filter(Boolean).join(' · ')
-                      : 'Limited Batch · 47 units total'}
-                  </span>
+                  {(statusCardStatus || statusCardShips) && (
+                    <span className="text-sm text-candera-vellum/70">
+                      {[statusCardStatus, statusCardShips].filter(Boolean).join(' · ')}
+                    </span>
+                  )}
                   <Link
                     href={statusCardLinkUrl || '/products/wild-lilac'}
-                    className="text-xs font-bold uppercase tracking-[.18em] text-candera-linen/70 hover:text-white transition-colors underline decoration-1 underline-offset-4"
+                    className="ml-auto text-xs font-bold uppercase tracking-[.18em] text-candera-linen/70 hover:text-white transition-colors underline decoration-1 underline-offset-4"
                   >
                     View Scent →
                   </Link>

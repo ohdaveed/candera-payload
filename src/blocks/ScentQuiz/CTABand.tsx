@@ -32,7 +32,7 @@ export const ScentQuizCTABand: React.FC<Props> = ({
         </div>
       )}
       {headline && (
-        <h2 className="font-display font-normal italic text-candera-vellum text-3xl md:text-4xl m-0 leading-tight">
+        <h2 className="font-display font-normal italic text-candera-vellum text-4xl md:text-5xl m-0 leading-tight">
           {headline}
         </h2>
       )}
