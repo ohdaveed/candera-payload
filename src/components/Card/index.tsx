@@ -12,6 +12,13 @@ import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 
+/*
+ * NOTE TO FUTURE CONTRIBUTORS:
+ * This is the canonical Card component for Candera, consolidating all posts and products.
+ * Design (modern vs classic) and Aspect Ratio (square vs portrait 4:5) are explicitly controlled
+ * via Tailwind-ready CVA variants. Do not create duplicate product cards.
+ */
+
 const cardContainerVariants = cva('group relative flex h-full cursor-pointer flex-col', {
   variants: {
     type: {
@@ -20,22 +27,46 @@ const cardContainerVariants = cva('group relative flex h-full cursor-pointer fle
         'bg-candera-linen overflow-hidden',
         'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
         'transition-all duration-300 motion-reduce:transition-none',
-        'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
         'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
       ].join(' '),
+    },
+    design: {
+      modern:
+        'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
+      classic: 'hover:shadow-[0_4px_12px_rgba(20,20,18,0.10),0_16px_40px_rgba(20,20,18,0.08)]',
     },
   },
   defaultVariants: {
     type: 'post',
+    design: 'modern',
+  },
+})
+
+const cardImageVariants = cva('relative w-full overflow-hidden bg-candera-ash', {
+  variants: {
+    aspectRatio: {
+      square: 'aspect-square',
+      portrait: 'aspect-[4/5]',
+    },
+  },
+  defaultVariants: {
+    aspectRatio: 'square',
   },
 })
 
 export type CardContainerVariants = VariantProps<typeof cardContainerVariants>
+export type CardImageVariants = VariantProps<typeof cardImageVariants>
 
-export type CardPostData = Pick<
-  Post,
-  'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt' | 'heroImage'
+export type CardPostData = Omit<
+  Pick<
+    Post,
+    'slug' | 'categories' | 'meta' | 'title' | 'populatedAuthors' | 'publishedAt' | 'heroImage'
+  >,
+  'categories'
 > & {
+  id?: string | number
+  currency?: Product['currency']
+  categories?: Array<{ title?: string | null } | string | number> | null
   extraPhotos?: Product['extraPhotos']
   etsyListingId?: Product['etsyListingId']
   tagline?: Product['tagline']
@@ -51,16 +82,28 @@ export type CardPostData = Pick<
   customizationLabel?: Product['customizationLabel']
 }
 
-export const Card: React.FC<{
+export interface CardProps {
   className?: string
   doc?: CardPostData
   relationTo?: 'posts' | 'products'
   showCategories?: boolean
   title?: string
-}> = (props) => {
+  aspectRatio?: 'square' | 'portrait'
+  design?: 'modern' | 'classic'
+}
+
+export const Card: React.FC<CardProps> = (props) => {
   const prefersReducedMotion = useReducedMotion()
   const { cardRef, linkRef } = useClickableCard({})
-  const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+  const {
+    className,
+    doc,
+    relationTo,
+    showCategories,
+    title: titleFromProps,
+    aspectRatio = 'square',
+    design = 'modern',
+  } = props
 
   const {
     slug,
@@ -215,10 +258,10 @@ export const Card: React.FC<{
       whileTap={prefersReducedMotion ? undefined : 'tap'}
       variants={prefersReducedMotion ? {} : { tap: { scale: 0.98 } }}
       ref={cardRef as React.RefObject<HTMLDivElement>}
-      className={cn(cardContainerVariants({ type: 'product' }), className)}
+      className={cn(cardContainerVariants({ type: 'product', design }), className)}
     >
       {/* ── Image ── */}
-      <div className="relative w-full overflow-hidden bg-candera-ash aspect-square">
+      <div className={cn(cardImageVariants({ aspectRatio }))}>
         {imageToUse && typeof imageToUse !== 'string' ? (
           <>
             <Media
@@ -228,7 +271,7 @@ export const Card: React.FC<{
               size="33vw"
             />
             {/* Secondary image for hover crossfade */}
-            {secondaryImage && typeof secondaryImage !== 'string' && (
+            {design === 'modern' && secondaryImage && typeof secondaryImage !== 'string' && (
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[1]"
                 aria-hidden="true"
@@ -252,7 +295,7 @@ export const Card: React.FC<{
         )}
 
         {/* Hover slide-up bar for scent notes */}
-        {scentNotesText && (
+        {design === 'modern' && scentNotesText && (
           <div className="absolute bottom-0 left-0 right-0 bg-[#121210]/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 py-3 px-4 text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-white m-0">
               {scentNotesText}
@@ -339,13 +382,25 @@ export const Card: React.FC<{
               )}
             </span>
           )}
-          <Link
-            href={href}
-            onClick={(e) => e.stopPropagation()}
-            className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            View Details →
-          </Link>
+          {design === 'modern' ? (
+            <Link
+              href={href}
+              onClick={(e) => e.stopPropagation()}
+              className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              View Details →
+            </Link>
+          ) : (
+            <span
+              className="relative z-10 text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian underline underline-offset-4 decoration-candera-obsidian/30 hover:decoration-candera-obsidian transition-all duration-200 pointer-events-none"
+              aria-hidden="true"
+            >
+              VIEW DETAILS{' '}
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 motion-reduce:group-hover:translate-x-0">
+                →
+              </span>
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
