@@ -1,6 +1,6 @@
 # Candera: Botanical Scent Studio
 
-Candera is a digital storefront and micro-batch artisan platform for hand-poured botanical candles. This project is a headless architecture integrating **Payload CMS 3** with a **Next.js 15+** storefront, featuring a custom synchronization engine for Etsy inventory.
+Candera is a digital storefront and micro-batch artisan platform for hand-poured botanical candles. This project is a headless architecture integrating **Payload CMS 3** with a **Next.js 16** storefront, featuring a custom synchronization engine for Etsy inventory.
 
 ## Project Overview
 
