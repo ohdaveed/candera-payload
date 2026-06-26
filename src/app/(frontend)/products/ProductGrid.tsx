@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { ProductCard, type ProductCardData } from '@/components/ProductCard'
+import { Card, type CardPostData } from '@/components/Card'
 
 interface ProductGridProps {
-  products: ProductCardData[]
+  products: CardPostData[]
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
@@ -45,7 +45,13 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
     >
       {products.map((product, i) => (
         <motion.li key={product.slug ?? i} variants={item} className="flex">
-          <ProductCard product={product} className="w-full" />
+          <Card
+            doc={product}
+            relationTo="products"
+            design="classic"
+            aspectRatio="portrait"
+            className="w-full"
+          />
         </motion.li>
       ))}
     </motion.ul>

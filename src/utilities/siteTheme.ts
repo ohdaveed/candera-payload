@@ -11,11 +11,18 @@ export const SITE_THEME_OPTIONS = {
     { label: 'Legacy: Porcelain Pop', value: 'porcelain-pop' },
     { label: 'Legacy: Default', value: 'default' },
   ],
+  /*
+   * NOTE TO FUTURE CONTRIBUTORS:
+   * The approved brand font system consists strictly of:
+   * - Fraunces (display/editorial headings)
+   * - DM Sans (body and secondary sans-serif)
+   * - EB Garamond (editorial/text body)
+   * Options like space-grotesk and playfair-inter have been removed to prevent off-brand styling
+   * and avoid extra font loading payloads. Do not re-add them without brand design approval.
+   */
   fontSets: [
     { label: 'Default (current fonts)', value: 'default' },
-    { label: 'Playfair Display + Inter (serif headlines)', value: 'playfair-inter' },
     { label: 'DM Sans (friendly geometric sans)', value: 'dm-sans' },
-    { label: 'Space Grotesk (modern studio sans)', value: 'space-grotesk' },
   ],
   heroLayouts: [
     { label: 'Centered Editorial', value: 'centered-editorial' },
@@ -41,7 +48,7 @@ export const SITE_THEME_OPTIONS = {
 
 export const DEFAULT_SITE_THEME_SETTINGS = {
   colorScheme: 'rose-conversion',
-  fontSet: 'playfair-inter',
+  fontSet: 'default',
   heroLayout: 'centered-editorial',
   productCardDensity: 'boutique-grid',
   sectionMood: 'light-editorial',

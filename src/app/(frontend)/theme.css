@@ -318,23 +318,20 @@ html[data-skin='porcelain-pop'] {
   --ring: #b9116a;
 }
 
-/* Site Theme font sets — override the typography variables set in typography.css */
-html[data-fontset='playfair-inter'] {
-  --font-display: var(--font-fraunces), Georgia, serif;
-  --font-editorial: var(--font-fraunces), Georgia, serif;
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-}
+/*
+ * NOTE TO FUTURE CONTRIBUTORS:
+ * The approved brand font system consists strictly of:
+ * - Fraunces (display/editorial headings)
+ * - DM Sans (body and secondary sans-serif)
+ * - EB Garamond (editorial/text body)
+ * Legacy/off-brand options (playfair-inter, space-grotesk) have been removed.
+ * Custom overrides are restricted to the 'dm-sans' layout. Default styles are defined in typography.css.
+ */
 
 html[data-fontset='dm-sans'] {
   --font-display: var(--font-dm-sans), system-ui, sans-serif;
   --font-editorial: var(--font-dm-sans), system-ui, sans-serif;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-}
-
-html[data-fontset='space-grotesk'] {
-  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
-  --font-editorial: var(--font-space-grotesk), system-ui, sans-serif;
-  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
 /* ============================================================
