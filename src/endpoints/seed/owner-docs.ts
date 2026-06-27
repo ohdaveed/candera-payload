@@ -50,6 +50,7 @@ export const OWNER_DOCS: Doc[] = [
         'Header — your site navigation links',
         'Footer — your footer links and text',
         'Site Theme — your brand colours and visual settings',
+        'Studio Info — your studio name, contact details, and other studio information shown to visitors',
       ),
       createHeading('Where to start', 'h2'),
       createParagraph(
@@ -97,7 +98,7 @@ export const OWNER_DOCS: Doc[] = [
       ),
       createHeading('How to preview before publishing', 'h2'),
       createParagraph(
-        'On products and posts, you will see a "Preview" button near the top of the edit screen. Click it to open a live preview of the page as it will appear to visitors — before you publish. You can switch between Mobile, Tablet, and Desktop views using the buttons at the top of the preview panel.',
+        'On posts and pages, you will see a "Preview" button near the top of the edit screen. Click it to open a live preview of the page as it will appear to visitors — before you publish. You can switch between Mobile, Tablet, and Desktop views using the buttons at the top of the preview panel. (Products do not have a preview button — publish a product to see it on the live site.)',
       ),
       createHeading('Unpublishing something', 'h2'),
       createParagraph(
@@ -420,16 +421,12 @@ export const OWNER_DOCS: Doc[] = [
       createParagraph(
         'Etsy access tokens expire after a period of time. When this happens, the integration will stop working. You will typically notice this because product links stop routing to Etsy correctly, or you see an error when trying to use Etsy-related features.',
       ),
-      createHeading('How to renew your Etsy connection', 'h2'),
-      createNumberedList(
-        'Under the System section in the left menu, click "Etsy Tokens"',
-        'You will see your current token and its expiry information',
-        'If it has expired, click the "Reconnect Etsy" button or follow the re-authentication link provided',
-        'You will be taken to Etsy to log in and approve the connection again',
-        'Once approved, you will be redirected back and the token will be renewed automatically',
+      createHeading('How the connection gets renewed', 'h2'),
+      createParagraph(
+        'Renewing the Etsy connection is a behind-the-scenes maintenance task handled by your developer — there is no button for it in your dashboard, and the connection details are kept private for security. If product links stop working or you see an Etsy error, contact your developer and they will reconnect it for you.',
       ),
       createParagraph(
-        'If you are unsure whether your Etsy connection is working, contact your developer to verify.',
+        'If you are ever unsure whether your Etsy connection is working, your developer can verify it for you.',
       ),
     ]) as Doc['content'],
   },
@@ -503,25 +500,41 @@ export const OWNER_DOCS: Doc[] = [
   },
 ]
 
+const DOC_FETCH_LIMIT = 1000
+
 export const seedOwnerDocs = async (payload: Payload): Promise<void> => {
   payload.logger.info('— Seeding owner documentation (replace)...')
 
-  const existing = await payload.find({ collection: 'documentation', limit: 1000, depth: 0 })
-  for (const doc of existing.docs) {
-    await payload.delete({
-      collection: 'documentation',
-      id: doc.id,
-      depth: 0,
-      context: { disableRevalidate: true },
-    })
+  const context = { disableRevalidate: true }
+  const existing = await payload.find({
+    collection: 'documentation',
+    limit: DOC_FETCH_LIMIT,
+    depth: 0,
+  })
+  const bySlug = new Map(existing.docs.map((doc) => [doc.slug, doc.id]))
+
+  // Write-then-swap: upsert every canonical entry by slug first, so the
+  // collection is never left empty if a later write fails, then prune any
+  // leftover (e.g. legacy) docs. End state is exactly OWNER_DOCS.
+  for (const doc of OWNER_DOCS) {
+    const existingId = bySlug.get(doc.slug)
+    if (existingId === undefined) {
+      await payload.create({ collection: 'documentation', depth: 0, context, data: doc })
+    } else {
+      await payload.update({
+        collection: 'documentation',
+        id: existingId,
+        depth: 0,
+        context,
+        data: doc,
+      })
+    }
   }
 
-  for (const doc of OWNER_DOCS) {
-    await payload.create({
-      collection: 'documentation',
-      depth: 0,
-      context: { disableRevalidate: true },
-      data: doc,
-    })
+  const canonicalSlugs = new Set(OWNER_DOCS.map((doc) => doc.slug))
+  for (const doc of existing.docs) {
+    if (!canonicalSlugs.has(doc.slug)) {
+      await payload.delete({ collection: 'documentation', id: doc.id, depth: 0, context })
+    }
   }
 }

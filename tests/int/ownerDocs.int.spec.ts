@@ -22,7 +22,22 @@ const EXPECTED_SLUGS = [
 
 describe('seedOwnerDocs', () => {
   beforeAll(async () => {
+    // This suite runs DESTRUCTIVE replace semantics on the documentation
+    // collection. Refuse to run against anything but a local test database so a
+    // misconfigured run can never clobber real (e.g. Neon) documentation.
+    const conn =
+      process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+    if (!/@(localhost|127\.0\.0\.1)[:/]/.test(conn)) {
+      throw new Error(
+        'ownerDocs.int.spec.ts is destructive; refusing to run against a non-local database. ' +
+          'Point DATABASE_URI/POSTGRES_URL at a local test DB ' +
+          '(e.g. postgresql://postgres@localhost:54320/candera_test).',
+      )
+    }
     payload = await getPayload({ config: await config })
+    // Seed once up front so every test is order-independent (subsets can run
+    // in isolation without depending on a prior test having seeded).
+    await seedOwnerDocs(payload)
   })
 
   it('exports 12 entries with valid categories and non-empty Lexical content', () => {
