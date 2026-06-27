@@ -115,7 +115,7 @@ describe('EtsyClient', () => {
     expect(tokenRepo.token?.refreshToken).toBe('initial-refresh')
   })
 
-  it('falls back to credentials key-secret signature header when no OAuth token exists', async () => {
+  it('sends the API keystring header (and no bearer) when no OAuth token exists', async () => {
     const client = new EtsyClient(
       {
         apiKey: 'test-key',
@@ -131,7 +131,7 @@ describe('EtsyClient', () => {
       'https://openapi.etsy.com/v3/application/shops/123/listings/active',
       expect.objectContaining({
         headers: expect.objectContaining({
-          'x-api-key': 'test-key:test-secret',
+          'x-api-key': 'test-key',
         }),
       }),
     )
