@@ -1,9 +1,10 @@
 import { getPayload, type Payload } from 'payload'
-import configPromise from '@payload-config'
 import { etsyLogger } from './logger'
 
 const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
 const ETSY_OAUTH_URL = 'https://api.etsy.com/v3/public/oauth'
+// User-facing consent page (distinct from the token-exchange endpoint above).
+const ETSY_CONNECT_URL = 'https://www.etsy.com/oauth/connect'
 const SCOPES = [
   'listings_r',
   'listings_w',
@@ -48,6 +49,10 @@ export class DefaultPayloadTokenRepository implements TokenRepository {
 
   private async getPayload() {
     if (!this.payloadInstance) {
+      // Imported lazily to avoid a module-load cycle: payload.config imports the
+      // Etsy endpoints, which import this client. A top-level config import would
+      // make the endpoint modules unimportable in isolation (e.g. in tests).
+      const { default: configPromise } = await import('@payload-config')
       this.payloadInstance = await getPayload({ config: configPromise })
     }
     return this.payloadInstance
@@ -142,14 +147,19 @@ export class EtsyClient {
   /**
    * Builds the authorization page URL for starting the Etsy OAuth 2.0 flow.
    */
-  generateAuthUrl(): string {
-    const url = new URL(`${ETSY_OAUTH_URL}/token`)
+  generateAuthUrl(state: string, codeChallenge: string): string {
+    const url = new URL(ETSY_CONNECT_URL)
+    url.searchParams.set('response_type', 'code')
     url.searchParams.set('client_id', this.config.apiKey)
     url.searchParams.set('redirect_uri', this.config.redirectUri)
-    url.searchParams.set('response_type', 'code')
     url.searchParams.set('scope', SCOPES.join(' '))
-    // Basic unique identifier generation for state protection
-    url.searchParams.set('state', crypto.randomUUID?.() || Math.random().toString(36).substring(2))
+    // State is supplied (and persisted) by the caller so it can be validated on
+    // the OAuth callback to defend against CSRF.
+    url.searchParams.set('state', state)
+    // PKCE: Etsy requires the S256 challenge here; the verifier is sent on the
+    // token exchange. Both are minted and stored by the caller.
+    url.searchParams.set('code_challenge', codeChallenge)
+    url.searchParams.set('code_challenge_method', 'S256')
 
     return url.toString()
   }
@@ -157,15 +167,12 @@ export class EtsyClient {
   /**
    * Exchanges an authorization callback code for initial tokens and registers them.
    */
-  async completeAuthFlow(code: string): Promise<void> {
-    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString(
-      'base64',
-    )
-
+  async completeAuthFlow(code: string, codeVerifier: string): Promise<void> {
+    // PKCE public-client exchange: authenticated by client_id + code_verifier,
+    // not the shared secret — so no Basic auth header here.
     const res = await fetch(`${ETSY_OAUTH_URL}/token`, {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${basicAuth}`,
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       },
@@ -174,6 +181,7 @@ export class EtsyClient {
         client_id: this.config.apiKey,
         redirect_uri: this.config.redirectUri,
         code,
+        code_verifier: codeVerifier,
       }),
     })
 
@@ -198,14 +206,9 @@ export class EtsyClient {
     refresh_token: string
     expires_in: number
   }> {
-    const basicAuth = Buffer.from(`${this.config.apiKey}:${this.config.sharedSecret}`).toString(
-      'base64',
-    )
-
     const res = await fetch(`${ETSY_OAUTH_URL}/token`, {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${basicAuth}`,
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       },
