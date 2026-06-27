@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { preventSuspendedLogin } from './hooks/preventSuspendedLogin'
+import { authenticated } from '../access/authenticated'
+import { preventSuspendedLogin } from '../hooks/preventSuspendedLogin'
 
 export const Users: CollectionConfig = {
   slug: 'users',

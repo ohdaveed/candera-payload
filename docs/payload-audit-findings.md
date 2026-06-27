@@ -12,7 +12,7 @@ No source files were changed by this audit.
 
 | # | Dimension | Verdict | Severity | File(s) |
 |---|---|---|---|---|
-| 1 | Collection file-structure consistency | ⚠ Diverges | **Med** | `src/collections/` |
+| 1 | Collection file-structure consistency | ✓ Resolved | — | `src/collections/` |
 | 2 | Naming consistency | ✓ Pass (minor) | Low | `src/collections/` |
 | 3 | Block registration integrity | ✓ Pass | — | `src/blocks/RenderBlocks.tsx` |
 | 4 | Access-control idiom | ✓ Pass | — | `src/access/authenticatedOrPublished.ts` |
@@ -44,21 +44,24 @@ exist (`'playfair-inter'`, `'space-grotesk'`).
 `generate:types` yields a non-empty diff. Per the project CLAUDE.md convention, types must be
 regenerated after any schema change.
 
-### #1 — Mixed collection file structure (Med)
-candera mixes two layouts:
+### #1 — Mixed collection file structure (✓ Resolved 2026-06-26)
+candera previously mixed two layouts:
 - **Dir-per-collection:** `Pages/`, `Posts/`, `Users/` (with `index.ts`).
 - **Single-file:** `Products.ts`, `Categories.ts`, `Media.ts`, `Briefs.ts`, `Documentation.ts`,
   `EtsyTokens.ts`, `Folders.ts`, `HowToGuides.ts`, `Quizzes.ts`, `ScentProfiles.ts`.
 
 The starter standardizes on dir-per-collection + a `hooks/` subdir. **Important nuance:** Payload
 imposes **no** file-structure requirement — collections register by importing a `CollectionConfig`
-into the `collections` array regardless of layout. So this is an **internal-consistency /
+into the `collections` array regardless of layout. So this was an **internal-consistency /
 maintainability** finding, not an API-idiom violation.
 
-**Fix (optional, low-risk):** pick one convention. Given candera centralizes revalidation in
-`src/utilities/revalidate.ts` (not per-collection `hooks/` dirs), the single-file form is the
-simpler target — consider converting `Pages/`, `Posts/`, `Users/` to single files, *or* the
-reverse. Either way, do it as a pure file move + import-path update; defer if churn isn't worth it.
+**Resolution:** standardized on the **single-file** form (the existing 10-of-13 majority; lower
+churn; aligns with candera's centralized `src/utilities/revalidate.ts` rather than per-collection
+`hooks/` dirs). `Pages/index.ts`, `Posts/index.ts`, `Users/index.ts` became `Pages.ts`, `Posts.ts`,
+`Users.ts`; the two collection-local hooks moved to the shared `src/hooks/` dir (joining
+`populatePublishedAt.ts`): `populateAuthors.ts` and `preventSuspendedLogin.ts`. Pure file move +
+import-path update — `tsc --noEmit` and `vp lint` both clean. `payload.config.ts` imports were
+unchanged (`./collections/Pages` resolves to `Pages.ts` exactly as it did to `Pages/index.ts`).
 
 ### #8 — No startup validation for Etsy env vars (Low)
 `src/payload.config.ts` validates `PAYLOAD_SECRET`, `DATABASE_URI`/`POSTGRES_URL`, and (in prod)
@@ -95,7 +98,8 @@ boot-critical.
 
 ## Recommended next actions (in priority order)
 1. **#6** — regenerate + commit `payload-types.ts` (5-minute fix, real type-safety impact).
-2. **#1** — decide on one collection file convention; execute as a mechanical move if worthwhile.
+2. ~~**#1** — decide on one collection file convention; execute as a mechanical move if worthwhile.~~
+   ✓ Done — standardized on single-file (see finding #1 above).
 3. **#8** — add a non-fatal Etsy env startup warning.
 
 All three are deferred to a separate, explicitly-approved change — this run is the audit only.

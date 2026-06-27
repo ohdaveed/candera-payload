@@ -12,7 +12,7 @@ import { innerCircleForm as innerCircleFormData } from './inner-circle-form'
 import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
 import { seedScentQuiz } from './scent-quiz'
 import { seedHowToGuides } from './how-to-guides'
-import { seedAdminDocs } from './admin-docs'
+import { seedOwnerDocs } from './owner-docs'
 import { contact as contactPageData } from './contact-page'
 import { about as aboutPageData } from './about-page'
 import { home } from './home'
@@ -267,7 +267,7 @@ export const seed = async ({
     image3Doc: image3Doc as Media,
   })
 
-  await seedAdminDocs(payload)
+  await seedOwnerDocs(payload)
 
   payload.logger.info(`— Seeding products...`)
 
