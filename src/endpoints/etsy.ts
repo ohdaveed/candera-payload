@@ -2,6 +2,7 @@ import type { Endpoint } from 'payload'
 
 import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClient'
 import { syncEtsyListings } from '@/utilities/syncEtsy'
+import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
 
 const getEtsyShopId = (): number => {
   const shopId = Number(process.env.ETSY_SHOP_ID)
@@ -43,11 +44,12 @@ const createEtsyClient = (req: Parameters<Endpoint['handler']>[0]) =>
   )
 
 const OAUTH_STATE_COOKIE = 'etsy_oauth_state'
+const OAUTH_VERIFIER_COOKIE = 'etsy_oauth_verifier'
 
-// Lax so the cookie rides the top-level GET redirect back from Etsy; Secure is
+// Lax so the cookies ride the top-level GET redirect back from Etsy; Secure is
 // honored on https (and on localhost, which browsers treat as a secure context).
-const buildStateCookie = (value: string, maxAgeSeconds: number) =>
-  `${OAUTH_STATE_COOKIE}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}`
+const buildOAuthCookie = (name: string, value: string, maxAgeSeconds: number) =>
+  `${name}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}`
 
 const readCookie = (cookieHeader: string | null, name: string): string | undefined => {
   if (!cookieHeader) return undefined
@@ -84,9 +86,12 @@ export const etsyOAuthInitEndpoint: Endpoint = {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
     const state = crypto.randomUUID()
-    const authUrl = createEtsyClient(req).generateAuthUrl(state)
+    const codeVerifier = generateCodeVerifier()
+    const codeChallenge = deriveCodeChallenge(codeVerifier)
+    const authUrl = createEtsyClient(req).generateAuthUrl(state, codeChallenge)
     const headers = new Headers({ Location: authUrl })
-    headers.append('Set-Cookie', buildStateCookie(state, 600))
+    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, state, 600))
+    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, codeVerifier, 600))
     return new Response(null, { status: 302, headers })
   },
 }
@@ -128,16 +133,25 @@ export const etsyOAuthCallbackEndpoint: Endpoint = {
 
     // CSRF defense: the state echoed back by Etsy must match the value set on the
     // init redirect and stored in an HttpOnly cookie.
+    const cookieHeader = req.headers.get('cookie')
     const state = url.searchParams.get('state')
-    const expectedState = readCookie(req.headers.get('cookie'), OAUTH_STATE_COOKIE)
+    const expectedState = readCookie(cookieHeader, OAUTH_STATE_COOKIE)
     if (!state || !expectedState || state !== expectedState) {
       return Response.json({ error: 'Invalid OAuth state' }, { status: 400 })
     }
 
+    // PKCE: the verifier minted at init (stored in an HttpOnly cookie) is required
+    // to complete the token exchange.
+    const codeVerifier = readCookie(cookieHeader, OAUTH_VERIFIER_COOKIE)
+    if (!codeVerifier) {
+      return Response.json({ error: 'Missing PKCE verifier' }, { status: 400 })
+    }
+
     try {
-      await createEtsyClient(req).completeAuthFlow(code)
+      await createEtsyClient(req).completeAuthFlow(code, codeVerifier)
       const headers = new Headers({ Location: new URL('/admin', url.origin).toString() })
-      headers.append('Set-Cookie', buildStateCookie('', 0))
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, '', 0))
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, '', 0))
       return new Response(null, { status: 302, headers })
     } catch (error) {
       req.payload.logger.error({ err: error, msg: 'Error in /etsy/oauth/callback endpoint' })
