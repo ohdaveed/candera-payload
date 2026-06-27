@@ -1,5 +1,4 @@
 import { getPayload, type Payload } from 'payload'
-import configPromise from '@payload-config'
 import { etsyLogger } from './logger'
 
 const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
@@ -48,6 +47,10 @@ export class DefaultPayloadTokenRepository implements TokenRepository {
 
   private async getPayload() {
     if (!this.payloadInstance) {
+      // Imported lazily to avoid a module-load cycle: payload.config imports the
+      // Etsy endpoints, which import this client. A top-level config import would
+      // make the endpoint modules unimportable in isolation (e.g. in tests).
+      const { default: configPromise } = await import('@payload-config')
       this.payloadInstance = await getPayload({ config: configPromise })
     }
     return this.payloadInstance
@@ -142,14 +145,15 @@ export class EtsyClient {
   /**
    * Builds the authorization page URL for starting the Etsy OAuth 2.0 flow.
    */
-  generateAuthUrl(): string {
+  generateAuthUrl(state: string): string {
     const url = new URL(`${ETSY_OAUTH_URL}/token`)
     url.searchParams.set('client_id', this.config.apiKey)
     url.searchParams.set('redirect_uri', this.config.redirectUri)
     url.searchParams.set('response_type', 'code')
     url.searchParams.set('scope', SCOPES.join(' '))
-    // Basic unique identifier generation for state protection
-    url.searchParams.set('state', crypto.randomUUID?.() || Math.random().toString(36).substring(2))
+    // State is supplied (and persisted) by the caller so it can be validated on
+    // the OAuth callback to defend against CSRF.
+    url.searchParams.set('state', state)
 
     return url.toString()
   }

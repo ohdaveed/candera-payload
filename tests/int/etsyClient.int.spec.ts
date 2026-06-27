@@ -66,7 +66,7 @@ describe('EtsyClient', () => {
       tokenRepo,
     )
 
-    const urlString = client.generateAuthUrl()
+    const urlString = client.generateAuthUrl('test-state')
     const url = new URL(urlString)
 
     expect(url.origin).toBe('https://api.etsy.com')
@@ -75,7 +75,7 @@ describe('EtsyClient', () => {
     expect(url.searchParams.get('redirect_uri')).toBe('http://localhost/callback')
     expect(url.searchParams.get('response_type')).toBe('code')
     expect(url.searchParams.get('scope')).toContain('listings_r')
-    expect(url.searchParams.get('state')).toBeDefined()
+    expect(url.searchParams.get('state')).toBe('test-state')
   })
 
   it('exchanges authorization code and persists the token details', async () => {
