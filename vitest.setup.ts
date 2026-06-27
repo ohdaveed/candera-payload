@@ -3,8 +3,8 @@
 // Load .env files
 import 'dotenv/config'
 
-// DATABASE_URL is required by neon(), but we may only have POSTGRES_URL in .env
-// Fallback to POSTGRES_URL if DATABASE_URL is not set
-if (!process.env.DATABASE_URL && process.env.POSTGRES_URL) {
-  process.env.DATABASE_URL = process.env.POSTGRES_URL
+// DATABASE_URL is required by neon(), but the canonical connection string is
+// DATABASE_URI (vaulted). Fall back to DATABASE_URI, then POSTGRES_URL.
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = process.env.DATABASE_URI || process.env.POSTGRES_URL
 }

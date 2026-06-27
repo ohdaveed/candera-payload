@@ -8,7 +8,7 @@ import { consola } from 'consola'
 dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
 
 async function initNewDb() {
-  const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
+  const dbUrl = process.env.DATABASE_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL
 
   consola.info('🚀 Starting Candera Database Initialization...')
 
