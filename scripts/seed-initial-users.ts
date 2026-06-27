@@ -19,9 +19,11 @@ const USERS_TO_SEED = [
 ]
 
 async function seedInitialUsers(): Promise<void> {
-  const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
+  const dbUrl = process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL
   if (!dbUrl) {
-    seedLogger.error('POSTGRES_URL or DATABASE_URL is not set. Skipping user seeding.')
+    seedLogger.error(
+      'DATABASE_URI (or POSTGRES_URL/DATABASE_URL) is not set. Skipping user seeding.',
+    )
     process.exit(1)
   }
 
