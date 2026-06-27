@@ -86,7 +86,8 @@ export const setEtsyVacationEndpoint: Endpoint = {
       })
       return Response.json({ success: true, shop: data })
     } catch (error) {
-      return Response.json({ error: String(error) }, { status: 500 })
+      req.payload.logger.error({ err: error, msg: 'Error in /etsy/set-vacation endpoint' })
+      return Response.json({ error: 'Error setting vacation mode' }, { status: 500 })
     }
   },
 }
@@ -109,7 +110,8 @@ export const etsyOAuthCallbackEndpoint: Endpoint = {
       await createEtsyClient(req).completeAuthFlow(code)
       return Response.redirect(new URL('/admin', url.origin).toString())
     } catch (error) {
-      return Response.json({ error: String(error) }, { status: 500 })
+      req.payload.logger.error({ err: error, msg: 'Error in /etsy/oauth/callback endpoint' })
+      return Response.json({ error: 'Error completing Etsy authorization' }, { status: 500 })
     }
   },
 }
