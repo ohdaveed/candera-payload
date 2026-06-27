@@ -18,9 +18,14 @@ overrides:
   undici@>=7.0.0 <7.28.0: '>=7.28.0 <8'
   nodemailer@<9.0.1: '>=9.0.1'
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
-  vite-plus: latest
+  # Pinned to a mutually-compatible Vite+ set (off @latest, which drifted:
+  # vite-plus/-core reached 0.2.x while @voidzero-dev/vite-plus-test never
+  # published 0.2.x, breaking `vp test`). Per the vite-plus README, pin `vitest`
+  # to the real Vitest the CLI bundles (4.1.9) — not the obsolete -test alias —
+  # so the project and `vp test` share one Vitest copy.
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.1
+  vitest: 4.1.9
+  vite-plus: 0.2.1
 peerDependencyRules:
   allowAny:
     - vite
