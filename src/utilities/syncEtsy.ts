@@ -265,8 +265,8 @@ export class EtsySyncEngine {
       /Please visit my store for more fantastic items to buy!/gi,
       /Click the heart in the Favorite Shop box at the top of this page/gi,
       /Thank you for visiting and purchase!/gi,
-      /Visit my shop at: https:\/\/www.etsy.com\/ca\/shop\/[a-z0-9-]+/gi,
-      /https:\/\/www.etsy.com\/ca\/shop\/[a-z0-9-]+/gi,
+      /Visit my shop at: https:\/\/www\.etsy\.com\/ca\/shop\/[a-z0-9-]+/gi,
+      /https:\/\/www\.etsy\.com\/ca\/shop\/[a-z0-9-]+/gi,
     ]
 
     promoPhrases.forEach((phrase) => {
