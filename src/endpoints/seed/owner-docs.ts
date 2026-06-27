@@ -42,7 +42,7 @@ export const OWNER_DOCS: Doc[] = [
         'Categories — labels used to group products and posts',
         'Quizzes — the scent quiz questions and answer options',
         'Scent Profiles — the results that the scent quiz recommends (e.g. "Intimate", "Meadowlight")',
-        'Briefs — internal notes and project briefs, not visible to visitors',
+        'Briefs — AI-generated content briefs for product pages, not visible to visitors',
         'Users — admin accounts that can log in to this dashboard',
       ),
       createHeading('Your globals at a glance', 'h2'),
@@ -176,15 +176,13 @@ export const OWNER_DOCS: Doc[] = [
       createNumberedList(
         'Click "Products" in the left menu',
         'Find the product you want to edit and click on it',
-        'The product editor will open with several tabs across the top: Content, Scent Profile, Specifications, SEO',
+        'The product editor will open with two tabs across the top: Content and SEO',
         'Edit the fields you want to change',
         'Click "Save Draft" to save without publishing, or "Publish" to go live',
       ),
       createHeading('What each tab contains', 'h2'),
       createBulletList(
-        'Content — the product title, tagline, price, main description, and hero image',
-        'Scent Profile — the scent notes, burn time, wax type, and botanical details',
-        'Specifications — vessel size, weight, and other technical details',
+        'Content — the product title, tagline, price, main description, and hero image. Scroll down within this tab for two more sections: Scent Profile (the scent notes, burn time, wax type, and botanical details) and Specifications (vessel size, weight, and other details)',
         'SEO — the title and description that appear in Google search results',
       ),
       createHeading('How to add a new product', 'h2'),
@@ -424,7 +422,7 @@ export const OWNER_DOCS: Doc[] = [
       ),
       createHeading('How to renew your Etsy connection', 'h2'),
       createNumberedList(
-        'Click "Etsy Tokens" in the left menu',
+        'Under the System section in the left menu, click "Etsy Tokens"',
         'You will see your current token and its expiry information',
         'If it has expired, click the "Reconnect Etsy" button or follow the re-authentication link provided',
         'You will be taken to Etsy to log in and approve the connection again',
@@ -446,7 +444,7 @@ export const OWNER_DOCS: Doc[] = [
     category: 'CMS Usage',
     content: createRichText([
       createParagraph(
-        'Your dashboard was set up with some example content to help you learn how things work. These items are labelled TUTORIAL or PRACTICE so you can tell them apart from your real content.',
+        'Your developer may have loaded some practice content to help you learn how things work. If present, these items are labelled TUTORIAL or PRACTICE so you can tell them apart from your real content. If you do not see them in your Products and Posts, your site simply started without them — that is perfectly fine, and the rest of this guide still applies.',
       ),
       createHeading('What demo content exists', 'h2'),
       createBulletList(
