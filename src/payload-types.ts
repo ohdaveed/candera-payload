@@ -2449,7 +2449,7 @@ export interface SiteTheme {
     | 'lavender-noir'
     | 'porcelain-pop'
     | 'default';
-  fontSet: 'default' | 'playfair-inter' | 'dm-sans' | 'space-grotesk';
+  fontSet: 'default' | 'dm-sans';
   /**
    * Controls the hero section layout on the homepage
    */
