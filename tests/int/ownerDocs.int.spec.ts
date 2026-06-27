@@ -20,20 +20,17 @@ const EXPECTED_SLUGS = [
   'developer-reset-demo-data',
 ]
 
-describe('seedOwnerDocs', () => {
+// This suite runs DESTRUCTIVE replace semantics on the documentation
+// collection, so it only runs against a local test database. Against anything
+// else (e.g. the default Neon connection) it is skipped, so a normal
+// `pnpm test:int` can never clobber real documentation. To run it, point
+// DATABASE_URI/POSTGRES_URL at a local DB (e.g.
+// postgresql://postgres@localhost:54320/candera_test).
+const conn = process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
+const isLocalDb = /@(localhost|127\.0\.0\.1)[:/]/.test(conn)
+
+describe.skipIf(!isLocalDb)('seedOwnerDocs', () => {
   beforeAll(async () => {
-    // This suite runs DESTRUCTIVE replace semantics on the documentation
-    // collection. Refuse to run against anything but a local test database so a
-    // misconfigured run can never clobber real (e.g. Neon) documentation.
-    const conn =
-      process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
-    if (!/@(localhost|127\.0\.0\.1)[:/]/.test(conn)) {
-      throw new Error(
-        'ownerDocs.int.spec.ts is destructive; refusing to run against a non-local database. ' +
-          'Point DATABASE_URI/POSTGRES_URL at a local test DB ' +
-          '(e.g. postgresql://postgres@localhost:54320/candera_test).',
-      )
-    }
     payload = await getPayload({ config: await config })
     // Seed once up front so every test is order-independent (subsets can run
     // in isolation without depending on a prior test having seeded).
