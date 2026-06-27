@@ -41,7 +41,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   return (
     <div className="flex flex-col gap-6 w-full">
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
-        <div className="flex items-center border border-candera-stone/30 bg-[#171717]/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
+        <div className="flex items-center border border-candera-stone/30 bg-candera-obsidian/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
             type="email"
