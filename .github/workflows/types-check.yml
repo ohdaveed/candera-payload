@@ -1,0 +1,40 @@
+name: Types Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  generated-types:
+    name: payload-types up to date
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    # generate:types only instantiates the Payload config; it never connects to
+    # the database. Dummy values satisfy the config's startup guards
+    # (PAYLOAD_SECRET + a Postgres connection string) without any real secrets.
+    env:
+      PAYLOAD_SECRET: ci-types-check-dummy-secret
+      DATABASE_URI: postgres://user:pass@localhost:5432/ci
+      POSTGRES_URL: postgres://user:pass@localhost:5432/ci
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify payload-types.ts is up to date
+        run: pnpm run generate:types:check
