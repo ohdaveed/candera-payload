@@ -33,3 +33,14 @@ peerDependencyRules:
   allowedVersions:
     vite: '*'
     vitest: '*'
+auditConfig:
+  # Suppressed advisories — re-evaluate when a remediation path opens up.
+  # Both are the same root cause: `vite` is aliased to the Vite+ fork
+  # (catalog: npm:@voidzero-dev/vite-plus-core), whose newest release (0.2.1)
+  # still self-reports as vite 7.3.3 and has no build on the patched vite
+  # >=7.3.5 yet. Both CVEs are Windows-only; vite is dev/test-only (never in
+  # the production bundle) and we build/run on Linux — so exposure is nil here.
+  # Lift these once vite-plus-core ships a vite >=7.3.5 base, then bump the catalog.
+  ignoreGhsas:
+    - GHSA-fx2h-pf6j-xcff # vite: server.fs.deny bypass on Windows alternate paths (high)
+    - GHSA-v6wh-96g9-6wx3 # vite/launch-editor: NTLMv2 hash disclosure via Windows UNC paths (moderate)
