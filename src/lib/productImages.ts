@@ -28,8 +28,8 @@ export const productGalleryPhotos = (
 ): (Media | number)[] => {
   const primary = productPrimaryPhoto(etsyPrimaryImage, extraPhotos)
   const gallery = extraPhotos ?? []
-  const idOf = (img: Media | number): number | null =>
-    typeof img === 'object' ? img.id : typeof img === 'number' ? img : null
+  const idOf = (img: Media | number | null | undefined): number | null =>
+    img && typeof img === 'object' ? img.id : typeof img === 'number' ? img : null
 
   if (!primary) return [...gallery]
   const primaryId = idOf(primary)
