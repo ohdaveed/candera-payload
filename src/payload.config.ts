@@ -30,6 +30,7 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { EtsyTokens } from './collections/EtsyTokens'
 import { etsyEndpoints } from './endpoints/etsy'
 
@@ -175,11 +176,31 @@ export default buildConfig({
   globals: [Header, Footer, SiteTheme, StudioInfo],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
-  email: resendAdapter({
-    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || BRAND.email,
-    defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
-    apiKey: process.env.RESEND_API_KEY || '',
-  }),
+  // Prefer Resend when a key is present; otherwise fall back to nodemailer (SMTP if
+  // configured, else a non-network jsonTransport) so email paths like password reset
+  // are harmless no-ops in local/preview rather than failing against an empty key.
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || BRAND.email,
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
+        apiKey: process.env.RESEND_API_KEY,
+      })
+    : nodemailerAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || BRAND.email,
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Candera',
+        transportOptions: process.env.SMTP_HOST
+          ? {
+              host: process.env.SMTP_HOST,
+              port: Number(process.env.SMTP_PORT) || 587,
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+              },
+            }
+          : {
+              jsonTransport: true,
+            },
+      }),
   endpoints: [...etsyEndpoints],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
