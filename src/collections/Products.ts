@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
@@ -89,8 +90,10 @@ export const Products: CollectionConfig = {
             {
               name: 'description',
               type: 'richText',
+              label: 'Editorial Description',
               admin: {
-                description: 'The story and details of this piece.',
+                description:
+                  'The narrative story of this piece, featured prominently on the product page. Seeded from Etsy on first sync — edit freely; re-syncs will not overwrite it.',
               },
             },
             {
@@ -202,15 +205,32 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    // Raw Etsy payload kept out of the editor's way: `etsyTitle` and
+    // `rawEtsyDescription` are written on every sync as an audit/backup of the
+    // marketplace source, while the editor-facing `title` and `description`
+    // stay clean and curated. Hidden from admin to avoid clutter; still present
+    // in the API/types so the sync can populate them.
     {
-      name: 'slug',
+      name: 'etsyTitle',
       type: 'text',
-      required: true,
-      unique: true,
+      hidden: true,
       admin: {
-        position: 'sidebar',
+        readOnly: true,
+        description: 'Raw, keyword-stuffed title as returned by Etsy. Backup only.',
       },
     },
+    {
+      name: 'rawEtsyDescription',
+      type: 'textarea',
+      hidden: true,
+      admin: {
+        readOnly: true,
+        description: 'Unparsed Etsy description string. Backup only.',
+      },
+    },
+    // Clean slug derived from the curated `title` via slugField's beforeValidate
+    // hook (no Etsy listing ID appended). Matches Pages/Posts; editable + lockable.
+    slugField(),
     {
       name: 'productTag',
       type: 'select',
