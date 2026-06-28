@@ -23,7 +23,7 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "vp test run --config ./vitest.config.mts",
-    "prepare": "vp config",
+    "prepare": "husky",
     "fix:product-listings": "tsx scripts/fix-product-listings.ts",
     "dump-public-schema": "bash ./scripts/dump-public-schema.sh \"$DATABASE_URL\" ./schema/public_schema.tsv",
     "show-public-schema": "sed -n '1,500p' ./schema/public_schema.tsv",
@@ -96,7 +96,9 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "4.5.2",
     "autoprefixer": "^10.5.2",
+    "husky": "^9.1.7",
     "jsdom": "29.1.1",
+    "lint-staged": "^17.0.8",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.1",
     "tsx": "4.21.0",
@@ -109,5 +111,10 @@
   "packageManager": "pnpm@11.8.0",
   "engines": {
     "node": "24.x"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "vp lint --fix"
+    ]
   }
 }
