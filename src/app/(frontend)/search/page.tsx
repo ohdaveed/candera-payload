@@ -4,9 +4,10 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 import { Search } from '@/search/Component'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import type { CardPostData } from '@/components/Card'
-import type { Media } from '@/payload-types'
+import type { Media, Search as SearchDoc } from '@/payload-types'
 import Link from 'next/link'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { searchContent } from '@/lib/queries/search'
@@ -37,7 +38,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     ),
   )
 
-  const posts: CardPostData[] = results.map((r) => ({
+  const toCard = (r: SearchDoc): CardPostData => ({
     title: r.title ?? '',
     slug: r.slug ?? '',
     categories: undefined,
@@ -47,7 +48,14 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       image:
         r.meta?.image && typeof r.meta.image === 'object' ? (r.meta.image as Media) : undefined,
     },
-  }))
+  })
+
+  // Split hits by collection so each card links to the right route — products to
+  // /products/[slug], posts to /posts/[slug]. Without this, every result rendered
+  // as a post and product hits 404'd.
+  const productCards = results.filter((r) => r.doc.relationTo === 'products').map(toCard)
+  const postCards = results.filter((r) => r.doc.relationTo === 'posts').map(toCard)
+  const hasResults = productCards.length > 0 || postCards.length > 0
 
   return (
     <main className="min-h-screen bg-candera-vellum" data-page="search">
@@ -68,8 +76,25 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         </Container>
       </Section>
 
-      {posts.length > 0 ? (
-        <CollectionArchive posts={posts} />
+      {hasResults ? (
+        <Section padding="large" data-section="search-results">
+          <Container>
+            <div className="flex flex-col gap-20">
+              {productCards.length > 0 && (
+                <div className="flex flex-col gap-8">
+                  <Eyebrow className="text-candera-sage-text">Candles</Eyebrow>
+                  <CollectionArchive posts={productCards} relationTo="products" hideSidebar />
+                </div>
+              )}
+              {postCards.length > 0 && (
+                <div className="flex flex-col gap-8">
+                  <Eyebrow className="text-candera-sage-text">Journal</Eyebrow>
+                  <CollectionArchive posts={postCards} relationTo="posts" hideSidebar />
+                </div>
+              )}
+            </div>
+          </Container>
+        </Section>
       ) : query ? (
         <div className="container pb-32 text-center">
           <p className="h3 text-candera-sage-text mb-4">Nothing found for &ldquo;{query}&rdquo;</p>

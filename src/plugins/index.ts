@@ -10,20 +10,25 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
-import { Page, Post } from '@/payload-types'
+import { Page, Post, Product } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { processFormSubmission } from '@/hooks/formSubmissions/processSubmission'
 import { validateSubmission } from '@/hooks/formSubmissions/validateSubmission'
 import { revalidateForm, revalidateFormOnDelete } from '@/hooks/forms/revalidateForm'
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
+const generateTitle: GenerateTitle<Post | Page | Product> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Candera Candles` : 'Candera Candles'
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+// Collection-aware so the SEO preview/canonical points at the real route:
+// products → /products/[slug], posts → /posts/[slug], pages → /[slug].
+const generateURL: GenerateURL<Post | Page | Product> = ({ doc, collectionSlug }) => {
   const url = getServerSideURL()
+  if (!doc?.slug) return url
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  const prefix =
+    collectionSlug === 'products' ? '/products' : collectionSlug === 'posts' ? '/posts' : ''
+  return `${url}${prefix}/${doc.slug}`
 }
 
 export const plugins: Plugin[] = [
