@@ -26,6 +26,7 @@ function toGridProduct(product: Product): CardPostData {
     title: product.title,
     tagline: product.tagline,
     extraPhotos: product.extraPhotos,
+    etsyPrimaryImage: product.etsyPrimaryImage,
     scentProfile: product.scentProfile,
     price: product.price,
     currency: product.currency,

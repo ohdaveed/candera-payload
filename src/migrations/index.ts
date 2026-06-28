@@ -26,6 +26,7 @@ import * as migration_20260623_102932_add_the_vessels_block from './20260623_102
 import * as migration_20260628_023604_drop_hero_ships_default from './20260628_023604_drop_hero_ships_default'
 import * as migration_20260628_030735_update_site_theme_font_set_enum from './20260628_030735_update_site_theme_font_set_enum'
 import * as migration_20260628_041849_add_product_etsy_decoupling_fields from './20260628_041849_add_product_etsy_decoupling_fields'
+import * as migration_20260628_050345_add_product_etsy_primary_image from './20260628_050345_add_product_etsy_primary_image'
 
 export const migrations = [
   {
@@ -167,5 +168,10 @@ export const migrations = [
     up: migration_20260628_041849_add_product_etsy_decoupling_fields.up,
     down: migration_20260628_041849_add_product_etsy_decoupling_fields.down,
     name: '20260628_041849_add_product_etsy_decoupling_fields',
+  },
+  {
+    up: migration_20260628_050345_add_product_etsy_primary_image.up,
+    down: migration_20260628_050345_add_product_etsy_primary_image.down,
+    name: '20260628_050345_add_product_etsy_primary_image',
   },
 ]

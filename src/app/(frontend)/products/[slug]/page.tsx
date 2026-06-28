@@ -20,6 +20,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { ProductDetailSections } from './ProductDetailSections'
 import { ProductCTASection } from './ProductCTASection'
 import { ImageGallery } from './ImageGallery'
+import { productPrimaryPhoto, productGalleryPhotos } from '@/lib/productImages'
 import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ArrowRight } from 'lucide-react'
@@ -146,8 +147,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             data-section="image-gallery"
           >
             <ImageGallery
-              mainImage={product.extraPhotos?.[0] as Media | string | null | undefined}
-              extraPhotos={product.extraPhotos as (Media | string)[] | null}
+              images={productGalleryPhotos(product.etsyPrimaryImage, product.extraPhotos)}
             />
           </Section>
 
@@ -313,7 +313,10 @@ function resolveProductImageUrl(product: Product, serverUrl: string): string | u
     return undefined
   }
 
-  return fromMedia(product.meta?.image) ?? fromMedia(product.extraPhotos?.[0])
+  return (
+    fromMedia(product.meta?.image) ??
+    fromMedia(productPrimaryPhoto(product.etsyPrimaryImage, product.extraPhotos))
+  )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {

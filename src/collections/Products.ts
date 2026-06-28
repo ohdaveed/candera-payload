@@ -228,6 +228,20 @@ export const Products: CollectionConfig = {
         description: 'Unparsed Etsy description string. Backup only.',
       },
     },
+    // Sync-owned primary image: rewritten on every sync to track the live Etsy
+    // listing's main photo, so a seller swapping the photo is reflected on the
+    // storefront. The editor-owned `extraPhotos` gallery is never touched by the
+    // sync. The storefront prefers this image and falls back to extraPhotos[0].
+    {
+      name: 'etsyPrimaryImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Primary photo synced from Etsy. Refreshed on every sync.',
+      },
+    },
     // Clean slug derived from the curated `title` via slugField's beforeValidate
     // hook (no Etsy listing ID appended). Matches Pages/Posts; editable + lockable.
     slugField(),
