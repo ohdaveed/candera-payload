@@ -293,9 +293,8 @@ export class EtsyClient {
 
     const headers = new Headers()
     headers.set('Accept', 'application/json')
-    // Etsy v3 expects only the API keystring here; the shared secret is used
-    // exclusively in the OAuth token endpoints (Basic auth), not on every request.
-    headers.set('x-api-key', this.config.apiKey)
+    // Etsy v3 expects both the API keystring and the shared secret here, separated by a colon.
+    headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
 
     if (options.headers) {
       const inputHeaders = new Headers(options.headers)
