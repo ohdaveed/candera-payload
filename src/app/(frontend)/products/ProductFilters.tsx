@@ -52,8 +52,27 @@ function ProductFiltersInner() {
   return (
     <nav
       aria-busy={isPending}
-      className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-12 pb-6 border-b border-candera-stone/20 w-full"
+      className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-6 mb-12 pb-6 border-b border-candera-stone/20 w-full"
     >
+      {/* Active-filter chip: only when a specific tag is applied */}
+      {activeTag && activeTag !== 'All' && (
+        <div className="flex items-center gap-3 w-full sm:col-span-2">
+          <span className="eyebrow text-candera-sage-text">
+            Filtered by: <span className="text-candera-obsidian">{activeTag}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => update('tag', 'All')}
+            disabled={isPending}
+            aria-label={`Clear ${activeTag} filter`}
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[.2em] font-bold text-candera-ember-strong hover:text-candera-obsidian transition-all outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 cursor-pointer disabled:cursor-default"
+          >
+            <span aria-hidden="true">×</span>
+            Clear
+          </button>
+        </div>
+      )}
+
       {/* Tag filters */}
       <div
         className={`flex flex-wrap items-center gap-x-6 gap-y-3 transition-opacity duration-200 ${
