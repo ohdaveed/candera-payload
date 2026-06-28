@@ -8,7 +8,9 @@ vi.mock('next/cache', () => ({
 
 test('revalidateProduct should call revalidateTag', () => {
   const doc = { slug: 'test-product' }
-  revalidateProduct({ doc, previousDoc: { slug: 'old-slug' }, operation: 'update' } as any)
+  revalidateProduct({ doc, previousDoc: { slug: 'old-slug' }, operation: 'update' } as Parameters<
+    typeof revalidateProduct
+  >[0])
   expect(revalidateTag).toHaveBeenCalledWith('products_test-product', 'max')
   expect(revalidateTag).toHaveBeenCalledWith('products_old-slug', 'max')
 })

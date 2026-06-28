@@ -201,8 +201,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             className="text-center mb-16"
           >
             <Eyebrow className="text-candera-ember/80 mb-4">{quiz.title}</Eyebrow>
-            <div
-              role="status"
+            <output
               aria-live="polite"
               aria-label={`Question ${step + 1} of ${questions.length}`}
               className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden"
@@ -217,7 +216,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     : { type: 'spring', stiffness: 50, damping: 20 }
                 }
               />
-            </div>
+            </output>
           </motion.div>
         )}
 

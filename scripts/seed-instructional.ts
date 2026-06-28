@@ -55,7 +55,7 @@ async function seedInstructional() {
     collection: 'media',
     data: {
       alt: 'Blog Practice Image',
-      // @ts-expect-error
+      // @ts-expect-error: Payload media `parent` field type does not include folder ID
       parent: practiceFolder.id,
     },
     file: blogImage,
