@@ -908,8 +908,7 @@ if (IS_BROWSER) {
       const parts = size.split(/\s+/)
       const widthToken = parts[0]
       const heightToken = parts[1] || 'auto'
-      if (widthToken.endsWith('%'))
-        paintedWidth = containerRect.width * (parseFloat(widthToken) / 100)
+      if (widthToken.endsWith('%')) paintedWidth = containerRect.width * (parseFloat(widthToken) / 100)
       else if (widthToken.endsWith('px')) paintedWidth = parseFloat(widthToken) || paintedWidth
       if (heightToken === 'auto') paintedHeight = paintedWidth * (intrinsicHeight / intrinsicWidth)
       else if (heightToken.endsWith('%'))

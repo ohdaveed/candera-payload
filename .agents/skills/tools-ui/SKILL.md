@@ -33,6 +33,7 @@ npx shadcn@latest add https://ui.inference.sh/r/tools.json
 
 ```tsx
 import { ToolCall } from '@/registry/blocks/tools/tool-call'
+
 ;<ToolCall name="search_web" args={{ query: 'latest AI news' }} status="running" />
 ```
 
@@ -52,6 +53,7 @@ import { ToolResult } from "@/registry/blocks/tools/tool-result"
 
 ```tsx
 import { ToolApproval } from '@/registry/blocks/tools/tool-approval'
+
 ;<ToolApproval
   name="send_email"
   args={{ to: 'user@example.com', subject: 'Hello' }}
@@ -110,6 +112,7 @@ The Agent component handles tool lifecycle automatically:
 
 ```tsx
 import { Agent } from '@/registry/blocks/agent/agent'
+
 ;<Agent
   proxyUrl="/api/inference/proxy"
   config={{
