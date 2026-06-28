@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 import { etsyListingUrl } from '@/lib/etsy'
+import { subscribeToEndSentinel } from './EndSentinelStore'
 
 type Props = {
   title: string
@@ -19,16 +20,47 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
 
   useEffect(() => {
     const sentinel = sentinelRef.current
-    if (!sentinel) return
+
     if (!window.IntersectionObserver) {
       setVisible(true)
       return
     }
-    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
-      threshold: 0,
+
+    let pastTop = false
+    let atEnd = false
+    const apply = () => setVisible(pastTop && !atEnd)
+
+    let topObserver: IntersectionObserver | null = null
+    if (sentinel) {
+      topObserver = new IntersectionObserver(([e]) => ((pastTop = !e.isIntersecting), apply()), {
+        threshold: 0,
+      })
+      topObserver.observe(sentinel)
+    } else {
+      pastTop = true
+    }
+
+    let bottomObserver: IntersectionObserver | null = null
+    const unsubscribeEndSentinel = subscribeToEndSentinel((endEl) => {
+      if (bottomObserver) {
+        bottomObserver.disconnect()
+        bottomObserver = null
+      }
+      if (endEl) {
+        bottomObserver = new IntersectionObserver(([e]) => ((atEnd = e.isIntersecting), apply()), {
+          threshold: 0,
+        })
+        bottomObserver.observe(endEl)
+      }
     })
-    observer.observe(sentinel)
-    return () => observer.disconnect()
+
+    apply()
+
+    return () => {
+      if (topObserver) topObserver.disconnect()
+      if (bottomObserver) bottomObserver.disconnect()
+      unsubscribeEndSentinel()
+    }
   }, [sentinelRef])
 
   return (

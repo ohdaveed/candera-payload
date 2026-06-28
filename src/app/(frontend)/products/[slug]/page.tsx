@@ -24,6 +24,7 @@ import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ArrowRight } from 'lucide-react'
 import { FORM_TITLES } from '@/constants/forms'
+import { EndSentinel } from './EndSentinel'
 
 export async function generateStaticParams() {
   return []
@@ -65,7 +66,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       url: `${serverUrl}/products/${product.slug}`,
       priceCurrency: 'USD',
       price: product.price,
-      availability: 'https://schema.org/InStock',
+      // Micro-batches sell out fast and stock lives on Etsy, not here — signal scarcity
+      // honestly rather than asserting guaranteed availability we can't verify.
+      availability: 'https://schema.org/LimitedAvailability',
     },
   }
 
@@ -163,13 +166,13 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                 variant="outline"
                 className="text-xs font-bold uppercase tracking-[.2em] text-candera-sage-text border-candera-sage-text/40 rounded-none px-2 py-1"
               >
-                In Stock
+                {product.isCustomizable ? 'Made to order' : 'Micro-batch'}
               </Badge>
             </Section>
 
             {/* Customization note */}
             {product.isCustomizable && (
-              <aside className="border-l-2 border-candera-ember-strong pl-4 flex flex-col gap-1">
+              <aside className="flex flex-col gap-1 rounded-sm border border-candera-ember-strong/25 bg-candera-ember/[0.06] p-4">
                 <p className="eyebrow text-candera-obsidian">
                   {product.customizationLabel || 'Personalization Available'}
                 </p>
@@ -202,14 +205,17 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </Section>
       </Container>
 
-      {/* Brand story strip */}
+      {/* Brand story strip — light ground so the dark capture below leads the page-end funnel.
+          id marks where the product detail ends; the sticky buy bar hides from here down. */}
+      <EndSentinel />
       <aside
-        className="bg-candera-obsidian mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16"
+        id="pdp-detail-end"
+        className="bg-candera-linen border-t border-candera-stone/20 mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16"
         data-section="brand-story-strip"
       >
         <div className="flex flex-col gap-2 max-w-prose">
-          <h2 className="h3 text-candera-vellum">Made with intention, in small batches</h2>
-          <p className="body text-candera-vellum/80">
+          <h2 className="h3 text-candera-obsidian">Made with intention, in small batches</h2>
+          <p className="body text-candera-sage-text">
             Every Candera candle is hand-poured in California using a soy and beeswax blend, pressed
             botanicals, and clean fragrance oils chosen for how they feel in a room — not just how
             they smell in the jar.
@@ -217,7 +223,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
         </div>
         <Link
           href="/products"
-          className="btn-text text-candera-vellum border-b border-candera-vellum/30 pb-0.5 hover:border-candera-vellum transition-colors shrink-0 self-start lg:self-auto inline-flex items-center gap-2"
+          className="btn-text text-candera-obsidian border-b border-candera-obsidian/30 pb-0.5 hover:text-candera-ember-strong hover:border-candera-ember-strong transition-colors shrink-0 self-start lg:self-auto inline-flex items-center gap-2"
         >
           Explore the collection
           <ArrowRight width={11} height={11} strokeWidth={2} aria-hidden="true" />

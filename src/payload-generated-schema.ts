@@ -6,7 +6,7 @@
  * and re-run `payload generate:db-schema` to regenerate this file.
  */
 
-import type {} from '@payloadcms/db-vercel-postgres'
+import type {} from '@payloadcms/db-postgres'
 import {
   pgTable,
   index,
@@ -22,8 +22,8 @@ import {
   numeric,
   type AnyPgColumn,
   pgEnum,
-} from '@payloadcms/db-vercel-postgres/drizzle/pg-core'
-import { sql, relations } from '@payloadcms/db-vercel-postgres/drizzle'
+} from '@payloadcms/db-postgres/drizzle/pg-core'
+import { sql, relations } from '@payloadcms/db-postgres/drizzle'
 export const enum_pages_hero_links_link_type = pgEnum('enum_pages_hero_links_link_type', [
   'reference',
   'custom',
@@ -212,12 +212,7 @@ export const enum_site_theme_color_scheme = pgEnum('enum_site_theme_color_scheme
   'porcelain-pop',
   'default',
 ])
-export const enum_site_theme_font_set = pgEnum('enum_site_theme_font_set', [
-  'default',
-  'playfair-inter',
-  'dm-sans',
-  'space-grotesk',
-])
+export const enum_site_theme_font_set = pgEnum('enum_site_theme_font_set', ['default', 'dm-sans'])
 export const enum_site_theme_hero_layout = pgEnum('enum_site_theme_hero_layout', [
   'centered-editorial',
   'split-atelier',
@@ -3251,7 +3246,7 @@ export const footer_rels = pgTable(
 export const site_theme = pgTable('site_theme', {
   id: serial('id').primaryKey(),
   colorScheme: enum_site_theme_color_scheme('color_scheme').notNull().default('rose-conversion'),
-  fontSet: enum_site_theme_font_set('font_set').notNull().default('playfair-inter'),
+  fontSet: enum_site_theme_font_set('font_set').notNull().default('default'),
   heroLayout: enum_site_theme_hero_layout('hero_layout').default('centered-editorial'),
   productCardDensity:
     enum_site_theme_product_card_density('product_card_density').default('boutique-grid'),
@@ -4944,7 +4939,7 @@ type DatabaseSchema = {
   relations_studio_info: typeof relations_studio_info
 }
 
-declare module '@payloadcms/db-vercel-postgres' {
+declare module '@payloadcms/db-postgres' {
   export interface GeneratedDatabaseSchema {
     schema: DatabaseSchema
   }

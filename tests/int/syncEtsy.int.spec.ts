@@ -133,6 +133,68 @@ describe('EtsySyncEngine', () => {
     )
   })
 
+  it('parses specifications, scentProfile, tagline, and burnTime from description and listing properties', async () => {
+    const engine = new EtsySyncEngine()
+
+    etsySource.mockListings = [
+      {
+        listing_id: 102,
+        title: 'Seashell Garden Glow Candle',
+        description: `Bring the calm rhythm of the ocean into your space with Seashell Garden Glow — a botanical candle inspired by coastal shores.
+
+✨ Product Details
+• Candle weight: 15 oz
+• Weight with box: 17.5 oz
+• Height with sea shells: 4 inches (11 cm)
+• Width: 3 inches (9 cm)
+• Box dimensions:
+• Length: 6 inches
+• Width: 4 inches
+• Height: 4 inches
+
+🎁 What's Included
+• Seashell Garden Glow candle
+
+🌸 Scent Profile
+• Top Note: Sea Breeze
+• Heart Note: Driftwood
+• Base Note: Salt Air
+• Burn Time: 60 Hours`,
+        materials: ['soy wax', 'beeswax', 'sea shells'],
+      },
+    ]
+
+    const result = await engine.sync(
+      { type: 'shop', shopId: 12345 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.count).toBe(1)
+
+    const savedProduct = productStore.products.get(102)
+    expect(savedProduct).toBeDefined()
+    expect(savedProduct?.tagline).toBe(
+      'Bring the calm rhythm of the ocean into your space with Seashell Garden Glow — a botanical candle inspired by coastal shores.',
+    )
+    expect(savedProduct?.burnTime).toBe('60 Hours')
+    expect(savedProduct?.scentProfile).toEqual({
+      top: 'Sea Breeze',
+      heart: 'Driftwood',
+      base: 'Salt Air',
+    })
+    expect(savedProduct?.specifications).toEqual([
+      { label: 'Candle weight', value: '15 oz' },
+      { label: 'Weight with box', value: '17.5 oz' },
+      { label: 'Height with sea shells', value: '4 inches (11 cm)' },
+      { label: 'Width', value: '3 inches (9 cm)' },
+      { label: 'Box dimensions Length', value: '6 inches' },
+      { label: 'Box dimensions Width', value: '4 inches' },
+      { label: 'Box dimensions Height', value: '4 inches' },
+      { label: 'Materials', value: 'Soy wax, beeswax, sea shells' },
+    ])
+  })
+
   it('skips media download if the image already exists (idempotency)', async () => {
     const engine = new EtsySyncEngine()
 
