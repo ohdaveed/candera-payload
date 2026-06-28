@@ -5,9 +5,7 @@ test.describe('Frontend', () => {
     await page.goto('http://localhost:3000')
     await expect(page).toHaveTitle(/Candera/)
     const heading = page.locator('h1').first()
-    await expect(heading).toHaveText(
-      /Candles made to make you stop/i,
-    )
+    await expect(heading).toHaveText(/Candles made to make you stop/i)
 
     await expect(page.getByRole('link', { name: 'Search' })).toBeVisible()
 
@@ -37,7 +35,7 @@ test.describe('Frontend', () => {
         !alt.includes('Curving abstract') &&
         !alt.includes('scarlet bloom') &&
         !alt.includes('anyas eyes') &&
-        !alt.includes('seashell garden')
+        !alt.includes('seashell garden'),
     )
 
     expect(realBrokenImages).toEqual([])
