@@ -12,6 +12,13 @@ overrides:
   esbuild: ^0.28.0
   vite: 'catalog:'
   vitest: 'catalog:'
+  # Pin tsx to the last release before the 4.21.1 regression that breaks
+  # `payload migrate:create` on Node 24 (tsx's CJS load hook mangles
+  # `require('node:crypto')` from drizzle-kit/api → ENOENT
+  # 'node:crypto?tsx-namespace=…'). Payload itself depends on tsx@4.22.4, so a
+  # global override is required to force its nested copy down too. 4.21.0 is the
+  # newest version that loads drizzle-kit/api cleanly; satisfies Vite+'s ^4.8.1.
+  tsx: 4.21.0
   # Security: bump known-vulnerable transitive ranges to their patched releases
   # within the same major (CVE remediation — see docs/client-readiness.md).
   undici@<6.27.0: '>=6.27.0 <7'
