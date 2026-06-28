@@ -1023,7 +1023,7 @@ export interface Product {
    */
   customizationLabel?: string | null;
   /**
-   * The story and details of this piece.
+   * The narrative story of this piece, featured prominently on the product page. Seeded from Etsy on first sync — edit freely; re-syncs will not overwrite it.
    */
   description?: {
     root: {
@@ -1076,6 +1076,18 @@ export interface Product {
    * The numeric ID from Etsy (e.g. 123456789). Optional — products without one fall back to the shop link.
    */
   etsyListingId?: number | null;
+  /**
+   * Raw, keyword-stuffed title as returned by Etsy. Backup only.
+   */
+  etsyTitle?: string | null;
+  /**
+   * Unparsed Etsy description string. Backup only.
+   */
+  rawEtsyDescription?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
   slug: string;
   /**
    * Badge shown on product cards.
@@ -1805,6 +1817,9 @@ export interface ProductsSelect<T extends boolean = true> {
         description?: T;
       };
   etsyListingId?: T;
+  etsyTitle?: T;
+  rawEtsyDescription?: T;
+  generateSlug?: T;
   slug?: T;
   productTag?: T;
   vessel?: T;

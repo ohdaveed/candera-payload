@@ -1,28 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import { FragranceProfile } from '@/components/FragranceProfile'
 import { Eyebrow } from '@/components/ui/eyebrow'
-import type { ScentProfile as ScentProfileType } from '@/payload-types'
 
-type ScentProfile =
-  | {
-      top?: string | null
-      heart?: string | null
-      base?: string | null
-    }
-  | null
-  | undefined
+type Spec = { label: string; value: string }
 
 type Props = {
-  title?: string | null
   vessel?: string | null
-  scentProfile?: ScentProfile
-  burnTime?: string | null
-  atmosphere?: string | number | ScentProfileType | null
   productType?: 'candle' | 'vintage' | 'custom'
-  specifications?: Array<{ label: string; value: string }> | null
+  specifications?: Spec[] | null
 }
+
+// Labels that describe physical measurements — consolidated into one inline,
+// scannable line (e.g. `4" × 3" · 15 oz`) instead of a stacked vertical list.
+const MEASUREMENT_RE = /dimension|height|width|length|depth|diameter|\bsize\b|weight/i
 
 function SectionToggle({
   label,
@@ -59,22 +50,14 @@ function SectionToggle({
   )
 }
 
-export function ProductDetailSections({
-  title: _title,
-  vessel,
-  scentProfile,
-  burnTime,
-  atmosphere,
-  productType = 'candle',
-  specifications,
-}: Props) {
-  const [specsOpen, setSpecsOpen] = useState(true)
-  const [scentOpen, setScentOpen] = useState(true)
+export function ProductDetailSections({ vessel, productType = 'candle', specifications }: Props) {
+  // Drawer defaults closed — technical metadata stays tucked away while the
+  // story and fragrance lead the page.
+  const [specsOpen, setSpecsOpen] = useState(false)
 
   const isCandle = productType === 'candle' && vessel !== 'metal'
-  const hasScent = scentProfile?.top || scentProfile?.heart || scentProfile?.base
 
-  const displaySpecs =
+  const displaySpecs: Spec[] =
     specifications && specifications.length > 0
       ? specifications
       : isCandle
@@ -100,53 +83,49 @@ export function ProductDetailSections({
                 { label: 'Origin', value: 'Ships from California' },
               ]
 
-  return (
-    <div className="flex flex-col gap-0 border-t border-candera-stone/20 mt-2">
-      {/* Specifications */}
-      <div className="border-b border-candera-stone/20 py-5">
-        <SectionToggle
-          label="Specifications"
-          open={specsOpen}
-          onToggle={() => setSpecsOpen((v) => !v)}
-        />
-        <div
-          className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${specsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
-        >
-          <div className="overflow-hidden">
-            <ul className="flex flex-col pt-4 list-none">
-              {displaySpecs.map(({ label, value }) => (
-                <li
-                  key={label}
-                  className="flex justify-between items-baseline gap-4 py-2.5 border-b border-candera-stone/10 last:border-b-0"
-                >
-                  <span className="text-sm font-semibold text-candera-obsidian shrink-0">
-                    {label}
-                  </span>
-                  <span className="text-sm text-candera-sage-text text-right">{value}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+  const measurements = displaySpecs.filter((s) => MEASUREMENT_RE.test(s.label))
+  const otherSpecs = displaySpecs.filter((s) => !MEASUREMENT_RE.test(s.label))
+  const measurementLine = measurements.map((m) => m.value).join(' · ')
 
-      {/* Fragrance Profile */}
-      {isCandle && hasScent && (
+  return (
+    <div className="flex flex-col border-t border-candera-stone/20 mt-2">
+      {/* Measurements — always visible, consolidated inline */}
+      {measurementLine && (
+        <div className="flex items-baseline justify-between gap-6 py-5 border-b border-candera-stone/20">
+          <Eyebrow className="text-candera-sage-text tracking-[.28em] shrink-0">
+            Measurements
+          </Eyebrow>
+          <span className="text-sm text-candera-obsidian text-right tabular-nums">
+            {measurementLine}
+          </span>
+        </div>
+      )}
+
+      {/* Specifications — collapsible drawer for the remaining technical detail */}
+      {otherSpecs.length > 0 && (
         <div className="border-b border-candera-stone/20 py-5">
           <SectionToggle
-            label="Fragrance Profile"
-            open={scentOpen}
-            onToggle={() => setScentOpen((v) => !v)}
+            label="Specifications"
+            open={specsOpen}
+            onToggle={() => setSpecsOpen((v) => !v)}
           />
           <div
-            className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${scentOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+            className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${specsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
           >
             <div className="overflow-hidden">
-              <FragranceProfile
-                profile={scentProfile}
-                burnTime={burnTime}
-                atmosphere={atmosphere}
-              />
+              <ul className="flex flex-col pt-4 list-none">
+                {otherSpecs.map(({ label, value }) => (
+                  <li
+                    key={label}
+                    className="flex justify-between items-baseline gap-4 py-2.5 border-b border-candera-stone/10 last:border-b-0"
+                  >
+                    <span className="text-sm font-semibold text-candera-obsidian shrink-0">
+                      {label}
+                    </span>
+                    <span className="text-sm text-candera-sage-text text-right">{value}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

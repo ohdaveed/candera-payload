@@ -1,21 +1,24 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 import { etsyListingUrl } from '@/lib/etsy'
+import { formatPrice } from '@/lib/formatPrice'
+import type { Product } from '@/payload-types'
 import { subscribeToEndSentinel } from './EndSentinelStore'
 
 type Props = {
   title: string
   price: number | null | undefined
+  currency: Product['currency']
   vessel: string | null | undefined
   etsyListingId: number | null | undefined
   /** Ref attached to the sentinel element placed next to the main buy button in the page */
   sentinelRef: React.RefObject<HTMLDivElement | null>
 }
 
-export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props) {
+export function StickyCTABar({ title, price, currency, etsyListingId, sentinelRef }: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
           {title}
         </span>
         <span className="text-xs text-candera-vellum/75 tracking-[.1em]">
-          {price != null ? `$${Number(price).toFixed(2)}` : ''}
+          {formatPrice(price, currency)}
         </span>
       </div>
 
@@ -89,8 +92,8 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
         href={etsyListingUrl(etsyListingId)}
         className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-candera-vellum hover:text-candera-obsidian text-candera-vellum text-xs font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
       >
-        Buy on Etsy
-        <ArrowRight width={12} height={12} strokeWidth={2} aria-hidden="true" />
+        Purchase via Etsy
+        <ExternalLink width={12} height={12} strokeWidth={2} aria-hidden="true" />
       </BoutiqueLink>
     </aside>
   )
