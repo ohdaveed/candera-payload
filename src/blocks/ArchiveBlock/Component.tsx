@@ -2,6 +2,7 @@ import type { Post, Product, ArchiveBlock as ArchiveBlockProps } from '@/payload
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import Link from 'next/link'
 import React from 'react'
 import RichText from '@/components/RichText'
 
@@ -89,12 +90,44 @@ export const ArchiveBlock: React.FC<
   const isPosts = relationTo === 'posts'
 
   if (!data.length) {
+    const empty = isPosts
+      ? {
+          eyebrow: 'The Journal',
+          heading: 'Quiet in the studio.',
+          body: 'Studio notes, scent stories, and slow-living rituals are on their way. Check back soon.',
+          cta: null,
+        }
+      : {
+          eyebrow: 'Between Pours',
+          heading: 'Nothing pouring right now.',
+          body: 'Every Candera candle is hand-poured in small, numbered batches — and they often sell out within days. Join the Inner Circle for first access to the next pour.',
+          cta: { href: '/inner-circle', label: 'Join the Inner Circle' },
+        }
+
     return (
       <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
         <Container>
-          <p className="text-center text-sm text-candera-sage-text tracking-[.1em] py-12">
-            Nothing to show yet — check back soon.
-          </p>
+          <div className="mx-auto flex max-w-[520px] flex-col items-center gap-5 py-16 text-center md:py-24">
+            <div className="flex items-center gap-2">
+              <span className="block h-px w-6 bg-candera-ember" aria-hidden="true" />
+              <p className="eyebrow text-candera-sage-text m-0">{empty.eyebrow}</p>
+              <span className="block h-px w-6 bg-candera-ember" aria-hidden="true" />
+            </div>
+            <h3 className="font-display font-normal italic text-candera-obsidian text-2xl md:text-3xl m-0 leading-tight text-balance">
+              {empty.heading}
+            </h3>
+            <p className="font-sans font-light text-candera-sage-text max-w-[440px] m-0 text-sm md:text-base leading-relaxed text-pretty">
+              {empty.body}
+            </p>
+            {empty.cta && (
+              <Link
+                href={empty.cta.href}
+                className="mt-1 text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian/40 pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+              >
+                {empty.cta.label} →
+              </Link>
+            )}
+          </div>
         </Container>
       </Section>
     )

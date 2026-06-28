@@ -37,7 +37,7 @@ export const ScentQuizCTABand: React.FC<Props> = ({
         </h2>
       )}
       {body && (
-        <p className="font-sans font-light text-candera-sage-text max-w-[560px] m-0 text-sm md:text-base leading-relaxed">
+        <p className="font-sans font-light text-candera-vellum/80 max-w-[560px] m-0 text-sm md:text-base leading-relaxed">
           {body}
         </p>
       )}
