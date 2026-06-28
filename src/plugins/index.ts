@@ -3,6 +3,9 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
+import { sentryPlugin } from '@payloadcms/plugin-sentry'
+import * as Sentry from '@sentry/nextjs'
 import { Plugin } from 'payload'
 import { redirectRevalidateHooks } from '@/utilities/revalidate'
 import {
@@ -167,5 +170,9 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  mcpPlugin({}),
+  sentryPlugin({
+    Sentry,
   }),
 ]

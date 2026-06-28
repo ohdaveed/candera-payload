@@ -29,6 +29,7 @@ import * as migration_20260628_041849_add_product_etsy_decoupling_fields from '.
 import * as migration_20260628_050345_add_product_etsy_primary_image from './20260628_050345_add_product_etsy_primary_image';
 import * as migration_20260628_062647 from './20260628_062647';
 import * as migration_20260628_182255_ethos_card_fields from './20260628_182255_ethos_card_fields';
+import * as migration_20260628_192435 from './20260628_192435';
 
 export const migrations = [
   {
@@ -184,6 +185,11 @@ export const migrations = [
   {
     up: migration_20260628_182255_ethos_card_fields.up,
     down: migration_20260628_182255_ethos_card_fields.down,
-    name: '20260628_182255_ethos_card_fields'
+    name: '20260628_182255_ethos_card_fields',
+  },
+  {
+    up: migration_20260628_192435.up,
+    down: migration_20260628_192435.down,
+    name: '20260628_192435'
   },
 ];
