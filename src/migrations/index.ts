@@ -24,6 +24,7 @@ import * as migration_20260622_205309 from './20260622_205309'
 import * as migration_20260623_001156_add_studio_info from './20260623_001156_add_studio_info'
 import * as migration_20260623_102932_add_the_vessels_block from './20260623_102932_add_the_vessels_block'
 import * as migration_20260628_023604_drop_hero_ships_default from './20260628_023604_drop_hero_ships_default'
+import * as migration_20260628_030735_update_site_theme_font_set_enum from './20260628_030735_update_site_theme_font_set_enum'
 
 export const migrations = [
   {
@@ -155,5 +156,10 @@ export const migrations = [
     up: migration_20260628_023604_drop_hero_ships_default.up,
     down: migration_20260628_023604_drop_hero_ships_default.down,
     name: '20260628_023604_drop_hero_ships_default',
+  },
+  {
+    up: migration_20260628_030735_update_site_theme_font_set_enum.up,
+    down: migration_20260628_030735_update_site_theme_font_set_enum.down,
+    name: '20260628_030735_update_site_theme_font_set_enum',
   },
 ]
