@@ -78,7 +78,7 @@ const generateImage: GenerateImage<Post | Page | Product> = ({ doc, collectionSl
     const img = post?.heroImage
     if (img) return typeof img === 'object' ? (img as { id: string | number }).id : img
   }
-  return ''
+  return null
 }
 
 export const plugins: Plugin[] = [
