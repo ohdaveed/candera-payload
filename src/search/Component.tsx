@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React, { useState, useEffect } from 'react'
-import { useDebounce } from '@/utilities/useDebounce'
+import { useDebounce } from '@/app/(frontend)/hooks/useDebounce'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export const Search: React.FC = () => {
@@ -12,7 +12,7 @@ export const Search: React.FC = () => {
   const query = searchParams.get('q') ?? ''
   const [value, setValue] = useState(query)
 
-  const debouncedValue = useDebounce(value)
+  const debouncedValue = useDebounce(value, 300)
 
   useEffect(() => {
     setValue(query)
