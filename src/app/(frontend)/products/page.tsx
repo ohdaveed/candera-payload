@@ -8,7 +8,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from '@/payload-types'
-import type { ProductCardData } from '@/components/ProductCard'
+import type { CardPostData } from '@/components/Card'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
 }
 
-function toGridProduct(product: Product): ProductCardData {
+function toGridProduct(product: Product): CardPostData {
   return {
     id: product.id,
     slug: product.slug,

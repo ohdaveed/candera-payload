@@ -88,3 +88,4 @@ scripts/merge-pass-env.py
 scripts/__pycache__/
 .neon
 .env*
+.vercel

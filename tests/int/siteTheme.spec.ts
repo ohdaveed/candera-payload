@@ -14,7 +14,7 @@ describe('site theme settings', () => {
     expect(
       normalizeSiteThemeSettings({
         colorScheme: 'black-gold-rose',
-        fontSet: 'playfair-inter',
+        fontSet: 'dm-sans',
         heroLayout: 'cinematic-noir',
         productCardDensity: 'gallery',
         sectionMood: 'noir-contrast',
@@ -22,7 +22,7 @@ describe('site theme settings', () => {
       }),
     ).toEqual({
       colorScheme: 'black-gold-rose',
-      fontSet: 'playfair-inter',
+      fontSet: 'dm-sans',
       heroLayout: 'cinematic-noir',
       productCardDensity: 'gallery',
       sectionMood: 'noir-contrast',

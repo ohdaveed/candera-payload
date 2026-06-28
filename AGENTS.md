@@ -153,7 +153,7 @@ Configured in `src/plugins/index.ts`: redirects, nested-docs (categories), SEO, 
 - Payload ecosystem: `@payloadcms/next`, `@payloadcms/db-postgres`, `@payloadcms/richtext-lexical`, `@payloadcms/storage-vercel-blob`, `@payloadcms/email-nodemailer`.
 - Plugins: `@payloadcms/plugin-form-builder`, `@payloadcms/plugin-nested-docs`, `@payloadcms/plugin-redirects`, `@payloadcms/plugin-search`, `@payloadcms/plugin-seo`.
 - Next.js 16, React 19, TypeScript 6.
-- Package manager: `pnpm` 10.33.
+- Package manager: `pnpm` 11.8.0.
 
 <!--VITE PLUS START-->
 

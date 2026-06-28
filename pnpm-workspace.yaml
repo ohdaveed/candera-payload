@@ -18,9 +18,14 @@ overrides:
   undici@>=7.0.0 <7.28.0: '>=7.28.0 <8'
   nodemailer@<9.0.1: '>=9.0.1'
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
-  vite-plus: latest
+  # Pinned to a mutually-compatible Vite+ set (off @latest, which drifted:
+  # vite-plus/-core reached 0.2.x while @voidzero-dev/vite-plus-test never
+  # published 0.2.x, breaking `vp test`). Per the vite-plus README, pin `vitest`
+  # to the real Vitest the CLI bundles (4.1.9) — not the obsolete -test alias —
+  # so the project and `vp test` share one Vitest copy.
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.1
+  vitest: 4.1.9
+  vite-plus: 0.2.1
 peerDependencyRules:
   allowAny:
     - vite
@@ -28,3 +33,14 @@ peerDependencyRules:
   allowedVersions:
     vite: '*'
     vitest: '*'
+auditConfig:
+  # Suppressed advisories — re-evaluate when a remediation path opens up.
+  # Both are the same root cause: `vite` is aliased to the Vite+ fork
+  # (catalog: npm:@voidzero-dev/vite-plus-core), whose newest release (0.2.1)
+  # still self-reports as vite 7.3.3 and has no build on the patched vite
+  # >=7.3.5 yet. Both CVEs are Windows-only; vite is dev/test-only (never in
+  # the production bundle) and we build/run on Linux — so exposure is nil here.
+  # Lift these once vite-plus-core ships a vite >=7.3.5 base, then bump the catalog.
+  ignoreGhsas:
+    - GHSA-fx2h-pf6j-xcff # vite: server.fs.deny bypass on Windows alternate paths (high)
+    - GHSA-v6wh-96g9-6wx3 # vite/launch-editor: NTLMv2 hash disclosure via Windows UNC paths (moderate)

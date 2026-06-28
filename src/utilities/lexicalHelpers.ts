@@ -125,6 +125,18 @@ export const createBulletList = (...items: string[]): LexicalListNode => ({
   version: 1,
 })
 
+export const createNumberedList = (...items: string[]): LexicalListNode => ({
+  type: 'list',
+  children: items.map((text, i) => createListItem(text, i + 1)),
+  direction: 'ltr',
+  format: '',
+  indent: 0,
+  listType: 'number',
+  start: 1,
+  tag: 'ol',
+  version: 1,
+})
+
 export const createRichText = (
   children: (LexicalHeadingNode | LexicalParagraphNode | LexicalListNode)[],
 ): LexicalRichText => ({

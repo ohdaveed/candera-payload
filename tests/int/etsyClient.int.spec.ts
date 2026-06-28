@@ -66,16 +66,18 @@ describe('EtsyClient', () => {
       tokenRepo,
     )
 
-    const urlString = client.generateAuthUrl()
+    const urlString = client.generateAuthUrl('test-state', 'test-challenge')
     const url = new URL(urlString)
 
-    expect(url.origin).toBe('https://api.etsy.com')
-    expect(url.pathname).toBe('/v3/public/oauth/token')
+    expect(url.origin).toBe('https://www.etsy.com')
+    expect(url.pathname).toBe('/oauth/connect')
     expect(url.searchParams.get('client_id')).toBe('test-key')
     expect(url.searchParams.get('redirect_uri')).toBe('http://localhost/callback')
     expect(url.searchParams.get('response_type')).toBe('code')
     expect(url.searchParams.get('scope')).toContain('listings_r')
-    expect(url.searchParams.get('state')).toBeDefined()
+    expect(url.searchParams.get('state')).toBe('test-state')
+    expect(url.searchParams.get('code_challenge')).toBe('test-challenge')
+    expect(url.searchParams.get('code_challenge_method')).toBe('S256')
   })
 
   it('exchanges authorization code and persists the token details', async () => {
@@ -98,24 +100,29 @@ describe('EtsyClient', () => {
         }),
     })
 
-    await client.completeAuthFlow('auth-code')
+    await client.completeAuthFlow('auth-code', 'verifier-xyz')
 
     expect(mockFetch).toHaveBeenCalledWith(
       'https://api.etsy.com/v3/public/oauth/token',
       expect.objectContaining({
         method: 'POST',
         headers: expect.objectContaining({
-          Authorization: expect.stringContaining('Basic'),
           'Content-Type': 'application/x-www-form-urlencoded',
         }),
       }),
     )
+    // PKCE: the token exchange authenticates via client_id + code_verifier (no Basic auth).
+    const body = mockFetch.mock.calls.at(-1)![1].body as URLSearchParams
+    expect(body.get('grant_type')).toBe('authorization_code')
+    expect(body.get('code')).toBe('auth-code')
+    expect(body.get('code_verifier')).toBe('verifier-xyz')
+    expect(body.get('client_id')).toBe('test-key')
     expect(tokenRepo.saveCalls).toBe(1)
     expect(tokenRepo.token?.accessToken).toBe('initial-access')
     expect(tokenRepo.token?.refreshToken).toBe('initial-refresh')
   })
 
-  it('falls back to credentials key-secret signature header when no OAuth token exists', async () => {
+  it('sends the API keystring header (and no bearer) when no OAuth token exists', async () => {
     const client = new EtsyClient(
       {
         apiKey: 'test-key',
@@ -131,7 +138,7 @@ describe('EtsyClient', () => {
       'https://openapi.etsy.com/v3/application/shops/123/listings/active',
       expect.objectContaining({
         headers: expect.objectContaining({
-          'x-api-key': 'test-key:test-secret',
+          'x-api-key': 'test-key',
         }),
       }),
     )

@@ -26,7 +26,13 @@ const BeforeDashboard: React.FC = async () => {
       payload.find({ collection: 'products', limit: 0, depth: 0 }),
       payload.find({ collection: 'categories', limit: 0, depth: 0 }),
       payload.find({ collection: 'form-submissions', limit: 0, depth: 0 }),
-      payload.find({ collection: 'documentation', limit: 5, sort: 'order', depth: 0 }),
+      payload.find({
+        collection: 'documentation',
+        where: { category: { not_equals: 'Seeding & Data' } },
+        limit: 12,
+        sort: 'order',
+        depth: 0,
+      }),
     ])
     productCount = products.totalDocs
     categoryCount = categories.totalDocs

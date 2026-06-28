@@ -7,11 +7,12 @@ playbook + secret handling), `docs/ARCHITECTURE.md` (system diagrams), and
 
 ## What this is
 
-**Candera** is a botanical candle storefront. A single **Next.js 16 (App
-Router)** process serves both the public website and the **Payload CMS 3.x**
-admin/backend — Payload is mounted into Next via `withPayload` in
-`next.config.ts`. Commerce inventory is synced from **Etsy** into Payload, and
-product copy is generated with **Claude (Haiku 4.5)** via the AI gateway.
+**Candera** is a botanical candle storefront (canderacandles.com). A single
+**Next.js 16 (App Router)** process serves both the public website and the
+**Payload CMS 3.85** admin/backend — Payload is mounted into Next via
+`withPayload` in `next.config.ts`. Commerce inventory is synced from **Etsy**
+into Payload, and product copy is generated with **Claude (Haiku 4.5)** via the
+AI gateway.
 
 - **Frontend:** Next.js 16, React 19, Tailwind CSS v4, shadcn/ui (Radix), Framer Motion
 - **CMS / backend:** Payload CMS 3.85.x, Lexical rich text
@@ -39,9 +40,9 @@ access, and the full secret-fetch flow before touching credentials.
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm dev` | Next dev server (CMS + storefront) |
-| `pnpm build` / `pnpm start` | Production build / serve |
-| `pnpm run ci` | Deploy build: `payload migrate && pnpm build` |
+| `pnpm dev` | Next dev server (CMS + storefront); admin at `/admin` |
+| `pnpm build` / `pnpm start` | Production build (runs `next-sitemap` in `postbuild`) / serve |
+| `pnpm run ci` | What Vercel runs on deploy: `payload migrate && pnpm build` |
 | `pnpm lint` / `pnpm lint:fix` | Lint via `vp lint` (Vite+ / Oxlint over `src/` + configs) |
 | `pnpm test` | `test:int` then `test:e2e` sequentially |
 | `pnpm test:int` | Vitest integration (`tests/int/**/*.int.spec.ts`) — needs DB |
@@ -52,6 +53,8 @@ access, and the full secret-fetch flow before touching credentials.
 | `pnpm payload migrate` | Apply pending migrations |
 | `scripts/local-build.sh` | Reproduce the CI/Vercel build locally |
 
+Run a single integration test: `pnpm test:int -- tests/int/syncEtsy.int.spec.ts` (Vitest filter).
+
 > Tooling note: `AGENTS.md` documents a **Vite+ (`vp`)** layer — `pnpm lint`
 > and `pnpm test:int` shell out to `vp`. Use `vp check`/`vp test` when iterating
 > and `vp install` after pulling.
@@ -61,36 +64,36 @@ access, and the full secret-fetch flow before touching credentials.
 ### Route groups (`src/app/`)
 
 - **`(frontend)/`** — public storefront, mostly React Server Components.
-  - `[slug]` → CMS pages (home = `home` slug), block-driven layout
-  - `posts` / `posts/[slug]`, `products` / `products/[slug]`
+  - `[slug]` → CMS pages (home = `home` slug, statically generated via `generateStaticParams`), block-driven layout
+  - `posts` / `posts/[slug]`, `products` / `products/[slug]`, `how-to/`
   - `contact` (→ `submitForm` server action), `inner-circle`, `search`, `(sitemaps)`
-  - `next/ai/generate-product-copy/route.ts` — JWT-auth AI copy endpoint (Claude Haiku 4.5 via `gateway('anthropic/claude-haiku-4-5')`)
+  - `next/` utility routes (preview, seed) incl. `next/ai/generate-product-copy/route.ts` — JWT-auth AI copy endpoint (Claude Haiku 4.5 via `gateway('anthropic/claude-haiku-4-5')`)
 - **`(payload)/`** — admin panel at `/admin`, REST + GraphQL at `/api`
 - **`actions/`** — server actions (`submitForm.ts`)
 - **`api/webhooks/`** — e.g. Vercel deploy webhook
 
-### Collections (`src/collections/`, registered in `src/payload.config.ts`)
+### `src/payload.config.ts` is the spine
 
-`Folders`, `Pages`, `Posts`, `Products` (Etsy-synced), `Media` (Vercel Blob),
-`Categories` (nested taxonomy), `Users`, `EtsyTokens` (OAuth token store),
-`Briefs`, `Quizzes`, `ScentProfiles`, `Documentation`, `HowToGuides`.
+It wires every collection, global, plugin, the DB adapter, blob storage, email,
+and the Etsy endpoints. When adding a collection/global/block, register it here.
+
+**Collections (`src/collections/`):** `Folders`, `Pages`, `Posts`, `Products`
+(Etsy-synced), `Media` (Vercel Blob), `Categories` (nested taxonomy), `Users`,
+`EtsyTokens` (OAuth token store), `Briefs`, `Quizzes`, `ScentProfiles`,
+`Documentation`, `HowToGuides`.
 
 > The older `AGENTS.md`/`GEMINI.md` lists a smaller set — `payload.config.ts`
-> is the source of truth; the four scent/quiz/docs collections above are newer.
+> is the source of truth; the scent/quiz/docs collections above are newer.
 
-### Globals (`src/`)
+**Globals (`src/`):** `Header`, `Footer`, `SiteTheme`, `StudioInfo` — each has a
+`config.ts` and `hooks/` for revalidation. Read via `src/utilities/getGlobals.ts`.
 
-`Header`, `Footer`, `SiteTheme`, `StudioInfo` — each has a `config.ts` and
-`hooks/` for revalidation. Nav/global data read via `src/utilities/getGlobals.ts`.
-
-### Blocks — layout builder (`src/blocks/`)
-
-Pages/posts compose a block array rendered by `RenderBlocks.tsx`. Each block =
-`config.ts` (fields) + `Component.tsx`. Available: `ArchiveBlock` (posts or
-products), `Banner`, `CallToAction`, `Code`, `Content`, `Form`, `InnerCircleCTA`,
-`MediaBlock`, `RelatedPosts`, `ScentQuiz` (client), `StorefrontHero`,
-`Testimonials`, `TheVessels`. Heroes live separately in `src/heros/`
-(High/Medium/Low impact + PostHero).
+**Blocks — layout builder (`src/blocks/`):** pages/posts compose a block array
+rendered by `RenderBlocks.tsx`. Each block = `config.ts` (fields) +
+`Component.tsx`. Available: `ArchiveBlock` (posts or products), `Banner`,
+`CallToAction`, `Code`, `Content`, `Form`, `InnerCircleCTA`, `MediaBlock`,
+`RelatedPosts`, `ScentQuiz` (client), `StorefrontHero`, `Testimonials`,
+`TheVessels`. Heroes live separately in `src/heros/` (High/Medium/Low impact + PostHero).
 
 ### Plugins (`src/plugins/index.ts`)
 
@@ -98,27 +101,47 @@ products), `Banner`, `CallToAction`, `Code`, `Content`, `Form`, `InnerCircleCTA`
 `search` (posts only). Vercel Blob storage is wired directly in
 `payload.config.ts` (only when a valid `vercel_blob_rw_` token is present).
 
+### Database adapter selection (non-obvious)
+
+`src/utilities/databaseAdapter.ts` picks the adapter from the connection string
+at startup: a `*.neon.tech` host uses `@payloadcms/db-vercel-postgres` (Neon
+serverless protocol); **any other host** (local Postgres, CI service container)
+falls back to `@payloadcms/db-postgres`. The same config therefore runs
+everywhere. `DATABASE_URI` takes precedence over `POSTGRES_URL` — the Vercel/Neon
+integration injects `POSTGRES_URL` and can override it with a stale credential,
+so set `DATABASE_URI` explicitly in production. Both adapters use `push: false`,
+so **migrations are always required** — never rely on schema push.
+
 ### Etsy sync engine
 
 Hexagonal (ports/adapters) design — domain logic decoupled from client, product
 store, and media storage so it can run in-memory under test.
+- `src/lib/etsy.ts` — client-safe link helpers. `etsyListingUrl()` guards against placeholder IDs: anything below `MIN_REAL_ETSY_LISTING_ID` (10M) resolves to the shop page, not a dead listing.
 - `src/utilities/etsyClient.ts` — OAuth 2.0 client, sliding-window token refresh, `TokenRepository` seam
 - `src/utilities/syncEtsy.ts` — `EtsySyncEngine.sync()`; Zod-validates listings (title must contain "candle"), cleans → Lexical, slugifies, upserts transactionally, dedupes images via `etsyImageId`
-- Endpoints (`src/endpoints/etsy.ts`): `/sync-etsy`, `/etsy/oauth/init`, `/etsy/oauth/callback`, `/etsy/set-vacation`
+- Endpoints (`src/endpoints/etsy.ts`, registered in payload config): authenticated `GET /api/sync-etsy`, `/etsy/oauth/init`, `/etsy/oauth/callback`, `/etsy/set-vacation`. Requires `ETSY_SHOP_ID` (no default — throws if unset).
 - CLI: `scripts/sync-etsy.ts`
+
+### AI product copy
+
+`src/app/(frontend)/next/ai/generate-product-copy/route.ts` +
+`src/lib/ai/product-copy.ts` generate product descriptions via Claude through the
+**Vercel AI Gateway** (`ai` SDK v6). On Vercel this is OIDC-provided; locally set
+`AI_GATEWAY_API_KEY`.
 
 ### Revalidation & forms
 
-- `src/utilities/revalidate.ts` — revalidation engine with `CacheBusterPort` seam; `afterChange`/`afterDelete` hooks call `revalidatePath`/`revalidateTag`. Redirects via `redirectRevalidateHooks`.
+- `src/utilities/revalidate.ts` — revalidation engine with `CacheBusterPort` seam; `afterChange`/`afterDelete` hooks call `revalidatePath`/`revalidateTag` for on-demand ISR. Redirects via `redirectRevalidateHooks`.
 - Form submissions: `submitForm` server action writes through Payload Local API → `processFormSubmission` `afterChange` hook fans out to Mailchimp (`Promise.allSettled`). Same hook fires for admin-created submissions.
 - Search: `beforeSyncWithSearch` indexes published posts into a `search` collection; `src/lib/queries/search.ts` runs ILIKE queries via the Neon SQL client.
 
 ## Database & migrations
 
-- **Prod:** Neon Serverless Postgres. `push: false` — **migrations are always required**. Connection from `DATABASE_URI` (preferred) or `POSTGRES_URL`. The adapter auto-selects: `@payloadcms/db-vercel-postgres` for Neon hosts, plain `@payloadcms/db-postgres` otherwise (see `src/utilities/databaseAdapter.ts`).
+- **Prod:** Neon Serverless Postgres. `push: false` — **migrations are always required**. Connection from `DATABASE_URI` (preferred) or `POSTGRES_URL`.
 - **Local:** Docker Compose Postgres on port `54320`. Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>`; localhost bypasses the Vercel adapter.
-- **Workflow:** schema change → `pnpm payload migrate:create` → commit the migration file (`src/migrations/`). Vercel runs `pnpm run ci` on every deploy, so migrations apply automatically. **Do not seed in preview builds.**
-- Neon: compute suspends after ~5 min idle (cold-start penalty); use `-pooler` host for pooled connections; ILIKE search relies on `pg_trgm`.
+- **Workflow:** schema change → `pnpm payload migrate:create` → commit the migration file (`src/migrations/`). Vercel runs `pnpm run ci` on every deploy, so migrations apply automatically (preview + production). **Do not seed in preview builds.**
+- **Seeding** is destructive (overwrites local data). Trigger from the admin dashboard, or use the scripts in `scripts/` (`seed-db.ts`, `reseed.ts`, etc.).
+- Neon: compute suspends after ~5 min idle (cold-start penalty on first query); use `-pooler` host for pooled connections; ILIKE search relies on `pg_trgm`.
 
 ## Generated files — never edit by hand
 
@@ -150,12 +173,13 @@ token (see `jobs.access.run` in `payload.config.ts`).
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URI` / `POSTGRES_URL` | Neon Postgres connection string |
+| `DATABASE_URI` / `POSTGRES_URL` | Neon Postgres connection string (`DATABASE_URI` wins) |
 | `PAYLOAD_SECRET` | JWT signing (required; startup throws without it) |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob (`vercel_blob_rw_…`; required in prod) |
 | `PREVIEW_SECRET` | Live-preview URL signing |
 | `CRON_SECRET` | Bearer token for Vercel cron / jobs |
-| `ETSY_API_KEY` / `ETSY_SHARED_SECRET` / `ETSY_REDIRECT_URI` | Etsy Open API v3 + OAuth |
+| `ETSY_API_KEY` / `ETSY_SHARED_SECRET` / `ETSY_REDIRECT_URI` / `ETSY_SHOP_ID` | Etsy Open API v3 + OAuth (`ETSY_SHOP_ID` required) |
+| `AI_GATEWAY_API_KEY` | AI gateway key for product copy (local only; OIDC on Vercel) |
 | `SMTP_HOST/PORT/USER/PASS` | Email transport (falls back to `jsonTransport`) |
 | `EMAIL_FROM_ADDRESS` / `EMAIL_FROM_NAME` | Default sender |
 

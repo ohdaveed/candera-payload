@@ -40,12 +40,19 @@ export const SiteTheme: GlobalConfig = {
     {
       name: 'fontSet',
       type: 'select',
-      defaultValue: 'playfair-inter',
+      defaultValue: 'default',
+      /*
+       * NOTE TO FUTURE CONTRIBUTORS:
+       * The approved brand font system consists strictly of:
+       * - Fraunces (display/editorial headings)
+       * - DM Sans (body and secondary sans-serif)
+       * - EB Garamond (editorial/text body)
+       * Options like space-grotesk and playfair-inter have been removed to prevent off-brand styling
+       * and avoid extra font loading payloads. Do not re-add them without brand design approval.
+       */
       options: [
         { label: 'Default (current fonts)', value: 'default' },
-        { label: 'Playfair Display + Inter (serif headlines)', value: 'playfair-inter' },
         { label: 'DM Sans (friendly geometric sans)', value: 'dm-sans' },
-        { label: 'Space Grotesk (modern studio sans)', value: 'space-grotesk' },
       ],
       required: true,
     },

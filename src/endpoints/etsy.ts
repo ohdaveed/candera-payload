@@ -2,6 +2,7 @@ import type { Endpoint } from 'payload'
 
 import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClient'
 import { syncEtsyListings } from '@/utilities/syncEtsy'
+import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
 
 const getEtsyShopId = (): number => {
   const shopId = Number(process.env.ETSY_SHOP_ID)
@@ -42,6 +43,23 @@ const createEtsyClient = (req: Parameters<Endpoint['handler']>[0]) =>
     new DefaultPayloadTokenRepository(req.payload),
   )
 
+const OAUTH_STATE_COOKIE = 'etsy_oauth_state'
+const OAUTH_VERIFIER_COOKIE = 'etsy_oauth_verifier'
+
+// Lax so the cookies ride the top-level GET redirect back from Etsy; Secure is
+// honored on https (and on localhost, which browsers treat as a secure context).
+const buildOAuthCookie = (name: string, value: string, maxAgeSeconds: number) =>
+  `${name}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}`
+
+const readCookie = (cookieHeader: string | null, name: string): string | undefined => {
+  if (!cookieHeader) return undefined
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=')
+    if (key === name) return rest.join('=')
+  }
+  return undefined
+}
+
 export const syncEtsyEndpoint: Endpoint = {
   path: '/sync-etsy',
   method: 'get',
@@ -67,7 +85,14 @@ export const etsyOAuthInitEndpoint: Endpoint = {
     if (!req.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    return Response.redirect(createEtsyClient(req).generateAuthUrl())
+    const state = crypto.randomUUID()
+    const codeVerifier = generateCodeVerifier()
+    const codeChallenge = deriveCodeChallenge(codeVerifier)
+    const authUrl = createEtsyClient(req).generateAuthUrl(state, codeChallenge)
+    const headers = new Headers({ Location: authUrl })
+    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, state, 600))
+    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, codeVerifier, 600))
+    return new Response(null, { status: 302, headers })
   },
 }
 
@@ -86,7 +111,8 @@ export const setEtsyVacationEndpoint: Endpoint = {
       })
       return Response.json({ success: true, shop: data })
     } catch (error) {
-      return Response.json({ error: String(error) }, { status: 500 })
+      req.payload.logger.error({ err: error, msg: 'Error in /etsy/set-vacation endpoint' })
+      return Response.json({ error: 'Error setting vacation mode' }, { status: 500 })
     }
   },
 }
@@ -105,11 +131,31 @@ export const etsyOAuthCallbackEndpoint: Endpoint = {
       return Response.json({ error: 'Missing authorization code' }, { status: 400 })
     }
 
+    // CSRF defense: the state echoed back by Etsy must match the value set on the
+    // init redirect and stored in an HttpOnly cookie.
+    const cookieHeader = req.headers.get('cookie')
+    const state = url.searchParams.get('state')
+    const expectedState = readCookie(cookieHeader, OAUTH_STATE_COOKIE)
+    if (!state || !expectedState || state !== expectedState) {
+      return Response.json({ error: 'Invalid OAuth state' }, { status: 400 })
+    }
+
+    // PKCE: the verifier minted at init (stored in an HttpOnly cookie) is required
+    // to complete the token exchange.
+    const codeVerifier = readCookie(cookieHeader, OAUTH_VERIFIER_COOKIE)
+    if (!codeVerifier) {
+      return Response.json({ error: 'Missing PKCE verifier' }, { status: 400 })
+    }
+
     try {
-      await createEtsyClient(req).completeAuthFlow(code)
-      return Response.redirect(new URL('/admin', url.origin).toString())
+      await createEtsyClient(req).completeAuthFlow(code, codeVerifier)
+      const headers = new Headers({ Location: new URL('/admin', url.origin).toString() })
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, '', 0))
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, '', 0))
+      return new Response(null, { status: 302, headers })
     } catch (error) {
-      return Response.json({ error: String(error) }, { status: 500 })
+      req.payload.logger.error({ err: error, msg: 'Error in /etsy/oauth/callback endpoint' })
+      return Response.json({ error: 'Error completing Etsy authorization' }, { status: 500 })
     }
   },
 }
