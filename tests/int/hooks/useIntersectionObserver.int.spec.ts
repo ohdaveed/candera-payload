@@ -7,5 +7,5 @@ import { useIntersectionObserver } from '@/app/(frontend)/hooks/useIntersectionO
 test('should return intersection state', () => {
   const { result } = renderHook(() => useIntersectionObserver({}))
   expect(result.current.isIntersecting).toBe(false)
-  expect(result.current.ref.current).toBe(null)
+  expect(typeof result.current.ref).toBe('function')
 })

@@ -11,7 +11,7 @@ export function useIntersectionObserver({
   rootMargin = '0%',
   freezeOnceVisible = false,
 }: Args = {}) {
-  const ref = useRef<Element | null>(null)
+  const [node, setNode] = useState<Element | null>(null)
   const [entry, setEntry] = useState<IntersectionObserverEntry>()
   const frozen = entry?.isIntersecting && freezeOnceVisible
 
@@ -20,7 +20,6 @@ export function useIntersectionObserver({
   }
 
   useEffect(() => {
-    const node = ref?.current
     const hasIOSupport = !!window.IntersectionObserver
 
     if (!hasIOSupport || frozen || !node) return
@@ -30,7 +29,7 @@ export function useIntersectionObserver({
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [ref?.current, JSON.stringify(threshold), root, rootMargin, frozen])
+  }, [node, JSON.stringify(threshold), root, rootMargin, frozen])
 
-  return { ref, entry, isIntersecting: !!entry?.isIntersecting }
+  return { ref: setNode, entry, isIntersecting: !!entry?.isIntersecting }
 }
