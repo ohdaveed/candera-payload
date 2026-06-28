@@ -53,12 +53,14 @@ SESSION=$(belt app run agent-browser --function open --session new --input '{
 ```
 
 The cursor appears as a red dot that:
+
 - Follows mouse movements in real-time
 - Shows click feedback (shrinks on mousedown)
 - Persists across page navigations
 - Appears in both screenshots and video
 
 This is especially useful for:
+
 - Tutorial/documentation videos
 - Debugging interaction issues
 - Sharing recordings with non-technical stakeholders
@@ -71,6 +73,7 @@ This is especially useful for:
 4. **Retrieve**: Video file is returned in the `close` response
 
 The video captures:
+
 - Page loads and navigations
 - Element interactions (clicks, typing)
 - Scrolling and animations

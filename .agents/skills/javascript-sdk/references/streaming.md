@@ -13,50 +13,53 @@ RECEIVED (1) → QUEUED (2) → SCHEDULED (3) → PREPARING (4)
 ## Basic Streaming
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
-const stream = await client.run({
-  app: 'google/veo-3-1-fast',
-  input: { prompt: 'A sunset timelapse' }
-}, { stream: true });
+const stream = await client.run(
+  {
+    app: 'google/veo-3-1-fast',
+    input: { prompt: 'A sunset timelapse' },
+  },
+  { stream: true },
+)
 
 for await (const update of stream) {
-  console.log(`Status: ${update.status}`);
+  console.log(`Status: ${update.status}`)
 }
 ```
 
 ## Handling Different Update Types
 
 ```typescript
-const stream = await client.run(config, { stream: true });
+const stream = await client.run(config, { stream: true })
 
 for await (const update of stream) {
-  const { status } = update;
+  const { status } = update
 
   // Task state changes
   if (status === 'queued') {
-    console.log('Task queued, waiting for worker...');
+    console.log('Task queued, waiting for worker...')
   } else if (status === 'running') {
-    console.log('Task is running...');
+    console.log('Task is running...')
   } else if (status === 'completed') {
-    console.log('Done!');
-    console.log('Output:', update.output);
+    console.log('Done!')
+    console.log('Output:', update.output)
   } else if (status === 'failed') {
-    console.log('Error:', update.error);
+    console.log('Error:', update.error)
   }
 
   // Progress logs
   if (update.logs?.length) {
     for (const log of update.logs) {
-      console.log(`  Log: ${log}`);
+      console.log(`  Log: ${log}`)
     }
   }
 
   // Partial outputs
   if (update.partial_output) {
-    console.log(`  Partial: ${update.partial_output}`);
+    console.log(`  Partial: ${update.partial_output}`)
   }
 }
 ```
@@ -66,24 +69,24 @@ for await (const update of stream) {
 ### Node.js CLI Progress Bar
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
 function progressBar(current: number, total: number, width = 50) {
-  const filled = Math.round(width * current / total);
-  const bar = '█'.repeat(filled) + '░'.repeat(width - filled);
-  const percent = (current / total * 100).toFixed(1);
-  process.stdout.write(`\r[${bar}] ${percent}%`);
+  const filled = Math.round((width * current) / total)
+  const bar = '█'.repeat(filled) + '░'.repeat(width - filled)
+  const percent = ((current / total) * 100).toFixed(1)
+  process.stdout.write(`\r[${bar}] ${percent}%`)
 }
 
-const stream = await client.run(config, { stream: true });
+const stream = await client.run(config, { stream: true })
 
 for await (const update of stream) {
   if (update.progress) {
-    progressBar(update.progress.current, update.progress.total);
+    progressBar(update.progress.current, update.progress.total)
   }
 
   if (update.status === 'completed') {
-    console.log('\n✓ Complete!');
+    console.log('\n✓ Complete!')
   }
 }
 ```
@@ -137,81 +140,79 @@ function ProgressDisplay({ config }: { config: any }) {
 
 ```typescript
 async function streamWithTimeout(config: any, timeoutMs: number) {
-  const client = inference({ apiKey: 'inf_...' });
-  const start = Date.now();
+  const client = inference({ apiKey: 'inf_...' })
+  const start = Date.now()
 
-  const stream = await client.run(config, { stream: true });
+  const stream = await client.run(config, { stream: true })
 
   for await (const update of stream) {
     if (Date.now() - start > timeoutMs) {
-      console.log('Timeout reached');
-      break;
+      console.log('Timeout reached')
+      break
     }
 
-    console.log(`Status: ${update.status}`);
+    console.log(`Status: ${update.status}`)
 
     if (['completed', 'failed'].includes(update.status)) {
-      return update;
+      return update
     }
   }
 }
 
-const result = await streamWithTimeout(config, 60000); // 1 minute
+const result = await streamWithTimeout(config, 60000) // 1 minute
 ```
 
 ## Agent Streaming
 
 ```typescript
-const agent = client.agent('my-org/assistant@latest');
+const agent = client.agent('my-org/assistant@latest')
 
 const response = await agent.sendMessage('Explain quantum entanglement', {
   onMessage: (msg) => {
     if (msg.content) {
       // Stream text as it arrives
-      process.stdout.write(msg.content);
+      process.stdout.write(msg.content)
     }
 
     if (msg.type === 'thinking') {
-      console.log(`\n[Thinking: ${msg.content}]`);
+      console.log(`\n[Thinking: ${msg.content}]`)
     }
   },
   onToolCall: async (call) => {
-    console.log(`\n[Calling tool: ${call.name}]`);
-    const result = await executeTool(call.name, call.args);
-    agent.submitToolResult(call.id, result);
-  }
-});
+    console.log(`\n[Calling tool: ${call.name}]`)
+    const result = await executeTool(call.name, call.args)
+    agent.submitToolResult(call.id, result)
+  },
+})
 ```
 
 ## Multiple Streams in Parallel
 
 ```typescript
 async function parallelStreams() {
-  const client = inference({ apiKey: 'inf_...' });
+  const client = inference({ apiKey: 'inf_...' })
 
   const configs = [
     { app: 'infsh/flux-schnell', input: { prompt: 'A mountain' } },
     { app: 'infsh/flux-schnell', input: { prompt: 'An ocean' } },
-    { app: 'infsh/flux-schnell', input: { prompt: 'A forest' } }
-  ];
+    { app: 'infsh/flux-schnell', input: { prompt: 'A forest' } },
+  ]
 
   async function streamOne(config: any, index: number) {
-    const stream = await client.run(config, { stream: true });
+    const stream = await client.run(config, { stream: true })
 
     for await (const update of stream) {
-      console.log(`[${index}] ${update.status}`);
+      console.log(`[${index}] ${update.status}`)
 
       if (update.status === 'completed') {
-        return update.output;
+        return update.output
       }
     }
   }
 
-  const results = await Promise.all(
-    configs.map((c, i) => streamOne(c, i))
-  );
+  const results = await Promise.all(configs.map((c, i) => streamOne(c, i)))
 
-  return results;
+  return results
 }
 ```
 
@@ -219,26 +220,26 @@ async function parallelStreams() {
 
 ```typescript
 async function cancellableStream(config: any) {
-  const client = inference({ apiKey: 'inf_...' });
-  const controller = new AbortController();
+  const client = inference({ apiKey: 'inf_...' })
+  const controller = new AbortController()
 
   // Cancel after 10 seconds
-  setTimeout(() => controller.abort(), 10000);
+  setTimeout(() => controller.abort(), 10000)
 
   try {
     const stream = await client.run(config, {
       stream: true,
-      signal: controller.signal
-    });
+      signal: controller.signal,
+    })
 
     for await (const update of stream) {
-      console.log(update.status);
+      console.log(update.status)
     }
   } catch (e) {
     if (e.name === 'AbortError') {
-      console.log('Stream cancelled');
+      console.log('Stream cancelled')
     } else {
-      throw e;
+      throw e
     }
   }
 }
@@ -248,20 +249,20 @@ async function cancellableStream(config: any) {
 
 ```typescript
 async function collectLogs(config: any) {
-  const client = inference({ apiKey: 'inf_...' });
-  const allLogs: string[] = [];
+  const client = inference({ apiKey: 'inf_...' })
+  const allLogs: string[] = []
 
-  const stream = await client.run(config, { stream: true });
+  const stream = await client.run(config, { stream: true })
 
   for await (const update of stream) {
     if (update.logs) {
-      allLogs.push(...update.logs);
+      allLogs.push(...update.logs)
     }
 
     if (update.status === 'completed') {
-      console.log('Final logs:');
-      allLogs.forEach(log => console.log(`  ${log}`));
-      return update.output;
+      console.log('Final logs:')
+      allLogs.forEach((log) => console.log(`  ${log}`))
+      return update.output
     }
   }
 }
@@ -271,47 +272,47 @@ async function collectLogs(config: any) {
 
 ```typescript
 class StreamProcessor {
-  logs: string[] = [];
-  startTime?: number;
-  endTime?: number;
+  logs: string[] = []
+  startTime?: number
+  endTime?: number
 
   process(update: any): boolean {
     if (!this.startTime) {
-      this.startTime = Date.now();
+      this.startTime = Date.now()
     }
 
     if (update.logs) {
-      this.logs.push(...update.logs);
+      this.logs.push(...update.logs)
     }
 
     if (['completed', 'failed'].includes(update.status)) {
-      this.endTime = Date.now();
-      return true; // Done
+      this.endTime = Date.now()
+      return true // Done
     }
 
-    return false; // Continue
+    return false // Continue
   }
 
   get duration(): number | null {
     if (this.startTime && this.endTime) {
-      return this.endTime - this.startTime;
+      return this.endTime - this.startTime
     }
-    return null;
+    return null
   }
 }
 
 // Usage
-const processor = new StreamProcessor();
-const stream = await client.run(config, { stream: true });
+const processor = new StreamProcessor()
+const stream = await client.run(config, { stream: true })
 
 for await (const update of stream) {
   if (processor.process(update)) {
-    break;
+    break
   }
 }
 
-console.log(`Duration: ${processor.duration}ms`);
-console.log(`Logs: ${processor.logs.length}`);
+console.log(`Duration: ${processor.duration}ms`)
+console.log(`Logs: ${processor.logs.length}`)
 ```
 
 ## Server-Sent Events in Browser
@@ -319,23 +320,21 @@ console.log(`Logs: ${processor.logs.length}`);
 ```typescript
 // For custom SSE handling in browser
 async function browserSSE(taskId: string) {
-  const eventSource = new EventSource(
-    `/api/inference/stream?taskId=${taskId}`
-  );
+  const eventSource = new EventSource(`/api/inference/stream?taskId=${taskId}`)
 
   eventSource.onmessage = (event) => {
-    const update = JSON.parse(event.data);
-    console.log('Update:', update);
+    const update = JSON.parse(event.data)
+    console.log('Update:', update)
 
     if (['completed', 'failed'].includes(update.status)) {
-      eventSource.close();
+      eventSource.close()
     }
-  };
+  }
 
   eventSource.onerror = (error) => {
-    console.error('SSE error:', error);
-    eventSource.close();
-  };
+    console.error('SSE error:', error)
+    eventSource.close()
+  }
 }
 ```
 

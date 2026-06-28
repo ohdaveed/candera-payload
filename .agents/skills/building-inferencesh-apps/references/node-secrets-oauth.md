@@ -15,22 +15,22 @@ secrets:
     optional: true
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `key` | string | Environment variable name |
-| `description` | string | Shown to users |
-| `optional` | boolean | If false, app won't run without it |
+| Property      | Type    | Description                        |
+| ------------- | ------- | ---------------------------------- |
+| `key`         | string  | Environment variable name          |
+| `description` | string  | Shown to users                     |
+| `optional`    | boolean | If false, app won't run without it |
 
 ## Accessing Secrets
 
 ```javascript
 export class App {
   async setup(config) {
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY
     if (!apiKey) {
-      throw new Error("OPENAI_API_KEY required");
+      throw new Error('OPENAI_API_KEY required')
     }
-    this.apiKey = apiKey;
+    this.apiKey = apiKey
   }
 }
 ```
@@ -40,13 +40,13 @@ export class App {
 ### External API Access
 
 ```javascript
-import OpenAI from "openai";
+import OpenAI from 'openai'
 
 export class App {
   async setup(config) {
     this.client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
-    });
+    })
   }
 }
 ```
@@ -62,7 +62,7 @@ secrets:
 ```javascript
 export class App {
   async setup(config) {
-    this.hfToken = process.env.HF_TOKEN;
+    this.hfToken = process.env.HF_TOKEN
   }
 }
 ```
@@ -94,11 +94,11 @@ integrations:
     optional: true
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `key` | string | Integration identifier |
-| `description` | string | Shown to users |
-| `optional` | boolean | If false, app won't run without it |
+| Property      | Type    | Description                        |
+| ------------- | ------- | ---------------------------------- |
+| `key`         | string  | Integration identifier             |
+| `description` | string  | Shown to users                     |
+| `optional`    | boolean | If false, app won't run without it |
 
 ### Available Integrations
 
@@ -106,12 +106,12 @@ integrations:
 belt integrations list
 ```
 
-| Key | Description |
-|-----|-------------|
-| `google.sheets` | Read/write Sheets |
-| `google.sheets.readonly` | Read-only Sheets |
-| `google.drive` | Google Drive files |
-| `google.sa` | Service account |
+| Key                      | Description        |
+| ------------------------ | ------------------ |
+| `google.sheets`          | Read/write Sheets  |
+| `google.sheets.readonly` | Read-only Sheets   |
+| `google.drive`           | Google Drive files |
+| `google.sa`              | Service account    |
 
 ### Accessing Credentials
 
@@ -120,9 +120,9 @@ belt integrations list
 ```javascript
 export class App {
   async setup(config) {
-    const credsJson = process.env.GOOGLE_OAUTH_CREDENTIALS;
+    const credsJson = process.env.GOOGLE_OAUTH_CREDENTIALS
     if (credsJson) {
-      this.credentials = JSON.parse(credsJson);
+      this.credentials = JSON.parse(credsJson)
     }
   }
 }
@@ -133,9 +133,9 @@ export class App {
 ```javascript
 export class App {
   async setup(config) {
-    const saJson = process.env.GOOGLE_SA_CREDENTIALS;
+    const saJson = process.env.GOOGLE_SA_CREDENTIALS
     if (saJson) {
-      this.serviceAccount = JSON.parse(saJson);
+      this.serviceAccount = JSON.parse(saJson)
     }
   }
 }
@@ -143,12 +143,12 @@ export class App {
 
 ### Secrets vs Integrations
 
-| Feature | Secrets | Integrations |
-|---------|---------|--------------|
+| Feature       | Secrets             | Integrations        |
+| ------------- | ------------------- | ------------------- |
 | User provides | Raw value (API key) | OAuth authorization |
-| Refresh | Manual | Automatic |
-| Scope control | None | Fine-grained |
-| Best for | API keys | OAuth services |
+| Refresh       | Manual              | Automatic           |
+| Scope control | None                | Fine-grained        |
+| Best for      | API keys            | OAuth services      |
 
 ### Best Practices
 

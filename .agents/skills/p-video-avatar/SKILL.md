@@ -1,6 +1,6 @@
 ---
 name: p-video-avatar
-description: "Generate talking head avatar videos with Pruna P-Video-Avatar via inference.sh CLI. Turn a portrait image into a realistic speaking video with built-in TTS. 18x faster and 6x cheaper than competitors. Models: P-Video-Avatar, P-Image (for portrait generation). Capabilities: text-to-avatar, audio-driven avatars, 30 voices, 10 languages, 720p/1080p, built-in TTS, dynamic backgrounds, full-body control. Use for: AI presenters, product demos, explainer videos, virtual influencers, marketing, education, multilingual content, UGC, gaming avatars. Triggers: avatar video, talking head, ai avatar, p-video-avatar, pruna avatar, video avatar, ai presenter, digital human, virtual presenter, lipsync, talking avatar, ai spokesperson, heygen alternative, synthesia alternative, veed alternative, fabric alternative, omnihuman alternative"
+description: 'Generate talking head avatar videos with Pruna P-Video-Avatar via inference.sh CLI. Turn a portrait image into a realistic speaking video with built-in TTS. 18x faster and 6x cheaper than competitors. Models: P-Video-Avatar, P-Image (for portrait generation). Capabilities: text-to-avatar, audio-driven avatars, 30 voices, 10 languages, 720p/1080p, built-in TTS, dynamic backgrounds, full-body control. Use for: AI presenters, product demos, explainer videos, virtual influencers, marketing, education, multilingual content, UGC, gaming avatars. Triggers: avatar video, talking head, ai avatar, p-video-avatar, pruna avatar, video avatar, ai presenter, digital human, virtual presenter, lipsync, talking avatar, ai spokesperson, heygen alternative, synthesia alternative, veed alternative, fabric alternative, omnihuman alternative'
 allowed-tools: Bash(belt *)
 ---
 
@@ -129,26 +129,26 @@ English (US), English (UK), Spanish, French, German, Italian, Portuguese (Brazil
 
 ## Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `image` | file | required | Portrait image (jpg, jpeg, png, webp) |
-| `voice_script` | string | - | Text for the person to say |
-| `audio` | file | - | Audio file (overrides voice_script) |
-| `voice` | string | "Zephyr (Female)" | Voice selection |
-| `voice_language` | string | "English (US)" | Output language |
-| `resolution` | string | "720p" | 720p or 1080p |
-| `video_prompt` | string | "The person is talking." | Control avatar behavior and background |
-| `voice_prompt` | string | "Say the following." | Control tone, pacing, emotion |
-| `seed` | int | random | Reproducible generation |
-| `disable_safety_filter` | bool | true | Disable content filter |
-| `disable_prompt_upsampling` | bool | false | Skip prompt enhancement |
+| Parameter                   | Type   | Default                  | Description                            |
+| --------------------------- | ------ | ------------------------ | -------------------------------------- |
+| `image`                     | file   | required                 | Portrait image (jpg, jpeg, png, webp)  |
+| `voice_script`              | string | -                        | Text for the person to say             |
+| `audio`                     | file   | -                        | Audio file (overrides voice_script)    |
+| `voice`                     | string | "Zephyr (Female)"        | Voice selection                        |
+| `voice_language`            | string | "English (US)"           | Output language                        |
+| `resolution`                | string | "720p"                   | 720p or 1080p                          |
+| `video_prompt`              | string | "The person is talking." | Control avatar behavior and background |
+| `voice_prompt`              | string | "Say the following."     | Control tone, pacing, emotion          |
+| `seed`                      | int    | random                   | Reproducible generation                |
+| `disable_safety_filter`     | bool   | true                     | Disable content filter                 |
+| `disable_prompt_upsampling` | bool   | false                    | Skip prompt enhancement                |
 
 ## Pricing
 
-| Resolution | Price |
-|------------|-------|
-| 720p | $0.025 per second of output video |
-| 1080p | $0.045 per second of output video |
+| Resolution | Price                             |
+| ---------- | --------------------------------- |
+| 720p       | $0.025 per second of output video |
+| 1080p      | $0.045 per second of output video |
 
 Example: 30-second 720p video = $0.75
 
@@ -158,13 +158,13 @@ Example: 30-second 720p video = $0.75
 
 ## Competitive Advantage
 
-| Feature | P-Video-Avatar | Fabric 1.0 | OmniHuman 1.5 | HeyGen Avatar 4 |
-|---------|---------------|------------|---------------|-----------------|
-| Speed (per sec of video) | ~1.83s/s | ~34s/s (18x slower) | ~28s/s (15x slower) | ~26s/s (14x slower) |
-| Cost per second | $0.025 | $0.14 (5.6x more) | $0.16 (6.4x more) | $0.075 (3x more) |
-| Built-in TTS | Yes | Yes | No | Yes |
-| Dynamic Background | Yes | Yes | No | Yes |
-| 1080p Support | Yes | No | No | Yes |
+| Feature                  | P-Video-Avatar | Fabric 1.0          | OmniHuman 1.5       | HeyGen Avatar 4     |
+| ------------------------ | -------------- | ------------------- | ------------------- | ------------------- |
+| Speed (per sec of video) | ~1.83s/s       | ~34s/s (18x slower) | ~28s/s (15x slower) | ~26s/s (14x slower) |
+| Cost per second          | $0.025         | $0.14 (5.6x more)   | $0.16 (6.4x more)   | $0.075 (3x more)    |
+| Built-in TTS             | Yes            | Yes                 | No                  | Yes                 |
+| Dynamic Background       | Yes            | Yes                 | No                  | Yes                 |
+| 1080p Support            | Yes            | No                  | No                  | Yes                 |
 
 ## Use Cases
 

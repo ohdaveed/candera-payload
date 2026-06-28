@@ -1,6 +1,6 @@
 ---
 name: ai-music-generation
-description: "Generate AI music and songs with ElevenLabs, Diffrythm, Tencent Song Generation via inference.sh CLI. Models: ElevenLabs Music (up to 10 min, commercial license), Diffrythm (fast song generation), Tencent Song Generation (full songs with vocals). Capabilities: text-to-music, song generation, instrumental, lyrics to song, soundtrack creation. Use for: background music, social media content, game soundtracks, podcasts, royalty-free music. Triggers: music generation, ai music, generate song, ai composer, text to music, song generator, create music with ai, suno alternative, udio alternative, ai song, ai soundtrack, generate soundtrack, ai jingle, music ai, beat generator, elevenlabs music, eleven labs music"
+description: 'Generate AI music and songs with ElevenLabs, Diffrythm, Tencent Song Generation via inference.sh CLI. Models: ElevenLabs Music (up to 10 min, commercial license), Diffrythm (fast song generation), Tencent Song Generation (full songs with vocals). Capabilities: text-to-music, song generation, instrumental, lyrics to song, soundtrack creation. Use for: background music, social media content, game soundtracks, podcasts, royalty-free music. Triggers: music generation, ai music, generate song, ai composer, text to music, song generator, create music with ai, suno alternative, udio alternative, ai song, ai soundtrack, generate soundtrack, ai jingle, music ai, beat generator, elevenlabs music, eleven labs music'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,14 +23,13 @@ belt login
 belt app run infsh/diffrythm --input '{"prompt": "upbeat electronic dance track"}'
 ```
 
-
 ## Available Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| ElevenLabs Music | `elevenlabs/music` | Up to 10 min, commercial license |
-| Diffrythm | `infsh/diffrythm` | Fast song generation |
-| Tencent Song | `infsh/tencent-song-generation` | Full songs with vocals |
+| Model            | App ID                          | Best For                         |
+| ---------------- | ------------------------------- | -------------------------------- |
+| ElevenLabs Music | `elevenlabs/music`              | Up to 10 min, commercial license |
+| Diffrythm        | `infsh/diffrythm`               | Fast song generation             |
+| Tencent Song     | `infsh/tencent-song-generation` | Full songs with vocals           |
 
 ## Browse Audio Apps
 
@@ -134,4 +133,3 @@ Browse all apps: `belt app store`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
 - [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-

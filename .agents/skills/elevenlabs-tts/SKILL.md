@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-tts
-description: "ElevenLabs text-to-speech with 22+ premium voices, multilingual support, and voice tuning via inference.sh CLI. Models: eleven_multilingual_v2 (highest quality), eleven_turbo_v2_5 (low latency), eleven_flash_v2_5 (ultra-fast). Capabilities: text-to-speech, voice selection, stability/style control, 32 languages. Use for: voiceovers, audiobooks, video narration, podcasts, accessibility, IVR. Triggers: elevenlabs, eleven labs, elevenlabs tts, premium tts, professional voice, ai voice, high quality tts, multilingual tts, eleven labs voice, voice generation, natural speech, realistic voice, voice over, speech synthesis"
+description: 'ElevenLabs text-to-speech with 22+ premium voices, multilingual support, and voice tuning via inference.sh CLI. Models: eleven_multilingual_v2 (highest quality), eleven_turbo_v2_5 (low latency), eleven_flash_v2_5 (ultra-fast). Capabilities: text-to-speech, voice selection, stability/style control, 32 languages. Use for: voiceovers, audiobooks, video narration, podcasts, accessibility, IVR. Triggers: elevenlabs, eleven labs, elevenlabs tts, premium tts, professional voice, ai voice, high quality tts, multilingual tts, eleven labs voice, voice generation, natural speech, realistic voice, voice over, speech synthesis'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,48 +23,47 @@ belt login
 belt app run elevenlabs/tts --input '{"text": "Hello, welcome to our product demo.", "voice": "aria"}'
 ```
 
-
 ## Available Models
 
-| Model | ID | Best For | Latency |
-|-------|----|----------|---------|
-| Multilingual v2 | `eleven_multilingual_v2` | Highest quality, 32 languages | ~250ms |
-| Turbo v2.5 | `eleven_turbo_v2_5` | Balance of speed & quality | ~150ms |
-| Flash v2.5 | `eleven_flash_v2_5` | Ultra-low latency | ~75ms |
+| Model           | ID                       | Best For                      | Latency |
+| --------------- | ------------------------ | ----------------------------- | ------- |
+| Multilingual v2 | `eleven_multilingual_v2` | Highest quality, 32 languages | ~250ms  |
+| Turbo v2.5      | `eleven_turbo_v2_5`      | Balance of speed & quality    | ~150ms  |
+| Flash v2.5      | `eleven_flash_v2_5`      | Ultra-low latency             | ~75ms   |
 
 ## Voice Library
 
 ### Female Voices
 
-| Voice | Style |
-|-------|-------|
-| `aria` | American, conversational |
-| `alice` | British, confident |
-| `bella` | American, warm |
-| `jessica` | American, expressive |
-| `laura` | American, professional |
-| `lily` | British, soft |
-| `sarah` | American, friendly |
+| Voice     | Style                    |
+| --------- | ------------------------ |
+| `aria`    | American, conversational |
+| `alice`   | British, confident       |
+| `bella`   | American, warm           |
+| `jessica` | American, expressive     |
+| `laura`   | American, professional   |
+| `lily`    | British, soft            |
+| `sarah`   | American, friendly       |
 
 ### Male Voices
 
-| Voice | Style |
-|-------|-------|
-| `george` | British, authoritative |
-| `adam` | American, deep |
-| `bill` | American, mature |
-| `brian` | American, conversational |
-| `callum` | Transatlantic, intense |
-| `charlie` | Australian, natural |
-| `chris` | American, casual |
-| `daniel` | British, commanding |
-| `eric` | American, friendly |
-| `harry` | American, young |
-| `liam` | American, articulate |
-| `matilda` | American, warm |
-| `river` | American, confident |
-| `roger` | American, authoritative |
-| `will` | American, bright |
+| Voice     | Style                    |
+| --------- | ------------------------ |
+| `george`  | British, authoritative   |
+| `adam`    | American, deep           |
+| `bill`    | American, mature         |
+| `brian`   | American, conversational |
+| `callum`  | Transatlantic, intense   |
+| `charlie` | Australian, natural      |
+| `chris`   | American, casual         |
+| `daniel`  | British, commanding      |
+| `eric`    | American, friendly       |
+| `harry`   | American, young          |
+| `liam`    | American, articulate     |
+| `matilda` | American, warm           |
+| `river`   | American, confident      |
+| `roger`   | American, authoritative  |
+| `will`    | American, bright         |
 
 ## Examples
 
@@ -104,12 +103,12 @@ belt app run elevenlabs/tts --input '{
 }'
 ```
 
-| Parameter | Range | Effect |
-|-----------|-------|--------|
-| `stability` | 0-1 | Higher = more consistent, lower = more expressive |
-| `similarity_boost` | 0-1 | Higher = closer to original voice character |
-| `style` | 0-1 | Higher = more style exaggeration |
-| `use_speaker_boost` | true/false | Enhances speaker clarity |
+| Parameter           | Range      | Effect                                            |
+| ------------------- | ---------- | ------------------------------------------------- |
+| `stability`         | 0-1        | Higher = more consistent, lower = more expressive |
+| `similarity_boost`  | 0-1        | Higher = closer to original voice character       |
+| `style`             | 0-1        | Higher = more style exaggeration                  |
+| `use_speaker_boost` | true/false | Enhances speaker clarity                          |
 
 ### Output Formats
 
@@ -122,14 +121,14 @@ belt app run elevenlabs/tts --input '{
 }'
 ```
 
-| Format | Description |
-|--------|-------------|
+| Format          | Description                       |
+| --------------- | --------------------------------- |
 | `mp3_44100_128` | MP3 at 44.1kHz, 128kbps (default) |
-| `mp3_44100_192` | MP3 at 44.1kHz, 192kbps |
-| `pcm_16000` | Raw PCM at 16kHz |
-| `pcm_22050` | Raw PCM at 22.05kHz |
-| `pcm_24000` | Raw PCM at 24kHz |
-| `pcm_44100` | Raw PCM at 44.1kHz |
+| `mp3_44100_192` | MP3 at 44.1kHz, 192kbps           |
+| `pcm_16000`     | Raw PCM at 16kHz                  |
+| `pcm_22050`     | Raw PCM at 22.05kHz               |
+| `pcm_24000`     | Raw PCM at 24kHz                  |
+| `pcm_44100`     | Raw PCM at 44.1kHz                |
 
 ### Multilingual
 

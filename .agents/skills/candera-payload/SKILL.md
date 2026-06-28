@@ -1,27 +1,32 @@
-```markdown
+````markdown
 # candera-payload Development Patterns
 
 > Auto-generated skill from repository analysis
 
 ## Overview
+
 This skill teaches the core development patterns and conventions used in the `candera-payload` TypeScript codebase. You will learn how to structure files, write imports and exports, follow commit message standards, and implement and run tests. This guide is ideal for onboarding new contributors or maintaining consistency across the project.
 
 ## Coding Conventions
 
 ### File Naming
+
 - Use **camelCase** for all file names.
   - Example: `dataLoader.ts`, `userProfile.test.ts`
 
 ### Imports
+
 - Use **alias imports** to reference modules.
   - Example:
     ```typescript
-    import { fetchData as getData } from './apiClient';
+    import { fetchData as getData } from './apiClient'
     ```
 
 ### Exports
+
 - Use **named exports** for all modules.
   - Example:
+
     ```typescript
     // Good
     export function processPayload() { ... }
@@ -32,6 +37,7 @@ This skill teaches the core development patterns and conventions used in the `ca
     ```
 
 ### Commit Messages
+
 - Follow **Conventional Commits** with prefixes:
   - `chore`: For maintenance, tooling, or non-feature changes.
   - `feat`: For new features.
@@ -45,6 +51,7 @@ This skill teaches the core development patterns and conventions used in the `ca
 ## Workflows
 
 ### Code Contribution
+
 **Trigger:** When adding new features or making changes  
 **Command:** `/contribute`
 
@@ -55,6 +62,7 @@ This skill teaches the core development patterns and conventions used in the `ca
 5. Push your branch and open a Pull Request.
 
 ### Testing
+
 **Trigger:** Before pushing or merging changes  
 **Command:** `/test`
 
@@ -63,6 +71,7 @@ This skill teaches the core development patterns and conventions used in the `ca
 3. Ensure all tests pass before merging.
 
 ### Code Review
+
 **Trigger:** Reviewing a Pull Request  
 **Command:** `/review`
 
@@ -77,6 +86,7 @@ This skill teaches the core development patterns and conventions used in the `ca
 - The testing framework is not specified; check project documentation or scripts for details.
 - Place tests alongside the code they test or in a dedicated `tests` directory.
 - Example test file:
+
   ```typescript
   import { processPayload } from './processPayload';
 
@@ -88,11 +98,16 @@ This skill teaches the core development patterns and conventions used in the `ca
     });
   });
   ```
+````
 
 ## Commands
-| Command      | Purpose                                      |
-|--------------|----------------------------------------------|
-| /contribute  | Start the code contribution workflow         |
-| /test        | Run all tests in the repository              |
-| /review      | Begin code review and convention checks      |
+
+| Command     | Purpose                                 |
+| ----------- | --------------------------------------- |
+| /contribute | Start the code contribution workflow    |
+| /test       | Run all tests in the repository         |
+| /review     | Begin code review and convention checks |
+
+```
+
 ```

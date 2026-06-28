@@ -7,17 +7,17 @@ Upload, download, and manage files with the JavaScript SDK.
 Local file paths in input are automatically uploaded (Node.js):
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 // File path is auto-uploaded
 const result = await client.run({
   app: 'image-processor',
   input: {
-    image: '/path/to/image.png'
-  }
-});
+    image: '/path/to/image.png',
+  },
+})
 ```
 
 ## Manual File Upload
@@ -26,24 +26,24 @@ const result = await client.run({
 
 ```typescript
 // Basic upload
-const file = await client.uploadFile('/path/to/image.png');
-console.log(file.uri); // inf://files/abc123
+const file = await client.uploadFile('/path/to/image.png')
+console.log(file.uri) // inf://files/abc123
 
 const result = await client.run({
   app: 'image-processor',
-  input: { image: file.uri }
-});
+  input: { image: file.uri },
+})
 ```
 
 ### Upload Options
 
 ```typescript
 const file = await client.uploadFile('/path/to/document.pdf', {
-  filename: 'custom_name.pdf',      // Custom filename
-  contentType: 'application/pdf',   // MIME type
-  path: '/documents/reports',        // Storage path
-  public: true                       // Publicly accessible
-});
+  filename: 'custom_name.pdf', // Custom filename
+  contentType: 'application/pdf', // MIME type
+  path: '/documents/reports', // Storage path
+  public: true, // Publicly accessible
+})
 ```
 
 ## Browser File Upload
@@ -51,15 +51,15 @@ const file = await client.uploadFile('/path/to/document.pdf', {
 ### From File Input
 
 ```typescript
-const input = document.querySelector<HTMLInputElement>('input[type="file"]');
+const input = document.querySelector<HTMLInputElement>('input[type="file"]')
 
 input.addEventListener('change', async (e) => {
-  const file = input.files?.[0];
-  if (!file) return;
+  const file = input.files?.[0]
+  if (!file) return
 
-  const uploaded = await client.uploadFile(file);
-  console.log('Uploaded:', uploaded.uri);
-});
+  const uploaded = await client.uploadFile(file)
+  console.log('Uploaded:', uploaded.uri)
+})
 ```
 
 ### With React
@@ -129,61 +129,61 @@ function DropZone() {
 ```typescript
 const result = await client.run({
   app: 'processor',
-  input: { file: '/path/to/file.png' }
-});
+  input: { file: '/path/to/file.png' },
+})
 ```
 
 ### Data URI (Base64)
 
 ```typescript
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
-const buffer = readFileSync('image.png');
-const b64 = buffer.toString('base64');
+const buffer = readFileSync('image.png')
+const b64 = buffer.toString('base64')
 
 const result = await client.run({
   app: 'processor',
-  input: { image: `data:image/png;base64,${b64}` }
-});
+  input: { image: `data:image/png;base64,${b64}` },
+})
 ```
 
 ### Buffer (Node.js)
 
 ```typescript
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
-const buffer = readFileSync('image.png');
+const buffer = readFileSync('image.png')
 
 const file = await client.uploadFile(buffer, {
   filename: 'image.png',
-  contentType: 'image/png'
-});
+  contentType: 'image/png',
+})
 ```
 
 ### Blob (Browser)
 
 ```typescript
 // From canvas
-const canvas = document.querySelector('canvas');
+const canvas = document.querySelector('canvas')
 canvas.toBlob(async (blob) => {
-  if (!blob) return;
+  if (!blob) return
 
   const file = await client.uploadFile(blob, {
     filename: 'canvas.png',
-    contentType: 'image/png'
-  });
-  console.log('Uploaded:', file.uri);
-});
+    contentType: 'image/png',
+  })
+  console.log('Uploaded:', file.uri)
+})
 ```
 
 ### File Object (Browser)
 
 ```typescript
-const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
-const file = fileInput.files?.[0];
+const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]')
+const file = fileInput.files?.[0]
 
 if (file) {
-  const uploaded = await client.uploadFile(file);
+  const uploaded = await client.uploadFile(file)
 }
 ```
 
@@ -195,9 +195,9 @@ Use remote URLs directly (no upload needed):
 const result = await client.run({
   app: 'image-processor',
   input: {
-    image: 'https://example.com/image.png'
-  }
-});
+    image: 'https://example.com/image.png',
+  },
+})
 ```
 
 ## Multiple Files
@@ -206,26 +206,26 @@ const result = await client.run({
 // Upload multiple files
 const files = await Promise.all([
   client.uploadFile('/path/to/file1.png'),
-  client.uploadFile('/path/to/file2.png')
-]);
+  client.uploadFile('/path/to/file2.png'),
+])
 
 const result = await client.run({
   app: 'multi-file-processor',
-  input: { images: files.map(f => f.uri) }
-});
+  input: { images: files.map((f) => f.uri) },
+})
 ```
 
 ## File Info
 
 ```typescript
-const file = await client.uploadFile('/path/to/image.png');
+const file = await client.uploadFile('/path/to/image.png')
 
 console.log({
-  uri: file.uri,        // inf://files/abc123
-  url: file.url,        // Direct access URL
-  size: file.size,      // File size in bytes
-  contentType: file.contentType
-});
+  uri: file.uri, // inf://files/abc123
+  url: file.url, // Direct access URL
+  size: file.size, // File size in bytes
+  contentType: file.contentType,
+})
 ```
 
 ## Downloading Results
@@ -233,20 +233,20 @@ console.log({
 ### Node.js
 
 ```typescript
-import { writeFileSync } from 'fs';
+import { writeFileSync } from 'fs'
 
 const result = await client.run({
   app: 'infsh/flux-schnell',
-  input: { prompt: 'A sunset' }
-});
+  input: { prompt: 'A sunset' },
+})
 
 // Result contains URL to generated file
-const imageUrl = result.output.image;
+const imageUrl = result.output.image
 
 // Download the file
-const response = await fetch(imageUrl);
-const buffer = Buffer.from(await response.arrayBuffer());
-writeFileSync('output.png', buffer);
+const response = await fetch(imageUrl)
+const buffer = Buffer.from(await response.arrayBuffer())
+writeFileSync('output.png', buffer)
 ```
 
 ### Browser
@@ -254,14 +254,14 @@ writeFileSync('output.png', buffer);
 ```typescript
 const result = await client.run({
   app: 'infsh/flux-schnell',
-  input: { prompt: 'A sunset' }
-});
+  input: { prompt: 'A sunset' },
+})
 
 // Trigger download
-const link = document.createElement('a');
-link.href = result.output.image;
-link.download = 'generated.png';
-link.click();
+const link = document.createElement('a')
+link.href = result.output.image
+link.download = 'generated.png'
+link.click()
 ```
 
 ## Agent File Attachments
@@ -269,29 +269,29 @@ link.click();
 ### Node.js
 
 ```typescript
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
-const agent = client.agent('my-org/assistant@latest');
+const agent = client.agent('my-org/assistant@latest')
 
 // From buffer
-const response = await agent.sendMessage('What\'s in this image?', {
-  files: [readFileSync('image.png')]
-});
+const response = await agent.sendMessage("What's in this image?", {
+  files: [readFileSync('image.png')],
+})
 ```
 
 ### Browser
 
 ```typescript
-const agent = client.agent('my-org/assistant@latest');
+const agent = client.agent('my-org/assistant@latest')
 
 // From file input
-const input = document.querySelector<HTMLInputElement>('input[type="file"]');
-const file = input.files?.[0];
+const input = document.querySelector<HTMLInputElement>('input[type="file"]')
+const file = input.files?.[0]
 
 if (file) {
   const response = await agent.sendMessage('Describe this image', {
-    files: [file]
-  });
+    files: [file],
+  })
 }
 ```
 
@@ -299,8 +299,8 @@ if (file) {
 
 ```typescript
 const response = await agent.sendMessage('Analyze this document', {
-  files: ['data:application/pdf;base64,JVBERi0xLj...']
-});
+  files: ['data:application/pdf;base64,JVBERi0xLj...'],
+})
 ```
 
 ### Multiple Files
@@ -308,17 +308,17 @@ const response = await agent.sendMessage('Analyze this document', {
 ```typescript
 const response = await agent.sendMessage('Compare these images', {
   files: [
-    await fetch('image1.png').then(r => r.blob()),
-    await fetch('image2.png').then(r => r.blob())
-  ]
-});
+    await fetch('image1.png').then((r) => r.blob()),
+    await fetch('image2.png').then((r) => r.blob()),
+  ],
+})
 ```
 
 ## Content Type Detection
 
 ```typescript
 function getContentType(filename: string): string {
-  const ext = filename.split('.').pop()?.toLowerCase();
+  const ext = filename.split('.').pop()?.toLowerCase()
   const types: Record<string, string> = {
     png: 'image/png',
     jpg: 'image/jpeg',
@@ -328,30 +328,30 @@ function getContentType(filename: string): string {
     pdf: 'application/pdf',
     mp4: 'video/mp4',
     mp3: 'audio/mpeg',
-    wav: 'audio/wav'
-  };
-  return types[ext || ''] || 'application/octet-stream';
+    wav: 'audio/wav',
+  }
+  return types[ext || ''] || 'application/octet-stream'
 }
 
 async function uploadWithAutoType(path: string) {
-  const filename = path.split('/').pop() || 'file';
+  const filename = path.split('/').pop() || 'file'
   return client.uploadFile(path, {
-    contentType: getContentType(filename)
-  });
+    contentType: getContentType(filename),
+  })
 }
 ```
 
 ## React Hook for File Upload
 
 ```typescript
-import { useState, useCallback } from 'react';
-import { inference } from '@inferencesh/sdk';
+import { useState, useCallback } from 'react'
+import { inference } from '@inferencesh/sdk'
 
 interface UploadState {
-  uploading: boolean;
-  progress: number;
-  error: string | null;
-  file: any | null;
+  uploading: boolean
+  progress: number
+  error: string | null
+  file: any | null
 }
 
 function useFileUpload() {
@@ -359,48 +359,48 @@ function useFileUpload() {
     uploading: false,
     progress: 0,
     error: null,
-    file: null
-  });
+    file: null,
+  })
 
-  const client = inference({ proxyUrl: '/api/inference/proxy' });
+  const client = inference({ proxyUrl: '/api/inference/proxy' })
 
   const upload = useCallback(async (file: File) => {
-    setState({ uploading: true, progress: 0, error: null, file: null });
+    setState({ uploading: true, progress: 0, error: null, file: null })
 
     try {
       const uploaded = await client.uploadFile(file, {
         onProgress: (progress) => {
-          setState(prev => ({ ...prev, progress }));
-        }
-      });
+          setState((prev) => ({ ...prev, progress }))
+        },
+      })
 
-      setState({ uploading: false, progress: 100, error: null, file: uploaded });
-      return uploaded;
+      setState({ uploading: false, progress: 100, error: null, file: uploaded })
+      return uploaded
     } catch (e: any) {
-      setState(prev => ({ ...prev, uploading: false, error: e.message }));
-      throw e;
+      setState((prev) => ({ ...prev, uploading: false, error: e.message }))
+      throw e
     }
-  }, []);
+  }, [])
 
-  return { ...state, upload };
+  return { ...state, upload }
 }
 ```
 
 ## Error Handling
 
 ```typescript
-import { FileUploadError } from '@inferencesh/sdk';
+import { FileUploadError } from '@inferencesh/sdk'
 
 try {
-  const file = await client.uploadFile(largeFile);
+  const file = await client.uploadFile(largeFile)
 } catch (e) {
   if (e instanceof FileUploadError) {
     if (e.message.includes('too large')) {
-      console.log('File exceeds size limit');
+      console.log('File exceeds size limit')
     } else if (e.message.includes('unsupported')) {
-      console.log('File type not supported');
+      console.log('File type not supported')
     } else {
-      console.log('Upload failed:', e.message);
+      console.log('Upload failed:', e.message)
     }
   }
 }
@@ -409,19 +409,19 @@ try {
 ## Stream Upload (Large Files)
 
 ```typescript
-import { createReadStream } from 'fs';
-import { stat } from 'fs/promises';
+import { createReadStream } from 'fs'
+import { stat } from 'fs/promises'
 
 async function uploadLargeFile(filepath: string) {
-  const stats = await stat(filepath);
-  const stream = createReadStream(filepath);
+  const stats = await stat(filepath)
+  const stream = createReadStream(filepath)
 
   const file = await client.uploadFile(stream, {
     filename: filepath.split('/').pop(),
     contentType: 'application/octet-stream',
-    size: stats.size
-  });
+    size: stats.size,
+  })
 
-  return file;
+  return file
 }
 ```

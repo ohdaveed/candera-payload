@@ -1,6 +1,6 @@
 ---
 name: chat-ui
-description: "Chat UI building blocks for React/Next.js from ui.inference.sh. Components: container, messages, input, typing indicators, avatars. Capabilities: chat interfaces, message lists, input handling, streaming. Use for: building custom chat UIs, messaging interfaces, AI assistants. Triggers: chat ui, chat component, message list, chat input, shadcn chat,  react chat, chat interface, messaging ui, conversation ui, chat building blocks"
+description: 'Chat UI building blocks for React/Next.js from ui.inference.sh. Components: container, messages, input, typing indicators, avatars. Capabilities: chat interfaces, message lists, input handling, streaming. Use for: building custom chat UIs, messaging interfaces, AI assistants. Triggers: chat ui, chat component, message list, chat input, shadcn chat,  react chat, chat interface, messaging ui, conversation ui, chat building blocks'
 ---
 
 > **Install the belt CLI skill:** `npx skills add belt-sh/cli`
@@ -23,11 +23,9 @@ npx shadcn@latest add https://ui.inference.sh/r/chat.json
 ### Chat Container
 
 ```tsx
-import { ChatContainer } from "@/registry/blocks/chat/chat-container"
+import { ChatContainer } from '@/registry/blocks/chat/chat-container'
 
-<ChatContainer>
-  {/* messages go here */}
-</ChatContainer>
+;<ChatContainer>{/* messages go here */}</ChatContainer>
 ```
 
 ### Messages
@@ -49,9 +47,9 @@ import { ChatMessage } from "@/registry/blocks/chat/chat-message"
 ### Chat Input
 
 ```tsx
-import { ChatInput } from "@/registry/blocks/chat/chat-input"
+import { ChatInput } from '@/registry/blocks/chat/chat-input'
 
-<ChatInput
+;<ChatInput
   onSubmit={(message) => handleSend(message)}
   placeholder="Type a message..."
   disabled={isLoading}
@@ -61,27 +59,24 @@ import { ChatInput } from "@/registry/blocks/chat/chat-input"
 ### Typing Indicator
 
 ```tsx
-import { TypingIndicator } from "@/registry/blocks/chat/typing-indicator"
+import { TypingIndicator } from '@/registry/blocks/chat/typing-indicator'
 
-{isTyping && <TypingIndicator />}
+{
+  isTyping && <TypingIndicator />
+}
 ```
 
 ## Full Example
 
 ```tsx
-import {
-  ChatContainer,
-  ChatMessage,
-  ChatInput,
-  TypingIndicator,
-} from "@/registry/blocks/chat"
+import { ChatContainer, ChatMessage, ChatInput, TypingIndicator } from '@/registry/blocks/chat'
 
 export function Chat() {
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSend = async (content: string) => {
-    setMessages(prev => [...prev, { role: 'user', content }])
+    setMessages((prev) => [...prev, { role: 'user', content }])
     setIsLoading(true)
     // Send to API...
     setIsLoading(false)
@@ -101,22 +96,18 @@ export function Chat() {
 
 ## Message Variants
 
-| Role | Description |
-|------|-------------|
-| `user` | User messages (right-aligned) |
-| `assistant` | AI responses (left-aligned) |
-| `system` | System messages (centered) |
+| Role        | Description                   |
+| ----------- | ----------------------------- |
+| `user`      | User messages (right-aligned) |
+| `assistant` | AI responses (left-aligned)   |
+| `system`    | System messages (centered)    |
 
 ## Styling
 
 Components use Tailwind CSS and shadcn/ui design tokens:
 
 ```tsx
-<ChatMessage
-  role="assistant"
-  content="Hello!"
-  className="bg-muted"
-/>
+<ChatMessage role="assistant" content="Hello!" className="bg-muted" />
 ```
 
 ## Related Skills
@@ -139,4 +130,3 @@ npx skills add inference-sh/skills@markdown-ui
 - [Real-Time Streaming](https://inference.sh/blog/observability/streaming) - Streaming responses
 
 Component docs: [ui.inference.sh/blocks/chat](https://ui.inference.sh/blocks/chat)
-

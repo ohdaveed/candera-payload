@@ -1,6 +1,6 @@
 ---
 name: talking-head-production
-description: "Talking head video production with AI avatars, lipsync, and voiceover. Recommended: P-Video-Avatar (fastest, cheapest, built-in TTS). Also covers OmniHuman, PixVerse, Fabric. Portrait requirements, audio quality, production workflows. Use for: spokesperson videos, course content, social media, presentations, demos. Triggers: talking head, avatar video, lipsync, lip sync, ai spokesperson, virtual presenter, ai presenter, omnihuman, talking avatar, video presenter, ai talking head, presenter video, ai face video, p-video-avatar"
+description: 'Talking head video production with AI avatars, lipsync, and voiceover. Recommended: P-Video-Avatar (fastest, cheapest, built-in TTS). Also covers OmniHuman, PixVerse, Fabric. Portrait requirements, audio quality, production workflows. Use for: spokesperson videos, course content, social media, presentations, demos. Triggers: talking head, avatar video, lipsync, lip sync, ai spokesperson, virtual presenter, ai presenter, omnihuman, talking avatar, video presenter, ai talking head, presenter video, ai face video, p-video-avatar'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,21 +25,20 @@ belt app run pruna/p-video-avatar --input '{
 }'
 ```
 
-
 ## Portrait Requirements
 
 The source portrait image is critical. Poor portraits = poor video output.
 
 ### Must Have
 
-| Requirement | Why | Spec |
-|------------|-----|------|
-| **Center-framed** | Avatar needs face in predictable position | Face centered in frame |
-| **Head and shoulders** | Body visible for natural gestures | Crop below chest |
-| **Eyes to camera** | Creates connection with viewer | Direct frontal gaze |
-| **Neutral expression** | Starting point for animation | Slight smile OK, not laughing/frowning |
-| **Clear face** | Model needs to detect features | No sunglasses, heavy shadows, or obstructions |
-| **High resolution** | Detail preservation | Min 512x512 face region, ideally 1024x1024+ |
+| Requirement            | Why                                       | Spec                                          |
+| ---------------------- | ----------------------------------------- | --------------------------------------------- |
+| **Center-framed**      | Avatar needs face in predictable position | Face centered in frame                        |
+| **Head and shoulders** | Body visible for natural gestures         | Crop below chest                              |
+| **Eyes to camera**     | Creates connection with viewer            | Direct frontal gaze                           |
+| **Neutral expression** | Starting point for animation              | Slight smile OK, not laughing/frowning        |
+| **Clear face**         | Model needs to detect features            | No sunglasses, heavy shadows, or obstructions |
+| **High resolution**    | Detail preservation                       | Min 512x512 face region, ideally 1024x1024+   |
 
 ### Generate a Portrait
 
@@ -53,32 +52,32 @@ belt app run pruna/p-image --input '{
 
 ### Background Options
 
-| Type | When to Use |
-|------|-------------|
-| Solid color | Professional, clean, easy to composite |
-| Soft bokeh | Natural, lifestyle feel |
-| Office/studio | Business context |
-| Dynamic (P-Video-Avatar) | Use `video_prompt` to set background |
+| Type                     | When to Use                            |
+| ------------------------ | -------------------------------------- |
+| Solid color              | Professional, clean, easy to composite |
+| Soft bokeh               | Natural, lifestyle feel                |
+| Office/studio            | Business context                       |
+| Dynamic (P-Video-Avatar) | Use `video_prompt` to set background   |
 
 ## Model Selection
 
 **Start with P-Video-Avatar** — it's 18x faster and 6x cheaper than alternatives, with built-in TTS.
 
-| Model | App ID | Built-in TTS | Best For |
-|-------|--------|-------------|----------|
-| **P-Video-Avatar** | `pruna/p-video-avatar` | **Yes (30 voices, 10 langs)** | **Best overall: speed, cost, quality** |
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | No | Multi-character, gestures |
-| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | No | Single character |
-| Fabric 1.0 | `falai/fabric-1-0` | Yes | Image talks with lipsync |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | No | Realistic lipsync |
+| Model              | App ID                    | Built-in TTS                  | Best For                               |
+| ------------------ | ------------------------- | ----------------------------- | -------------------------------------- |
+| **P-Video-Avatar** | `pruna/p-video-avatar`    | **Yes (30 voices, 10 langs)** | **Best overall: speed, cost, quality** |
+| OmniHuman 1.5      | `bytedance/omnihuman-1-5` | No                            | Multi-character, gestures              |
+| OmniHuman 1.0      | `bytedance/omnihuman-1-0` | No                            | Single character                       |
+| Fabric 1.0         | `falai/fabric-1-0`        | Yes                           | Image talks with lipsync               |
+| PixVerse Lipsync   | `falai/pixverse-lipsync`  | No                            | Realistic lipsync                      |
 
 ### Cost & Speed Comparison
 
-| Model | Speed (per sec of video) | Cost per second |
-|-------|-------------------------|----------------|
-| **P-Video-Avatar** | **~1.83s/s** | **$0.025** |
-| OmniHuman 1.5 | ~28s/s (15x slower) | $0.16 (6.4x more) |
-| Fabric 1.0 | ~34s/s (18x slower) | $0.14 (5.6x more) |
+| Model              | Speed (per sec of video) | Cost per second   |
+| ------------------ | ------------------------ | ----------------- |
+| **P-Video-Avatar** | **~1.83s/s**             | **$0.025**        |
+| OmniHuman 1.5      | ~28s/s (15x slower)      | $0.16 (6.4x more) |
+| Fabric 1.0         | ~34s/s (18x slower)      | $0.14 (5.6x more) |
 
 ## Production Workflows
 
@@ -236,12 +235,12 @@ belt app run infsh/latentsync-1-6 --input '{
 
 When providing your own audio, quality directly impacts lipsync accuracy.
 
-| Parameter | Target | Why |
-|-----------|--------|-----|
-| Background noise | None/minimal | Noise confuses lipsync timing |
-| Volume | Consistent throughout | Prevents sync drift |
-| Sample rate | 44.1kHz or 48kHz | Standard quality |
-| Format | MP3 128kbps+ or WAV | Compatible with all tools |
+| Parameter        | Target                | Why                           |
+| ---------------- | --------------------- | ----------------------------- |
+| Background noise | None/minimal          | Noise confuses lipsync timing |
+| Volume           | Consistent throughout | Prevents sync drift           |
+| Sample rate      | 44.1kHz or 48kHz      | Standard quality              |
+| Format           | MP3 128kbps+ or WAV   | Compatible with all tools     |
 
 ## Available Voices (P-Video-Avatar)
 
@@ -270,14 +269,14 @@ When providing your own audio, quality directly impacts lipsync accuracy.
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Low-res portrait | Blurry face, poor lipsync | Use 1024x1024+ face region |
-| Profile/side angle | Lipsync can't track mouth well | Use frontal or near-frontal |
-| Noisy audio | Lipsync drifts, looks unnatural | Use built-in TTS or record clean |
-| Too-long clips | Quality degrades | Split into segments, stitch |
-| Sunglasses/obstruction | Face features hidden | Clear face required |
-| Inconsistent lighting | Uncanny when animated | Even, soft lighting |
+| Mistake                | Problem                         | Fix                              |
+| ---------------------- | ------------------------------- | -------------------------------- |
+| Low-res portrait       | Blurry face, poor lipsync       | Use 1024x1024+ face region       |
+| Profile/side angle     | Lipsync can't track mouth well  | Use frontal or near-frontal      |
+| Noisy audio            | Lipsync drifts, looks unnatural | Use built-in TTS or record clean |
+| Too-long clips         | Quality degrades                | Split into segments, stitch      |
+| Sunglasses/obstruction | Face features hidden            | Clear face required              |
+| Inconsistent lighting  | Uncanny when animated           | Even, soft lighting              |
 
 ## Related Skills
 

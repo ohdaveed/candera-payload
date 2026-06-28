@@ -1,22 +1,17 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import { Button, type ButtonProps } from './button'
 
-type SubmitButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
-
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ className, children, ...props }) => {
+export const SubmitButton: React.FC<ButtonProps> = ({ className, children, ...props }) => {
   return (
-    <button
+    <Button
       type="submit"
-      className={cn(
-        'bg-candera-ember-strong text-white hover:bg-candera-obsidian',
-        'transition-colors duration-300 px-6 py-3',
-        'tracking-wide uppercase text-sm font-bold',
-        'disabled:pointer-events-none disabled:opacity-60',
-        className,
-      )}
+      variant="cta-ember"
+      size="cta"
+      className={cn('w-full sm:w-auto', className)}
       {...props}
     >
       {children}
-    </button>
+    </Button>
   )
 }

@@ -1,6 +1,6 @@
 ---
 name: linkedin-content
-description: "LinkedIn post writing with hook formulas, formatting rules, and engagement patterns. Covers post types, algorithm signals, character limits, and content pillars. Use for: LinkedIn posts, professional content, thought leadership, B2B content, personal branding. Triggers: linkedin post, linkedin content, linkedin writing, linkedin strategy, linkedin engagement, linkedin algorithm, linkedin hook, linkedin formatting, thought leadership, professional content, b2b content, linkedin growth"
+description: 'LinkedIn post writing with hook formulas, formatting rules, and engagement patterns. Covers post types, algorithm signals, character limits, and content pillars. Use for: LinkedIn posts, professional content, thought leadership, B2B content, personal branding. Triggers: linkedin post, linkedin content, linkedin writing, linkedin strategy, linkedin engagement, linkedin algorithm, linkedin hook, linkedin formatting, thought leadership, professional content, b2b content, linkedin growth'
 allowed-tools: Bash(belt *)
 ---
 
@@ -28,7 +28,6 @@ belt app run x/post-create --input '{
 }'
 ```
 
-
 ## Post Anatomy
 
 ```
@@ -50,14 +49,14 @@ belt app run x/post-create --input '{
 
 ## Character Limits
 
-| Element | Limit |
-|---------|-------|
-| Post text | 3,000 characters |
+| Element                   | Limit                                |
+| ------------------------- | ------------------------------------ |
+| Post text                 | 3,000 characters                     |
 | Visible before "see more" | ~210 characters (~2 lines on mobile) |
-| Hashtags | 3-5 recommended |
-| Comment | 1,250 characters |
-| Article title | 100 characters |
-| Article body | 125,000 characters |
+| Hashtags                  | 3-5 recommended                      |
+| Comment                   | 1,250 characters                     |
+| Article title             | 100 characters                       |
+| Article body              | 125,000 characters                   |
 
 **The first 210 characters are everything.** If the hook fails, nobody clicks "see more."
 
@@ -65,15 +64,15 @@ belt app run x/post-create --input '{
 
 ### What Works
 
-| Formula | Example |
-|---------|---------|
-| Contrarian opinion | "Unpopular opinion: code reviews are a waste of time." |
-| Personal story opening | "I got fired on a Tuesday. Best thing that ever happened." |
-| Surprising stat | "92% of startups fail. But not for the reason you think." |
-| List promise | "I've hired 200+ engineers. Here are 5 red flags I look for." |
-| Bold statement | "Your resume doesn't matter. Here's what does." |
-| Before/after | "3 years ago I couldn't get a single interview. Yesterday I turned down a FAANG offer." |
-| Pattern interrupt | "Stop. Before you send that cold email, read this." |
+| Formula                | Example                                                                                 |
+| ---------------------- | --------------------------------------------------------------------------------------- |
+| Contrarian opinion     | "Unpopular opinion: code reviews are a waste of time."                                  |
+| Personal story opening | "I got fired on a Tuesday. Best thing that ever happened."                              |
+| Surprising stat        | "92% of startups fail. But not for the reason you think."                               |
+| List promise           | "I've hired 200+ engineers. Here are 5 red flags I look for."                           |
+| Bold statement         | "Your resume doesn't matter. Here's what does."                                         |
+| Before/after           | "3 years ago I couldn't get a single interview. Yesterday I turned down a FAANG offer." |
+| Pattern interrupt      | "Stop. Before you send that cold email, read this."                                     |
 
 ### What Fails
 
@@ -110,29 +109,29 @@ Sometimes less really is more."
 
 ### Formatting Guidelines
 
-| Rule | Why |
-|------|-----|
-| One sentence per line | Easier to scan on mobile |
-| Blank line between paragraphs | Visual breathing room |
-| Short paragraphs (1-2 sentences) | Mobile readability |
-| Use line breaks for dramatic effect | Creates pacing and suspense |
-| Bold key phrases sparingly | Draws eye to important points |
-| Numbered lists for tips | Scannable, shareable |
-| Avoid walls of text | Nobody reads them |
+| Rule                                | Why                           |
+| ----------------------------------- | ----------------------------- |
+| One sentence per line               | Easier to scan on mobile      |
+| Blank line between paragraphs       | Visual breathing room         |
+| Short paragraphs (1-2 sentences)    | Mobile readability            |
+| Use line breaks for dramatic effect | Creates pacing and suspense   |
+| Bold key phrases sparingly          | Draws eye to important points |
+| Numbered lists for tips             | Scannable, shareable          |
+| Avoid walls of text                 | Nobody reads them             |
 
 ## Post Types (Ranked by Engagement)
 
-| Post Type | Engagement | Best For |
-|-----------|-----------|----------|
-| **Personal story + lesson** | Very High | Building connection, authenticity |
-| **Contrarian take** | High | Starting conversations, visibility |
-| **Carousel (document post)** | High | Educational content, tips |
-| **List/tips (numbered)** | High | Actionable value, saves |
-| **Poll** | Medium-High | Easy engagement, data gathering |
-| **Photo + story** | Medium | Humanizing, events |
-| **Video (native)** | Medium | Demonstrations, personality |
-| **Link post** | Low | Driving traffic (algorithm penalizes) |
-| **Reshare** | Very Low | Don't bother — write original |
+| Post Type                    | Engagement  | Best For                              |
+| ---------------------------- | ----------- | ------------------------------------- |
+| **Personal story + lesson**  | Very High   | Building connection, authenticity     |
+| **Contrarian take**          | High        | Starting conversations, visibility    |
+| **Carousel (document post)** | High        | Educational content, tips             |
+| **List/tips (numbered)**     | High        | Actionable value, saves               |
+| **Poll**                     | Medium-High | Easy engagement, data gathering       |
+| **Photo + story**            | Medium      | Humanizing, events                    |
+| **Video (native)**           | Medium      | Demonstrations, personality           |
+| **Link post**                | Low         | Driving traffic (algorithm penalizes) |
+| **Reshare**                  | Very Low    | Don't bother — write original         |
 
 ### Link Posts Strategy
 
@@ -146,36 +145,36 @@ LinkedIn penalizes posts with links (reduces reach). Workarounds:
 
 Every LinkedIn creator should have 3-5 pillars they rotate through:
 
-| Pillar | What It Covers | Example |
-|--------|---------------|---------|
-| **Expertise** | Industry knowledge, how-tos | "5 database patterns every engineer should know" |
-| **Stories** | Personal experiences, failures, wins | "The hardest feedback I ever received" |
-| **Opinions** | Takes on industry trends, contrarian views | "AI won't replace engineers. Bad managers will." |
-| **Behind the scenes** | Building in public, process | "Here's our actual sprint retrospective format" |
-| **Curated insights** | Trends, data, research summaries | "I analyzed 500 job postings. Here's what changed." |
+| Pillar                | What It Covers                             | Example                                             |
+| --------------------- | ------------------------------------------ | --------------------------------------------------- |
+| **Expertise**         | Industry knowledge, how-tos                | "5 database patterns every engineer should know"    |
+| **Stories**           | Personal experiences, failures, wins       | "The hardest feedback I ever received"              |
+| **Opinions**          | Takes on industry trends, contrarian views | "AI won't replace engineers. Bad managers will."    |
+| **Behind the scenes** | Building in public, process                | "Here's our actual sprint retrospective format"     |
+| **Curated insights**  | Trends, data, research summaries           | "I analyzed 500 job postings. Here's what changed." |
 
 ## Algorithm Signals
 
-| Signal | Impact | How |
-|--------|--------|-----|
-| **Dwell time** | Very High | Longer posts that people read fully |
-| **Comments** | Very High | Ask questions, create discussion |
-| **Saves** | High | Actionable, reference-worthy content |
-| **"See more" clicks** | High | Strong hook that makes people expand |
-| **Shares** | Medium | Relatable, quotable content |
-| **Reactions** | Medium | Easy to get but weighted less |
-| **External links** | Negative | Reduces reach — put links in comments |
-| **Editing after posting** | Negative | Don't edit within first hour |
-| **Posting frequency** | 3-5x/week | Daily is fine, more than 1/day hurts |
+| Signal                    | Impact    | How                                   |
+| ------------------------- | --------- | ------------------------------------- |
+| **Dwell time**            | Very High | Longer posts that people read fully   |
+| **Comments**              | Very High | Ask questions, create discussion      |
+| **Saves**                 | High      | Actionable, reference-worthy content  |
+| **"See more" clicks**     | High      | Strong hook that makes people expand  |
+| **Shares**                | Medium    | Relatable, quotable content           |
+| **Reactions**             | Medium    | Easy to get but weighted less         |
+| **External links**        | Negative  | Reduces reach — put links in comments |
+| **Editing after posting** | Negative  | Don't edit within first hour          |
+| **Posting frequency**     | 3-5x/week | Daily is fine, more than 1/day hurts  |
 
 ## Posting Schedule
 
-| Day | Best Time (your audience's timezone) |
-|-----|------|
-| Tuesday-Thursday | 7-8 AM, 12 PM, 5-6 PM |
-| Monday | 8 AM (people catching up) |
-| Friday | 7-8 AM (before checkout) |
-| Weekend | Skip or light content |
+| Day              | Best Time (your audience's timezone) |
+| ---------------- | ------------------------------------ |
+| Tuesday-Thursday | 7-8 AM, 12 PM, 5-6 PM                |
+| Monday           | 8 AM (people catching up)            |
+| Friday           | 7-8 AM (before checkout)             |
+| Weekend          | Skip or light content                |
 
 **Engage in comments for 30-60 minutes after posting** — this is more important than the post itself.
 
@@ -199,29 +198,29 @@ belt app run falai/flux-dev-lora --input '{
 
 End every post with engagement driver:
 
-| CTA Type | Example |
-|----------|---------|
-| Question | "What's the worst career advice you've received?" |
-| Agreement check | "Agree or disagree?" |
-| Share request | "Repost if this resonates ♻️" |
-| Save prompt | "Save this for your next [situation] 🔖" |
-| Recommendation ask | "What would you add to this list?" |
-| Experience ask | "Has this happened to you?" |
+| CTA Type           | Example                                           |
+| ------------------ | ------------------------------------------------- |
+| Question           | "What's the worst career advice you've received?" |
+| Agreement check    | "Agree or disagree?"                              |
+| Share request      | "Repost if this resonates ♻️"                     |
+| Save prompt        | "Save this for your next [situation] 🔖"          |
+| Recommendation ask | "What would you add to this list?"                |
+| Experience ask     | "Has this happened to you?"                       |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Weak hook | Nobody clicks "see more" | Use hook formulas above |
-| Wall of text | Unreadable on mobile | One sentence per line, blank lines between |
-| Links in main post | Algorithm reduces reach | Put links in first comment |
-| Too many hashtags | Looks spammy | 3-5 relevant hashtags max |
-| Corporate jargon | "Leveraging synergies" = instant scroll past | Write like you talk |
-| Only self-promotion | Audience stops engaging | 80% value, 20% promotion |
-| No CTA | No engagement direction | Always end with a question or ask |
-| Resharing without adding | Near-zero reach | Write original posts, quote instead |
-| Posting and disappearing | Kills comment momentum | Engage for 30-60 min after posting |
-| Being generic | "Hard work pays off" = invisible | Specific stories and data |
+| Mistake                  | Problem                                      | Fix                                        |
+| ------------------------ | -------------------------------------------- | ------------------------------------------ |
+| Weak hook                | Nobody clicks "see more"                     | Use hook formulas above                    |
+| Wall of text             | Unreadable on mobile                         | One sentence per line, blank lines between |
+| Links in main post       | Algorithm reduces reach                      | Put links in first comment                 |
+| Too many hashtags        | Looks spammy                                 | 3-5 relevant hashtags max                  |
+| Corporate jargon         | "Leveraging synergies" = instant scroll past | Write like you talk                        |
+| Only self-promotion      | Audience stops engaging                      | 80% value, 20% promotion                   |
+| No CTA                   | No engagement direction                      | Always end with a question or ask          |
+| Resharing without adding | Near-zero reach                              | Write original posts, quote instead        |
+| Posting and disappearing | Kills comment momentum                       | Engage for 30-60 min after posting         |
+| Being generic            | "Hard work pays off" = invisible             | Specific stories and data                  |
 
 ## Related Skills
 
@@ -232,4 +231,3 @@ npx skills add inference-sh/skills@twitter-thread-creation
 ```
 
 Browse all apps: `belt app store`
-

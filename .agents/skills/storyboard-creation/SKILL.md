@@ -1,6 +1,6 @@
 ---
 name: storyboard-creation
-description: "Film and video storyboarding with shot vocabulary, continuity rules, and panel layout. Covers shot types, camera angles, movement, 180-degree rule, and annotation format. Use for: video planning, film pre-production, ad storyboards, music video planning, animation. Triggers: storyboard, storyboarding, shot list, film planning, video planning, pre production, shot composition, camera angles, scene planning, visual script, animatic, storyboard panels, video storyboard"
+description: 'Film and video storyboarding with shot vocabulary, continuity rules, and panel layout. Covers shot types, camera angles, movement, 180-degree rule, and annotation format. Use for: video planning, film pre-production, ad storyboards, music video planning, animation. Triggers: storyboard, storyboarding, shot list, film planning, video planning, pre production, shot composition, camera angles, scene planning, visual script, animatic, storyboard panels, video storyboard'
 allowed-tools: Bash(belt *)
 ---
 
@@ -31,19 +31,18 @@ belt app run infsh/stitch-images --input '{
 }'
 ```
 
-
 ## Shot Types
 
-| Abbreviation | Name | Framing | When to Use |
-|-------------|------|---------|-------------|
-| **ECU** | Extreme Close-Up | Eyes only, a detail | Intense emotion, revealing detail |
-| **CU** | Close-Up | Face fills frame | Emotion, reaction, dialogue |
-| **MCU** | Medium Close-Up | Head and shoulders | Interviews, conversations |
-| **MS** | Medium Shot | Waist up | General dialogue, action |
-| **MLS** | Medium Long Shot | Knees up | Walking, casual interaction |
-| **LS** | Long Shot | Full body | Character in environment |
-| **WS** | Wide Shot | Environment dominant | Establishing location, scale |
-| **EWS** | Extreme Wide Shot | Vast landscape | Epic scope, isolation, transitions |
+| Abbreviation | Name              | Framing              | When to Use                        |
+| ------------ | ----------------- | -------------------- | ---------------------------------- |
+| **ECU**      | Extreme Close-Up  | Eyes only, a detail  | Intense emotion, revealing detail  |
+| **CU**       | Close-Up          | Face fills frame     | Emotion, reaction, dialogue        |
+| **MCU**      | Medium Close-Up   | Head and shoulders   | Interviews, conversations          |
+| **MS**       | Medium Shot       | Waist up             | General dialogue, action           |
+| **MLS**      | Medium Long Shot  | Knees up             | Walking, casual interaction        |
+| **LS**       | Long Shot         | Full body            | Character in environment           |
+| **WS**       | Wide Shot         | Environment dominant | Establishing location, scale       |
+| **EWS**      | Extreme Wide Shot | Vast landscape       | Epic scope, isolation, transitions |
 
 ### Generating Each Shot Type
 
@@ -72,29 +71,29 @@ belt app run falai/flux-dev-lora --input '{
 
 ## Camera Angles
 
-| Angle | Effect | When to Use |
-|-------|--------|-------------|
-| **Eye Level** | Neutral, natural | Default for most scenes |
-| **High Angle** | Subject looks small, vulnerable | Showing weakness, overview |
-| **Low Angle** | Subject looks powerful, dominant | Authority, heroism, threat |
-| **Bird's Eye** | God-like overview | Maps, establishing geography |
-| **Worm's Eye** | Extreme power, awe | Architecture, towering figures |
-| **Dutch Angle** | Unease, disorientation | Tension, madness, action |
-| **Over-the-Shoulder (OTS)** | Viewer positioned with character | Conversations, POV |
+| Angle                       | Effect                           | When to Use                    |
+| --------------------------- | -------------------------------- | ------------------------------ |
+| **Eye Level**               | Neutral, natural                 | Default for most scenes        |
+| **High Angle**              | Subject looks small, vulnerable  | Showing weakness, overview     |
+| **Low Angle**               | Subject looks powerful, dominant | Authority, heroism, threat     |
+| **Bird's Eye**              | God-like overview                | Maps, establishing geography   |
+| **Worm's Eye**              | Extreme power, awe               | Architecture, towering figures |
+| **Dutch Angle**             | Unease, disorientation           | Tension, madness, action       |
+| **Over-the-Shoulder (OTS)** | Viewer positioned with character | Conversations, POV             |
 
 ## Camera Movement
 
-| Movement | Description | Emotion |
-|----------|-------------|---------|
-| **Pan** | Camera rotates horizontally (on tripod) | Scanning, following, revealing |
-| **Tilt** | Camera rotates vertically (on tripod) | Revealing height, power |
-| **Dolly** | Camera moves toward/away from subject | Intimacy (in), distance (out) |
-| **Truck** | Camera moves laterally | Following alongside, revealing |
-| **Crane/Jib** | Camera moves up or down vertically | Grand reveals, transitions |
-| **Zoom** | Lens focal length changes (camera stays) | Focus shift, dramatic emphasis |
-| **Steadicam/Gimbal** | Smooth handheld tracking | Immersion, following action |
-| **Handheld** | Deliberate camera shake | Urgency, documentary feel, chaos |
-| **Static** | Camera doesn't move | Stability, observation, tension |
+| Movement             | Description                              | Emotion                          |
+| -------------------- | ---------------------------------------- | -------------------------------- |
+| **Pan**              | Camera rotates horizontally (on tripod)  | Scanning, following, revealing   |
+| **Tilt**             | Camera rotates vertically (on tripod)    | Revealing height, power          |
+| **Dolly**            | Camera moves toward/away from subject    | Intimacy (in), distance (out)    |
+| **Truck**            | Camera moves laterally                   | Following alongside, revealing   |
+| **Crane/Jib**        | Camera moves up or down vertically       | Grand reveals, transitions       |
+| **Zoom**             | Lens focal length changes (camera stays) | Focus shift, dramatic emphasis   |
+| **Steadicam/Gimbal** | Smooth handheld tracking                 | Immersion, following action      |
+| **Handheld**         | Deliberate camera shake                  | Urgency, documentary feel, chaos |
+| **Static**           | Camera doesn't move                      | Stability, observation, tension  |
 
 In storyboards, indicate movement with arrows drawn on panels.
 
@@ -143,12 +142,12 @@ If a character moves left-to-right in one shot, they should continue left-to-rig
 
 ### Standard Formats
 
-| Layout | Panels | Use For |
-|--------|--------|---------|
-| 2x3 (6 panels) | 6 per page | Detailed scenes, dialogue |
-| 3x3 (9 panels) | 9 per page | Action sequences, montages |
-| 2x2 (4 panels) | 4 per page | Key moments, presentations |
-| Single | 1 per page | Hero shots, critical moments |
+| Layout         | Panels     | Use For                      |
+| -------------- | ---------- | ---------------------------- |
+| 2x3 (6 panels) | 6 per page | Detailed scenes, dialogue    |
+| 3x3 (9 panels) | 9 per page | Action sequences, montages   |
+| 2x2 (4 panels) | 4 per page | Key moments, presentations   |
+| Single         | 1 per page | Hero shots, critical moments |
 
 ### Panel Annotation Format
 
@@ -247,14 +246,14 @@ belt app run infsh/stitch-images --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Crossing the 180-degree line | Confuses spatial relationships | Stay on one side or use neutral shot |
-| All same shot type | Visually boring, no rhythm | Vary between CU, MS, WS |
-| No establishing shot | Viewer doesn't know where they are | Start scenes with WS or EWS |
-| Too many shots per scene | Pacing drags | 5-8 shots per scene is typical |
-| Inconsistent style between panels | Looks like different projects | Use same style prompt suffix |
-| Missing annotations | Panels are ambiguous | Always note shot type, movement, action |
+| Mistake                           | Problem                            | Fix                                     |
+| --------------------------------- | ---------------------------------- | --------------------------------------- |
+| Crossing the 180-degree line      | Confuses spatial relationships     | Stay on one side or use neutral shot    |
+| All same shot type                | Visually boring, no rhythm         | Vary between CU, MS, WS                 |
+| No establishing shot              | Viewer doesn't know where they are | Start scenes with WS or EWS             |
+| Too many shots per scene          | Pacing drags                       | 5-8 shots per scene is typical          |
+| Inconsistent style between panels | Looks like different projects      | Use same style prompt suffix            |
+| Missing annotations               | Panels are ambiguous               | Always note shot type, movement, action |
 
 ## Related Skills
 
@@ -266,4 +265,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

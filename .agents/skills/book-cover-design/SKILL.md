@@ -1,6 +1,6 @@
 ---
 name: book-cover-design
-description: "Book cover design with genre-specific conventions, typography rules, and AI image generation. Covers fiction and non-fiction genres, sizing, thumbnail testing, and iteration workflows. Use for: self-publishing, ebook covers, print covers, audiobook covers, cover mockups. Triggers: book cover, cover design, ebook cover, book art, novel cover, self publishing cover, kindle cover, audiobook cover, book jacket, cover illustration, fiction cover, nonfiction cover"
+description: 'Book cover design with genre-specific conventions, typography rules, and AI image generation. Covers fiction and non-fiction genres, sizing, thumbnail testing, and iteration workflows. Use for: self-publishing, ebook covers, print covers, audiobook covers, cover mockups. Triggers: book cover, cover design, ebook cover, book art, novel cover, self publishing cover, kindle cover, audiobook cover, book jacket, cover illustration, fiction cover, nonfiction cover'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,55 +25,55 @@ belt app run falai/flux-dev-lora --input '{
 }'
 ```
 
-
 ## Genre Conventions
 
 Readers judge books by covers. Matching genre expectations is critical — a romance reader will skip a cover that looks like sci-fi, regardless of content.
 
 ### Fiction
 
-| Genre | Palette | Imagery | Typography | Mood |
-|-------|---------|---------|------------|------|
-| **Thriller/Mystery** | Dark (black, navy, blood red) | Lone figure, urban scenes, shadows | Bold sans-serif, all caps | Tense, ominous |
-| **Romance** | Warm (pink, red, gold, soft purple) | Couples, flowers, scenic backdrops | Script/cursive, elegant serif | Passionate, dreamy |
-| **Sci-Fi** | Cool (blue, teal, purple, silver) | Space, tech, geometric shapes | Clean sans-serif, futuristic | Vast, technological |
-| **Fantasy** | Rich saturated (emerald, crimson, gold) | Swords, magic, landscapes, creatures | Decorative serif, ornamental | Epic, magical |
-| **Literary Fiction** | Muted, sophisticated | Abstract, minimal, symbolic | Elegant serif, understated | Thoughtful, artistic |
-| **Horror** | Dark with high contrast pops | Faces, shadows, isolation, decay | Distressed, bold, dripping | Dread, unease |
-| **Historical** | Sepia, muted period-accurate | Period clothing, architecture, artifacts | Classical serif | Nostalgic, authentic |
+| Genre                | Palette                                 | Imagery                                  | Typography                    | Mood                 |
+| -------------------- | --------------------------------------- | ---------------------------------------- | ----------------------------- | -------------------- |
+| **Thriller/Mystery** | Dark (black, navy, blood red)           | Lone figure, urban scenes, shadows       | Bold sans-serif, all caps     | Tense, ominous       |
+| **Romance**          | Warm (pink, red, gold, soft purple)     | Couples, flowers, scenic backdrops       | Script/cursive, elegant serif | Passionate, dreamy   |
+| **Sci-Fi**           | Cool (blue, teal, purple, silver)       | Space, tech, geometric shapes            | Clean sans-serif, futuristic  | Vast, technological  |
+| **Fantasy**          | Rich saturated (emerald, crimson, gold) | Swords, magic, landscapes, creatures     | Decorative serif, ornamental  | Epic, magical        |
+| **Literary Fiction** | Muted, sophisticated                    | Abstract, minimal, symbolic              | Elegant serif, understated    | Thoughtful, artistic |
+| **Horror**           | Dark with high contrast pops            | Faces, shadows, isolation, decay         | Distressed, bold, dripping    | Dread, unease        |
+| **Historical**       | Sepia, muted period-accurate            | Period clothing, architecture, artifacts | Classical serif               | Nostalgic, authentic |
 
 ### Non-Fiction
 
-| Category | Style | Imagery | Typography |
-|----------|-------|---------|------------|
-| **Business/Self-help** | Clean, bold, 2-3 colors | Minimal or none, icon optional | Large bold sans-serif title |
-| **Memoir** | Personal, warm | Author photo or atmospheric scene | Mix of serif and sans |
-| **Science/Academic** | Professional, structured | Diagrams, abstract visuals | Clean serif, structured layout |
-| **Cookbook** | Appetizing, bright | Hero food photograph | Warm, inviting fonts |
-| **Travel** | Vibrant, aspirational | Destination photography | Adventure-style fonts |
+| Category               | Style                    | Imagery                           | Typography                     |
+| ---------------------- | ------------------------ | --------------------------------- | ------------------------------ |
+| **Business/Self-help** | Clean, bold, 2-3 colors  | Minimal or none, icon optional    | Large bold sans-serif title    |
+| **Memoir**             | Personal, warm           | Author photo or atmospheric scene | Mix of serif and sans          |
+| **Science/Academic**   | Professional, structured | Diagrams, abstract visuals        | Clean serif, structured layout |
+| **Cookbook**           | Appetizing, bright       | Hero food photograph              | Warm, inviting fonts           |
+| **Travel**             | Vibrant, aspirational    | Destination photography           | Adventure-style fonts          |
 
 ## Cover Sizing
 
 ### Print (Trim Sizes)
 
-| Format | Dimensions | Common For |
-|--------|-----------|------------|
-| Mass market paperback | 4.25 x 6.87" | Genre fiction |
-| Trade paperback | 5.5 x 8.5" | Most fiction/non-fiction |
-| Standard | 6 x 9" | Non-fiction, textbooks |
-| Large format | 7 x 10" | Coffee table, art books |
+| Format                | Dimensions   | Common For               |
+| --------------------- | ------------ | ------------------------ |
+| Mass market paperback | 4.25 x 6.87" | Genre fiction            |
+| Trade paperback       | 5.5 x 8.5"   | Most fiction/non-fiction |
+| Standard              | 6 x 9"       | Non-fiction, textbooks   |
+| Large format          | 7 x 10"      | Coffee table, art books  |
 
 ### Digital
 
-| Platform | Cover Size | Aspect Ratio |
-|----------|-----------|--------------|
-| Amazon Kindle | 2560 x 1600 px (min 1000 x 625) | 1.6:1 |
-| Apple Books | 1400 x 1873 px minimum | ~3:4 |
-| General ebook | 2500 x 3750 px | 2:3 |
+| Platform      | Cover Size                      | Aspect Ratio |
+| ------------- | ------------------------------- | ------------ |
+| Amazon Kindle | 2560 x 1600 px (min 1000 x 625) | 1.6:1        |
+| Apple Books   | 1400 x 1873 px minimum          | ~3:4         |
+| General ebook | 2500 x 3750 px                  | 2:3          |
 
 ### Spine Width
 
 Approximate: **page count / 400 = spine width in inches** (varies by paper stock).
+
 - 200 pages ≈ 0.5" spine
 - 400 pages ≈ 1.0" spine
 
@@ -99,6 +99,7 @@ Approximate: **page count / 400 = spine width in inches** (varies by paper stock
 Your cover will be seen at **80x120px** on Amazon, 60x90px in search results, and ~40x60px on mobile grids.
 
 **At thumbnail size, readers must be able to identify:**
+
 1. The genre (from color and composition)
 2. The title (if large enough)
 3. The mood (from imagery)
@@ -108,6 +109,7 @@ Your cover will be seen at **80x120px** on Amazon, 60x90px in search results, an
 ## Prompting by Genre
 
 ### Thriller
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "dark cinematic book cover scene, silhouette of a person standing before a foggy bridge at night, single streetlamp casting long shadows, noir atmosphere, high contrast, desaturated blue tint, dramatic tension",
@@ -117,6 +119,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 ### Romance
+
 ```bash
 belt app run bytedance/seedream-4-5 --input '{
   "prompt": "romantic soft-focus scene, couple silhouetted against golden sunset on a beach, warm pink and gold tones, bokeh lights, dreamy atmosphere, soft pastel sky, intimate mood",
@@ -125,6 +128,7 @@ belt app run bytedance/seedream-4-5 --input '{
 ```
 
 ### Sci-Fi
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "science fiction book cover art, massive space station orbiting a ringed planet, deep blue and teal color palette, stars and nebula background, hard sci-fi aesthetic, cinematic scale, clean geometric architecture",
@@ -134,6 +138,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 ### Fantasy
+
 ```bash
 belt app run xai/grok-imagine-image-pro --input '{
   "prompt": "epic fantasy book cover illustration, ancient stone castle on a cliff overlooking a misty valley, magical aurora in the sky, rich emerald and gold colors, detailed environment, sense of wonder and adventure",
@@ -142,6 +147,7 @@ belt app run xai/grok-imagine-image-pro --input '{
 ```
 
 ### Non-Fiction / Business
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "minimal abstract book cover background, clean gradient from deep navy to white, subtle geometric pattern, professional and modern, negative space, corporate aesthetic",
@@ -155,11 +161,13 @@ belt app run falai/flux-dev-lora --input '{
 **AI cannot render text reliably.** Generate the cover art/background with AI, then add typography in a design tool.
 
 ### Title Hierarchy
+
 1. **Title** — largest, most prominent, top 1/3 of cover
 2. **Subtitle** — smaller, below title or at bottom
 3. **Author name** — bottom of cover, size depends on author recognition
 
 ### Font Pairing by Genre
+
 - Thriller: bold sans-serif title + condensed sans-serif author
 - Romance: script/cursive title + elegant serif author
 - Sci-Fi: geometric sans-serif for both
@@ -189,14 +197,14 @@ belt app run falai/topaz-image-upscaler --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Wrong genre signals | Readers skip it | Study bestsellers in your genre |
-| Title too small | Invisible at thumbnail | Title should fill top 1/3 |
-| Too much detail | Muddy at small sizes | Simplify, use negative space |
-| AI-generated text | Garbled letters | Add text in design tool |
-| Centered everything | Static, boring | Use asymmetry intentionally |
-| Following trends blindly | Dates quickly | Classic genre conventions endure |
+| Mistake                  | Problem                | Fix                              |
+| ------------------------ | ---------------------- | -------------------------------- |
+| Wrong genre signals      | Readers skip it        | Study bestsellers in your genre  |
+| Title too small          | Invisible at thumbnail | Title should fill top 1/3        |
+| Too much detail          | Muddy at small sizes   | Simplify, use negative space     |
+| AI-generated text        | Garbled letters        | Add text in design tool          |
+| Centered everything      | Static, boring         | Use asymmetry intentionally      |
+| Following trends blindly | Dates quickly          | Classic genre conventions endure |
 
 ## Checklist
 
@@ -218,4 +226,3 @@ npx skills add inference-sh/skills@image-upscaling
 ```
 
 Browse all apps: `belt app store`
-

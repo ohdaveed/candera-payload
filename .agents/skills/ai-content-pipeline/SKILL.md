@@ -1,6 +1,6 @@
 ---
 name: ai-content-pipeline
-description: "Build multi-step AI content creation pipelines combining image, video, audio, and text. Workflow examples: generate image -> animate -> add voiceover -> merge with music. Tools: FLUX, Veo, Kokoro TTS, OmniHuman, media merger, upscaling. Use for: YouTube videos, social media content, marketing materials, automated content. Triggers: content pipeline, ai workflow, content creation, multi-step ai, content automation, ai video workflow, generate and edit, ai content factory, automated content creation, ai production pipeline, media pipeline, content at scale"
+description: 'Build multi-step AI content creation pipelines combining image, video, audio, and text. Workflow examples: generate image -> animate -> add voiceover -> merge with music. Tools: FLUX, Veo, Kokoro TTS, OmniHuman, media merger, upscaling. Use for: YouTube videos, social media content, marketing materials, automated content. Triggers: content pipeline, ai workflow, content creation, multi-step ai, content automation, ai video workflow, generate and edit, ai content factory, automated content creation, ai production pipeline, media pipeline, content at scale'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,7 +23,6 @@ belt login
 belt app run falai/flux-dev --input '{"prompt": "portrait of a woman smiling"}' > image.json
 belt app run falai/wan-2-5 --input '{"image_url": "<url-from-previous>"}'
 ```
-
 
 ## Pipeline Patterns
 
@@ -182,43 +181,43 @@ belt app run infsh/media-merger --input '{
 
 ### Content Generation
 
-| Step | App | Purpose |
-|------|-----|---------|
-| Script | `openrouter/claude-sonnet-45` | Write content |
-| Research | `tavily/search-assistant` | Gather information |
-| Summary | `openrouter/claude-haiku-45` | Condense content |
+| Step     | App                           | Purpose            |
+| -------- | ----------------------------- | ------------------ |
+| Script   | `openrouter/claude-sonnet-45` | Write content      |
+| Research | `tavily/search-assistant`     | Gather information |
+| Summary  | `openrouter/claude-haiku-45`  | Condense content   |
 
 ### Visual Assets
 
-| Step | App | Purpose |
-|------|-----|---------|
-| Image | `falai/flux-dev` | Generate images |
-| Image | `google/imagen-3` | Alternative image gen |
-| Upscale | `falai/topaz-image-upscaler` | Enhance quality |
+| Step    | App                          | Purpose               |
+| ------- | ---------------------------- | --------------------- |
+| Image   | `falai/flux-dev`             | Generate images       |
+| Image   | `google/imagen-3`            | Alternative image gen |
+| Upscale | `falai/topaz-image-upscaler` | Enhance quality       |
 
 ### Animation
 
-| Step | App | Purpose |
-|------|-----|---------|
-| I2V | `falai/wan-2-5` | Animate images |
-| T2V | `google/veo-3-1-fast` | Generate from text |
-| Avatar | `bytedance/omnihuman-1-5` | Talking heads |
+| Step   | App                       | Purpose            |
+| ------ | ------------------------- | ------------------ |
+| I2V    | `falai/wan-2-5`           | Animate images     |
+| T2V    | `google/veo-3-1-fast`     | Generate from text |
+| Avatar | `bytedance/omnihuman-1-5` | Talking heads      |
 
 ### Audio
 
-| Step | App | Purpose |
-|------|-----|---------|
-| TTS | `infsh/kokoro-tts` | Voice narration |
-| Music | `infsh/ai-music` | Background music |
-| Foley | `infsh/hunyuanvideo-foley` | Sound effects |
+| Step  | App                        | Purpose          |
+| ----- | -------------------------- | ---------------- |
+| TTS   | `infsh/kokoro-tts`         | Voice narration  |
+| Music | `infsh/ai-music`           | Background music |
+| Foley | `infsh/hunyuanvideo-foley` | Sound effects    |
 
 ### Post-Production
 
-| Step | App | Purpose |
-|------|-----|---------|
+| Step    | App                          | Purpose       |
+| ------- | ---------------------------- | ------------- |
 | Upscale | `falai/topaz-video-upscaler` | Enhance video |
-| Merge | `infsh/media-merger` | Combine media |
-| Caption | `infsh/caption-video` | Add subtitles |
+| Merge   | `infsh/media-merger`         | Combine media |
+| Caption | `infsh/caption-video`        | Add subtitles |
 
 ## Best Practices
 
@@ -253,4 +252,3 @@ Browse all apps: `belt app store`
 
 - [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Official pipeline guide
 - [Building Workflows](https://inference.sh/blog/guides/ai-workflows) - Workflow best practices
-

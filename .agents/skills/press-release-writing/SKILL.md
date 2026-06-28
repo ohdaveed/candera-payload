@@ -1,6 +1,6 @@
 ---
 name: press-release-writing
-description: "Press release writing in AP style with inverted pyramid structure. Covers formatting, datelines, quotes, boilerplates, and fact-checking. Use for: product launches, funding announcements, partnerships, company news, events. Triggers: press release, pr writing, media release, news release, announcement, product launch announcement, funding announcement, company news, media advisory, ap style, press statement, news wire"
+description: 'Press release writing in AP style with inverted pyramid structure. Covers formatting, datelines, quotes, boilerplates, and fact-checking. Use for: product launches, funding announcements, partnerships, company news, events. Triggers: press release, pr writing, media release, news release, announcement, product launch announcement, funding announcement, company news, media advisory, ap style, press statement, news wire'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,7 +22,6 @@ belt app run tavily/search-assistant --input '{
   "query": "SaaS funding rounds Q1 2024 average series A size"
 }'
 ```
-
 
 ## AP Style Format
 
@@ -75,6 +74,7 @@ Media Contact:
 ```
 
 **Rules:**
+
 - Present tense, active voice
 - No period at end
 - No superlatives ("revolutionary", "groundbreaking", "best-in-class")
@@ -108,6 +108,7 @@ Answer WHO, WHAT, WHEN, WHERE, WHY in 25-35 words:
 ### Quotes
 
 **Rules:**
+
 - 1-2 quotes maximum (CEO/founder + partner/customer)
 - Never start a quote with "I"
 - Attribution format: "Quote," said Full Name, Title at Company.
@@ -230,42 +231,42 @@ belt app run tavily/search-assistant --input '{
 
 ## Length Guidelines
 
-| Element | Length |
-|---------|--------|
-| Headline | 10-15 words |
-| Subheadline (optional) | 15-25 words |
-| Total body | 400-600 words |
-| Quotes | 2-3 sentences each, max 2 quotes |
-| Boilerplate | 3-4 sentences |
-| **Total** | **500-800 words** |
+| Element                | Length                           |
+| ---------------------- | -------------------------------- |
+| Headline               | 10-15 words                      |
+| Subheadline (optional) | 15-25 words                      |
+| Total body             | 400-600 words                    |
+| Quotes                 | 2-3 sentences each, max 2 quotes |
+| Boilerplate            | 3-4 sentences                    |
+| **Total**              | **500-800 words**                |
 
 Over 800 words and editors won't read it. Under 400 and it lacks substance.
 
 ## AP Style Quick Reference
 
-| Rule | Example |
-|------|---------|
-| Numbers 1-9 spelled out, 10+ as digits | "nine employees" / "10 employees" |
-| Percent as one word | "15 percent" (not 15% in body text) |
-| Titles before names capitalized | "CEO Sarah Chen" |
-| Titles after names lowercase | "Sarah Chen, chief executive officer" |
-| Company names: no Inc./Corp. in body | "Company X" not "Company X, Inc." |
-| Dates: month day, year | "Jan. 15, 2026" |
-| States abbreviated in dateline | "SAN FRANCISCO, Calif." |
-| Serial comma: AP does NOT use it | "fast, simple and effective" |
+| Rule                                   | Example                               |
+| -------------------------------------- | ------------------------------------- |
+| Numbers 1-9 spelled out, 10+ as digits | "nine employees" / "10 employees"     |
+| Percent as one word                    | "15 percent" (not 15% in body text)   |
+| Titles before names capitalized        | "CEO Sarah Chen"                      |
+| Titles after names lowercase           | "Sarah Chen, chief executive officer" |
+| Company names: no Inc./Corp. in body   | "Company X" not "Company X, Inc."     |
+| Dates: month day, year                 | "Jan. 15, 2026"                       |
+| States abbreviated in dateline         | "SAN FRANCISCO, Calif."               |
+| Serial comma: AP does NOT use it       | "fast, simple and effective"          |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Superlatives | "Revolutionary" = ignored by editors | State facts, let readers judge |
-| Exclamation points | Unprofessional | Never use in press releases |
-| Starting quotes with "I" | Informal, weak opening | Start with a fact or insight |
-| Burying the lead | Key news in paragraph 3 | Most important info first |
-| Too long | Won't be read | 500-800 words max |
-| Jargon | Alienates non-expert readers | Write for a general audience |
-| No fact-checking | Credibility risk | Verify all claims and statistics |
-| Missing contact info | Journalists can't follow up | Always include media contact |
+| Mistake                  | Problem                              | Fix                              |
+| ------------------------ | ------------------------------------ | -------------------------------- |
+| Superlatives             | "Revolutionary" = ignored by editors | State facts, let readers judge   |
+| Exclamation points       | Unprofessional                       | Never use in press releases      |
+| Starting quotes with "I" | Informal, weak opening               | Start with a fact or insight     |
+| Burying the lead         | Key news in paragraph 3              | Most important info first        |
+| Too long                 | Won't be read                        | 500-800 words max                |
+| Jargon                   | Alienates non-expert readers         | Write for a general audience     |
+| No fact-checking         | Credibility risk                     | Verify all claims and statistics |
+| Missing contact info     | Journalists can't follow up          | Always include media contact     |
 
 ## Checklist
 
@@ -288,4 +289,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

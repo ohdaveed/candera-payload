@@ -1,6 +1,6 @@
 ---
 name: app-store-screenshots
-description: "App Store and Google Play screenshot creation with exact platform specs. Covers iOS/Android dimensions, gallery ordering, device mockups, and preview videos. Use for: app store optimization, ASO, app screenshots, app preview, play store listing. Triggers: app store screenshots, aso, app store optimization, play store screenshots, app preview, app listing, ios screenshots, android screenshots, app store images, app mockup, device mockup, app gallery, store listing"
+description: 'App Store and Google Play screenshot creation with exact platform specs. Covers iOS/Android dimensions, gallery ordering, device mockups, and preview videos. Use for: app store optimization, ASO, app screenshots, app preview, play store listing. Triggers: app store screenshots, aso, app store optimization, play store screenshots, app preview, app listing, ios screenshots, android screenshots, app store images, app mockup, device mockup, app gallery, store listing'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,18 +25,17 @@ belt app run falai/flux-dev-lora --input '{
 }'
 ```
 
-
 ## Platform Specifications
 
 ### Apple App Store (iOS)
 
-| Device | Dimensions (px) | Required |
-|--------|-----------------|----------|
-| iPhone 6.7" (15 Pro Max) | 1290 x 2796 | Required |
-| iPhone 6.5" (11 Pro Max) | 1284 x 2778 | Required |
-| iPhone 5.5" (8 Plus) | 1242 x 2208 | Optional |
-| iPad Pro 12.9" (6th gen) | 2048 x 2732 | If iPad app |
-| iPad Pro 11" | 1668 x 2388 | If iPad app |
+| Device                   | Dimensions (px) | Required    |
+| ------------------------ | --------------- | ----------- |
+| iPhone 6.7" (15 Pro Max) | 1290 x 2796     | Required    |
+| iPhone 6.5" (11 Pro Max) | 1284 x 2778     | Required    |
+| iPhone 5.5" (8 Plus)     | 1242 x 2208     | Optional    |
+| iPad Pro 12.9" (6th gen) | 2048 x 2732     | If iPad app |
+| iPad Pro 11"             | 1668 x 2388     | If iPad app |
 
 - Up to **10 screenshots** per localization
 - First **3 screenshots** are visible without scrolling (critical)
@@ -44,13 +43,13 @@ belt app run falai/flux-dev-lora --input '{
 
 ### Google Play Store (Android)
 
-| Spec | Value |
-|------|-------|
-| Min dimensions | 320 px (any side) |
-| Max dimensions | 3840 px (any side) |
-| Aspect ratio | 16:9 or 9:16 |
-| Max screenshots | 8 per device type |
-| Formats | PNG or JPEG (24-bit, no alpha) |
+| Spec            | Value                          |
+| --------------- | ------------------------------ |
+| Min dimensions  | 320 px (any side)              |
+| Max dimensions  | 3840 px (any side)             |
+| Aspect ratio    | 16:9 or 9:16                   |
+| Max screenshots | 8 per device type              |
+| Formats         | PNG or JPEG (24-bit, no alpha) |
 
 - Feature graphic: 1024 x 500 px (required for featuring)
 - Promo video: YouTube URL (optional but recommended)
@@ -65,14 +64,14 @@ belt app run falai/flux-dev-lora --input '{
 
 ### Screenshot Gallery Order
 
-| Position | Content | Purpose |
-|----------|---------|---------|
-| **1** | Hero — core value, best feature | Stop the scroll, communicate what the app does |
-| **2** | Key differentiator | What makes you unique vs competitors |
-| **3** | Most popular feature | The thing users love most |
-| **4** | Social proof or outcome | Ratings, results, testimonials |
-| **5-8** | Additional features | Supporting features, settings, integrations |
-| **9-10** | Edge cases | Specialized features for niche users |
+| Position | Content                         | Purpose                                        |
+| -------- | ------------------------------- | ---------------------------------------------- |
+| **1**    | Hero — core value, best feature | Stop the scroll, communicate what the app does |
+| **2**    | Key differentiator              | What makes you unique vs competitors           |
+| **3**    | Most popular feature            | The thing users love most                      |
+| **4**    | Social proof or outcome         | Ratings, results, testimonials                 |
+| **5-8**  | Additional features             | Supporting features, settings, integrations    |
+| **9-10** | Edge cases                      | Specialized features for niche users           |
 
 ## Screenshot Styles
 
@@ -178,30 +177,30 @@ belt app run infsh/stitch-images --input '{
 
 ### Apple App Store
 
-| Spec | Value |
-|------|-------|
-| Duration | 15-30 seconds |
-| Orientation | Portrait or landscape (match app) |
-| Audio | Optional (loops silently in store) |
-| Format | H.264, .mov or .mp4 |
+| Spec        | Value                              |
+| ----------- | ---------------------------------- |
+| Duration    | 15-30 seconds                      |
+| Orientation | Portrait or landscape (match app)  |
+| Audio       | Optional (loops silently in store) |
+| Format      | H.264, .mov or .mp4                |
 
 ### Google Play
 
-| Spec | Value |
-|------|-------|
-| Source | YouTube URL |
-| Duration | 30s-2min recommended |
-| Orientation | Landscape preferred |
+| Spec        | Value                |
+| ----------- | -------------------- |
+| Source      | YouTube URL          |
+| Duration    | 30s-2min recommended |
+| Orientation | Landscape preferred  |
 
 ### Preview Video Structure
 
-| Segment | Duration | Content |
-|---------|----------|---------|
-| Hook | 0-3s | Show the core outcome/wow moment |
-| Feature 1 | 3-10s | Demonstrate top feature in action |
-| Feature 2 | 10-18s | Second key feature |
-| Feature 3 | 18-25s | Third feature or social proof |
-| CTA | 25-30s | End screen with app icon |
+| Segment   | Duration | Content                           |
+| --------- | -------- | --------------------------------- |
+| Hook      | 0-3s     | Show the core outcome/wow moment  |
+| Feature 1 | 3-10s    | Demonstrate top feature in action |
+| Feature 2 | 10-18s   | Second key feature                |
+| Feature 3 | 18-25s   | Third feature or social proof     |
+| CTA       | 25-30s   | End screen with app icon          |
 
 ```bash
 # Generate preview video scenes
@@ -214,11 +213,11 @@ belt app run google/veo-3-1-fast --input '{
 
 Each language gets its own set of screenshots. Priorities:
 
-| Market | Localization Level |
-|--------|-------------------|
-| Primary markets | Full: new screenshots + translated captions |
-| Secondary markets | Translated captions, same screenshots |
-| Other | English defaults |
+| Market            | Localization Level                          |
+| ----------------- | ------------------------------------------- |
+| Primary markets   | Full: new screenshots + translated captions |
+| Secondary markets | Translated captions, same screenshots       |
+| Other             | English defaults                            |
 
 Key localization markets: English, Japanese, Korean, Chinese (Simplified), German, French, Spanish, Portuguese (Brazilian)
 
@@ -234,16 +233,16 @@ Google Play Console supports store listing experiments:
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Settings screen as screenshot | Nobody cares about settings | Show core value, not infrastructure |
-| Onboarding flow screenshots | Shows friction, not value | Show the app in-use state |
-| Too much text | Unreadable in store | Max 2 lines, 30pt+ font |
-| Wrong dimensions | Rejected by store | Use exact platform specs |
-| All screenshots look the same | No reason to scroll | Vary composition and content |
-| Feature-focused captions | Doesn't communicate benefit | "Never Miss a Deadline" > "Push Notifications" |
-| Outdated UI | Looks abandoned | Update screenshots with each major release |
-| No hero screenshot | Weak first impression | Position 1 = your best shot |
+| Mistake                       | Problem                     | Fix                                            |
+| ----------------------------- | --------------------------- | ---------------------------------------------- |
+| Settings screen as screenshot | Nobody cares about settings | Show core value, not infrastructure            |
+| Onboarding flow screenshots   | Shows friction, not value   | Show the app in-use state                      |
+| Too much text                 | Unreadable in store         | Max 2 lines, 30pt+ font                        |
+| Wrong dimensions              | Rejected by store           | Use exact platform specs                       |
+| All screenshots look the same | No reason to scroll         | Vary composition and content                   |
+| Feature-focused captions      | Doesn't communicate benefit | "Never Miss a Deadline" > "Push Notifications" |
+| Outdated UI                   | Looks abandoned             | Update screenshots with each major release     |
+| No hero screenshot            | Weak first impression       | Position 1 = your best shot                    |
 
 ## Checklist
 
@@ -267,4 +266,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

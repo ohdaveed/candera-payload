@@ -1,6 +1,6 @@
 ---
 name: seedance
-description: "Generate videos with ByteDance Seedance 2.0 via inference.sh CLI. Unified model for text-to-video, image-to-video, and reference-to-video with synchronized audio, up to 1080p, 4-15s duration. Pro and Fast variants. Studio variants with private asset library for portrait consistency. Use for: social media videos, music videos, product demos, animated content, AI video with sound. Triggers: seedance, seedance 2, bytedance video, seedance t2v, seedance i2v, seedance r2v, video with audio, seedance 2.0, bytedance seedance, seedance studio"
+description: 'Generate videos with ByteDance Seedance 2.0 via inference.sh CLI. Unified model for text-to-video, image-to-video, and reference-to-video with synchronized audio, up to 1080p, 4-15s duration. Pro and Fast variants. Studio variants with private asset library for portrait consistency. Use for: social media videos, music videos, product demos, animated content, AI video with sound. Triggers: seedance, seedance 2, bytedance video, seedance t2v, seedance i2v, seedance r2v, video with audio, seedance 2.0, bytedance seedance, seedance studio'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,15 +23,14 @@ belt app run bytedance/seedance-2-0 --input '{
 }'
 ```
 
-
 ## Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| Seedance 2.0 | `bytedance/seedance-2-0` | Best quality, up to 1080p |
-| Seedance 2.0 Fast | `bytedance/seedance-2-0-fast` | Faster generation, up to 720p |
-| Seedance 2.0 Studio | `bytedance/seedance-2-0-studio` | Quality + private asset library for portrait consistency |
-| Seedance 2.0 Studio Fast | `bytedance/seedance-2-0-studio-fast` | Fast + private asset library for portrait consistency |
+| Model                    | App ID                               | Best For                                                 |
+| ------------------------ | ------------------------------------ | -------------------------------------------------------- |
+| Seedance 2.0             | `bytedance/seedance-2-0`             | Best quality, up to 1080p                                |
+| Seedance 2.0 Fast        | `bytedance/seedance-2-0-fast`        | Faster generation, up to 720p                            |
+| Seedance 2.0 Studio      | `bytedance/seedance-2-0-studio`      | Quality + private asset library for portrait consistency |
+| Seedance 2.0 Studio Fast | `bytedance/seedance-2-0-studio-fast` | Fast + private asset library for portrait consistency    |
 
 All models support text-to-video, image-to-video, multimodal reference-to-video, and synchronized audio generation. Studio variants automatically upload reference images to the BytePlus private virtual portrait library for enhanced character consistency - particularly useful for faces and branded characters.
 
@@ -39,11 +38,11 @@ All models support text-to-video, image-to-video, multimodal reference-to-video,
 
 The model determines the generation mode from your inputs. These modes are **mutually exclusive** - use either first-frame/last-frame OR reference inputs, not both.
 
-| Mode | Inputs | Description |
-|------|--------|-------------|
-| Text-to-Video | `prompt` only | Generate video from text description |
-| Image-to-Video | `prompt` + `image` | Animate a still image (first frame) |
-| First+Last Frame | `prompt` + `image` + `end_image` | Control start and end frames |
+| Mode                 | Inputs                                                              | Description                              |
+| -------------------- | ------------------------------------------------------------------- | ---------------------------------------- |
+| Text-to-Video        | `prompt` only                                                       | Generate video from text description     |
+| Image-to-Video       | `prompt` + `image`                                                  | Animate a still image (first frame)      |
+| First+Last Frame     | `prompt` + `image` + `end_image`                                    | Control start and end frames             |
 | Multimodal Reference | `prompt` + `reference_images`/`reference_videos`/`reference_audios` | Guide generation with reference material |
 
 ## Examples
@@ -177,44 +176,47 @@ belt app run bytedance/seedance-2-0 --input '{
 Reference assets in your prompt using **type + index**: `Image 1`, `Image 2`, `Video 1`, `Audio 1`. The index is the position within that type in the arrays you provide. Do NOT use asset IDs in prompts.
 
 **Multimodal reference formula:**
+
 - Image reference: "Refer to the [subject] from [Image N] to generate [scene], keeping [subject] consistent"
 - Video reference: "Refer to the [camera movement/action] from [Video N]"
 - Audio reference: "[Character] says: [dialogue], voice style referenced from [Audio N]"
 
 **Video editing formula:**
+
 - Add: "At [timing] of [Video N], add [element]"
 - Remove: "Remove [element] from [Video N], keeping the rest unchanged"
 - Modify: "Replace [element] in [Video N] with [new element]"
 
 **Video extension formula:**
+
 - Forward: "Generate content after [Video N]: [description]"
 - Backward: "Extend the opening of [Video N]: [description]"
 - Stitch: "[Video 1] + [transition] + followed by [Video 2]"
 
 ## Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `prompt` | string | required | Text description of the video |
-| `generate_audio` | boolean | true | Generate synchronized audio |
-| `duration` | integer | 5 | Duration in seconds (4-15), or -1 for auto |
-| `ratio` | enum | adaptive | 21:9, 16:9, 4:3, 1:1, 3:4, 9:16, or adaptive |
-| `resolution` | enum | 720p | 480p, 720p, 1080p (Fast: 480p, 720p only) |
-| `seed` | integer | -1 | Seed for reproducibility (-1 for random) |
-| `watermark` | boolean | false | Add watermark to output |
-| `safety_identifier` | string | - | Unique end-user identifier for safety policy (max 64 chars, hash of user ID recommended) |
-| `image` | file | - | First-frame image (mutually exclusive with reference inputs) |
-| `end_image` | file | - | Last-frame image (requires `image`) |
-| `reference_images` | file[] | - | Reference images, up to 9 (mutually exclusive with image/end_image) |
-| `reference_videos` | file[] | - | Reference videos, up to 3. Max 15s each, total max 15s. mp4/mov |
-| `reference_audios` | file[] | - | Reference audios, up to 3. Max 15s each, total max 15s. wav/mp3. Requires at least one image or video |
+| Parameter           | Type    | Default  | Description                                                                                           |
+| ------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| `prompt`            | string  | required | Text description of the video                                                                         |
+| `generate_audio`    | boolean | true     | Generate synchronized audio                                                                           |
+| `duration`          | integer | 5        | Duration in seconds (4-15), or -1 for auto                                                            |
+| `ratio`             | enum    | adaptive | 21:9, 16:9, 4:3, 1:1, 3:4, 9:16, or adaptive                                                          |
+| `resolution`        | enum    | 720p     | 480p, 720p, 1080p (Fast: 480p, 720p only)                                                             |
+| `seed`              | integer | -1       | Seed for reproducibility (-1 for random)                                                              |
+| `watermark`         | boolean | false    | Add watermark to output                                                                               |
+| `safety_identifier` | string  | -        | Unique end-user identifier for safety policy (max 64 chars, hash of user ID recommended)              |
+| `image`             | file    | -        | First-frame image (mutually exclusive with reference inputs)                                          |
+| `end_image`         | file    | -        | Last-frame image (requires `image`)                                                                   |
+| `reference_images`  | file[]  | -        | Reference images, up to 9 (mutually exclusive with image/end_image)                                   |
+| `reference_videos`  | file[]  | -        | Reference videos, up to 3. Max 15s each, total max 15s. mp4/mov                                       |
+| `reference_audios`  | file[]  | -        | Reference audios, up to 3. Max 15s each, total max 15s. wav/mp3. Requires at least one image or video |
 
 ## Pricing
 
-| Model | Pricing |
-|-------|---------|
-| Seedance 2.0 | $4.30-$7.70/M tokens (varies by resolution and input type) |
-| Seedance 2.0 Fast | $3.30-$5.60/M tokens |
+| Model             | Pricing                                                    |
+| ----------------- | ---------------------------------------------------------- |
+| Seedance 2.0      | $4.30-$7.70/M tokens (varies by resolution and input type) |
+| Seedance 2.0 Fast | $3.30-$5.60/M tokens                                       |
 
 Token formula: `(width x height x fps x duration) / 1024`
 

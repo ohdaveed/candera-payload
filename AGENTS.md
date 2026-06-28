@@ -2,172 +2,140 @@
 
 This file preserves hard-earned context for AI agents working in this repo.
 
-## Quick start
+## Quick Start & CLI Workflows
+
+Before running any script or starting the server, you must verify your Proton Pass session and run commands through the environment injector.
+
+### Environment & Secret Management
+
+This project uses `pass-cli` (Proton Pass CLI) for secret management. The `.env` file contains `pass://` URIs instead of raw values.
+
+- **Never** overwrite `.env` with raw secrets.
+- Always run commands using: `pass-cli run --env-file .env -- <command>`
+- **Vault name:** `Google` (role: Owner)
+- **Session Lifecycle:** Before executing any `pass-cli` command, verify your session status with `pass-cli info`. If expired, log out using `pass-cli logout --force` and log back in with `PROTON_PASS_PERSONAL_ACCESS_TOKEN`. Set `PROTON_PASS_AGENT_REASON` for any item actions.
 
 ```bash
-# Inject environment variables using pass-cli
-pass-cli run --env-file .env -- pnpm dev    # Start dev server at http://localhost:3000
-pass-cli run --env-file .env -- pnpm build  # Production build (runs next-sitemap postbuild)
-pass-cli run --env-file .env -- pnpm start  # Serve production build
+# Inject secrets and run commands
+pass-cli run --env-file .env -- vp dev     # Start dev server at http://localhost:3000
+pass-cli run --env-file .env -- vp build   # Production build
+pass-cli run --env-file .env -- vp check   # Lint, format, and typecheck
+pass-cli run --env-file .env -- vp test    # Run integration + E2E tests
 ```
 
-**Environment Variables:** This project uses `pass-cli` for secret management. The `.env` file contains `pass://` URIs. Do not overwrite `.env` with raw secrets; always use `pass-cli run --env-file .env -- <command>` to inject them at runtime.
+### Vite+ Toolchain (`vp`)
 
-## Commands
+We use **Vite+** (`vp`), a unified toolchain wrapping Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task.
 
-| Command                       | Purpose                                                               |
-| ----------------------------- | --------------------------------------------------------------------- |
-| `pnpm lint` / `pnpm lint:fix` | ESLint (flat config in `eslint.config.mjs`)                           |
-| `pnpm test:int`               | Vitest integration tests (`tests/int/**/*.int.spec.ts`) — requires DB |
-| `pnpm test:e2e`               | Playwright E2E (`tests/e2e/`) — spawns dev server automatically       |
-| `pnpm test`                   | Int then E2E sequentially                                             |
-| `pnpm payload migrate:create` | Generate DB migration after schema change                             |
-| `pnpm payload migrate`        | Run pending migrations (required before prod deploy)                  |
-| `pnpm generate:types`         | Regenerate `src/payload-types.ts` from collections                    |
-| `pnpm generate:importmap`     | Regenerate Payload admin import map                                   |
-| `pnpm run ci`                 | CI deploy: `payload migrate && pnpm build`                            |
+- Do not use raw `npm` or `pnpm` for validation if `vp` is configured.
+- Run `vp help` or `vp <command> --help` to explore commands.
+- Run `vp install` after pulling remote changes.
+- Run `vp env doctor` to troubleshoot environment issues.
 
-Run everything via `pnpm`. Node >=24.15.0 required.
+### Command Reference Table
+
+Run all command executions via `pnpm` or `vp`. Node >=24.15.0 is required.
+
+| Command                       | Purpose                                                                           |
+| :---------------------------- | :-------------------------------------------------------------------------------- |
+| `vp check`                    | Formats, lints (Oxlint), and typechecks changes.                                  |
+| `vp test`                     | Runs integration tests and E2E tests.                                             |
+| `pnpm test:int`               | Vitest integration tests (`tests/int/**/*.int.spec.ts`) — requires DB connection. |
+| `pnpm test:e2e`               | Playwright E2E tests (`tests/e2e/`) — starts dev server automatically.            |
+| `pnpm payload migrate:create` | Generates a new DB migration file after a schema change.                          |
+| `pnpm payload migrate`        | Runs pending migrations (required before production deployment).                  |
+| `pnpm generate:types`         | Regenerates `src/payload-types.ts` from collections.                              |
+| `pnpm generate:importmap`     | Regenerates Payload CMS admin import map.                                         |
+| `pnpm run ci`                 | CI deploy script: `payload migrate && pnpm build`.                                |
 
 ## Architecture
 
 **Payload CMS 3.x + Next.js 16** — both CMS backend and public website run in a single Next.js process. Payload is integrated via `withPayload` in `next.config.ts`.
 
-### Route groups
+### Route Groups
 
-- `src/app/(frontend)/` — Public website. `page.tsx` re-exports `[slug]` page defaulting to slug `home`. All pages statically generated via `generateStaticParams`.
-- `src/app/(payload)/` — Admin panel at `/admin`, REST/GraphQL APIs at `/api`.
+- `src/app/(frontend)/` — Public website. `page.tsx` re-exports `[slug]` page defaulting to `home`. All pages are statically generated via `generateStaticParams`.
+- `src/app/(payload)/` — CMS Admin panel at `/admin`, REST/GraphQL APIs at `/api`.
 
-### Collections
+### Collections & Content Structure
 
-`pages`, `posts`, `products` (Etsy-synced), `media` (Vercel Blob), `categories` (nested taxonomy), `users`, `folders` (virtual media org).
-
-### Globals
-
-`Header` and `Footer` — nav data fetched via `src/utilities/getGlobals.ts`, revalidated on change.
-
-### Blocks (Layout Builder)
-
-Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts` (fields) + `Component.tsx` (rendering). Available: `CallToAction`, `Content`, `MediaBlock`, `Archive`, `Form`, `Code`, `Banner`, `RelatedPosts`. Archive renders either `posts` or `products`.
+- **Collections:** `pages`, `posts`, `products` (Etsy-synced), `media` (Vercel Blob), `categories` (nested taxonomy), `users`, `folders` (virtual media organization).
+- **Globals:** `Header` and `Footer` (fetched via `src/utilities/getGlobals.ts` and revalidated on change).
+- **Blocks (Layout Builder):** Pages and posts use a layout builder in `src/blocks/`. Each block has `config.ts` (fields) + `Component.tsx` (rendering). Available blocks: `CallToAction`, `Content`, `MediaBlock`, `Archive`, `Form`, `Code`, `Banner`, `RelatedPosts`.
 
 ### Etsy Integration
 
-- `src/utilities/etsy.ts` — `fetchEtsy()` with `ETSY_API_KEY` + `ETSY_SHARED_SECRET` against `https://openapi.etsy.com/v3/application`.
+- `src/utilities/etsy.ts` — Calls Etsy OpenAPI v3 (`https://openapi.etsy.com/v3/application`) using `ETSY_API_KEY` and `ETSY_SHARED_SECRET`.
 - `src/utilities/syncEtsy.ts` — Upserts listings into `products`, downloads images into `media` (idempotent via `etsyImageId`).
 - Triggered via authenticated GET `/api/sync-etsy` in `payload.config.ts`.
 
 ## Database & Migrations
 
-**Production:** Neon Serverless Postgres via Vercel integration. `@payloadcms/db-postgres` with `push: false` — migrations always required. Connection string from `DATABASE_URI` (fallback: `POSTGRES_URL`). The Vercel Neon integration auto-provides a pooled connection string; the `@payloadcms/db-vercel-postgres` adapter activates when the URL is a Neon endpoint. `@neondatabase/serverless` is the runtime driver.
+**Production:** Neon Serverless Postgres via Vercel integration. `@payloadcms/db-postgres` with `push: false` (migrations always required). Connection string is `DATABASE_URI` (fallback: `POSTGRES_URL`). The `@payloadcms/db-vercel-postgres` adapter activates when using Neon endpoints.
 
-**Local:** Docker Compose Postgres (port 54320). Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Localhost URLs bypass the Vercel adapter and use standard `@payloadcms/db-postgres` directly.
+- **Neon connection pool:** Append `-pooler` to the endpoint hostname in the connection string to use pooled connections.
+- **Compute suspend:** Neon compute suspends after 5 minutes of idle time. Expect a cold-start penalty (~hundreds of ms) on first connection.
+- **Case-insensitive search:** ILIKE queries utilize `pg_trgm`. Ensure this extension is enabled if performing case-insensitive searches at scale.
 
-**Neon quirks:**
+**Local Development:** Uses Docker Compose Postgres on port 54320. Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Standard `@payloadcms/db-postgres` is used for localhost URLs.
 
-- Compute suspends after 5 min idle; first query after suspend has a cold-start penalty (~hundreds of ms)
-- Pooled connections: append `-pooler` to the endpoint hostname in the connection string
-- ILIKE queries use `pg_trgm`; ensure the extension is enabled if doing case-insensitive search at scale
+**Migration workflow:**
 
-**Migration workflow:** After schema change → `pnpm payload migrate:create` → commit migration file. Vercel's build command runs `pnpm run ci` (`payload migrate && pnpm build`), so migrations are applied automatically on every deploy (preview + production). Do not seed in preview builds.
+1.  Make schema change.
+2.  Run `pnpm payload migrate:create` to generate the migration file.
+3.  Commit migration file.
+4.  _Note:_ Vercel's build runs `pnpm run ci` (`payload migrate && pnpm build`), so migrations are applied automatically on every deploy. Do not seed in preview builds.
 
-## Testing quirks
+## Testing Quirks
 
-- **Integration tests** (`tests/int/`) use Vitest + jsdom, load `.env` via `dotenv/config` — need a real or mock DB connection. Run with `pnpm test:int`.
-- **E2E tests** (`tests/e2e/`) use Playwright, auto-starts `pnpm dev` via `webServer` config. Run with `pnpm test:e2e`.
-- Test helpers in `tests/helpers/`: `login.ts`, `seedUser.ts`.
+- **Integration tests** (`tests/int/`): Run via `pnpm test:int`. Uses Vitest + jsdom, loading `.env` via `dotenv/config`. A real or mock DB connection is required.
+- **E2E tests** (`tests/e2e/`): Run via `pnpm test:e2e`. Uses Playwright and automatically starts the dev server via `webServer` config.
+- **Test Helpers:** Check `tests/helpers/` for `login.ts` and `seedUser.ts` utilities.
 
-## pass-cli credential access
+## Ignore Boundaries
 
-This project uses `pass-cli` (Proton Pass CLI) for secret management. Store the PAT
-outside the repository and provide it at runtime via `PROTON_PASS_PERSONAL_ACCESS_TOKEN`.
+LLM agents must ignore and avoid indexing, reading, or traversing the following files and directories:
 
-**Available vaults:** `Google` (role: Owner)
+- **Build & Dependencies:** `.next/`, `node_modules/`, `dist/`, `build/`
+- **Lockfiles:** `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`
+- **Payload CMS & Databases:** `*.db`, `*.sqlite`, `*.sqlite3`, `postgres-data/`, `media/`
+- **Cache & Vercel:** `.vercel/`, `.turbo/`, `.cache/`
+- **Environment & Secrets:** `.env*` (never read or write raw credentials)
+- **System & Git:** `.git/`, `.DS_Store`, `*.log`
 
-**Session lifecycle:**
+## Agent Guidelines & Constraints
 
-- Before any `pass-cli` command, verify session: `pass-cli info`
-- If session expired: `pass-cli logout --force`, then re-login with PAT
-- Isolated session dir: `export PROTON_PASS_SESSION_DIR="/tmp/pass-agent-$(whoami)-$(date +%s)"`
-- Login: `PROTON_PASS_PERSONAL_ACCESS_TOKEN="..." pass-cli login`
-- Always set `PROTON_PASS_AGENT_REASON` for `item view`, `item create`, `item update`, `item trash`, `item untrash`, `vault update`
+Always adhere to these guidelines to ensure reliability, security, and performance.
 
-**Fetching secrets:**
+### 1. Documentation Lookup (context7)
+
+Use the `ctx7` CLI to fetch documentation whenever you deal with libraries, frameworks, SDKs, APIs, or cloud services (even well-known ones like Next.js, Payload CMS, Prisma, Express, Tailwind, etc.):
 
 ```bash
-PROTON_PASS_AGENT_REASON="Why this item is needed" pass-cli item view \
-  --vault-name "Google" \
-  --item-title "Item Title" \
-  [--field password]
+# 1. Resolve library ID (e.g., Next.js -> /vercel/next.js)
+npx ctx7@latest library "Next.js" "<your query>"
+
+# 2. Fetch specific documentation
+npx ctx7@latest docs <libraryId> "<your query>"
 ```
 
-**Quick commands:**
+- _Note:_ Do not run more than 3 commands per query. Never fall back to training data or general web searches if `ctx7` can provide up-to-date documentation.
 
-- `pass-cli vault list --output json` — list vaults
-- `pass-cli share list --output json` — list shares/access grants
-- `pass-cli item list --vault-name "Google" --output json` — list items in vault
-- `pass-cli item view pass://SHARE_ID/ITEM_ID` — access by URI
-- `pass-cli run --env-file .env -- <cmd>` — inject secrets into commands
+### 2. Verification Before Completion
 
-## Key env vars
+Before declaring a task done:
 
-| Variable                              | Purpose                                                  |
-| ------------------------------------- | -------------------------------------------------------- |
-| `DATABASE_URI` / `POSTGRES_URL`       | Neon Postgres connection string                          |
-| `BLOB_READ_WRITE_TOKEN`               | Vercel Blob storage                                      |
-| `PAYLOAD_SECRET`                      | JWT signing                                              |
-| `PREVIEW_SECRET`                      | Live preview URL signing                                 |
-| `CRON_SECRET`                         | Bearer token for Vercel cron jobs                        |
-| `ETSY_API_KEY` / `ETSY_SHARED_SECRET` | Etsy Open API v3                                         |
-| `SMTP_HOST/PORT/USER/PASS`            | Optional email transport (falls back to `jsonTransport`) |
+- Run `vp check` to ensure all formatting, linting (Oxlint), and TypeScript typechecks pass.
+- Run `vp test` to verify that both integration and E2E tests pass.
+- _Never_ commit changes that break the build or tests.
 
-## Codegen & generated files
+### 3. Codegen & Autogenerated Files
 
-- `src/payload-types.ts` — auto-generated, never edit manually. Run `pnpm generate:types` after collection/field changes.
-- `src/payload-generated-schema.ts` — auto-generated, also in ESLint ignores.
-- Path alias `@/*` maps to `src/*`.
-- `@payload-config` maps to `src/payload.config.ts`.
+- **Do not edit** `src/payload-types.ts` or `src/payload-generated-schema.ts` manually.
+- After editing collections/fields, run `pnpm generate:types` and check in the generated changes.
 
-## Code style
+### 4. Performance & Revalidation
 
-- TypeScript strict mode, ES2022 target.
-- Prettier (`.prettierrc.json`): single quotes, no semicolons, trailing commas, 100 print width.
-- ESLint flat config (`eslint.config.mjs`): `eslint-config-next` rules, ignores `.next/` and generated files. Warnings for `@ts-*`, `any`, unused vars (prefixed with `_`).
-- shadcn/ui components (`components.json`): style `default`, RSC enabled, CSS variables.
-- Tailwind CSS v4 with `@tailwindcss/postcss` and `tw-animate-css`.
-- ESLint uses a `fixCircular` helper to resolve circular plugin references in Next.js configs — don't remove it.
-
-## Plugins
-
-Configured in `src/plugins/index.ts`: redirects, nested-docs (categories), SEO, form-builder, search (posts only). Vercel Blob storage wired directly in `payload.config.ts`.
-
-## On-demand revalidation
-
-`afterChange` / `afterDelete` hooks in `src/collections/Pages/hooks/` and `src/collections/Posts/hooks/` call `revalidatePath` / `revalidateTag`. Redirects revalidated via `src/hooks/revalidateRedirects.ts`.
-
-## Cron
-
-`vercel.json` schedules `/api/payload-jobs/run` daily (`0 0 * * *`) for scheduled publishing via Payload jobs queue. Access controlled by CRON_SECRET bearer token.
-
-## Packages to know
-
-- Payload ecosystem: `@payloadcms/next`, `@payloadcms/db-postgres`, `@payloadcms/richtext-lexical`, `@payloadcms/storage-vercel-blob`, `@payloadcms/email-nodemailer`.
-- Plugins: `@payloadcms/plugin-form-builder`, `@payloadcms/plugin-nested-docs`, `@payloadcms/plugin-redirects`, `@payloadcms/plugin-search`, `@payloadcms/plugin-seo`.
-- Next.js 16, React 19, TypeScript 6.
-- Package manager: `pnpm` 11.8.0.
-
-<!--VITE PLUS START-->
-
-# Using Vite+, the Unified Toolchain for the Web
-
-This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
-
-Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
-
-## Review Checklist
-
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
-- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
-
-<!--VITE PLUS END-->
+- On-demand ISR must use `revalidateTag(tag, 'max')` on collection hook updates (`src/utilities/revalidate.ts`).
+- Avoid adding custom `clamp()` expressions in CSS. Use standard Tailwind spacing/font-size tokens.
+- Focus states must never use `outline-none` unless paired with `focus-visible:ring-*`. Use the mapped brand color `--ring` (`var(--candera-ember-strong)`) via `ring-ring`.

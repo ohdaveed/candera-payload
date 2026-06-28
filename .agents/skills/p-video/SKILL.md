@@ -1,6 +1,6 @@
 ---
 name: p-video
-description: "Generate videos with Pruna P-Video and WAN models via inference.sh CLI. Models: P-Video, WAN-T2V, WAN-I2V. Capabilities: text-to-video, image-to-video, audio support, 720p/1080p, fast inference. Pruna optimizes models for speed without quality loss. Triggers: pruna video, p-video, pruna ai video, fast video generation, optimized video, wan t2v, wan i2v, economic video generation, cheap video generation, pruna text to video, pruna image to video"
+description: 'Generate videos with Pruna P-Video and WAN models via inference.sh CLI. Models: P-Video, WAN-T2V, WAN-I2V. Capabilities: text-to-video, image-to-video, audio support, 720p/1080p, fast inference. Pruna optimizes models for speed without quality loss. Triggers: pruna video, p-video, pruna ai video, fast video generation, optimized video, wan t2v, wan i2v, economic video generation, cheap video generation, pruna text to video, pruna image to video'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,16 +22,15 @@ belt login
 belt app run pruna/p-video --input '{"prompt": "drone shot flying over a forest at sunset"}'
 ```
 
-
 ## Pruna Video Models
 
 Pruna optimizes AI models for speed without sacrificing quality.
 
-| Model | App ID | Best For |
-|-------|--------|----------|
+| Model   | App ID          | Best For                                  |
+| ------- | --------------- | ----------------------------------------- |
 | P-Video | `pruna/p-video` | Text-to-video, image-to-video, with audio |
-| WAN-T2V | `pruna/wan-t2v` | Text-to-video, 480p/720p |
-| WAN-I2V | `pruna/wan-i2v` | Animate images, 480p/720p |
+| WAN-T2V | `pruna/wan-t2v` | Text-to-video, 480p/720p                  |
+| WAN-I2V | `pruna/wan-i2v` | Animate images, 480p/720p                 |
 
 ## Examples
 
@@ -110,11 +109,11 @@ belt app run pruna/p-video --input '{
 
 ## Resolution Options
 
-| Model | Resolutions | Pricing |
-|-------|-------------|---------|
+| Model   | Resolutions | Pricing                                |
+| ------- | ----------- | -------------------------------------- |
 | P-Video | 720p, 1080p | Per second, varies by resolution/draft |
-| WAN-T2V | 480p, 720p | $0.05 (480p), $0.10 (720p) per video |
-| WAN-I2V | 480p, 720p | $0.05 (480p), $0.11 (720p) per video |
+| WAN-T2V | 480p, 720p  | $0.05 (480p), $0.10 (720p) per video   |
+| WAN-I2V | 480p, 720p  | $0.05 (480p), $0.11 (720p) per video   |
 
 ## Browse All Pruna Apps
 
@@ -148,4 +147,3 @@ Browse all apps: `belt app store`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
-

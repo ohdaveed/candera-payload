@@ -1,6 +1,6 @@
 ---
 name: character-design-sheet
-description: "Character consistency across AI-generated images with reference sheets and LoRA techniques. Covers turnaround views, expression sheets, color palettes, and style consistency tricks. Use for: character design, game art, illustration, animation, comics, visual novels. Triggers: character design, character sheet, character consistency, character reference, turnaround sheet, expression sheet, character art, consistent character, character concept, reference sheet, character creation, oc design, character bible"
+description: 'Character consistency across AI-generated images with reference sheets and LoRA techniques. Covers turnaround views, expression sheets, color palettes, and style consistency tricks. Use for: character design, game art, illustration, animation, comics, visual novels. Triggers: character design, character sheet, character consistency, character reference, turnaround sheet, expression sheet, character art, consistent character, character concept, reference sheet, character creation, oc design, character bible'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,20 +25,19 @@ belt app run falai/flux-dev-lora --input '{
 }'
 ```
 
-
 ## The Consistency Problem
 
 AI image generation produces different-looking characters every time, even with the same prompt. This is the #1 challenge in AI art for any project requiring the same character across multiple images.
 
 ### Solutions (Ranked by Effectiveness)
 
-| Technique | Consistency | Effort | Best For |
-|-----------|-------------|--------|----------|
-| **FLUX LoRA** (trained on character) | Very high | High (requires training data) | Ongoing projects, many images |
-| **Detailed description anchor** | Medium-high | Low | Quick projects, few images |
-| **Same seed + similar prompt** | Medium | Low | Variations of single pose |
-| **Image-to-image refinement** | Medium | Medium | Refining existing images |
-| **Reference image in prompt** | Varies | Low | When model supports it |
+| Technique                            | Consistency | Effort                        | Best For                      |
+| ------------------------------------ | ----------- | ----------------------------- | ----------------------------- |
+| **FLUX LoRA** (trained on character) | Very high   | High (requires training data) | Ongoing projects, many images |
+| **Detailed description anchor**      | Medium-high | Low                           | Quick projects, few images    |
+| **Same seed + similar prompt**       | Medium      | Low                           | Variations of single pose     |
+| **Image-to-image refinement**        | Medium      | Medium                        | Refining existing images      |
+| **Reference image in prompt**        | Varies      | Low                           | When model supports it        |
 
 ## Reference Sheet Types
 
@@ -136,12 +135,12 @@ belt app run falai/flux-dev-lora --input '{
 
 Multiple outfits for the same character:
 
-| Outfit | Description |
-|--------|-------------|
-| Casual | Bomber jacket, t-shirt, jeans |
-| Work | Blazer, button-down, slacks |
+| Outfit   | Description                         |
+| -------- | ----------------------------------- |
+| Casual   | Bomber jacket, t-shirt, jeans       |
+| Work     | Blazer, button-down, slacks         |
 | Athletic | Sports bra, leggings, running shoes |
-| Formal | Evening dress, heels |
+| Formal   | Evening dress, heels                |
 
 ### 4. Color Palette Sheet
 
@@ -187,13 +186,13 @@ stud earrings
 
 ## Proportion Guide
 
-| Style | Head-to-Body Ratio | Best For |
-|-------|-------------------|----------|
-| Realistic | 7.5 : 1 | Film, photorealistic |
-| Heroic | 8 : 1 | Superheroes, action |
-| Anime/Manga | 5-6 : 1 | Japanese animation style |
-| Stylized | 4-5 : 1 | Western animation |
-| Chibi/Super-deformed | 2-3 : 1 | Cute, comedic, mascots |
+| Style                | Head-to-Body Ratio | Best For                 |
+| -------------------- | ------------------ | ------------------------ |
+| Realistic            | 7.5 : 1            | Film, photorealistic     |
+| Heroic               | 8 : 1              | Superheroes, action      |
+| Anime/Manga          | 5-6 : 1            | Japanese animation style |
+| Stylized             | 4-5 : 1            | Western animation        |
+| Chibi/Super-deformed | 2-3 : 1            | Cute, comedic, mascots   |
 
 Include proportion style in your prompts: "realistic proportions" vs "anime style proportions" vs "chibi proportions"
 
@@ -210,6 +209,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 **LoRA Training Tips:**
+
 - Need 10-20 reference images of the character (consistent style)
 - Train on specific trigger word (e.g., "maya_chen")
 - Scale 0.7-0.9 balances consistency with prompt flexibility
@@ -217,14 +217,14 @@ belt app run falai/flux-dev-lora --input '{
 
 ## Common Consistency Failures
 
-| Issue | Why It Happens | Mitigation |
-|-------|---------------|------------|
-| **Hair color drift** | Model interprets "red hair" differently each time | Use specific shade: "auburn red #C0392B" |
-| **Eye color change** | Low priority in generation | Mention eye color early in prompt |
-| **Outfit inconsistency** | Model fills in details creatively | Describe every clothing item explicitly |
-| **Age shift** | Vague age description | Use "mid-twenties" not "young" |
-| **Face structure change** | Different generations = different faces | Use LoRA or same seed base |
-| **Proportion shift** | Style interpretation varies | Specify "7.5 head proportions" |
+| Issue                     | Why It Happens                                    | Mitigation                               |
+| ------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| **Hair color drift**      | Model interprets "red hair" differently each time | Use specific shade: "auburn red #C0392B" |
+| **Eye color change**      | Low priority in generation                        | Mention eye color early in prompt        |
+| **Outfit inconsistency**  | Model fills in details creatively                 | Describe every clothing item explicitly  |
+| **Age shift**             | Vague age description                             | Use "mid-twenties" not "young"           |
+| **Face structure change** | Different generations = different faces           | Use LoRA or same seed base               |
+| **Proportion shift**      | Style interpretation varies                       | Specify "7.5 head proportions"           |
 
 ## Character Bible Template
 
@@ -234,10 +234,12 @@ For ongoing projects, maintain a character bible document:
 # Character: Maya Chen
 
 ## Visual Description (use in all prompts)
+
 young woman in her mid-twenties with short asymmetric auburn red hair...
 [full 50+ word anchor description]
 
 ## Color Palette
+
 - Skin: #F5D0A9
 - Hair: #C0392B
 - Eyes: #27AE60
@@ -245,14 +247,17 @@ young woman in her mid-twenties with short asymmetric auburn red hair...
 - Accent: Red #E74C3C
 
 ## Personality Notes (for expression/pose choices)
+
 - Confident but approachable
 - Default expression: slight curious smile
 - Gestures: talks with hands, leans forward when interested
 
 ## Style Keywords
+
 concept art, clean lines, sharp details, [art style reference]
 
 ## LoRA (if trained)
+
 Path: ./loras/maya-chen-v2.safetensors
 Trigger: maya_chen
 Recommended scale: 0.8
@@ -260,14 +265,14 @@ Recommended scale: 0.8
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Vague descriptions | Different character every time | 50+ word detailed anchor |
-| Inconsistent prompt structure | Varying emphasis = varying results | Same structure, only change action/scene |
-| Generating one view only | Can't use character in different contexts | Create full turnaround reference |
-| No color documentation | Colors drift across generations | Record exact hex codes |
-| Skipping expression sheet | Character feels one-dimensional | Generate 6+ expressions |
-| Not using LoRA for big projects | Inconsistency compounds | Train LoRA for 10+ image projects |
+| Mistake                         | Problem                                   | Fix                                      |
+| ------------------------------- | ----------------------------------------- | ---------------------------------------- |
+| Vague descriptions              | Different character every time            | 50+ word detailed anchor                 |
+| Inconsistent prompt structure   | Varying emphasis = varying results        | Same structure, only change action/scene |
+| Generating one view only        | Can't use character in different contexts | Create full turnaround reference         |
+| No color documentation          | Colors drift across generations           | Record exact hex codes                   |
+| Skipping expression sheet       | Character feels one-dimensional           | Generate 6+ expressions                  |
+| Not using LoRA for big projects | Inconsistency compounds                   | Train LoRA for 10+ image projects        |
 
 ## Related Skills
 
@@ -278,4 +283,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

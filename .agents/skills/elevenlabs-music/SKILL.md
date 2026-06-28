@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-music
-description: "ElevenLabs AI music generation - create original music from text prompts via inference.sh CLI. Capabilities: text-to-music, custom duration up to 10 minutes, genre/mood/instrument control, royalty-free commercial use. Use for: background music, soundtracks, jingles, podcasts, video scores, game audio. Triggers: elevenlabs music, eleven labs music, ai music, generate music, music generation, compose music, ai composer, create song, soundtrack, background music, jingle, elevenlabs compose, music ai"
+description: 'ElevenLabs AI music generation - create original music from text prompts via inference.sh CLI. Capabilities: text-to-music, custom duration up to 10 minutes, genre/mood/instrument control, royalty-free commercial use. Use for: background music, soundtracks, jingles, podcasts, video scores, game audio. Triggers: elevenlabs music, eleven labs music, ai music, generate music, music generation, compose music, ai composer, create song, soundtrack, background music, jingle, elevenlabs compose, music ai'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,13 +23,12 @@ belt login
 belt app run elevenlabs/music --input '{"prompt": "Upbeat electronic dance track with driving synths"}'
 ```
 
-
 ## Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `prompt` | string | required | Description of desired music (max 2000 chars) |
-| `duration_seconds` | number | 30 | Duration in seconds (5-600, max 10 minutes) |
+| Parameter          | Type   | Default  | Description                                   |
+| ------------------ | ------ | -------- | --------------------------------------------- |
+| `prompt`           | string | required | Description of desired music (max 2000 chars) |
+| `duration_seconds` | number | 30       | Duration in seconds (5-600, max 10 minutes)   |
 
 ## Examples
 

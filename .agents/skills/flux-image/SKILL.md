@@ -1,6 +1,6 @@
 ---
 name: flux-image
-description: "Generate images with FLUX models (Black Forest Labs) via inference.sh CLI. Models: FLUX Dev LoRA, FLUX.2 Klein LoRA with custom style adaptation. Capabilities: text-to-image, image-to-image, LoRA fine-tuning, custom styles. Triggers: flux, flux.2, flux dev, flux schnell, flux pro, black forest labs, flux image, flux ai, flux model, flux lora"
+description: 'Generate images with FLUX models (Black Forest Labs) via inference.sh CLI. Models: FLUX Dev LoRA, FLUX.2 Klein LoRA with custom style adaptation. Capabilities: text-to-image, image-to-image, LoRA fine-tuning, custom styles. Triggers: flux, flux.2, flux dev, flux schnell, flux pro, black forest labs, flux image, flux ai, flux model, flux lora'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,16 +22,15 @@ belt login
 belt app run falai/flux-dev-lora --input '{"prompt": "a futuristic city at night"}'
 ```
 
-
 ## FLUX Models
 
-| Model | App ID | Speed | Quality | Use Case |
-|-------|--------|-------|---------|----------|
-| FLUX Dev LoRA | `falai/flux-dev-lora` | Medium | Highest | Production, custom styles |
-| FLUX.2 Klein LoRA | `falai/flux-2-klein-lora` | Fastest | Good | Fast iteration, 4B/9B sizes |
-| **FLUX Dev (Pruna)** | `pruna/flux-dev` | Fast | High | Optimized, speed modes |
-| **FLUX Dev LoRA (Pruna)** | `pruna/flux-dev-lora` | Fast | High | LoRA with optimization |
-| **FLUX Klein 4B (Pruna)** | `pruna/flux-klein-4b` | Fastest | Good | Ultra-cheap ($0.0001/img) |
+| Model                     | App ID                    | Speed   | Quality | Use Case                    |
+| ------------------------- | ------------------------- | ------- | ------- | --------------------------- |
+| FLUX Dev LoRA             | `falai/flux-dev-lora`     | Medium  | Highest | Production, custom styles   |
+| FLUX.2 Klein LoRA         | `falai/flux-2-klein-lora` | Fastest | Good    | Fast iteration, 4B/9B sizes |
+| **FLUX Dev (Pruna)**      | `pruna/flux-dev`          | Fast    | High    | Optimized, speed modes      |
+| **FLUX Dev LoRA (Pruna)** | `pruna/flux-dev-lora`     | Fast    | High    | LoRA with optimization      |
+| **FLUX Klein 4B (Pruna)** | `pruna/flux-klein-4b`     | Fastest | Good    | Ultra-cheap ($0.0001/img)   |
 
 ## Examples
 
@@ -100,4 +99,3 @@ Browse all apps: `belt app store`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image generation guide
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
-

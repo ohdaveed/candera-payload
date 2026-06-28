@@ -11,7 +11,10 @@ interface ProductGridProps {
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   const shouldReduceMotion = useReducedMotion()
-  const { ref, isIntersecting } = useIntersectionObserver({ threshold: 0.1, freezeOnceVisible: true })
+  const { ref, isIntersecting } = useIntersectionObserver<HTMLUListElement>({
+    threshold: 0.1,
+    freezeOnceVisible: true,
+  })
 
   const container = {
     hidden: { opacity: 0 },
@@ -40,7 +43,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
 
   return (
     <motion.ul
-      ref={ref as any}
+      ref={ref}
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
       animate={isIntersecting ? 'show' : 'hidden'}

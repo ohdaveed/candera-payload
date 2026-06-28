@@ -1,6 +1,6 @@
 // tests/int/hooks/useIntersectionObserver.int.spec.ts
 import { renderHook } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { useIntersectionObserver } from '@/app/(frontend)/hooks/useIntersectionObserver'
 
 // Note: Requires mocking IntersectionObserver for jsdom

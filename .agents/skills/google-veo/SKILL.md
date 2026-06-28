@@ -1,6 +1,6 @@
 ---
 name: google-veo
-description: "Generate videos with Google Veo models via inference.sh CLI. Models: Veo 3.1, Veo 3.1 Fast, Veo 3, Veo 3 Fast, Veo 2. Capabilities: text-to-video, cinematic output, high quality video generation. Triggers: veo, google veo, veo 3, veo 2, veo 3.1, vertex ai video, google video generation, google video ai, veo model, veo video"
+description: 'Generate videos with Google Veo models via inference.sh CLI. Models: Veo 3.1, Veo 3.1 Fast, Veo 3, Veo 3 Fast, Veo 2. Capabilities: text-to-video, cinematic output, high quality video generation. Triggers: veo, google veo, veo 3, veo 2, veo 3.1, vertex ai video, google video generation, google video ai, veo model, veo video'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,16 +22,15 @@ belt login
 belt app run google/veo-3-1-fast --input '{"prompt": "drone shot over a mountain lake"}'
 ```
 
-
 ## Veo Models
 
-| Model | App ID | Speed | Quality |
-|-------|--------|-------|---------|
-| Veo 3.1 | `google/veo-3-1` | Slower | Best |
-| Veo 3.1 Fast | `google/veo-3-1-fast` | Fast | Excellent |
-| Veo 3 | `google/veo-3` | Medium | Excellent |
-| Veo 3 Fast | `google/veo-3-fast` | Fast | Very Good |
-| Veo 2 | `google/veo-2` | Medium | Good |
+| Model        | App ID                | Speed  | Quality   |
+| ------------ | --------------------- | ------ | --------- |
+| Veo 3.1      | `google/veo-3-1`      | Slower | Best      |
+| Veo 3.1 Fast | `google/veo-3-1-fast` | Fast   | Excellent |
+| Veo 3        | `google/veo-3`        | Medium | Excellent |
+| Veo 3 Fast   | `google/veo-3-fast`   | Fast   | Very Good |
+| Veo 2        | `google/veo-2`        | Medium | Good      |
 
 ## Search Veo Apps
 
@@ -125,4 +124,3 @@ Browse all video apps: `belt app store --category video`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
-

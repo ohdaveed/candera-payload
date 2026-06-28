@@ -1,6 +1,6 @@
 ---
 name: javascript-sdk
-description: "JavaScript/TypeScript SDK for inference.sh - run AI apps, build agents, integrate 250+ models. Package: @inferencesh/sdk (npm install). Full TypeScript support, streaming, file uploads. Build agents with template or ad-hoc patterns, tool builder API, skills, human approval. Use for: JavaScript integration, TypeScript, Node.js, React, Next.js, frontend apps. Triggers: javascript sdk, typescript sdk, npm install, node.js api, js client, react ai, next.js ai, frontend sdk, @inferencesh/sdk, typescript agent, browser sdk, js integration"
+description: 'JavaScript/TypeScript SDK for inference.sh - run AI apps, build agents, integrate 250+ models. Package: @inferencesh/sdk (npm install). Full TypeScript support, streaming, file uploads. Build agents with template or ad-hoc patterns, tool builder API, skills, human approval. Use for: JavaScript integration, TypeScript, Node.js, React, Next.js, frontend apps. Triggers: javascript sdk, typescript sdk, npm install, node.js api, js client, react ai, next.js ai, frontend sdk, @inferencesh/sdk, typescript agent, browser sdk, js integration'
 allowed-tools: Bash(npm *), Bash(npx *), Bash(node *), Bash(pnpm *), Bash(yarn *)
 ---
 
@@ -19,16 +19,16 @@ npm install @inferencesh/sdk
 ```
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_your_key' });
+const client = inference({ apiKey: 'inf_your_key' })
 
 // Run an AI app
 const result = await client.run({
   app: 'infsh/flux-schnell',
-  input: { prompt: 'A sunset over mountains' }
-});
-console.log(result.output);
+  input: { prompt: 'A sunset over mountains' },
+})
+console.log(result.output)
 ```
 
 ## Installation
@@ -46,16 +46,16 @@ pnpm add @inferencesh/sdk
 ## Authentication
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
 // Direct API key
-const client = inference({ apiKey: 'inf_your_key' });
+const client = inference({ apiKey: 'inf_your_key' })
 
 // From environment variable (recommended)
-const client = inference({ apiKey: process.env.INFERENCE_API_KEY });
+const client = inference({ apiKey: process.env.INFERENCE_API_KEY })
 
 // For frontend apps (use proxy)
-const client = inference({ proxyUrl: '/api/inference/proxy' });
+const client = inference({ proxyUrl: '/api/inference/proxy' })
 ```
 
 Get your API key: Settings → API Keys → Create API Key
@@ -67,51 +67,57 @@ Get your API key: Settings → API Keys → Create API Key
 ```typescript
 const result = await client.run({
   app: 'infsh/flux-schnell',
-  input: { prompt: 'A cat astronaut' }
-});
+  input: { prompt: 'A cat astronaut' },
+})
 
-console.log(result.status);  // "completed"
-console.log(result.output);  // Output data
+console.log(result.status) // "completed"
+console.log(result.output) // Output data
 ```
 
 ### Fire and Forget
 
 ```typescript
-const task = await client.run({
-  app: 'google/veo-3-1-fast',
-  input: { prompt: 'Drone flying over mountains' }
-}, { wait: false });
+const task = await client.run(
+  {
+    app: 'google/veo-3-1-fast',
+    input: { prompt: 'Drone flying over mountains' },
+  },
+  { wait: false },
+)
 
-console.log(`Task ID: ${task.id}`);
+console.log(`Task ID: ${task.id}`)
 // Check later with client.getTask(task.id)
 ```
 
 ### Streaming Progress
 
 ```typescript
-const stream = await client.run({
-  app: 'google/veo-3-1-fast',
-  input: { prompt: 'Ocean waves at sunset' }
-}, { stream: true });
+const stream = await client.run(
+  {
+    app: 'google/veo-3-1-fast',
+    input: { prompt: 'Ocean waves at sunset' },
+  },
+  { stream: true },
+)
 
 for await (const update of stream) {
-  console.log(`Status: ${update.status}`);
+  console.log(`Status: ${update.status}`)
   if (update.logs?.length) {
-    console.log(update.logs.at(-1));
+    console.log(update.logs.at(-1))
   }
 }
 ```
 
 ### Run Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `app` | string | App ID (namespace/name@version) |
-| `input` | object | Input matching app schema |
-| `setup` | object | Hidden setup configuration |
-| `infra` | string | 'cloud' or 'private' |
-| `session` | string | Session ID for stateful execution |
-| `session_timeout` | number | Idle timeout (1-3600 seconds) |
+| Parameter         | Type   | Description                       |
+| ----------------- | ------ | --------------------------------- |
+| `app`             | string | App ID (namespace/name@version)   |
+| `input`           | object | Input matching app schema         |
+| `setup`           | object | Hidden setup configuration        |
+| `infra`           | string | 'cloud' or 'private'              |
+| `session`         | string | Session ID for stateful execution |
+| `session_timeout` | number | Idle timeout (1-3600 seconds)     |
 
 ## File Handling
 
@@ -121,35 +127,35 @@ for await (const update of stream) {
 const result = await client.run({
   app: 'image-processor',
   input: {
-    image: '/path/to/image.png'  // Auto-uploaded
-  }
-});
+    image: '/path/to/image.png', // Auto-uploaded
+  },
+})
 ```
 
 ### Manual Upload
 
 ```typescript
 // Basic upload
-const file = await client.uploadFile('/path/to/image.png');
+const file = await client.uploadFile('/path/to/image.png')
 
 // With options
 const file = await client.uploadFile('/path/to/image.png', {
   filename: 'custom_name.png',
   contentType: 'image/png',
-  public: true
-});
+  public: true,
+})
 
 const result = await client.run({
   app: 'image-processor',
-  input: { image: file.uri }
-});
+  input: { image: file.uri },
+})
 ```
 
 ### Browser File Upload
 
 ```typescript
-const input = document.querySelector('input[type="file"]');
-const file = await client.uploadFile(input.files[0]);
+const input = document.querySelector('input[type="file"]')
+const file = await client.uploadFile(input.files[0])
 ```
 
 ## Sessions (Stateful Execution)
@@ -162,16 +168,16 @@ const result = await client.run({
   app: 'my-app',
   input: { action: 'init' },
   session: 'new',
-  session_timeout: 300  // 5 minutes
-});
-const sessionId = result.session_id;
+  session_timeout: 300, // 5 minutes
+})
+const sessionId = result.session_id
 
 // Continue in same session
 const result2 = await client.run({
   app: 'my-app',
   input: { action: 'process' },
-  session: sessionId
-});
+  session: sessionId,
+})
 ```
 
 ## Agent SDK
@@ -181,20 +187,20 @@ const result2 = await client.run({
 Use pre-built agents from your workspace:
 
 ```typescript
-const agent = client.agent('my-team/support-agent@latest');
+const agent = client.agent('my-team/support-agent@latest')
 
 // Send message
-const response = await agent.sendMessage('Hello!');
-console.log(response.text);
+const response = await agent.sendMessage('Hello!')
+console.log(response.text)
 
 // Multi-turn conversation
-const response2 = await agent.sendMessage('Tell me more');
+const response2 = await agent.sendMessage('Tell me more')
 
 // Reset conversation
-agent.reset();
+agent.reset()
 
 // Get chat history
-const chat = await agent.getChat();
+const chat = await agent.getChat()
 ```
 
 ### Ad-hoc Agents
@@ -202,18 +208,18 @@ const chat = await agent.getChat();
 Create custom agents programmatically:
 
 ```typescript
-import { tool, string, number, appTool } from '@inferencesh/sdk';
+import { tool, string, number, appTool } from '@inferencesh/sdk'
 
 // Define tools
 const calculator = tool('calculate')
   .describe('Perform a calculation')
   .param('expression', string('Math expression'))
-  .build();
+  .build()
 
 const imageGen = appTool('generate_image', 'infsh/flux-schnell@latest')
   .describe('Generate an image')
   .param('prompt', string('Image description'))
-  .build();
+  .build()
 
 // Create agent
 const agent = client.agent({
@@ -221,42 +227,42 @@ const agent = client.agent({
   system_prompt: 'You are a helpful assistant.',
   tools: [calculator, imageGen],
   temperature: 0.7,
-  max_tokens: 4096
-});
+  max_tokens: 4096,
+})
 
-const response = await agent.sendMessage('What is 25 * 4?');
+const response = await agent.sendMessage('What is 25 * 4?')
 ```
 
 ### Available Core Apps
 
-| Model | App Reference |
-|-------|---------------|
-| Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |
+| Model            | App Reference                  |
+| ---------------- | ------------------------------ |
+| Claude Sonnet 4  | `infsh/claude-sonnet-4@latest` |
 | Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |
-| GPT-4o | `infsh/gpt-4o@latest` |
-| GPT-4o Mini | `infsh/gpt-4o-mini@latest` |
+| GPT-4o           | `infsh/gpt-4o@latest`          |
+| GPT-4o Mini      | `infsh/gpt-4o-mini@latest`     |
 
 ## Tool Builder API
 
 ### Parameter Types
 
 ```typescript
-import {
-  string, number, integer, boolean,
-  enumOf, array, obj, optional
-} from '@inferencesh/sdk';
+import { string, number, integer, boolean, enumOf, array, obj, optional } from '@inferencesh/sdk'
 
-const name = string('User\'s name');
-const age = integer('Age in years');
-const score = number('Score 0-1');
-const active = boolean('Is active');
-const priority = enumOf(['low', 'medium', 'high'], 'Priority');
-const tags = array(string('Tag'), 'List of tags');
-const address = obj({
-  street: string('Street'),
-  city: string('City'),
-  zip: optional(string('ZIP'))
-}, 'Address');
+const name = string("User's name")
+const age = integer('Age in years')
+const score = number('Score 0-1')
+const active = boolean('Is active')
+const priority = enumOf(['low', 'medium', 'high'], 'Priority')
+const tags = array(string('Tag'), 'List of tags')
+const address = obj(
+  {
+    street: string('Street'),
+    city: string('City'),
+    zip: optional(string('ZIP')),
+  },
+  'Address',
+)
 ```
 
 ### Client Tools (Run in Your Code)
@@ -267,7 +273,7 @@ const greet = tool('greet')
   .describe('Greets a user by name')
   .param('name', string('Name to greet'))
   .requireApproval()
-  .build();
+  .build()
 ```
 
 ### App Tools (Call AI Apps)
@@ -279,37 +285,37 @@ const generate = appTool('generate_image', 'infsh/flux-schnell@latest')
   .setup({ model: 'schnell' })
   .input({ steps: 20 })
   .requireApproval()
-  .build();
+  .build()
 ```
 
 ### Agent Tools (Delegate to Sub-agents)
 
 ```typescript
-import { agentTool } from '@inferencesh/sdk';
+import { agentTool } from '@inferencesh/sdk'
 
 const researcher = agentTool('research', 'my-org/researcher@v1')
   .describe('Research a topic')
   .param('topic', string('Topic to research'))
-  .build();
+  .build()
 ```
 
 ### Webhook Tools (Call External APIs)
 
 ```typescript
-import { webhookTool } from '@inferencesh/sdk';
+import { webhookTool } from '@inferencesh/sdk'
 
 const notify = webhookTool('slack', 'https://hooks.slack.com/...')
   .describe('Send Slack notification')
   .secret('SLACK_SECRET')
   .param('channel', string('Channel'))
   .param('message', string('Message'))
-  .build();
+  .build()
 ```
 
 ### Internal Tools (Built-in Capabilities)
 
 ```typescript
-import { internalTools } from '@inferencesh/sdk';
+import { internalTools } from '@inferencesh/sdk'
 
 const config = internalTools()
   .plan()
@@ -318,14 +324,14 @@ const config = internalTools()
   .codeExecution(true)
   .imageGeneration({
     enabled: true,
-    appRef: 'infsh/flux@latest'
+    appRef: 'infsh/flux@latest',
   })
-  .build();
+  .build()
 
 const agent = client.agent({
   core_app: { ref: 'infsh/claude-sonnet-4@latest' },
-  internal_tools: config
-});
+  internal_tools: config,
+})
 ```
 
 ## Streaming Agent Responses
@@ -334,36 +340,36 @@ const agent = client.agent({
 const response = await agent.sendMessage('Explain quantum computing', {
   onMessage: (msg) => {
     if (msg.content) {
-      process.stdout.write(msg.content);
+      process.stdout.write(msg.content)
     }
   },
   onToolCall: async (call) => {
-    console.log(`\n[Tool: ${call.name}]`);
-    const result = await executeTool(call.name, call.args);
-    agent.submitToolResult(call.id, result);
-  }
-});
+    console.log(`\n[Tool: ${call.name}]`)
+    const result = await executeTool(call.name, call.args)
+    agent.submitToolResult(call.id, result)
+  },
+})
 ```
 
 ## File Attachments
 
 ```typescript
 // From file path (Node.js)
-import { readFileSync } from 'fs';
-const response = await agent.sendMessage('What\'s in this image?', {
-  files: [readFileSync('image.png')]
-});
+import { readFileSync } from 'fs'
+const response = await agent.sendMessage("What's in this image?", {
+  files: [readFileSync('image.png')],
+})
 
 // From base64
 const response = await agent.sendMessage('Analyze this', {
-  files: ['data:image/png;base64,iVBORw0KGgo...']
-});
+  files: ['data:image/png;base64,iVBORw0KGgo...'],
+})
 
 // From browser File object
-const input = document.querySelector('input[type="file"]');
+const input = document.querySelector('input[type="file"]')
 const response = await agent.sendMessage('Describe this', {
-  files: [input.files[0]]
-});
+  files: [input.files[0]],
+})
 ```
 
 ## Skills (Reusable Context)
@@ -375,15 +381,15 @@ const agent = client.agent({
     {
       name: 'code-review',
       description: 'Code review guidelines',
-      content: '# Code Review\n\n1. Check security\n2. Check performance...'
+      content: '# Code Review\n\n1. Check security\n2. Check performance...',
     },
     {
       name: 'api-docs',
       description: 'API documentation',
-      url: 'https://example.com/skills/api-docs.md'
-    }
-  ]
-});
+      url: 'https://example.com/skills/api-docs.md',
+    },
+  ],
+})
 ```
 
 ## Server Proxy (Frontend Apps)
@@ -394,34 +400,37 @@ For browser apps, proxy through your backend to keep API keys secure:
 
 ```typescript
 const client = inference({
-  proxyUrl: '/api/inference/proxy'
+  proxyUrl: '/api/inference/proxy',
   // No apiKey needed on frontend
-});
+})
 ```
 
 ### Next.js Proxy (App Router)
 
 ```typescript
 // app/api/inference/proxy/route.ts
-import { createRouteHandler } from '@inferencesh/sdk/proxy/nextjs';
+import { createRouteHandler } from '@inferencesh/sdk/proxy/nextjs'
 
 const route = createRouteHandler({
-  apiKey: process.env.INFERENCE_API_KEY
-});
+  apiKey: process.env.INFERENCE_API_KEY,
+})
 
-export const POST = route.POST;
+export const POST = route.POST
 ```
 
 ### Express Proxy
 
 ```typescript
-import express from 'express';
-import { createProxyMiddleware } from '@inferencesh/sdk/proxy/express';
+import express from 'express'
+import { createProxyMiddleware } from '@inferencesh/sdk/proxy/express'
 
-const app = express();
-app.use('/api/inference/proxy', createProxyMiddleware({
-  apiKey: process.env.INFERENCE_API_KEY
-}));
+const app = express()
+app.use(
+  '/api/inference/proxy',
+  createProxyMiddleware({
+    apiKey: process.env.INFERENCE_API_KEY,
+  }),
+)
 ```
 
 ### Supported Frameworks
@@ -443,13 +452,13 @@ import type {
   ChatMessageDTO,
   AgentTool,
   TaskStatusCompleted,
-  TaskStatusFailed
-} from '@inferencesh/sdk';
+  TaskStatusFailed,
+} from '@inferencesh/sdk'
 
 if (result.status === TaskStatusCompleted) {
-  console.log('Done!');
+  console.log('Done!')
 } else if (result.status === TaskStatusFailed) {
-  console.log('Failed:', result.error);
+  console.log('Failed:', result.error)
 }
 ```
 
@@ -478,16 +487,16 @@ try {
 const response = await agent.sendMessage('Delete all temp files', {
   onToolCall: async (call) => {
     if (call.requiresApproval) {
-      const approved = await promptUser(`Allow ${call.name}?`);
+      const approved = await promptUser(`Allow ${call.name}?`)
       if (approved) {
-        const result = await executeTool(call.name, call.args);
-        agent.submitToolResult(call.id, result);
+        const result = await executeTool(call.name, call.args)
+        agent.submitToolResult(call.id, result)
       } else {
-        agent.submitToolResult(call.id, { error: 'Denied by user' });
+        agent.submitToolResult(call.id, { error: 'Denied by user' })
       }
     }
-  }
-});
+  },
+})
 ```
 
 ## CommonJS Support
@@ -535,4 +544,3 @@ npx skills add inference-sh/skills@ai-image-generation
 - [Authentication](https://inference.sh/docs/api/authentication) - API key setup
 - [Streaming](https://inference.sh/docs/api/sdk/streaming) - Real-time updates
 - [File Uploads](https://inference.sh/docs/api/sdk/files) - File handling
-

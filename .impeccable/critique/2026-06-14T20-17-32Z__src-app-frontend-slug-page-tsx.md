@@ -8,21 +8,22 @@ p3_count: 2
 timestamp: 2026-06-14T20-17-32Z
 slug: src-app-frontend-slug-page-tsx
 ---
+
 ## Design Health Score
 
-| # | Heuristic | Score | Key Issue |
-|---|-----------|-------|-----------|
-| 1 | Visibility of System Status | 3/4 | Toast on Etsy navigation works; no loading skeletons for SSG content (acceptable) |
-| 2 | Match System / Real World | 3/4 | Editorial language is on-brand; "micro-batches" & "botanical profile" fit the domain |
-| 3 | User Control and Freedom | 3/4 | Etsy links open in new tab; ScentQuiz URL-param answers allow back-button navigation |
-| 4 | Consistency and Standards | 3/4 | Radius system now consistent (2px max); eyebrow usage tamed to 1-per-page rule |
-| 5 | Error Prevention | 3/4 | Email validation on quiz form; Etsy toast as navigation guardrail |
-| 6 | Recognition Rather Than Recall | 3/4 | Clear block hierarchy; scannable sections; nav visible |
-| 7 | Flexibility and Efficiency | 2/4 | Content site — no shortcut expectations; tab navigation works |
-| 8 | Aesthetic and Minimalist Design | 3/4 | Editorial restraint is strong; removed unnecessary eyebrows cleaned up visual noise |
-| 9 | Error Recovery | 3/4 | Inline validation errors with specific messages; form submission errors surfaced |
-| 10 | Help and Documentation | 2/4 | Newsletter CTA explains what you get; no formal help (expected for brand site) |
-| **Total** | | **28/40** | **Good** |
+| #         | Heuristic                       | Score     | Key Issue                                                                            |
+| --------- | ------------------------------- | --------- | ------------------------------------------------------------------------------------ |
+| 1         | Visibility of System Status     | 3/4       | Toast on Etsy navigation works; no loading skeletons for SSG content (acceptable)    |
+| 2         | Match System / Real World       | 3/4       | Editorial language is on-brand; "micro-batches" & "botanical profile" fit the domain |
+| 3         | User Control and Freedom        | 3/4       | Etsy links open in new tab; ScentQuiz URL-param answers allow back-button navigation |
+| 4         | Consistency and Standards       | 3/4       | Radius system now consistent (2px max); eyebrow usage tamed to 1-per-page rule       |
+| 5         | Error Prevention                | 3/4       | Email validation on quiz form; Etsy toast as navigation guardrail                    |
+| 6         | Recognition Rather Than Recall  | 3/4       | Clear block hierarchy; scannable sections; nav visible                               |
+| 7         | Flexibility and Efficiency      | 2/4       | Content site — no shortcut expectations; tab navigation works                        |
+| 8         | Aesthetic and Minimalist Design | 3/4       | Editorial restraint is strong; removed unnecessary eyebrows cleaned up visual noise  |
+| 9         | Error Recovery                  | 3/4       | Inline validation errors with specific messages; form submission errors surfaced     |
+| 10        | Help and Documentation          | 2/4       | Newsletter CTA explains what you get; no formal help (expected for brand site)       |
+| **Total** |                                 | **28/40** | **Good**                                                                             |
 
 **Rating**: 28-35 = Good — Address weak areas, solid foundation.
 

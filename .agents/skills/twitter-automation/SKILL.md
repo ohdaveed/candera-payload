@@ -1,6 +1,6 @@
 ---
 name: twitter-automation
-description: "Automate Twitter/X with posting, engagement, and user management via inference.sh CLI. Apps: x/post-tweet, x/post-create (with media), x/post-like, x/post-retweet, x/dm-send, x/user-follow. Capabilities: post tweets, schedule content, like posts, retweet, send DMs, follow users, get profiles. Use for: social media automation, content scheduling, engagement bots, audience growth, X API. Triggers: twitter api, x api, tweet automation, post to twitter, twitter bot, social media automation, x automation, tweet scheduler, twitter integration, post tweet, twitter post, x post, send tweet"
+description: 'Automate Twitter/X with posting, engagement, and user management via inference.sh CLI. Apps: x/post-tweet, x/post-create (with media), x/post-like, x/post-retweet, x/dm-send, x/user-follow. Capabilities: post tweets, schedule content, like posts, retweet, send DMs, follow users, get profiles. Use for: social media automation, content scheduling, engagement bots, audience growth, X API. Triggers: twitter api, x api, tweet automation, post to twitter, twitter bot, social media automation, x automation, tweet scheduler, twitter integration, post tweet, twitter post, x post, send tweet'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,20 +23,19 @@ belt login
 belt app run x/post-tweet --input '{"text": "Hello from inference.sh!"}'
 ```
 
-
 ## Available Apps
 
-| App | App ID | Description |
-|-----|--------|-------------|
-| Post Tweet | `x/post-tweet` | Post text tweets |
-| Create Post | `x/post-create` | Post with media |
-| Like Post | `x/post-like` | Like a tweet |
-| Retweet | `x/post-retweet` | Retweet a post |
-| Delete Post | `x/post-delete` | Delete a tweet |
-| Get Post | `x/post-get` | Get tweet by ID |
-| Send DM | `x/dm-send` | Send direct message |
-| Follow User | `x/user-follow` | Follow a user |
-| Get User | `x/user-get` | Get user profile |
+| App         | App ID           | Description         |
+| ----------- | ---------------- | ------------------- |
+| Post Tweet  | `x/post-tweet`   | Post text tweets    |
+| Create Post | `x/post-create`  | Post with media     |
+| Like Post   | `x/post-like`    | Like a tweet        |
+| Retweet     | `x/post-retweet` | Retweet a post      |
+| Delete Post | `x/post-delete`  | Delete a tweet      |
+| Get Post    | `x/post-get`     | Get tweet by ID     |
+| Send DM     | `x/dm-send`      | Send direct message |
+| Follow User | `x/user-follow`  | Follow a user       |
+| Get User    | `x/user-get`     | Get user profile    |
 
 ## Examples
 
@@ -154,4 +153,3 @@ Browse all apps: `belt app store`
 - [X.com Integration](https://inference.sh/docs/integrations/x) - Setting up Twitter/X integration
 - [X.com Integration Example](https://inference.sh/docs/examples/x-integration) - Complete Twitter workflow
 - [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-

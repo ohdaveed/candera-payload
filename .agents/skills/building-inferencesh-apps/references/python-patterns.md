@@ -6,11 +6,14 @@
 
 1. Add `__init__.py` files to all packages
 2. Add current directory to Python path:
+
 ```python
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 ```
+
 3. For local packages, use editable installs in requirements.txt:
+
 ```txt
 -e ./local_package_directory
 ```
@@ -45,13 +48,16 @@ input_tensor = input_tensor.to(self.device)
 ### "CUDA not available"
 
 1. Check `inf.yml` GPU requirements:
+
 ```yaml
 resources:
   gpu:
     count: 1
     vram: 24
 ```
+
 2. Use device detection:
+
 ```python
 from accelerate import Accelerator
 device = Accelerator().device
@@ -60,6 +66,7 @@ device = Accelerator().device
 ### Model Loading — "Token required for gated model"
 
 Add HF_TOKEN to secrets:
+
 ```yaml
 secrets:
   - key: HF_TOKEN
@@ -69,6 +76,7 @@ secrets:
 ### "File not found" After Download
 
 Don't assume file paths:
+
 ```python
 model_path = snapshot_download(repo_id="org/model")
 config_path = os.path.join(model_path, "config.yaml")
@@ -92,6 +100,7 @@ path = os.path.join("models", "config", "settings.json")
 ### Version Conflicts
 
 Pin compatible versions:
+
 ```txt
 torch==2.6.0
 numpy>=1.23.5,<2
@@ -173,6 +182,7 @@ class App(BaseApp):
 ```
 
 **Avoid**:
+
 - Hardcoded local directories (`local_dir="./models"`)
 - Subprocess calls to `huggingface-cli`
 - Assuming specific file structures

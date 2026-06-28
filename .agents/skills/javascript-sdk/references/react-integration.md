@@ -12,22 +12,22 @@ Configure proxy (keep API keys on server):
 
 ```typescript
 // app/api/inference/proxy/route.ts (Next.js)
-import { createRouteHandler } from '@inferencesh/sdk/proxy/nextjs';
+import { createRouteHandler } from '@inferencesh/sdk/proxy/nextjs'
 
 const route = createRouteHandler({
-  apiKey: process.env.INFERENCE_API_KEY!
-});
+  apiKey: process.env.INFERENCE_API_KEY!,
+})
 
-export const POST = route.POST;
+export const POST = route.POST
 ```
 
 ## Basic Client Setup
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
 // Create client with proxy (no API key in browser)
-const client = inference({ proxyUrl: '/api/inference/proxy' });
+const client = inference({ proxyUrl: '/api/inference/proxy' })
 ```
 
 ## useInference Hook

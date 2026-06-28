@@ -2,20 +2,20 @@ import React from 'react'
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
   return (
-    <section className="relative overflow-hidden bg-candera-vellum grain">
-      {/* Decorative horizontal rule with ember accent */}
-      <div className="container">
-        <div className="flex items-center gap-4 pt-16 pb-12">
+    <Section padding="medium" className="relative overflow-hidden bg-candera-vellum grain">
+      <Container>
+        {/* Decorative horizontal rule with ember accent */}
+        <div className="flex items-center gap-4 mb-12">
           <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
           <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
           <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
         </div>
-      </div>
 
-      <div className="container pb-20 md:pb-28">
         <div className="flex flex-col gap-12 md:flex-row md:items-end md:justify-between">
           {/* Rich text — large editorial display */}
           <div className="max-w-[36rem]">
@@ -40,7 +40,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
             </div>
           )}
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

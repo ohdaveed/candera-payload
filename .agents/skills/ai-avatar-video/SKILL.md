@@ -1,6 +1,6 @@
 ---
 name: ai-avatar-video
-description: "Create AI avatar and talking head videos via inference.sh CLI. Recommended: P-Video-Avatar (fastest, cheapest, built-in TTS). Also: OmniHuman, Fabric, PixVerse. Audio: Inworld TTS-2 (100+ languages, emotion steering for characters), ElevenLabs, Kokoro. Capabilities: audio-driven avatars, text-to-avatar, lipsync videos, talking head generation, virtual presenters, UGC content. Use for: AI presenters, explainer videos, virtual influencers, dubbing, marketing videos, UGC ads, gaming avatars, NPC dialogue. Triggers: ai avatar, talking head, lipsync, avatar video, virtual presenter, ai spokesperson, audio driven video, heygen alternative, synthesia alternative, talking avatar, lip sync, video avatar, ai presenter, digital human, ugc, ugc video, ugc ad, avatar ugc"
+description: 'Create AI avatar and talking head videos via inference.sh CLI. Recommended: P-Video-Avatar (fastest, cheapest, built-in TTS). Also: OmniHuman, Fabric, PixVerse. Audio: Inworld TTS-2 (100+ languages, emotion steering for characters), ElevenLabs, Kokoro. Capabilities: audio-driven avatars, text-to-avatar, lipsync videos, talking head generation, virtual presenters, UGC content. Use for: AI presenters, explainer videos, virtual influencers, dubbing, marketing videos, UGC ads, gaming avatars, NPC dialogue. Triggers: ai avatar, talking head, lipsync, avatar video, virtual presenter, ai spokesperson, audio driven video, heygen alternative, synthesia alternative, talking avatar, lip sync, video avatar, ai presenter, digital human, ugc, ugc video, ugc ad, avatar ugc'
 allowed-tools: Bash(belt *)
 ---
 
@@ -31,20 +31,20 @@ belt app run pruna/p-video-avatar --input '{
 
 **Start with P-Video-Avatar** — it's 18x faster and 6x cheaper than alternatives, with built-in TTS, dynamic backgrounds, and 1080p support.
 
-| Model | App ID | Best For | Built-in TTS |
-|-------|--------|----------|-------------|
-| **P-Video-Avatar** | `pruna/p-video-avatar` | **Best overall: speed, cost, quality, control** | **Yes (30 voices, 10 languages)** |
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | Multi-character, audio-driven | No |
-| Fabric 1.0 | `falai/fabric-1-0` | Image talks with lipsync | Yes |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | Highly realistic lipsync | No |
+| Model              | App ID                    | Best For                                        | Built-in TTS                      |
+| ------------------ | ------------------------- | ----------------------------------------------- | --------------------------------- |
+| **P-Video-Avatar** | `pruna/p-video-avatar`    | **Best overall: speed, cost, quality, control** | **Yes (30 voices, 10 languages)** |
+| OmniHuman 1.5      | `bytedance/omnihuman-1-5` | Multi-character, audio-driven                   | No                                |
+| Fabric 1.0         | `falai/fabric-1-0`        | Image talks with lipsync                        | Yes                               |
+| PixVerse Lipsync   | `falai/pixverse-lipsync`  | Highly realistic lipsync                        | No                                |
 
 ### Cost & Speed Comparison
 
-| Model | Speed (per sec of video) | Cost per second |
-|-------|-------------------------|----------------|
-| **P-Video-Avatar** | **~1.83s/s** | **$0.025** |
-| OmniHuman 1.5 | ~28s/s (15x slower) | $0.16 (6.4x more) |
-| Fabric 1.0 | ~34s/s (18x slower) | $0.14 (5.6x more) |
+| Model              | Speed (per sec of video) | Cost per second   |
+| ------------------ | ------------------------ | ----------------- |
+| **P-Video-Avatar** | **~1.83s/s**             | **$0.025**        |
+| OmniHuman 1.5      | ~28s/s (15x slower)      | $0.16 (6.4x more) |
+| Fabric 1.0         | ~34s/s (18x slower)      | $0.14 (5.6x more) |
 
 ## Examples
 

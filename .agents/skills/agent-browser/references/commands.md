@@ -36,17 +36,17 @@ belt app run agent-browser --function open --session new --input '{
 
 **Input Fields:**
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `url` | string | required | URL to navigate to |
-| `width` | int | 1280 | Viewport width in pixels |
-| `height` | int | 720 | Viewport height in pixels |
-| `user_agent` | string | null | Custom user agent string |
-| `record_video` | bool | false | Record video (returned on close) |
-| `show_cursor` | bool | false | Show cursor indicator in screenshots/video |
-| `proxy_url` | string | null | Proxy server URL |
-| `proxy_username` | string | null | Proxy auth username |
-| `proxy_password` | string | null | Proxy auth password |
+| Field            | Type   | Default  | Description                                |
+| ---------------- | ------ | -------- | ------------------------------------------ |
+| `url`            | string | required | URL to navigate to                         |
+| `width`          | int    | 1280     | Viewport width in pixels                   |
+| `height`         | int    | 720      | Viewport height in pixels                  |
+| `user_agent`     | string | null     | Custom user agent string                   |
+| `record_video`   | bool   | false    | Record video (returned on close)           |
+| `show_cursor`    | bool   | false    | Show cursor indicator in screenshots/video |
+| `proxy_url`      | string | null     | Proxy server URL                           |
+| `proxy_username` | string | null     | Proxy auth username                        |
+| `proxy_password` | string | null     | Proxy auth password                        |
 
 **Output:**
 
@@ -84,37 +84,37 @@ belt app run agent-browser --function interact --session $SESSION_ID --input '{
 
 **Input Fields:**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `action` | string | Action to perform (see Actions table) |
-| `ref` | string | Element ref (e.g., `@e1`) |
-| `text` | string | Text for fill/type/press/select |
-| `direction` | string | Scroll direction: up, down, left, right |
-| `scroll_amount` | int | Scroll pixels (default 400) |
-| `wait_ms` | int | Wait duration in milliseconds |
-| `url` | string | URL for goto action |
-| `target_ref` | string | Target ref for drag action |
-| `file_paths` | array | File paths for upload action |
+| Field           | Type   | Description                             |
+| --------------- | ------ | --------------------------------------- |
+| `action`        | string | Action to perform (see Actions table)   |
+| `ref`           | string | Element ref (e.g., `@e1`)               |
+| `text`          | string | Text for fill/type/press/select         |
+| `direction`     | string | Scroll direction: up, down, left, right |
+| `scroll_amount` | int    | Scroll pixels (default 400)             |
+| `wait_ms`       | int    | Wait duration in milliseconds           |
+| `url`           | string | URL for goto action                     |
+| `target_ref`    | string | Target ref for drag action              |
+| `file_paths`    | array  | File paths for upload action            |
 
 **Actions:**
 
-| Action | Required Fields | Description |
-|--------|-----------------|-------------|
-| `click` | `ref` | Single click |
-| `dblclick` | `ref` | Double click |
-| `fill` | `ref`, `text` | Clear input and type text |
-| `type` | `text` | Type text without clearing |
-| `press` | `text` | Press key (Enter, Tab, Escape, etc.) |
-| `select` | `ref`, `text` | Select dropdown option by label |
-| `hover` | `ref` | Hover over element |
-| `check` | `ref` | Check checkbox |
-| `uncheck` | `ref` | Uncheck checkbox |
-| `drag` | `ref`, `target_ref` | Drag from ref to target_ref |
-| `upload` | `ref`, `file_paths` | Upload files to file input |
-| `scroll` | `direction` | Scroll page (optional: `scroll_amount`) |
-| `back` | - | Go back in browser history |
-| `wait` | `wait_ms` | Wait for specified milliseconds |
-| `goto` | `url` | Navigate to different URL |
+| Action     | Required Fields     | Description                             |
+| ---------- | ------------------- | --------------------------------------- |
+| `click`    | `ref`               | Single click                            |
+| `dblclick` | `ref`               | Double click                            |
+| `fill`     | `ref`, `text`       | Clear input and type text               |
+| `type`     | `text`              | Type text without clearing              |
+| `press`    | `text`              | Press key (Enter, Tab, Escape, etc.)    |
+| `select`   | `ref`, `text`       | Select dropdown option by label         |
+| `hover`    | `ref`               | Hover over element                      |
+| `check`    | `ref`               | Check checkbox                          |
+| `uncheck`  | `ref`               | Uncheck checkbox                        |
+| `drag`     | `ref`, `target_ref` | Drag from ref to target_ref             |
+| `upload`   | `ref`, `file_paths` | Upload files to file input              |
+| `scroll`   | `direction`         | Scroll page (optional: `scroll_amount`) |
+| `back`     | -                   | Go back in browser history              |
+| `wait`     | `wait_ms`           | Wait for specified milliseconds         |
+| `goto`     | `url`               | Navigate to different URL               |
 
 **Output:**
 
@@ -145,9 +145,9 @@ belt app run agent-browser --function screenshot --session $SESSION_ID --input '
 
 **Input Fields:**
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `full_page` | bool | false | Capture full scrollable page |
+| Field       | Type | Default | Description                  |
+| ----------- | ---- | ------- | ---------------------------- |
+| `full_page` | bool | false   | Capture full scrollable page |
 
 **Output:**
 
@@ -171,8 +171,8 @@ belt app run agent-browser --function execute --session $SESSION_ID --input '{
 
 **Input Fields:**
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field  | Type   | Description                |
+| ------ | ------ | -------------------------- |
 | `code` | string | JavaScript code to execute |
 
 **Output:**
@@ -228,15 +228,15 @@ belt app run agent-browser --function close --session $SESSION_ID --input '{}'
 
 For the `press` action, use these key names:
 
-| Key | Name |
-|-----|------|
-| Enter | `Enter` |
-| Tab | `Tab` |
-| Escape | `Escape` |
-| Backspace | `Backspace` |
-| Delete | `Delete` |
+| Key        | Name                                              |
+| ---------- | ------------------------------------------------- |
+| Enter      | `Enter`                                           |
+| Tab        | `Tab`                                             |
+| Escape     | `Escape`                                          |
+| Backspace  | `Backspace`                                       |
+| Delete     | `Delete`                                          |
 | Arrow keys | `ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight` |
-| Modifiers | `Control`, `Shift`, `Alt`, `Meta` |
+| Modifiers  | `Control`, `Shift`, `Alt`, `Meta`                 |
 
 **Key combinations:**
 
@@ -266,6 +266,7 @@ When an action fails, `success` is `false` and `message` contains the error:
 ```
 
 Common errors:
+
 - `Unknown ref: @eN` - Ref doesn't exist, re-snapshot needed
 - `'text' required for fill action` - Missing required field
 - `'target_ref' required for drag action` - Missing drag target

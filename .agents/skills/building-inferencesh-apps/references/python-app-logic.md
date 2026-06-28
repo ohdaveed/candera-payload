@@ -35,13 +35,13 @@ class App(BaseApp):
 
 ## Field Types
 
-| Type | Usage |
-|------|-------|
-| `str`, `int`, `float`, `bool` | Basic types |
-| `File` | File upload/output (`.path` for local path) |
-| `Optional[T]` | Nullable |
-| `List[T]` | Array |
-| `Literal["a", "b"]` | Enum dropdown |
+| Type                          | Usage                                       |
+| ----------------------------- | ------------------------------------------- |
+| `str`, `int`, `float`, `bool` | Basic types                                 |
+| `File`                        | File upload/output (`.path` for local path) |
+| `Optional[T]`                 | Nullable                                    |
+| `List[T]`                     | Array                                       |
+| `Literal["a", "b"]`           | Enum dropdown                               |
 
 ## Setup Parameters
 
@@ -85,6 +85,7 @@ class AppInput(BaseAppInput):
 ```
 
 Key points:
+
 - Both fields are `Optional` with `default=None` at the Pydantic level
 - `"x-promoted": True` surfaces them as primary input options in the UI
 - `model_config["json_schema_extra"]["anyOf"]` enforces at least one must be non-null
@@ -137,6 +138,7 @@ class App(BaseApp):
 ```
 
 Functions are auto-discovered if they:
+
 - Are public (no `_` prefix)
 - Have type hints for input and return
 - Use Pydantic models

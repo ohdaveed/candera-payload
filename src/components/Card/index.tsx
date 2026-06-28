@@ -27,7 +27,7 @@ const cardContainerVariants = cva('group relative flex h-full cursor-pointer fle
       post: '',
       product: [
         'bg-candera-linen overflow-hidden',
-        'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
+        'shadow-card rounded-card',
         'transition-all duration-300 motion-reduce:transition-none',
         'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
       ].join(' '),
@@ -328,7 +328,7 @@ export const Card: React.FC<CardProps> = (props) => {
 
         {/* Product name */}
         {titleToUse && (
-          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem]">
+          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem] line-clamp-1 min-h-[1.25em]">
             <Link
               href={href}
               ref={linkRef}

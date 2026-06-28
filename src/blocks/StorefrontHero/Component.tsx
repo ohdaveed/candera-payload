@@ -100,7 +100,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
               the Journal. Glassmorphic over the dark hero imagery. */}
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
-              <aside className="backdrop-blur-md bg-candera-obsidian/40 p-6 rounded-2xl w-full sm:max-w-sm border border-candera-vellum/10 text-candera-vellum shadow-xl">
+              <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm border border-border text-card-foreground shadow-card">
                 <p className="font-mono text-[10px] tracking-[0.2em] text-candera-vellum/55 uppercase m-0">
                   {ethosCardEyebrow || 'The Slow Pour'}
                 </p>

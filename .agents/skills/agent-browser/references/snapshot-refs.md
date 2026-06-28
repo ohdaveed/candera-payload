@@ -17,11 +17,13 @@ Compact element references that reduce context usage for AI agents.
 ## How Refs Work
 
 Traditional approach:
+
 ```
 Full DOM/HTML -> AI parses -> CSS selector -> Action (~3000-5000 tokens)
 ```
 
 agent-browser approach:
+
 ```
 Compact snapshot -> @refs assigned -> Direct interaction (~200-400 tokens)
 ```
@@ -218,11 +220,13 @@ belt app run agent-browser --function snapshot --session $SESSION --input '{}'
 The element you need might not appear because:
 
 1. **Not visible** - Scroll to reveal it
+
    ```bash
    '{"action": "scroll", "direction": "down", "scroll_amount": 500}'
    ```
 
 2. **Not interactive** - Use JavaScript to interact
+
    ```bash
    '{"code": "document.querySelector(\".hidden-btn\").click()"}'
    ```

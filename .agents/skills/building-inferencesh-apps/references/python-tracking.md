@@ -18,22 +18,22 @@ class AppOutput(BaseAppOutput):  # NOT BaseModel!
 
 Always populate all required fields for the category. Read actual values from output files — don't hardcode.
 
-| Category | Required Fields | Notes |
-|----------|----------------|-------|
-| **image** | `width`, `height`, `count` | Read dimensions from actual output file |
-| **video** | `width`, `height`, `seconds` | Read from output file metadata |
-| **audio** | `seconds` | Read from output file metadata |
-| **text** | `tokens` | Use actual tokenizer counts |
+| Category  | Required Fields              | Notes                                   |
+| --------- | ---------------------------- | --------------------------------------- |
+| **image** | `width`, `height`, `count`   | Read dimensions from actual output file |
+| **video** | `width`, `height`, `seconds` | Read from output file metadata          |
+| **audio** | `seconds`                    | Read from output file metadata          |
+| **text**  | `tokens`                     | Use actual tokenizer counts             |
 
 ## MetaItem Types
 
-| Type | Class | Fields |
-|------|-------|--------|
-| Text | `TextMeta` | `tokens` |
+| Type  | Class       | Fields                                               |
+| ----- | ----------- | ---------------------------------------------------- |
+| Text  | `TextMeta`  | `tokens`                                             |
 | Image | `ImageMeta` | `width`, `height`, `resolution_mp`, `steps`, `count` |
-| Video | `VideoMeta` | `width`, `height`, `resolution`, `seconds` |
-| Audio | `AudioMeta` | `seconds` |
-| Raw | `RawMeta` | `cost` (dollar cents) |
+| Video | `VideoMeta` | `width`, `height`, `resolution`, `seconds`           |
+| Audio | `AudioMeta` | `seconds`                                            |
+| Raw   | `RawMeta`   | `cost` (dollar cents)                                |
 
 ## Examples
 

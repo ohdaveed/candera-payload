@@ -1,6 +1,6 @@
 ---
 name: ai-marketing-videos
-description: "Create AI marketing videos for ads, promos, product launches, and brand content. Models: Veo, Seedance, Wan, FLUX for visuals, Kokoro for voiceover. Types: product demos, testimonials, explainers, social ads, brand videos. Use for: Facebook ads, YouTube ads, product launches, brand awareness. Triggers: marketing video, ad video, promo video, commercial, brand video, product video, explainer video, ad creative, video ad, facebook ad video, youtube ad, instagram ad, tiktok ad, promotional video, launch video"
+description: 'Create AI marketing videos for ads, promos, product launches, and brand content. Models: Veo, Seedance, Wan, FLUX for visuals, Kokoro for voiceover. Types: product demos, testimonials, explainers, social ads, brand videos. Use for: Facebook ads, YouTube ads, product launches, brand awareness. Triggers: marketing video, ad video, promo video, commercial, brand video, product video, explainer video, ad creative, video ad, facebook ad video, youtube ad, instagram ad, tiktok ad, promotional video, launch video'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,16 +25,15 @@ belt app run google/veo-3-1-fast --input '{
 }'
 ```
 
-
 ## Video Ad Types
 
-| Type | Duration | Platform |
-|------|----------|----------|
-| Bumper Ad | 6 seconds | YouTube |
-| Short Ad | 15 seconds | Instagram, Facebook |
-| Standard Ad | 30 seconds | YouTube, TV |
-| Explainer | 60-90 seconds | Website, YouTube |
-| Product Demo | 30-60 seconds | All platforms |
+| Type         | Duration      | Platform            |
+| ------------ | ------------- | ------------------- |
+| Bumper Ad    | 6 seconds     | YouTube             |
+| Short Ad     | 15 seconds    | Instagram, Facebook |
+| Standard Ad  | 30 seconds    | YouTube, TV         |
+| Explainer    | 60-90 seconds | Website, YouTube    |
+| Product Demo | 30-60 seconds | All platforms       |
 
 ## Marketing Video Templates
 
@@ -294,4 +293,3 @@ npx skills add inference-sh/skills@infsh-cli
 ```
 
 Browse all apps: `belt app store`
-

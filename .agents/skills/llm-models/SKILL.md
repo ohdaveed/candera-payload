@@ -1,6 +1,6 @@
 ---
 name: llm-models
-description: "Access Claude, Gemini, Kimi, GLM and 100+ LLMs via inference.sh CLI using OpenRouter. Models: Claude Opus 4.5, Claude Sonnet 4.5, Claude Haiku 4.5, Gemini 3 Pro, Kimi K2, GLM-4.6, Intellect 3. One API for all models with automatic fallback and cost optimization. Use for: AI assistants, code generation, reasoning, agents, chat, content generation. Triggers: claude api, openrouter, llm api, claude sonnet, claude opus, gemini api, kimi, language model, gpt alternative, anthropic api, ai model api, llm access, chat api, claude alternative, openai alternative"
+description: 'Access Claude, Gemini, Kimi, GLM and 100+ LLMs via inference.sh CLI using OpenRouter. Models: Claude Opus 4.5, Claude Sonnet 4.5, Claude Haiku 4.5, Gemini 3 Pro, Kimi K2, GLM-4.6, Intellect 3. One API for all models with automatic fallback and cost optimization. Use for: AI assistants, code generation, reasoning, agents, chat, content generation. Triggers: claude api, openrouter, llm api, claude sonnet, claude opus, gemini api, kimi, language model, gpt alternative, anthropic api, ai model api, llm access, chat api, claude alternative, openai alternative'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,19 +23,18 @@ belt login
 belt app run openrouter/claude-sonnet-45 --input '{"prompt": "Explain quantum computing"}'
 ```
 
-
 ## Available Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| Claude Opus 4.5 | `openrouter/claude-opus-45` | Complex reasoning, coding |
-| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | Balanced performance |
-| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | Fast, economical |
-| Gemini 3 Pro | `openrouter/gemini-3-pro-preview` | Google's latest |
-| Kimi K2 Thinking | `openrouter/kimi-k2-thinking` | Multi-step reasoning |
-| GLM-4.6 | `openrouter/glm-46` | Open-source, coding |
-| Intellect 3 | `openrouter/intellect-3` | General purpose |
-| Any Model | `openrouter/any-model` | Auto-selects best option |
+| Model             | App ID                            | Best For                  |
+| ----------------- | --------------------------------- | ------------------------- |
+| Claude Opus 4.5   | `openrouter/claude-opus-45`       | Complex reasoning, coding |
+| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45`     | Balanced performance      |
+| Claude Haiku 4.5  | `openrouter/claude-haiku-45`      | Fast, economical          |
+| Gemini 3 Pro      | `openrouter/gemini-3-pro-preview` | Google's latest           |
+| Kimi K2 Thinking  | `openrouter/kimi-k2-thinking`     | Multi-step reasoning      |
+| GLM-4.6           | `openrouter/glm-46`               | Open-source, coding       |
+| Intellect 3       | `openrouter/intellect-3`          | General purpose           |
+| Any Model         | `openrouter/any-model`            | Auto-selects best option  |
 
 ## Search LLM Apps
 
@@ -132,4 +131,3 @@ Browse all apps: `belt app store`
 - [Agents Overview](https://inference.sh/docs/concepts/agents) - Building AI agents
 - [Agent SDK](https://inference.sh/docs/api/agent/overview) - Programmatic agent control
 - [Building a Research Agent](https://inference.sh/blog/guides/research-agent) - LLM + search integration guide
-

@@ -1,0 +1,31 @@
+# Build & Dependencies
+.next/
+node_modules/
+dist/
+build/
+
+# Lockfiles (Huge token sinks)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
+
+# Payload CMS & Local Databases
+*.db
+*.sqlite
+*.sqlite3
+postgres-data/
+media/
+
+# Next.js Static & Cache
+.vercel/
+.turbo/
+.cache/
+
+# Environment & Secrets
+.env*
+
+# System & Git
+.git/
+.DS_Store
+*.log

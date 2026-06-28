@@ -4,36 +4,202 @@
   "title": "Design System: Candera — Botanical Scent Studio",
   "extensions": {
     "colorMeta": {
-      "obsidian": { "role": "primary", "displayName": "Obsidian", "canonical": "oklch(14.5% 0 0deg)", "tonalRamp": ["oklch(10% 0 0deg)", "oklch(14.5% 0 0deg)", "oklch(25% 0 0deg)", "oklch(35% 0 0deg)", "oklch(50% 0 0deg)", "oklch(65% 0 0deg)", "oklch(80% 0 0deg)", "oklch(92% 0 0deg)"] },
-      "vellum": { "role": "neutral", "displayName": "Vellum", "canonical": "oklch(94.8% 0.008 70deg)", "tonalRamp": ["oklch(90% 0.008 70deg)", "oklch(92% 0.008 70deg)", "oklch(94.8% 0.008 70deg)", "oklch(96% 0.006 70deg)", "oklch(97% 0.004 70deg)", "oklch(98% 0.003 70deg)", "oklch(99% 0.001 70deg)", "oklch(100% 0 0deg)"] },
-      "linen": { "role": "neutral", "displayName": "Linen", "canonical": "oklch(98.5% 0.003 70deg)", "tonalRamp": ["oklch(90% 0.008 70deg)", "oklch(93% 0.006 70deg)", "oklch(96% 0.005 70deg)", "oklch(98.5% 0.003 70deg)", "oklch(99% 0.002 70deg)", "oklch(99.5% 0.001 70deg)", "oklch(100% 0 0deg)", "oklch(100% 0 0deg)"] },
-      "ember": { "role": "accent", "displayName": "Ember", "canonical": "oklch(68% 0.12 45deg)", "tonalRamp": ["oklch(25% 0.12 45deg)", "oklch(35% 0.12 45deg)", "oklch(45% 0.12 45deg)", "oklch(55% 0.12 45deg)", "oklch(68% 0.12 45deg)", "oklch(78% 0.1 45deg)", "oklch(88% 0.06 45deg)", "oklch(95% 0.03 45deg)"] },
-      "ember-strong": { "role": "accent", "displayName": "Ember Strong", "canonical": "oklch(50% 0.14 40deg)", "tonalRamp": ["oklch(20% 0.14 40deg)", "oklch(30% 0.14 40deg)", "oklch(40% 0.14 40deg)", "oklch(50% 0.14 40deg)", "oklch(60% 0.12 40deg)", "oklch(72% 0.1 40deg)", "oklch(85% 0.06 40deg)", "oklch(94% 0.03 40deg)"] },
-      "rose": { "role": "accent", "displayName": "Rose", "canonical": "oklch(65% 0.07 350deg)", "tonalRamp": ["oklch(25% 0.07 350deg)", "oklch(35% 0.07 350deg)", "oklch(45% 0.07 350deg)", "oklch(55% 0.07 350deg)", "oklch(65% 0.07 350deg)", "oklch(76% 0.05 350deg)", "oklch(87% 0.03 350deg)", "oklch(95% 0.015 350deg)"] },
-      "sage-text": { "role": "neutral", "displayName": "Sage Text", "canonical": "oklch(43% 0.025 140deg)", "tonalRamp": ["oklch(20% 0.03 140deg)", "oklch(30% 0.03 140deg)", "oklch(43% 0.025 140deg)", "oklch(55% 0.02 140deg)", "oklch(68% 0.015 140deg)", "oklch(80% 0.01 140deg)", "oklch(90% 0.005 140deg)", "oklch(96% 0.002 140deg)"] },
-      "stone": { "role": "neutral", "displayName": "Stone", "canonical": "oklch(82% 0.025 75deg)", "tonalRamp": ["oklch(30% 0.03 75deg)", "oklch(45% 0.03 75deg)", "oklch(60% 0.03 75deg)", "oklch(72% 0.03 75deg)", "oklch(82% 0.025 75deg)", "oklch(90% 0.015 75deg)", "oklch(95% 0.01 75deg)", "oklch(98% 0.005 75deg)"] },
-      "ash": { "role": "neutral", "displayName": "Ash", "canonical": "oklch(88% 0.008 70deg)", "tonalRamp": ["oklch(50% 0.01 70deg)", "oklch(65% 0.01 70deg)", "oklch(78% 0.01 70deg)", "oklch(88% 0.008 70deg)", "oklch(93% 0.006 70deg)", "oklch(96% 0.004 70deg)", "oklch(98% 0.002 70deg)", "oklch(99% 0.001 70deg)"] }
+      "obsidian": {
+        "role": "primary",
+        "displayName": "Obsidian",
+        "canonical": "oklch(14.5% 0 0deg)",
+        "tonalRamp": [
+          "oklch(10% 0 0deg)",
+          "oklch(14.5% 0 0deg)",
+          "oklch(25% 0 0deg)",
+          "oklch(35% 0 0deg)",
+          "oklch(50% 0 0deg)",
+          "oklch(65% 0 0deg)",
+          "oklch(80% 0 0deg)",
+          "oklch(92% 0 0deg)"
+        ]
+      },
+      "vellum": {
+        "role": "neutral",
+        "displayName": "Vellum",
+        "canonical": "oklch(94.8% 0.008 70deg)",
+        "tonalRamp": [
+          "oklch(90% 0.008 70deg)",
+          "oklch(92% 0.008 70deg)",
+          "oklch(94.8% 0.008 70deg)",
+          "oklch(96% 0.006 70deg)",
+          "oklch(97% 0.004 70deg)",
+          "oklch(98% 0.003 70deg)",
+          "oklch(99% 0.001 70deg)",
+          "oklch(100% 0 0deg)"
+        ]
+      },
+      "linen": {
+        "role": "neutral",
+        "displayName": "Linen",
+        "canonical": "oklch(98.5% 0.003 70deg)",
+        "tonalRamp": [
+          "oklch(90% 0.008 70deg)",
+          "oklch(93% 0.006 70deg)",
+          "oklch(96% 0.005 70deg)",
+          "oklch(98.5% 0.003 70deg)",
+          "oklch(99% 0.002 70deg)",
+          "oklch(99.5% 0.001 70deg)",
+          "oklch(100% 0 0deg)",
+          "oklch(100% 0 0deg)"
+        ]
+      },
+      "ember": {
+        "role": "accent",
+        "displayName": "Ember",
+        "canonical": "oklch(68% 0.12 45deg)",
+        "tonalRamp": [
+          "oklch(25% 0.12 45deg)",
+          "oklch(35% 0.12 45deg)",
+          "oklch(45% 0.12 45deg)",
+          "oklch(55% 0.12 45deg)",
+          "oklch(68% 0.12 45deg)",
+          "oklch(78% 0.1 45deg)",
+          "oklch(88% 0.06 45deg)",
+          "oklch(95% 0.03 45deg)"
+        ]
+      },
+      "ember-strong": {
+        "role": "accent",
+        "displayName": "Ember Strong",
+        "canonical": "oklch(50% 0.14 40deg)",
+        "tonalRamp": [
+          "oklch(20% 0.14 40deg)",
+          "oklch(30% 0.14 40deg)",
+          "oklch(40% 0.14 40deg)",
+          "oklch(50% 0.14 40deg)",
+          "oklch(60% 0.12 40deg)",
+          "oklch(72% 0.1 40deg)",
+          "oklch(85% 0.06 40deg)",
+          "oklch(94% 0.03 40deg)"
+        ]
+      },
+      "rose": {
+        "role": "accent",
+        "displayName": "Rose",
+        "canonical": "oklch(65% 0.07 350deg)",
+        "tonalRamp": [
+          "oklch(25% 0.07 350deg)",
+          "oklch(35% 0.07 350deg)",
+          "oklch(45% 0.07 350deg)",
+          "oklch(55% 0.07 350deg)",
+          "oklch(65% 0.07 350deg)",
+          "oklch(76% 0.05 350deg)",
+          "oklch(87% 0.03 350deg)",
+          "oklch(95% 0.015 350deg)"
+        ]
+      },
+      "sage-text": {
+        "role": "neutral",
+        "displayName": "Sage Text",
+        "canonical": "oklch(43% 0.025 140deg)",
+        "tonalRamp": [
+          "oklch(20% 0.03 140deg)",
+          "oklch(30% 0.03 140deg)",
+          "oklch(43% 0.025 140deg)",
+          "oklch(55% 0.02 140deg)",
+          "oklch(68% 0.015 140deg)",
+          "oklch(80% 0.01 140deg)",
+          "oklch(90% 0.005 140deg)",
+          "oklch(96% 0.002 140deg)"
+        ]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "oklch(82% 0.025 75deg)",
+        "tonalRamp": [
+          "oklch(30% 0.03 75deg)",
+          "oklch(45% 0.03 75deg)",
+          "oklch(60% 0.03 75deg)",
+          "oklch(72% 0.03 75deg)",
+          "oklch(82% 0.025 75deg)",
+          "oklch(90% 0.015 75deg)",
+          "oklch(95% 0.01 75deg)",
+          "oklch(98% 0.005 75deg)"
+        ]
+      },
+      "ash": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "oklch(88% 0.008 70deg)",
+        "tonalRamp": [
+          "oklch(50% 0.01 70deg)",
+          "oklch(65% 0.01 70deg)",
+          "oklch(78% 0.01 70deg)",
+          "oklch(88% 0.008 70deg)",
+          "oklch(93% 0.006 70deg)",
+          "oklch(96% 0.004 70deg)",
+          "oklch(98% 0.002 70deg)",
+          "oklch(99% 0.001 70deg)"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headlines only. The most prominent typographic statement on any page." },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines only. The most prominent typographic statement on any page."
+      },
       "headline": { "displayName": "Headline", "purpose": "Section headings (h2)." },
       "title": { "displayName": "Title", "purpose": "Subsection headings (h3), card titles." },
-      "body": { "displayName": "Body", "purpose": "All prose content. DM Sans light, 1.75 line-height." },
-      "label": { "displayName": "Label", "purpose": "Button text, CTA labels, small navigation, form labels." },
-      "editorial": { "displayName": "Editorial", "purpose": "Pull quotes, maker's notes, editorial asides." }
+      "body": {
+        "displayName": "Body",
+        "purpose": "All prose content. DM Sans light, 1.75 line-height."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Button text, CTA labels, small navigation, form labels."
+      },
+      "editorial": {
+        "displayName": "Editorial",
+        "purpose": "Pull quotes, maker's notes, editorial asides."
+      }
     },
     "shadows": [
-      { "name": "card", "value": "0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04)", "purpose": "Default card and raised surface shadow. The 1px pseudo-border is essential." },
-      { "name": "sm", "value": "0 1px 2px rgba(20, 20, 18, 0.05)", "purpose": "Subtle elevation for hovered small elements, tooltips." },
-      { "name": "lg", "value": "0 18px 40px -12px rgba(20, 20, 18, 0.25)", "purpose": "Modals, dialogs, floating panels. Noticeably lifted." },
-      { "name": "button-hover", "value": "0 18px 40px -12px rgba(20, 20, 18, 0.35)", "purpose": "CTA button hover state. Paired with -translate-y-0.5 lift." }
+      {
+        "name": "card",
+        "value": "0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04)",
+        "purpose": "Default card and raised surface shadow. The 1px pseudo-border is essential."
+      },
+      {
+        "name": "sm",
+        "value": "0 1px 2px rgba(20, 20, 18, 0.05)",
+        "purpose": "Subtle elevation for hovered small elements, tooltips."
+      },
+      {
+        "name": "lg",
+        "value": "0 18px 40px -12px rgba(20, 20, 18, 0.25)",
+        "purpose": "Modals, dialogs, floating panels. Noticeably lifted."
+      },
+      {
+        "name": "button-hover",
+        "value": "0 18px 40px -12px rgba(20, 20, 18, 0.35)",
+        "purpose": "CTA button hover state. Paired with -translate-y-0.5 lift."
+      }
     ],
     "motion": [
-      { "name": "ease-enter", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions and entrances." },
-      { "name": "ease-exit", "value": "cubic-bezier(0.4, 0, 1, 1)", "purpose": "Easing for exits and dismissals." },
+      {
+        "name": "ease-enter",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for state transitions and entrances."
+      },
+      {
+        "name": "ease-exit",
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "purpose": "Easing for exits and dismissals."
+      },
       { "name": "duration-micro", "value": "100ms", "purpose": "Instant feedback (press, hover)." },
       { "name": "duration-entrance", "value": "900ms", "purpose": "Section entrance animations." },
-      { "name": "duration-reveal", "value": "1000ms", "purpose": "Scroll-driven reveal animations." }
+      {
+        "name": "duration-reveal",
+        "value": "1000ms",
+        "purpose": "Scroll-driven reveal animations."
+      }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -104,11 +270,31 @@
       "Sparse, intentional color — the page breathes by being mostly ink on paper"
     ],
     "rules": [
-      { "name": "The One-Voice Rule", "body": "The ember and rose accents are used on ≤10% of any given screen. Their rarity is the point — when they appear, they mean something.", "section": "colors" },
-      { "name": "The Ink-on-Paper Rule", "body": "Obsidian text on vellum background. No dark-mode-as-default, no light-on-dark text blocks except as deliberate section mood shifts.", "section": "colors" },
-      { "name": "The No-Eyebrow-by-Default Rule", "body": "The tiny uppercase tracked section kicker is reserved for deliberate brand voice, not generated as default scaffolding on every section.", "section": "typography" },
-      { "name": "The 70ch Ceiling Rule", "body": "Body text max-width is 70 characters. No paragraph should span the full viewport width.", "section": "typography" },
-      { "name": "The Grounded-by-Default Rule", "body": "Surfaces are at rest. Shadows appear as responses to state. No floating elements at rest.", "section": "elevation" }
+      {
+        "name": "The One-Voice Rule",
+        "body": "The ember and rose accents are used on ≤10% of any given screen. Their rarity is the point — when they appear, they mean something.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-on-Paper Rule",
+        "body": "Obsidian text on vellum background. No dark-mode-as-default, no light-on-dark text blocks except as deliberate section mood shifts.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Eyebrow-by-Default Rule",
+        "body": "The tiny uppercase tracked section kicker is reserved for deliberate brand voice, not generated as default scaffolding on every section.",
+        "section": "typography"
+      },
+      {
+        "name": "The 70ch Ceiling Rule",
+        "body": "Body text max-width is 70 characters. No paragraph should span the full viewport width.",
+        "section": "typography"
+      },
+      {
+        "name": "The Grounded-by-Default Rule",
+        "body": "Surfaces are at rest. Shadows appear as responses to state. No floating elements at rest.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do use obsidian (#141412) for body text against vellum (#f5f2ed) or linen (#fdfbf7) backgrounds.",

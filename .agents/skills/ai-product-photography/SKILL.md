@@ -1,6 +1,6 @@
 ---
 name: ai-product-photography
-description: "Generate professional AI product photography and commercial images. Models: FLUX, Imagen 3, Grok, Seedream for product shots, lifestyle images, mockups. Capabilities: studio lighting, lifestyle scenes, packaging, e-commerce photos. Use for: e-commerce, Amazon listings, Shopify, marketing, advertising, mockups. Triggers: product photography, product shot, commercial photography, e-commerce images, amazon product photo, shopify images, product mockup, studio product shot, lifestyle product image, advertising photo, packshot, product render, product image ai"
+description: 'Generate professional AI product photography and commercial images. Models: FLUX, Imagen 3, Grok, Seedream for product shots, lifestyle images, mockups. Capabilities: studio lighting, lifestyle scenes, packaging, e-commerce photos. Use for: e-commerce, Amazon listings, Shopify, marketing, advertising, mockups. Triggers: product photography, product shot, commercial photography, e-commerce images, amazon product photo, shopify images, product mockup, studio product shot, lifestyle product image, advertising photo, packshot, product render, product image ai'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,16 +25,15 @@ belt app run falai/flux-dev --input '{
 }'
 ```
 
-
 ## Available Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| FLUX Dev | `falai/flux-dev` | High quality, detailed |
-| FLUX Schnell | `falai/flux-schnell` | Fast iterations |
-| Imagen 3 | `google/imagen-3` | Photorealistic |
-| Grok | `xai/grok-imagine-image` | Creative variations |
-| Seedream | `bytedance/seedream-3-0` | Commercial quality |
+| Model        | App ID                   | Best For               |
+| ------------ | ------------------------ | ---------------------- |
+| FLUX Dev     | `falai/flux-dev`         | High quality, detailed |
+| FLUX Schnell | `falai/flux-schnell`     | Fast iterations        |
+| Imagen 3     | `google/imagen-3`        | Photorealistic         |
+| Grok         | `xai/grok-imagine-image` | Creative variations    |
+| Seedream     | `bytedance/seedream-3-0` | Commercial quality     |
 
 ## Product Photography Styles
 
@@ -267,4 +266,3 @@ npx skills add inference-sh/skills@infsh-cli
 ```
 
 Browse all image apps: `belt app store --category image`
-

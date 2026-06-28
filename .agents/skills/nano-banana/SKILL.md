@@ -1,6 +1,6 @@
 ---
 name: nano-banana
-description: "Generate images with Google Gemini native image models via inference.sh CLI. Models: Gemini 3 Pro Image, Gemini 2.5 Flash Image. Capabilities: text-to-image, image editing, multi-image input. Triggers: nano banana, gemini image, gemini 3 pro image, gemini 2.5 flash image, google image generation, native image generation, gemini native image"
+description: 'Generate images with Google Gemini native image models via inference.sh CLI. Models: Gemini 3 Pro Image, Gemini 2.5 Flash Image. Capabilities: text-to-image, image editing, multi-image input. Triggers: nano banana, gemini image, gemini 3 pro image, gemini 2.5 flash image, google image generation, native image generation, gemini native image'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,13 +22,12 @@ belt login
 belt app run google/gemini-3-pro-image-preview --input '{"prompt": "a banana in space, photorealistic"}'
 ```
 
-
 ## Models
 
-| Model | App ID | Speed | Quality |
-|-------|--------|-------|---------|
-| Gemini 3 Pro Image | `google/gemini-3-pro-image-preview` | Slower | Best |
-| Gemini 2.5 Flash Image | `google/gemini-2-5-flash-image` | Fast | Excellent |
+| Model                  | App ID                              | Speed  | Quality   |
+| ---------------------- | ----------------------------------- | ------ | --------- |
+| Gemini 3 Pro Image     | `google/gemini-3-pro-image-preview` | Slower | Best      |
+| Gemini 2.5 Flash Image | `google/gemini-2-5-flash-image`     | Fast   | Excellent |
 
 ## Search Gemini Image Apps
 
@@ -93,15 +92,15 @@ belt app run google/gemini-3-pro-image-preview --input '{
 
 ## Input Options
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `prompt` | string | **Required.** What to generate or change |
-| `images` | array | Input images for editing (up to 14) |
-| `num_images` | integer | Number of images to generate |
-| `aspect_ratio` | string | Output ratio: "1:1", "16:9", "9:16", "4:3", "3:4", "auto" |
-| `resolution` | string | "1K", "2K", "4K" (Gemini 3 Pro only) |
-| `output_format` | string | Output format for images |
-| `enable_google_search` | boolean | Enable real-time info grounding |
+| Parameter              | Type    | Description                                               |
+| ---------------------- | ------- | --------------------------------------------------------- |
+| `prompt`               | string  | **Required.** What to generate or change                  |
+| `images`               | array   | Input images for editing (up to 14)                       |
+| `num_images`           | integer | Number of images to generate                              |
+| `aspect_ratio`         | string  | Output ratio: "1:1", "16:9", "9:16", "4:3", "3:4", "auto" |
+| `resolution`           | string  | "1K", "2K", "4K" (Gemini 3 Pro only)                      |
+| `output_format`        | string  | Output format for images                                  |
+| `enable_google_search` | boolean | Enable real-time info grounding                           |
 
 ## Prompt Tips
 
@@ -144,4 +143,3 @@ Browse all image apps: `belt app store --category image`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [File Handling](https://inference.sh/docs/api/sdk/files) - Working with images
-

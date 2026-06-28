@@ -5,31 +5,31 @@ The `inference.js` file contains your app's logic with setup, run, and Zod schem
 ## Structure
 
 ```javascript
-import { z } from "zod";
-import { File, textMeta } from "@inferencesh/app";
+import { z } from 'zod'
+import { File, textMeta } from '@inferencesh/app'
 
 export const AppSetup = z.object({
-  modelId: z.string().default("gpt2").describe("Model to load"),
-});
+  modelId: z.string().default('gpt2').describe('Model to load'),
+})
 
 export const RunInput = z.object({
-  prompt: z.string().describe("What to generate"),
-  style: z.string().default("modern").describe("Style"),
-});
+  prompt: z.string().describe('What to generate'),
+  style: z.string().default('modern').describe('Style'),
+})
 
 export const RunOutput = z.object({
-  result: z.string().describe("Generated output"),
-});
+  result: z.string().describe('Generated output'),
+})
 
 export class App {
   async setup(config) {
     // Runs once when worker starts or config changes
-    this.model = await loadModel(config.modelId);
+    this.model = await loadModel(config.modelId)
   }
 
   async run(inputData) {
     // Runs for each request — inputData is validated against RunInput
-    return { result: "done" };
+    return { result: 'done' }
   }
 
   async unload() {
@@ -40,16 +40,16 @@ export class App {
 
 ## Zod Field Types
 
-| Type | Zod | Description |
-|------|-----|-------------|
-| String | `z.string()` | Text |
-| Number | `z.number()` | Integer or float |
-| Boolean | `z.boolean()` | True/false |
-| Array | `z.array(z.string())` | List of items |
-| Optional | `z.string().optional()` | Nullable field |
-| Default | `z.string().default("hi")` | Has default value |
-| Enum | `z.enum(["a", "b"])` | Restricted choices |
-| Object | `z.object({...})` | Nested object |
+| Type     | Zod                        | Description        |
+| -------- | -------------------------- | ------------------ |
+| String   | `z.string()`               | Text               |
+| Number   | `z.number()`               | Integer or float   |
+| Boolean  | `z.boolean()`              | True/false         |
+| Array    | `z.array(z.string())`      | List of items      |
+| Optional | `z.string().optional()`    | Nullable field     |
+| Default  | `z.string().default("hi")` | Has default value  |
+| Enum     | `z.enum(["a", "b"])`       | Restricted choices |
+| Object   | `z.object({...})`          | Nested object      |
 
 ## Setup Parameters
 
@@ -57,14 +57,14 @@ Use `AppSetup` to define parameters that trigger re-initialization when changed:
 
 ```javascript
 export const AppSetup = z.object({
-  modelId: z.string().default("gpt2").describe("Model to load"),
-  precision: z.string().default("fp16").describe("Model precision"),
-});
+  modelId: z.string().default('gpt2').describe('Model to load'),
+  precision: z.string().default('fp16').describe('Model precision'),
+})
 
 export class App {
   async setup(config) {
     // config is validated against AppSetup — defaults filled in
-    this.model = await loadModel(config.modelId);
+    this.model = await loadModel(config.modelId)
   }
 }
 ```
@@ -74,15 +74,14 @@ export class App {
 When an app accepts one of several input types (e.g. text OR file), use `x-promoted` and a Zod `refine` to enforce at least one:
 
 ```javascript
-export const RunInput = z.object({
-  texts: z.array(z.string()).optional()
-    .describe("Texts to process."),
-  textsFile: z.any().optional()
-    .describe("File containing texts (one per line)."),
-}).refine(
-  (data) => data.texts || data.textsFile,
-  { message: "Either texts or textsFile must be provided" }
-);
+export const RunInput = z
+  .object({
+    texts: z.array(z.string()).optional().describe('Texts to process.'),
+    textsFile: z.any().optional().describe('File containing texts (one per line).'),
+  })
+  .refine((data) => data.texts || data.textsFile, {
+    message: 'Either texts or textsFile must be provided',
+  })
 
 // Add x-promoted via schema transform in inf.yml or manually in the generated schema
 ```
@@ -120,26 +119,27 @@ async run(inputData) {
 Apps can expose multiple functions with different schemas. Export `{PascalName}Input` and `{PascalName}Output` for each method:
 
 ```javascript
-import { z } from "zod";
+import { z } from 'zod'
 
-export const RunInput = z.object({ name: z.string().default("World") });
-export const RunOutput = z.object({ message: z.string() });
+export const RunInput = z.object({ name: z.string().default('World') })
+export const RunOutput = z.object({ message: z.string() })
 
-export const ReverseInput = z.object({ text: z.string() });
-export const ReverseOutput = z.object({ reversedText: z.string() });
+export const ReverseInput = z.object({ text: z.string() })
+export const ReverseOutput = z.object({ reversedText: z.string() })
 
 export class App {
   async run(inputData) {
-    return { message: `Hello, ${inputData.name}!` };
+    return { message: `Hello, ${inputData.name}!` }
   }
 
   async reverse(inputData) {
-    return { reversedText: inputData.text.split("").reverse().join("") };
+    return { reversedText: inputData.text.split('').reverse().join('') }
   }
 }
 ```
 
 Functions are auto-discovered if they:
+
 - Are public (no `_` prefix)
 - Have matching `{PascalName}Input` and `{PascalName}Output` Zod schema exports
 - Are not lifecycle methods (`setup`, `unload`, `onCancel`, `constructor`)
