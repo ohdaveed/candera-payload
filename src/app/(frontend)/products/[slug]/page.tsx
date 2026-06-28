@@ -143,7 +143,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <Section
             as="aside"
             padding="none"
-            className="md:col-span-6 lg:col-span-7 relative md:sticky md:top-[var(--nav-height)] md:h-[calc(100vh-var(--nav-height))] md:overflow-hidden"
+            className="md:col-span-6 lg:col-span-7 relative lg:sticky lg:top-[var(--nav-height)] lg:h-[calc(100vh-var(--nav-height))] lg:overflow-hidden"
             data-section="image-gallery"
           >
             <ImageGallery
