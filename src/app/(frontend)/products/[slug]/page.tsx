@@ -25,6 +25,9 @@ import { Eyebrow } from '@/components/ui/eyebrow'
 import { ArrowRight } from 'lucide-react'
 import { FORM_TITLES } from '@/constants/forms'
 import { EndSentinel } from './EndSentinel'
+import RichText from '@/components/RichText'
+import { FragranceProfile } from '@/components/FragranceProfile'
+import { formatPrice } from '@/lib/formatPrice'
 
 export async function generateStaticParams() {
   return []
@@ -50,6 +53,15 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
   const productImageUrl = resolveProductImageUrl(product, serverUrl)
 
+  // Fragrance is candle-only (metal vessels are decor, not scented). Show the
+  // block when there are notes, a burn time, or an atmosphere to feature.
+  const isCandle = product.productType === 'candle' && product.vessel !== 'metal'
+  const hasScent = Boolean(
+    product.scentProfile?.top || product.scentProfile?.heart || product.scentProfile?.base,
+  )
+  const showFragrance =
+    isCandle && (hasScent || Boolean(product.burnTime) || Boolean(product.atmosphere))
+
   const productSchema = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
@@ -64,7 +76,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
     offers: {
       '@type': 'Offer',
       url: `${serverUrl}/products/${product.slug}`,
-      priceCurrency: 'USD',
+      priceCurrency: product.currency ?? 'USD',
       price: product.price,
       // Micro-batches sell out fast and stock lives on Etsy, not here — signal scarcity
       // honestly rather than asserting guaranteed availability we can't verify.
@@ -116,7 +128,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           items={[
             { label: 'Home', href: '/' },
             { label: 'Collection', href: '/products' },
-            { label: product.title },
+            { label: truncate(product.title, 48) },
           ]}
         />
 
@@ -160,7 +172,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               className="flex items-baseline gap-4 border-t border-b border-candera-stone/20 py-5"
             >
               {product.price != null && (
-                <p className="price text-2xl">${Number(product.price).toFixed(2)}</p>
+                <p className="price text-2xl tabular-nums">
+                  {formatPrice(product.price, product.currency)}
+                </p>
               )}
               <Badge
                 variant="outline"
@@ -187,18 +201,41 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             <ProductCTASection
               title={product.title}
               price={product.price}
+              currency={product.currency}
               vessel={product.vessel}
               etsyListingId={product.etsyListingId}
             />
 
-            {/* Specifications + Scent Profile — collapsible sections */}
+            {/* Editorial story — given prime space with generous line height */}
+            {product.description && (
+              <Section padding="none" className="flex flex-col gap-4" data-section="editorial">
+                <Eyebrow className="text-candera-sage-text tracking-[.28em]">The Story</Eyebrow>
+                <RichText
+                  data={product.description}
+                  enableGutter={false}
+                  className="editorial text-candera-sage-text leading-loose max-w-[52ch] [&_p]:mb-4 [&_p:last-child]:mb-0"
+                />
+              </Section>
+            )}
+
+            {/* Fragrance Profile — featured prominently, not hidden in an accordion */}
+            {showFragrance && (
+              <Section padding="none" className="flex flex-col" data-section="fragrance">
+                <Eyebrow className="text-candera-sage-text tracking-[.28em]">
+                  Fragrance Profile
+                </Eyebrow>
+                <FragranceProfile
+                  profile={product.scentProfile}
+                  burnTime={product.burnTime}
+                  atmosphere={product.atmosphere}
+                />
+              </Section>
+            )}
+
+            {/* Specifications — collapsible drawer + consolidated measurements */}
             <ProductDetailSections
-              title={product.title}
               vessel={product.vessel}
               productType={product.productType}
-              scentProfile={product.scentProfile}
-              burnTime={product.burnTime}
-              atmosphere={product.atmosphere}
               specifications={product.specifications}
             />
           </Section>
@@ -250,6 +287,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
       </aside>
     </Section>
   )
+}
+
+// Truncates a label to a max length, appending an ellipsis. Keeps long product
+// names from overflowing the breadcrumb on narrow viewports.
+function truncate(text: string, max: number): string {
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
 }
 
 // Resolves the best available image URL for a product, preferring the SEO

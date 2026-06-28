@@ -1,8 +1,17 @@
 import { z } from 'zod'
 import { type Payload } from 'payload'
+import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richtext-lexical'
 import { EtsyClient, DefaultPayloadTokenRepository } from './etsyClient'
 import type { Product } from '@/payload-types'
 import { syncLogger } from './logger'
+
+// Currencies the storefront's `currency` select supports. Keep in sync with the
+// options in `src/collections/Products.ts`.
+const SUPPORTED_CURRENCIES = ['USD', 'CAD', 'EUR', 'GBP']
+
+// Matches shipping/packaging contexts whose dimensions are logistics noise, not
+// customer-facing product specs (the raw text is still kept in rawEtsyDescription).
+const SHIPPING_CONTEXT_RE = /box|shipping|package|parcel|postage/i
 
 // Validation schema for candle listings
 const CandleListingSchema = z.object({
@@ -53,12 +62,12 @@ export interface EtsySourcePort {
 }
 
 export interface ProductUpsertInput {
-  title: string
-  slug: string
-  description: Product['description']
-  extraPhotos?: (number | string)[]
-  etsyListingId: number
-  price?: number
+  // Editor-owned (set on create only — re-syncs must not clobber curation).
+  title?: string
+  // `slug` is derived from `title` by the collection's slugField hook, so the
+  // sync no longer sets it. Kept optional for callers/tests that still inspect it.
+  slug?: string
+  description?: Product['description']
   productType?: Product['productType']
   _status?: 'draft' | 'published'
   tagline?: string
@@ -70,6 +79,14 @@ export interface ProductUpsertInput {
     base?: string | null
   }
   specifications?: Array<{ label: string; value: string }>
+  extraPhotos?: (number | string)[]
+  // Sync-owned (written on every run — marketplace source of truth).
+  etsyListingId: number
+  etsyTitle?: string
+  rawEtsyDescription?: string
+  price?: number
+  currency?: Product['currency']
+  priceSyncedAt?: string
 }
 
 export interface ParsedEtsyDescription {
@@ -119,6 +136,11 @@ export class EtsySyncEngine {
       productStore: ProductStorePort
       mediaStorage: MediaStoragePort
       logger: LoggerPort
+      // Converts a (markdown-ish) Etsy description string into Lexical JSON.
+      // Injected so the pure engine stays decoupled from the Payload editor
+      // config; production wires Payload's official `convertMarkdownToLexical`,
+      // and unit tests fall back to the simple paragraph builder below.
+      descriptionToRichText?: (markdown: string) => Product['description']
     },
   ): Promise<SyncResult> {
     ports.logger.info(
@@ -126,6 +148,10 @@ export class EtsySyncEngine {
         ? `Starting Etsy sync for ${source.listingIds.length} listing IDs...`
         : `Starting Etsy sync for shop ${source.shopId}...`,
     )
+
+    // Prefer the injected (official Payload) converter; fall back to the simple
+    // line-based builder so the engine works headless in unit tests.
+    const toRichText = ports.descriptionToRichText ?? ((md: string) => this.textToRichText(md))
 
     const failures: Array<{ listingId: number; error: string }> = []
     let listings: RawEtsyListing[] = []
@@ -183,14 +209,6 @@ export class EtsySyncEngine {
           }
         }
 
-        // Simple slug generation logic
-        const baseSlug = title
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)+/g, '')
-
-        const slug = `${baseSlug}-${listing_id}`
-
         // Download and sync main image if available
         let mainImageId: string | number | undefined = undefined
         if (images && images.length > 0) {
@@ -236,26 +254,52 @@ export class EtsySyncEngine {
           delete parsed.specifications
         }
 
-        const productData: ProductUpsertInput = {
-          title,
-          slug,
-          description: this.textToRichText(this.cleanEtsyDescription(description)),
+        // Sync-owned fields: the marketplace is the source of truth, so these
+        // are written on every run. They hold the raw Etsy payload as an
+        // audit/backup and the live price — never curated editor copy.
+        const syncOwned: ProductUpsertInput = {
           etsyListingId: listing_id,
+          etsyTitle: title,
+          rawEtsyDescription: description,
+        }
+
+        if (etsyPrice) {
+          syncOwned.price = etsyPrice.amount / etsyPrice.divisor
+          syncOwned.priceSyncedAt = new Date().toISOString()
+          // Only carry over a currency the storefront actually supports; an
+          // unexpected code would fail the `currency` select and abort the whole
+          // upsert (losing the price too), so drop it rather than break the row.
+          if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+            syncOwned.currency = etsyPrice.currency_code as Product['currency']
+          }
+        }
+
+        // Editor-owned fields: seeded once on create, then left untouched so
+        // manual curation (clean title, story, scent, gallery) survives nightly
+        // re-syncs. The clean `title` feeds the slugField hook, which derives the
+        // slug — no Etsy listing ID appended.
+        const editorOwned: ProductUpsertInput = {
+          etsyListingId: listing_id,
+          title: this.deriveCleanTitle(title),
+          description: toRichText(this.cleanEtsyDescription(description)),
           productType,
-          // Etsy active listings are public catalog items. Publish on sync so they
-          // are visible to the storefront, which only reads published products
-          // (products read access is authenticatedOrPublished).
+          // Publish on first sync so active Etsy listings appear immediately;
+          // visibility is editor-owned thereafter (a manual unpublish sticks).
           _status: 'published',
           ...parsed,
         }
 
-        if (etsyPrice) {
-          productData.price = etsyPrice.amount / etsyPrice.divisor
+        if (mainImageId) {
+          editorOwned.extraPhotos = [mainImageId]
         }
 
-        if (mainImageId) {
-          productData.extraPhotos = [mainImageId]
-        }
+        // Decide create vs. update up front so we know which fields to write:
+        // new products get the full payload, existing ones receive only
+        // sync-owned fields so editor curation is never clobbered.
+        const existing = await ports.productStore.findProductByEtsyId(listing_id)
+        const productData: ProductUpsertInput = existing
+          ? syncOwned
+          : { ...syncOwned, ...editorOwned }
 
         // Perform the upsert inside a transaction boundary
         await ports.productStore.transaction(async (txStore) => {
@@ -273,6 +317,27 @@ export class EtsySyncEngine {
     // `success` reflects whether every listing synced. Partial failures return
     // `false` so callers can surface drift instead of trusting a blanket `true`.
     return { success: failures.length === 0, count: syncedCount, failures }
+  }
+
+  /**
+   * Derives a clean, editor-facing product name from Etsy's keyword-stuffed
+   * title. Etsy sellers cram SEO terms after a delimiter ("Anya's Eyes Candle |
+   * Hand Poured | Gift for Her"); the product name is the first segment. We take
+   * everything before the first delimiter and cap the length so the result is a
+   * sensible default — editors refine it in admin, and re-syncs won't overwrite
+   * their edit (title is create-only).
+   */
+  private deriveCleanTitle(rawTitle: string): string {
+    const unescaped = this.unescapeHtml(rawTitle).trim()
+    // Split on common Etsy separators: pipe, en/em dash, colon, " - ", ", ".
+    const firstSegment = unescaped.split(/\s*[|–—:]\s*| - |,\s+/)[0] ?? unescaped
+    const cleaned = firstSegment.replace(/\s+/g, ' ').trim()
+
+    if (!cleaned) return unescaped
+    // A first segment with no delimiters can still be a long keyword run; keep
+    // it readable by falling back to the leading words.
+    if (cleaned.length <= 60) return cleaned
+    return cleaned.split(' ').slice(0, 8).join(' ')
   }
 
   /**
@@ -369,11 +434,21 @@ export class EtsySyncEngine {
           } else if (lowerLabel === 'vessel') {
             vessel = value
           } else {
-            let finalLabel = label
+            const isDimension =
+              lowerLabel === 'length' || lowerLabel === 'width' || lowerLabel === 'height'
+
+            // Drop shipping/box logistics from customer specs — either a label
+            // that names a shipping context ("Weight with box") or a dimension
+            // nested under one ("Box dimensions:" → Length/Width/Height).
             if (
-              lastHeading &&
-              (lowerLabel === 'length' || lowerLabel === 'width' || lowerLabel === 'height')
+              SHIPPING_CONTEXT_RE.test(label) ||
+              (isDimension && SHIPPING_CONTEXT_RE.test(lastHeading))
             ) {
+              continue
+            }
+
+            let finalLabel = label
+            if (lastHeading && isDimension) {
               finalLabel = `${lastHeading} ${label}`
             }
             specifications.push({ label: finalLabel, value })
@@ -697,12 +772,19 @@ export async function syncEtsyListings(source: number | number[], payload: Paylo
     ? { type: 'listings', listingIds: source }
     : { type: 'shop', shopId: source }
 
+  // Build the editor config once, then convert each Etsy description with
+  // Payload's official Markdown→Lexical converter so bullet lists, headings, and
+  // paragraphs become real Lexical nodes instead of one paragraph per line.
+  const editorConfig = await editorConfigFactory.default({ config: payload.config })
+
   const engine = new EtsySyncEngine()
   const ports = {
     etsySource: new ProductionEtsySourceAdapter(client),
     productStore: new ProductionProductStoreAdapter(payload),
     mediaStorage: new ProductionMediaStorageAdapter(payload),
     logger: syncLogger,
+    descriptionToRichText: (markdown: string) =>
+      convertMarkdownToLexical({ editorConfig, markdown }) as unknown as Product['description'],
   }
 
   const result = await engine.sync(syncSource, ports)

@@ -11,6 +11,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
+import { formatPrice } from '@/lib/formatPrice'
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
@@ -114,6 +115,7 @@ export const Card: React.FC<CardProps> = (props) => {
     extraPhotos,
     scentProfile,
     price,
+    currency,
     populatedAuthors,
     publishedAt,
     heroImage,
@@ -377,9 +379,7 @@ export const Card: React.FC<CardProps> = (props) => {
         <div className="flex items-center justify-between mt-auto">
           {price != null && (
             <span className="text-base font-semibold text-candera-obsidian tabular-nums">
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                Number(price),
-              )}
+              {formatPrice(price, currency)}
             </span>
           )}
           {design === 'modern' ? (

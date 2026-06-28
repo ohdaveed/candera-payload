@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vite-plus/test'
+import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richtext-lexical'
+import configPromise from '@payload-config'
 import {
   EtsySyncEngine,
   EtsySourcePort,
@@ -117,7 +119,13 @@ describe('EtsySyncEngine', () => {
     const savedProduct = productStore.products.get(101)
     expect(savedProduct).toBeDefined()
     expect(savedProduct?.title).toBe('Amber Forest Candle')
-    expect(savedProduct?.slug).toBe('amber-forest-candle-101')
+    // Raw Etsy payload preserved as a backup; the clean slug is derived by the
+    // collection's slugField hook (not set by the sync) and carries no listing ID.
+    expect(savedProduct?.etsyTitle).toBe('Amber Forest Candle')
+    expect(savedProduct?.rawEtsyDescription).toBe(
+      'Smells like pine and cedar.\nCured in stillness.',
+    )
+    expect(savedProduct?.slug).toBeUndefined()
     expect(savedProduct?.extraPhotos).toEqual(['media-999'])
     // Synced products must be published so they appear in the public catalog
     expect(savedProduct?._status).toBe('published')
@@ -183,14 +191,13 @@ describe('EtsySyncEngine', () => {
       heart: 'Driftwood',
       base: 'Salt Air',
     })
+    // Shipping/box logistics are stripped from customer specs: "Weight with box"
+    // and the "Box dimensions" Length/Width/Height block are dropped (still kept
+    // verbatim in rawEtsyDescription). Product-level weight and dimensions stay.
     expect(savedProduct?.specifications).toEqual([
       { label: 'Candle weight', value: '15 oz' },
-      { label: 'Weight with box', value: '17.5 oz' },
       { label: 'Height with sea shells', value: '4 inches (11 cm)' },
       { label: 'Width', value: '3 inches (9 cm)' },
-      { label: 'Box dimensions Length', value: '6 inches' },
-      { label: 'Box dimensions Width', value: '4 inches' },
-      { label: 'Box dimensions Height', value: '4 inches' },
       { label: 'Materials', value: 'Soy wax, beeswax, sea shells' },
     ])
   })
@@ -345,5 +352,78 @@ describe('EtsySyncEngine', () => {
     expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
       expect.stringContaining('Skipping listing 401'),
     )
+  })
+
+  it('derives a clean title from a keyword-stuffed Etsy title and keeps the raw as backup', async () => {
+    const engine = new EtsySyncEngine()
+
+    const rawTitle =
+      "Anya's Eyes Candle | Hand Poured Botanical Soy Candle | Gift for Her | Floral Scented"
+    etsySource.mockListings = [{ listing_id: 700, title: rawTitle, description: 'A quiet bloom.' }]
+
+    await engine.sync(
+      { type: 'shop', shopId: 1 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    const saved = productStore.products.get(700)
+    // Only the first segment (the product name) becomes the clean title.
+    expect(saved?.title).toBe("Anya's Eyes Candle")
+    expect(saved?.etsyTitle).toBe(rawTitle)
+    // The sync never bakes a listing ID into the slug — the hook derives it later.
+    expect(saved?.slug).toBeUndefined()
+  })
+
+  it('protects editor curation on re-sync: only sync-owned fields are sent when the product exists', async () => {
+    const engine = new EtsySyncEngine()
+
+    // A product already exists for this listing (i.e. an editor has curated it).
+    productStore.products.set(800, {
+      etsyListingId: 800,
+      title: 'Curated Name',
+    } as ProductUpsertInput)
+
+    etsySource.mockListings = [
+      {
+        listing_id: 800,
+        title: 'Raw Etsy Candle | SEO | Keywords',
+        description: 'New marketplace copy.',
+        price: { amount: 4200, divisor: 100, currency_code: 'USD' },
+      },
+    ]
+
+    await engine.sync(
+      { type: 'shop', shopId: 1 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    // The data sent to upsert on an existing product carries sync-owned fields...
+    const sent = productStore.products.get(800)
+    expect(sent?.etsyTitle).toBe('Raw Etsy Candle | SEO | Keywords')
+    expect(sent?.rawEtsyDescription).toBe('New marketplace copy.')
+    expect(sent?.price).toBe(42)
+    expect(sent?.currency).toBe('USD')
+    expect(sent?.priceSyncedAt).toBeDefined()
+    // ...but withholds editor-owned fields so curation is never overwritten.
+    expect(sent?.title).toBeUndefined()
+    expect(sent?.description).toBeUndefined()
+    expect(sent?._status).toBeUndefined()
+  })
+})
+
+describe('Etsy description → Lexical (official Payload converter)', () => {
+  it('converts markdown headings and lists into structured Lexical nodes', async () => {
+    // Uses the project's real editor config so the stored JSON matches the
+    // Products.description field editor — proving production sync produces rich
+    // Lexical (heading/list), not one paragraph per line.
+    const editorConfig = await editorConfigFactory.default({ config: await configPromise })
+    const lexical = convertMarkdownToLexical({
+      editorConfig,
+      markdown: '# Scent Notes\n\n- Top: Bergamot\n- Heart: Jasmine\n- Base: Cedar',
+    })
+
+    const types = (lexical.root.children as Array<{ type: string }>).map((c) => c.type)
+    expect(types).toContain('heading')
+    expect(types).toContain('list')
   })
 })
