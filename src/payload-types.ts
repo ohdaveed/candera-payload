@@ -1085,6 +1085,10 @@ export interface Product {
    */
   rawEtsyDescription?: string | null;
   /**
+   * Primary photo synced from Etsy. Refreshed on every sync.
+   */
+  etsyPrimaryImage?: (number | null) | Media;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -1819,6 +1823,7 @@ export interface ProductsSelect<T extends boolean = true> {
   etsyListingId?: T;
   etsyTitle?: T;
   rawEtsyDescription?: T;
+  etsyPrimaryImage?: T;
   generateSlug?: T;
   slug?: T;
   productTag?: T;

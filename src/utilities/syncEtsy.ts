@@ -11,7 +11,9 @@ const SUPPORTED_CURRENCIES = ['USD', 'CAD', 'EUR', 'GBP']
 
 // Matches shipping/packaging contexts whose dimensions are logistics noise, not
 // customer-facing product specs (the raw text is still kept in rawEtsyDescription).
-const SHIPPING_CONTEXT_RE = /box|shipping|package|parcel|postage/i
+// Anchored to word boundaries so legitimate specs whose labels merely *contain*
+// these substrings (e.g. "Boxwood", "Parcel-gilt finish") are not dropped.
+const SHIPPING_CONTEXT_RE = /\b(?:box|shipping|package|parcel|postage)\b/i
 
 // Validation schema for candle listings
 const CandleListingSchema = z.object({
@@ -84,6 +86,7 @@ export interface ProductUpsertInput {
   etsyListingId: number
   etsyTitle?: string
   rawEtsyDescription?: string
+  etsyPrimaryImage?: number | string
   price?: number
   currency?: Product['currency']
   priceSyncedAt?: string
@@ -103,6 +106,10 @@ export interface ParsedEtsyDescription {
 
 export interface ProductStorePort {
   findProductByEtsyId(etsyListingId: number): Promise<{ id: number | string } | null>
+  // Used to guarantee slug uniqueness before a create: the slug column is unique,
+  // so two new listings that derive the same clean slug would collide and the
+  // second would be dropped. Returns the existing product with that slug, if any.
+  findProductBySlug(slug: string): Promise<{ id: number | string } | null>
   upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string>
   transaction<T>(operation: (txStore: ProductStorePort) => Promise<T>): Promise<T>
 }
@@ -256,28 +263,41 @@ export class EtsySyncEngine {
 
         // Sync-owned fields: the marketplace is the source of truth, so these
         // are written on every run. They hold the raw Etsy payload as an
-        // audit/backup and the live price — never curated editor copy.
+        // audit/backup, the live price, and the primary image — never curated
+        // editor copy.
         const syncOwned: ProductUpsertInput = {
           etsyListingId: listing_id,
           etsyTitle: title,
           rawEtsyDescription: description,
         }
 
+        // Primary image is sync-owned: refreshed every run so a seller swapping
+        // the Etsy photo is reflected on the storefront. The editor's extraPhotos
+        // gallery is left untouched; the storefront prefers this image and falls
+        // back to extraPhotos[0] for products synced before this field existed.
+        if (mainImageId) {
+          syncOwned.etsyPrimaryImage = mainImageId
+        }
+
         if (etsyPrice) {
-          syncOwned.price = etsyPrice.amount / etsyPrice.divisor
-          syncOwned.priceSyncedAt = new Date().toISOString()
-          // Only carry over a currency the storefront actually supports; an
-          // unexpected code would fail the `currency` select and abort the whole
-          // upsert (losing the price too), so drop it rather than break the row.
+          // Only persist a price the storefront can render correctly. Writing the
+          // price while dropping an unsupported currency would pair a fresh
+          // foreign amount with the row's stale/default currency (a misleading
+          // price), so skip both and log instead.
           if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+            syncOwned.price = etsyPrice.amount / etsyPrice.divisor
             syncOwned.currency = etsyPrice.currency_code as Product['currency']
+            syncOwned.priceSyncedAt = new Date().toISOString()
+          } else {
+            ports.logger.warn(
+              `Listing ${listing_id}: unsupported currency "${etsyPrice.currency_code}"; skipping price update.`,
+            )
           }
         }
 
         // Editor-owned fields: seeded once on create, then left untouched so
         // manual curation (clean title, story, scent, gallery) survives nightly
-        // re-syncs. The clean `title` feeds the slugField hook, which derives the
-        // slug — no Etsy listing ID appended.
+        // re-syncs.
         const editorOwned: ProductUpsertInput = {
           etsyListingId: listing_id,
           title: this.deriveCleanTitle(title),
@@ -289,17 +309,26 @@ export class EtsySyncEngine {
           ...parsed,
         }
 
-        if (mainImageId) {
-          editorOwned.extraPhotos = [mainImageId]
-        }
-
         // Decide create vs. update up front so we know which fields to write:
         // new products get the full payload, existing ones receive only
         // sync-owned fields so editor curation is never clobbered.
         const existing = await ports.productStore.findProductByEtsyId(listing_id)
-        const productData: ProductUpsertInput = existing
-          ? syncOwned
-          : { ...syncOwned, ...editorOwned }
+
+        let productData: ProductUpsertInput
+        if (existing) {
+          productData = syncOwned
+        } else {
+          // The slug column is unique. Derive a clean slug from the curated title
+          // and, if another product already owns it, append the Etsy listing id
+          // so two listings sharing a name don't collide — otherwise the second
+          // create would hit the unique index and that product would be dropped.
+          // `slugify` mirrors Payload's own slugify, so the value we check here
+          // matches the value the slugField hook will ultimately store.
+          const baseSlug = this.slugify(editorOwned.title ?? title) || `product-${listing_id}`
+          const slugTaken = await ports.productStore.findProductBySlug(baseSlug)
+          editorOwned.slug = slugTaken ? `${baseSlug}-${listing_id}` : baseSlug
+          productData = { ...syncOwned, ...editorOwned }
+        }
 
         // Perform the upsert inside a transaction boundary
         await ports.productStore.transaction(async (txStore) => {
@@ -338,6 +367,23 @@ export class EtsySyncEngine {
     // it readable by falling back to the leading words.
     if (cleaned.length <= 60) return cleaned
     return cleaned.split(' ').slice(0, 8).join(' ')
+  }
+
+  /**
+   * Slugifies a string identically to Payload's built-in `slugify` (the one the
+   * collection's slugField hook uses). Kept in lockstep so the slug we compute
+   * for the collision pre-check matches the value the hook stores on create —
+   * any drift would make the uniqueness check miss and reintroduce collisions.
+   * Source: payload/dist/utilities/slugify.js.
+   */
+  private slugify(val: string): string {
+    return (
+      val
+        ?.trim()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '')
+        .toLowerCase() ?? ''
+    )
   }
 
   /**
@@ -644,6 +690,25 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
           equals: etsyListingId,
         },
       },
+      // Existence check only: skip relationship population and pagination count.
+      depth: 0,
+      limit: 1,
+      pagination: false,
+    })
+    return res.docs.length > 0 ? { id: res.docs[0].id } : null
+  }
+
+  async findProductBySlug(slug: string): Promise<{ id: number | string } | null> {
+    const res = await this.payload.find({
+      collection: 'products',
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+      depth: 0,
+      limit: 1,
+      pagination: false,
     })
     return res.docs.length > 0 ? { id: res.docs[0].id } : null
   }

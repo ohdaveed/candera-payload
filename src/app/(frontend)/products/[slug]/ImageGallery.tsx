@@ -6,15 +6,13 @@ import { Media as MediaComponent } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
 type Props = {
-  mainImage: Media | string | null | undefined
-  extraPhotos?: (Media | string)[] | null
+  // Ordered gallery: primary image first, then editor extras. Build with
+  // `productGalleryPhotos` so the sync-owned primary and the gallery stay in sync.
+  images: (Media | number)[]
 }
 
-export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
-  // extraPhotos already contains mainImage as its first entry,
-  // so use extraPhotos as the full list when available; otherwise fall back to mainImage alone.
-  const allImages: (Media | string)[] =
-    extraPhotos && extraPhotos.length > 0 ? extraPhotos : mainImage ? [mainImage] : []
+export const ImageGallery: React.FC<Props> = ({ images }) => {
+  const allImages = images ?? []
 
   const [activeIndex, setActiveIndex] = useState(0)
   const activeImage = allImages[activeIndex] ?? null
@@ -44,7 +42,7 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
             aria-label={`View image ${index + 1}`}
             aria-current={activeIndex === index ? 'true' : 'false'}
           >
-            {photo && typeof photo !== 'string' && (
+            {photo && typeof photo === 'object' && (
               <MediaComponent fill imgClassName="object-cover" resource={photo} />
             )}
           </button>
@@ -56,7 +54,7 @@ export const ImageGallery: React.FC<Props> = ({ mainImage, extraPhotos }) => {
     <div className="flex flex-col lg:h-full">
       {/* Large image — fills sticky column height on desktop */}
       <figure className="relative aspect-square lg:aspect-auto lg:flex-1 lg:h-full overflow-hidden bg-candera-ash shadow-sm m-0">
-        {activeImage && typeof activeImage !== 'string' ? (
+        {activeImage && typeof activeImage === 'object' ? (
           <MediaComponent fill imgClassName="object-cover" resource={activeImage} priority />
         ) : (
           <div className="absolute inset-0 flex items-end p-5 candle-bg">

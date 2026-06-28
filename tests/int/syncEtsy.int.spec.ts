@@ -32,6 +32,13 @@ class InMemoryProductStoreAdapter implements ProductStorePort {
     return existing ? { id: `prod-${etsyListingId}` } : null
   }
 
+  async findProductBySlug(slug: string): Promise<{ id: number | string } | null> {
+    for (const [etsyId, data] of this.products) {
+      if (data.slug === slug) return { id: `prod-${etsyId}` }
+    }
+    return null
+  }
+
   async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string> {
     this.upsertCalls++
     this.products.set(etsyListingId, data)
@@ -119,14 +126,17 @@ describe('EtsySyncEngine', () => {
     const savedProduct = productStore.products.get(101)
     expect(savedProduct).toBeDefined()
     expect(savedProduct?.title).toBe('Amber Forest Candle')
-    // Raw Etsy payload preserved as a backup; the clean slug is derived by the
-    // collection's slugField hook (not set by the sync) and carries no listing ID.
+    // Raw Etsy payload preserved as a backup; the clean slug is derived from the
+    // curated title (no listing ID appended when there is no collision).
     expect(savedProduct?.etsyTitle).toBe('Amber Forest Candle')
     expect(savedProduct?.rawEtsyDescription).toBe(
       'Smells like pine and cedar.\nCured in stillness.',
     )
-    expect(savedProduct?.slug).toBeUndefined()
-    expect(savedProduct?.extraPhotos).toEqual(['media-999'])
+    expect(savedProduct?.slug).toBe('amber-forest-candle')
+    // Primary image is sync-owned (etsyPrimaryImage); extraPhotos is the editor
+    // gallery and is not seeded by the sync.
+    expect(savedProduct?.etsyPrimaryImage).toBe('media-999')
+    expect(savedProduct?.extraPhotos).toBeUndefined()
     // Synced products must be published so they appear in the public catalog
     expect(savedProduct?._status).toBe('published')
 
@@ -229,7 +239,7 @@ describe('EtsySyncEngine', () => {
 
     // downloadAndRegisterMedia should not have been called because it was resolved in-memory
     expect(mediaStorage.downloadCalls).toBe(0)
-    expect(productStore.products.get(101)?.extraPhotos).toEqual(['existing-media-id'])
+    expect(productStore.products.get(101)?.etsyPrimaryImage).toBe('existing-media-id')
   })
 
   it('recovers gracefully and continues processing if image download fails', async () => {
@@ -256,9 +266,10 @@ describe('EtsySyncEngine', () => {
     expect(result.count).toBe(1)
     expect(result.failures.length).toBe(0)
 
-    // Product is registered without extraPhotos link
+    // Product is registered without a primary image link
     const saved = productStore.products.get(201)
     expect(saved).toBeDefined()
+    expect(saved?.etsyPrimaryImage).toBeUndefined()
     expect(saved?.extraPhotos).toBeUndefined()
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(vi.mocked(logger.warn)).toHaveBeenCalled()
@@ -370,8 +381,9 @@ describe('EtsySyncEngine', () => {
     // Only the first segment (the product name) becomes the clean title.
     expect(saved?.title).toBe("Anya's Eyes Candle")
     expect(saved?.etsyTitle).toBe(rawTitle)
-    // The sync never bakes a listing ID into the slug — the hook derives it later.
-    expect(saved?.slug).toBeUndefined()
+    // The slug is derived from the clean title (apostrophe stripped, no listing
+    // ID) and matches Payload's slugify exactly.
+    expect(saved?.slug).toBe('anyas-eyes-candle')
   })
 
   it('protects editor curation on re-sync: only sync-owned fields are sent when the product exists', async () => {
@@ -408,6 +420,90 @@ describe('EtsySyncEngine', () => {
     expect(sent?.title).toBeUndefined()
     expect(sent?.description).toBeUndefined()
     expect(sent?._status).toBeUndefined()
+  })
+
+  it('disambiguates colliding slugs so two listings sharing a name are both created', async () => {
+    const engine = new EtsySyncEngine()
+
+    // Two distinct listings whose clean titles (first segment) are identical.
+    etsySource.mockListings = [
+      {
+        listing_id: 111,
+        title: 'Vanilla Bean Candle | Hand Poured',
+        description: 'A.',
+      },
+      {
+        listing_id: 222,
+        title: 'Vanilla Bean Candle | Gift Set',
+        description: 'B.',
+      },
+    ]
+
+    const result = await engine.sync(
+      { type: 'shop', shopId: 1 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    // Both products are created — the second is not dropped on a slug collision.
+    expect(result.success).toBe(true)
+    expect(result.count).toBe(2)
+    expect(productStore.products.size).toBe(2)
+
+    // First wins the clean slug; the second falls back to the listing-id suffix.
+    expect(productStore.products.get(111)?.slug).toBe('vanilla-bean-candle')
+    expect(productStore.products.get(222)?.slug).toBe('vanilla-bean-candle-222')
+  })
+
+  it('skips both price and currency when the Etsy currency is unsupported', async () => {
+    const engine = new EtsySyncEngine()
+
+    etsySource.mockListings = [
+      {
+        listing_id: 900,
+        title: 'Yen Candle',
+        description: 'Imported.',
+        price: { amount: 420000, divisor: 100, currency_code: 'JPY' },
+      },
+    ]
+
+    await engine.sync(
+      { type: 'shop', shopId: 1 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    // A fresh foreign price must not be paired with the row's default currency,
+    // so neither is written; the listing is logged instead.
+    const saved = productStore.products.get(900)
+    expect(saved?.price).toBeUndefined()
+    expect(saved?.currency).toBeUndefined()
+    expect(saved?.priceSyncedAt).toBeUndefined()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
+      expect.stringContaining('unsupported currency'),
+    )
+  })
+
+  it('keeps specs whose label only contains a shipping word as a substring', async () => {
+    const engine = new EtsySyncEngine()
+
+    etsySource.mockListings = [
+      {
+        listing_id: 950,
+        title: 'Boxwood Candle',
+        description: `Product Details
+• Boxwood accent: Hand-carved
+• Weight with box: 17.5 oz`,
+      },
+    ]
+
+    await engine.sync(
+      { type: 'shop', shopId: 1 },
+      { etsySource, productStore, mediaStorage, logger },
+    )
+
+    const saved = productStore.products.get(950)
+    // "Boxwood" is kept (word boundary), "Weight with box" is dropped.
+    expect(saved?.specifications).toEqual([{ label: 'Boxwood accent', value: 'Hand-carved' }])
   })
 })
 

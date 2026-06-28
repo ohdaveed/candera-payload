@@ -12,6 +12,7 @@ import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { formatPrice } from '@/lib/formatPrice'
+import { productPrimaryPhoto } from '@/lib/productImages'
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
@@ -69,6 +70,7 @@ export type CardPostData = Omit<
   currency?: Product['currency']
   categories?: Array<{ title?: string | null } | string | number> | null
   extraPhotos?: Product['extraPhotos']
+  etsyPrimaryImage?: Product['etsyPrimaryImage']
   etsyListingId?: Product['etsyListingId']
   tagline?: Product['tagline']
   scentProfile?: Product['scentProfile']
@@ -113,6 +115,7 @@ export const Card: React.FC<CardProps> = (props) => {
     title,
     tagline,
     extraPhotos,
+    etsyPrimaryImage,
     scentProfile,
     price,
     currency,
@@ -126,8 +129,7 @@ export const Card: React.FC<CardProps> = (props) => {
   const sanitizedDescription = description?.replace(/\s/g, ' ')
   const href = `/${relationTo}/${slug}`
 
-  const imageToUse =
-    metaImage || heroImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
+  const imageToUse = metaImage || heroImage || productPrimaryPhoto(etsyPrimaryImage, extraPhotos)
 
   const isPosts = relationTo === 'posts'
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
