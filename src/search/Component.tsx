@@ -18,6 +18,14 @@ export const Search: React.FC = () => {
     setValue(query)
   }, [query])
 
+  function clearSearch() {
+    setValue('')
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('q')
+    const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    router.replace(nextUrl)
+  }
+
   useEffect(() => {
     const nextQuery = debouncedValue.trim()
     const currentQuery = query.trim()
@@ -48,17 +56,33 @@ export const Search: React.FC = () => {
         <Label htmlFor="search" className="sr-only">
           Search
         </Label>
-        <Input
-          id="search"
-          autoComplete="off"
-          name="q"
-          value={value}
-          onChange={(event) => {
-            setValue(event.target.value)
-          }}
-          placeholder="Sandalwood, citrus, smoke…"
-          className="h-[48px] min-h-[48px] border-candera-stone/50 bg-candera-vellum/60 px-5 py-3 text-center"
-        />
+        <p id="search-help" className="caption text-candera-sage-text text-center mb-3">
+          Search by scent note, atmosphere, or mood
+        </p>
+        <div className="relative">
+          <Input
+            id="search"
+            autoComplete="off"
+            name="q"
+            value={value}
+            aria-describedby="search-help"
+            onChange={(event) => {
+              setValue(event.target.value)
+            }}
+            placeholder="Sandalwood, citrus, smoke…"
+            className="h-[48px] min-h-[48px] border-candera-stone/50 bg-candera-vellum/60 px-5 py-3 text-center"
+          />
+          {value && (
+            <button
+              type="button"
+              onClick={clearSearch}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center text-lg leading-none text-candera-sage-text hover:text-candera-obsidian transition-all outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 rounded-sm cursor-pointer"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          )}
+        </div>
         <button type="submit" className="sr-only">
           submit
         </button>

@@ -81,9 +81,10 @@ export async function Footer() {
             </Section>
           </Section>
 
-          {/* Settings / Theme */}
+          {/* Appearance / Theme */}
           <Section padding="none">
-            <h5 className="label text-candera-obsidian mb-6">Settings</h5>
+            <h5 className="label text-candera-obsidian mb-2">Appearance</h5>
+            <p className="caption text-candera-sage-text mb-6">Switch the studio mood</p>
             <ThemeSelector />
           </Section>
         </Section>
