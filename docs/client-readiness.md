@@ -41,8 +41,15 @@ exist for both.
   defaulting to the original developer's shop id.
 - **Per-request timeouts** (15s API, 20s image download) so a hung Etsy/CDN
   response can't stall the serial sync until the platform kills the function.
-- **Stopped over-sharing the shared secret** in the `x-api-key` header (Etsy v3
-  only needs the keystring).
+- **`x-api-key` sends `keystring:shared_secret`, by Etsy mandate — do not "fix"
+  this to keystring-only.** Etsy Open API v3 requires this exact header on every
+  request: `x-api-key: <keystring>:<shared_secret>`. The shared secret here is part
+  of the required _application_ credential, **not** a confidential OAuth client
+  secret (under our PKCE flow it is never used in token exchange), so it is sent by
+  design and is **not** a leak — omitting it makes the keystring invalid and Etsy
+  rejects the request. This has tripped automated "secret in header" scanners twice;
+  both were false positives. PR #123 removed it and broke auth; #124 restored it.
+  Ref: <https://developer.etsy.com/documentation/essentials/authentication/>
 - **Auth degradation is now logged** when OAuth token refresh fails (previously
   silently dropped the Authorization header).
 
