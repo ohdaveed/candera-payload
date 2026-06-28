@@ -19,7 +19,13 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
 const HERO_TAG = 'Handmade by Olesia'
 const HERO_HEADLINE = 'Candles made to make you stop.'
 const HERO_SUBHEADING =
-  'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.'
+  'Small-batch botanical pillars poured with slow-cured natural wax — crafted for the quiet, unhurried moments that belong entirely to you.'
+
+const ETHOS_CARD_EYEBROW = 'The Slow Pour'
+const ETHOS_CARD_BODY =
+  'No factories. No white labeling. Just real pressed botanicals and slow light.'
+const ETHOS_CARD_FOOTER_LABEL = 'Exclusively on Etsy'
+const ETHOS_CARD_LINK_LABEL = 'Read Journal'
 
 const VESSEL_EYEBROW = 'The Vessels'
 const VESSEL_HEADING = 'Unlit. Unhurried.'
@@ -117,6 +123,10 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       secondaryCtaLabel: 'Take the Scent Quiz →',
       secondaryCtaUrl: '#scent-quiz',
       showStatusCard: true,
+      ethosCardEyebrow: ETHOS_CARD_EYEBROW,
+      ethosCardBody: ETHOS_CARD_BODY,
+      ethosCardFooterLabel: ETHOS_CARD_FOOTER_LABEL,
+      ethosCardLinkLabel: ETHOS_CARD_LINK_LABEL,
       statusCardTitle: 'Current Pour',
       statusCardSubtitle: 'Series 01 · Batch of 50',
       statusCardStatus: 'Now Pouring',

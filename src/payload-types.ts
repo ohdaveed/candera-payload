@@ -515,13 +515,17 @@ export interface StorefrontHeroBlock {
   secondaryCtaLabel?: string | null;
   secondaryCtaUrl?: string | null;
   showStatusCard?: boolean | null;
+  ethosCardEyebrow?: string | null;
+  ethosCardBody?: string | null;
+  ethosCardFooterLabel?: string | null;
+  /**
+   * Scrolls to the Journal section. The ↓ glyph is added automatically.
+   */
+  ethosCardLinkLabel?: string | null;
   statusCardTitle?: string | null;
   statusCardPrice?: string | null;
   statusCardSubtitle?: string | null;
   statusCardStatus?: string | null;
-  /**
-   * Optional. Leave blank unless you have a real figure for this batch — we never ship a fabricated count as a default.
-   */
   statusCardShips?: string | null;
   statusCardLinkUrl?: string | null;
   id?: string | null;
@@ -1605,6 +1609,10 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   secondaryCtaLabel?: T;
   secondaryCtaUrl?: T;
   showStatusCard?: T;
+  ethosCardEyebrow?: T;
+  ethosCardBody?: T;
+  ethosCardFooterLabel?: T;
+  ethosCardLinkLabel?: T;
   statusCardTitle?: T;
   statusCardPrice?: T;
   statusCardSubtitle?: T;
