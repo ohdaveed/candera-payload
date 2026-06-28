@@ -47,7 +47,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
       animate={isIntersecting ? 'show' : 'hidden'}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 list-none p-0 m-0"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 md:gap-y-20 list-none p-0 m-0"
     >
       {products.map((product, i) => (
         <motion.li key={product.slug ?? i} variants={item} className="flex">
