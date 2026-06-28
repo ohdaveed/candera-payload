@@ -293,10 +293,12 @@ export class EtsyClient {
 
     const headers = new Headers()
     headers.set('Accept', 'application/json')
-    // Etsy v3 authenticates application requests with the API keystring alone. The shared
-    // secret must never travel in routine request headers — it stays confined to OAuth, and
-    // under this client's PKCE flow it isn't sent at all.
-    headers.set('x-api-key', this.config.apiKey)
+    // Etsy Open API v3 requires the keystring and shared secret joined by a colon on EVERY
+    // request — `x-api-key: <keystring>:<shared_secret>`. Here the shared secret is part of
+    // the mandated request credential (not a confidential OAuth client secret), so it must
+    // be sent; omitting it makes the keystring invalid and Etsy rejects the request.
+    // Ref: https://developer.etsy.com/documentation/essentials/authentication/
+    headers.set('x-api-key', `${this.config.apiKey}:${this.config.sharedSecret}`)
 
     if (options.headers) {
       const inputHeaders = new Headers(options.headers)
