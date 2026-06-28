@@ -171,7 +171,38 @@ export const plugins: Plugin[] = [
       },
     },
   }),
-  mcpPlugin({}),
+  // MCP server (mounted at POST /api/mcp). Two gates protect every operation:
+  //   1. This config declares which collections/globals expose MCP tools at all.
+  //   2. Each API key then allows/disallows those ops via per-key checkboxes.
+  // Sensitive collections (users, etsy-tokens, form-submissions, payload-mcp-api-keys,
+  // search, and all payload-* internals) are intentionally omitted, so no MCP tool
+  // exists for them regardless of any key's permissions.
+  // NOTE: collection ops run with overrideAccess:false (enforced under the key's
+  // linked user); global updates bypass access control, so they are gated only by
+  // the per-key checkbox — keep global write keys tightly scoped.
+  mcpPlugin({
+    collections: {
+      folders: { enabled: true },
+      pages: { enabled: true },
+      posts: { enabled: true },
+      products: { enabled: true },
+      media: { enabled: true },
+      categories: { enabled: true },
+      briefs: { enabled: true },
+      quizzes: { enabled: true },
+      'scent-profiles': { enabled: true },
+      documentation: { enabled: true },
+      'how-to-guides': { enabled: true },
+      redirects: { enabled: true },
+      forms: { enabled: true },
+    },
+    globals: {
+      header: { enabled: true },
+      footer: { enabled: true },
+      'site-theme': { enabled: true },
+      'studio-info': { enabled: true },
+    },
+  }),
   sentryPlugin({
     Sentry,
   }),
