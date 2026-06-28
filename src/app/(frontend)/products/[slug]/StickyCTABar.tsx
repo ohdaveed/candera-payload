@@ -19,16 +19,38 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
 
   useEffect(() => {
     const sentinel = sentinelRef.current
-    if (!sentinel) return
+    // Bottom boundary: once the closing brand-story / email region appears, the
+    // bar retracts so it never overlays the page-end content.
+    const endEl = document.getElementById('pdp-detail-end')
+
     if (!window.IntersectionObserver) {
       setVisible(true)
       return
     }
-    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
-      threshold: 0,
-    })
-    observer.observe(sentinel)
-    return () => observer.disconnect()
+
+    let pastTop = false
+    let atEnd = false
+    const apply = () => setVisible(pastTop && !atEnd)
+
+    const observers: IntersectionObserver[] = []
+    if (sentinel) {
+      const top = new IntersectionObserver(([e]) => ((pastTop = !e.isIntersecting), apply()), {
+        threshold: 0,
+      })
+      top.observe(sentinel)
+      observers.push(top)
+    } else {
+      pastTop = true
+    }
+    if (endEl) {
+      const bottom = new IntersectionObserver(([e]) => ((atEnd = e.isIntersecting), apply()), {
+        threshold: 0,
+      })
+      bottom.observe(endEl)
+      observers.push(bottom)
+    }
+    apply()
+    return () => observers.forEach((o) => o.disconnect())
   }, [sentinelRef])
 
   return (

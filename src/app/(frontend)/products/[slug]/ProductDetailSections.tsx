@@ -110,21 +110,23 @@ export function ProductDetailSections({
           onToggle={() => setSpecsOpen((v) => !v)}
         />
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${specsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
+          className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${specsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
         >
-          <ul className="flex flex-col pt-4 list-none">
-            {displaySpecs.map(({ label, value }) => (
-              <li
-                key={label}
-                className="flex justify-between items-baseline gap-4 py-2.5 border-b border-candera-stone/10 last:border-b-0"
-              >
-                <span className="text-sm font-semibold text-candera-obsidian shrink-0">
-                  {label}
-                </span>
-                <span className="text-sm text-candera-sage-text text-right">{value}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-hidden">
+            <ul className="flex flex-col pt-4 list-none">
+              {displaySpecs.map(({ label, value }) => (
+                <li
+                  key={label}
+                  className="flex justify-between items-baseline gap-4 py-2.5 border-b border-candera-stone/10 last:border-b-0"
+                >
+                  <span className="text-sm font-semibold text-candera-obsidian shrink-0">
+                    {label}
+                  </span>
+                  <span className="text-sm text-candera-sage-text text-right">{value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -137,9 +139,15 @@ export function ProductDetailSections({
             onToggle={() => setScentOpen((v) => !v)}
           />
           <div
-            className={`overflow-hidden transition-all duration-300 ease-in-out ${scentOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
+            className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${scentOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
           >
-            <FragranceProfile profile={scentProfile} burnTime={burnTime} atmosphere={atmosphere} />
+            <div className="overflow-hidden">
+              <FragranceProfile
+                profile={scentProfile}
+                burnTime={burnTime}
+                atmosphere={atmosphere}
+              />
+            </div>
           </div>
         </div>
       )}

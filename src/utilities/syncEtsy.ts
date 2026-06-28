@@ -31,6 +31,7 @@ export interface RawEtsyListing {
     currency_code: string
   }
   images?: RawEtsyImage[]
+  materials?: string[]
 }
 
 export type SyncSource =
@@ -60,6 +61,27 @@ export interface ProductUpsertInput {
   price?: number
   productType?: Product['productType']
   _status?: 'draft' | 'published'
+  tagline?: string
+  burnTime?: string
+  vessel?: string
+  scentProfile?: {
+    top?: string | null
+    heart?: string | null
+    base?: string | null
+  }
+  specifications?: Array<{ label: string; value: string }>
+}
+
+export interface ParsedEtsyDescription {
+  specifications: Array<{ label: string; value: string }>
+  scentProfile?: {
+    top?: string
+    heart?: string
+    base?: string
+  }
+  burnTime?: string
+  vessel?: string
+  tagline?: string
 }
 
 export interface ProductStorePort {
@@ -195,6 +217,20 @@ export class EtsySyncEngine {
           }
         }
 
+        const parsed = this.parseEtsyDescription(title, description)
+
+        // Add materials from API if present and not already in specifications
+        if (listing.materials && listing.materials.length > 0) {
+          const materialsStr = listing.materials.join(', ')
+          if (!parsed.specifications.some((s) => s.label.toLowerCase().includes('material'))) {
+            const val = materialsStr.charAt(0).toUpperCase() + materialsStr.slice(1)
+            parsed.specifications.push({
+              label: 'Materials',
+              value: val,
+            })
+          }
+        }
+
         const productData: ProductUpsertInput = {
           title,
           slug,
@@ -205,6 +241,7 @@ export class EtsySyncEngine {
           // are visible to the storefront, which only reads published products
           // (products read access is authenticatedOrPublished).
           _status: 'published',
+          ...parsed,
         }
 
         if (etsyPrice) {
@@ -231,6 +268,172 @@ export class EtsySyncEngine {
     // `success` reflects whether every listing synced. Partial failures return
     // `false` so callers can surface drift instead of trusting a blanket `true`.
     return { success: failures.length === 0, count: syncedCount, failures }
+  }
+
+  /**
+   * Parses specifications, scentProfile, tagline, and burnTime from raw Etsy description
+   * and listing properties.
+   */
+  private parseEtsyDescription(title: string, description: string): ParsedEtsyDescription {
+    const specifications: Array<{ label: string; value: string }> = []
+    let top: string | undefined = undefined
+    let heart: string | undefined = undefined
+    let base: string | undefined = undefined
+    let burnTime: string | undefined = undefined
+    let vessel: string | undefined = undefined
+    let tagline: string | undefined = undefined
+
+    // Extract tagline from first paragraph
+    const paragraphs = description
+      .split('\n')
+      .map((p) => p.trim())
+      .filter((p) => p.length > 0)
+
+    if (paragraphs.length > 0) {
+      const firstPara = paragraphs[0]
+      if (
+        firstPara.length < 180 &&
+        !firstPara.includes(':') &&
+        !firstPara.startsWith('•') &&
+        !firstPara.startsWith('-')
+      ) {
+        tagline = firstPara
+      }
+    }
+
+    let inDetailsBlock = false
+    let inScentBlock = false
+    let lastHeading = ''
+
+    const lines = description.split('\n')
+    for (const line of lines) {
+      const trimmed = line.trim()
+      if (!trimmed) continue
+
+      const lowerTrimmed = trimmed.toLowerCase()
+
+      const isBullet = /^\s*[•*\-+]\s*/.test(trimmed)
+
+      // Detect block headers
+      if (
+        !isBullet &&
+        (lowerTrimmed.includes('product details') ||
+          lowerTrimmed.includes('item details') ||
+          lowerTrimmed.includes('specifications') ||
+          lowerTrimmed.includes('dimensions'))
+      ) {
+        inDetailsBlock = true
+        inScentBlock = false
+        continue
+      }
+
+      if (
+        !isBullet &&
+        (lowerTrimmed.includes('scent profile') ||
+          lowerTrimmed.includes('fragrance profile') ||
+          lowerTrimmed.includes('scent notes') ||
+          lowerTrimmed.includes('fragrance notes'))
+      ) {
+        inScentBlock = true
+        inDetailsBlock = false
+        continue
+      }
+
+      if (
+        !isBullet &&
+        (lowerTrimmed.includes("what's included") ||
+          lowerTrimmed.includes('important notes') ||
+          lowerTrimmed.includes('shipping') ||
+          lowerTrimmed.includes('returns'))
+      ) {
+        inDetailsBlock = false
+        inScentBlock = false
+        continue
+      }
+
+      // Parse details block
+      if (inDetailsBlock) {
+        const colonMatch = trimmed.match(/^(?:[•*\-+]\s*)?([^:]+):\s*(.*)$/)
+        if (colonMatch && colonMatch[2].trim()) {
+          const label = colonMatch[1].trim()
+          const value = colonMatch[2].trim()
+          const lowerLabel = label.toLowerCase()
+
+          if (lowerLabel.includes('burn time')) {
+            burnTime = value
+          } else if (lowerLabel === 'vessel') {
+            vessel = value
+          } else {
+            let finalLabel = label
+            if (
+              lastHeading &&
+              (lowerLabel === 'length' || lowerLabel === 'width' || lowerLabel === 'height')
+            ) {
+              finalLabel = `${lastHeading} ${label}`
+            }
+            specifications.push({ label: finalLabel, value })
+          }
+        } else {
+          if (trimmed.endsWith(':')) {
+            lastHeading = trimmed
+              .substring(0, trimmed.length - 1)
+              .replace(/^[•*\-+]\s*/, '')
+              .trim()
+          } else {
+            lastHeading = ''
+          }
+        }
+      }
+
+      // Parse scent block
+      if (inScentBlock) {
+        const colonMatch = trimmed.match(/^(?:[•*\-+]\s*)?([^:]+):\s*(.+)$/)
+        if (colonMatch) {
+          const label = colonMatch[1].trim().toLowerCase()
+          const value = colonMatch[2].trim()
+          if (value) {
+            if (label.includes('top')) {
+              top = value
+            } else if (
+              label.includes('heart') ||
+              label.includes('middle') ||
+              label.includes('heart note')
+            ) {
+              heart = value
+            } else if (label.includes('base')) {
+              base = value
+            }
+          }
+        } else {
+          const commaMatch = trimmed.match(/^(?:[•*\-+]\s*)?([^,]+),\s*([^,]+),\s*([^,]+)$/)
+          if (commaMatch) {
+            top = commaMatch[1].trim()
+            heart = commaMatch[2].trim()
+            base = commaMatch[3].trim()
+          }
+        }
+      }
+    }
+
+    // Fallbacks
+    if (!burnTime) {
+      const burnMatch = description.match(/burn\s*time:\s*([^•\n]+)/i)
+      if (burnMatch) burnTime = burnMatch[1].trim()
+    }
+    if (!vessel) {
+      const vesselMatch = description.match(/vessel:\s*([^•\n]+)/i)
+      if (vesselMatch) vessel = vesselMatch[1].trim()
+    }
+
+    const result: ParsedEtsyDescription = { specifications }
+    if (top || heart || base) {
+      result.scentProfile = { top, heart, base }
+    }
+    if (burnTime) result.burnTime = burnTime
+    if (vessel) result.vessel = vessel
+    if (tagline) result.tagline = tagline
+
+    return result
   }
 
   /**
