@@ -269,7 +269,7 @@ describe('EtsySyncEngine', () => {
     // Product is registered without a primary image link
     const saved = productStore.products.get(201)
     expect(saved).toBeDefined()
-    expect(saved?.etsyPrimaryImage).toBeUndefined()
+    expect(saved?.etsyPrimaryImage).toBeNull()
     expect(saved?.extraPhotos).toBeUndefined()
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(vi.mocked(logger.warn)).toHaveBeenCalled()

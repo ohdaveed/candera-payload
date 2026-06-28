@@ -8,7 +8,7 @@ import { cn } from '@/utilities/ui'
 type Props = {
   // Ordered gallery: primary image first, then editor extras. Build with
   // `productGalleryPhotos` so the sync-owned primary and the gallery stay in sync.
-  images: (Media | number)[]
+  images: Media[]
 }
 
 export const ImageGallery: React.FC<Props> = ({ images }) => {

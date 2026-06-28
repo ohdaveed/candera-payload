@@ -86,7 +86,7 @@ export interface ProductUpsertInput {
   etsyListingId: number
   etsyTitle?: string
   rawEtsyDescription?: string
-  etsyPrimaryImage?: number | string
+  etsyPrimaryImage?: number | string | null
   price?: number
   currency?: Product['currency']
   priceSyncedAt?: string
@@ -275,9 +275,7 @@ export class EtsySyncEngine {
         // the Etsy photo is reflected on the storefront. The editor's extraPhotos
         // gallery is left untouched; the storefront prefers this image and falls
         // back to extraPhotos[0] for products synced before this field existed.
-        if (mainImageId) {
-          syncOwned.etsyPrimaryImage = mainImageId
-        }
+        syncOwned.etsyPrimaryImage = mainImageId || null
 
         if (etsyPrice) {
           // Only persist a price the storefront can render correctly. Writing the
@@ -314,24 +312,23 @@ export class EtsySyncEngine {
         // sync-owned fields so editor curation is never clobbered.
         const existing = await ports.productStore.findProductByEtsyId(listing_id)
 
-        let productData: ProductUpsertInput
-        if (existing) {
-          productData = syncOwned
-        } else {
-          // The slug column is unique. Derive a clean slug from the curated title
-          // and, if another product already owns it, append the Etsy listing id
-          // so two listings sharing a name don't collide — otherwise the second
-          // create would hit the unique index and that product would be dropped.
-          // `slugify` mirrors Payload's own slugify, so the value we check here
-          // matches the value the slugField hook will ultimately store.
-          const baseSlug = this.slugify(editorOwned.title ?? title) || `product-${listing_id}`
-          const slugTaken = await ports.productStore.findProductBySlug(baseSlug)
-          editorOwned.slug = slugTaken ? `${baseSlug}-${listing_id}` : baseSlug
-          productData = { ...syncOwned, ...editorOwned }
-        }
-
         // Perform the upsert inside a transaction boundary
         await ports.productStore.transaction(async (txStore) => {
+          let productData: ProductUpsertInput
+          if (existing) {
+            productData = syncOwned
+          } else {
+            // The slug column is unique. Derive a clean slug from the curated title
+            // and, if another product already owns it, append the Etsy listing id
+            // so two listings sharing a name don't collide — otherwise the second
+            // create would hit the unique index and that product would be dropped.
+            // `slugify` mirrors Payload's own slugify, so the value we check here
+            // matches the value the slugField hook will ultimately store.
+            const baseSlug = this.slugify(editorOwned.title ?? title) || `product-${listing_id}`
+            const slugTaken = await txStore.findProductBySlug(baseSlug)
+            editorOwned.slug = slugTaken ? `${baseSlug}-${listing_id}` : baseSlug
+            productData = { ...syncOwned, ...editorOwned }
+          }
           await txStore.upsertProduct(listing_id, productData)
         })
 

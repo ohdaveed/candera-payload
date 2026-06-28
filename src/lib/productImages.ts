@@ -12,9 +12,11 @@ import type { Media, Product } from '@/payload-types'
 export const productPrimaryPhoto = (
   etsyPrimaryImage?: Product['etsyPrimaryImage'],
   extraPhotos?: Product['extraPhotos'],
-): Media | number | null => {
-  if (etsyPrimaryImage) return etsyPrimaryImage
-  return extraPhotos?.[0] ?? null
+): Media | null => {
+  if (etsyPrimaryImage && typeof etsyPrimaryImage === 'object') return etsyPrimaryImage
+  const firstExtra = extraPhotos?.[0]
+  if (firstExtra && typeof firstExtra === 'object') return firstExtra
+  return null
 }
 
 /**
@@ -25,14 +27,14 @@ export const productPrimaryPhoto = (
 export const productGalleryPhotos = (
   etsyPrimaryImage?: Product['etsyPrimaryImage'],
   extraPhotos?: Product['extraPhotos'],
-): (Media | number)[] => {
+): Media[] => {
   const primary = productPrimaryPhoto(etsyPrimaryImage, extraPhotos)
-  const gallery = extraPhotos ?? []
-  const idOf = (img: Media | number | null | undefined): number | null =>
-    img && typeof img === 'object' ? img.id : typeof img === 'number' ? img : null
+  const gallery = (extraPhotos ?? []).filter(
+    (img): img is Media => typeof img === 'object' && img !== null,
+  )
 
-  if (!primary) return [...gallery]
-  const primaryId = idOf(primary)
-  const rest = gallery.filter((img) => primaryId === null || idOf(img) !== primaryId)
+  if (!primary) return gallery
+
+  const rest = gallery.filter((img) => img.id !== primary.id)
   return [primary, ...rest]
 }
