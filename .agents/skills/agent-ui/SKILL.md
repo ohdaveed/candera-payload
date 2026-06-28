@@ -1,6 +1,6 @@
 ---
 name: agent-ui
-description: "Batteries-included agent component for React/Next.js from ui.inference.sh. One component with runtime, tools, streaming, approvals, and widgets built in. Capabilities: drop-in agent, human-in-the-loop, client-side tools, form filling. Use for: building AI chat interfaces, agentic UIs, SaaS copilots, assistants. Triggers: agent component, agent ui, chat agent, shadcn agent, react agent,  agentic ui, ai assistant ui, copilot ui, inference ui, human in the loop"
+description: 'Batteries-included agent component for React/Next.js from ui.inference.sh. One component with runtime, tools, streaming, approvals, and widgets built in. Capabilities: drop-in agent, human-in-the-loop, client-side tools, form filling. Use for: building AI chat interfaces, agentic UIs, SaaS copilots, assistants. Triggers: agent component, agent ui, chat agent, shadcn agent, react agent,  agentic ui, ai assistant ui, copilot ui, inference ui, human in the loop'
 ---
 
 > **Install the belt CLI skill:** `npx skills add belt-sh/cli`
@@ -27,8 +27,8 @@ npm install @inferencesh/sdk
 
 ```typescript
 // app/api/inference/proxy/route.ts
-import { route } from '@inferencesh/sdk/proxy/nextjs';
-export const { GET, POST, PUT } = route;
+import { route } from '@inferencesh/sdk/proxy/nextjs'
+export const { GET, POST, PUT } = route
 ```
 
 ### 2. Environment Variable
@@ -41,7 +41,7 @@ INFERENCE_API_KEY=inf_...
 ### 3. Use the Component
 
 ```tsx
-import { Agent } from "@/registry/blocks/agent/agent"
+import { Agent } from '@/registry/blocks/agent/agent'
 
 export default function Page() {
   return (
@@ -59,14 +59,14 @@ export default function Page() {
 
 ## Features
 
-| Feature | Description |
-|---------|-------------|
-| Runtime included | No backend logic needed |
-| Tool lifecycle | Pending, progress, approval, results |
-| Human-in-the-loop | Built-in approval flows |
-| Widgets | Declarative JSON UI from agent responses |
-| Streaming | Real-time token streaming |
-| Client-side tools | Tools that run in the browser |
+| Feature           | Description                              |
+| ----------------- | ---------------------------------------- |
+| Runtime included  | No backend logic needed                  |
+| Tool lifecycle    | Pending, progress, approval, results     |
+| Human-in-the-loop | Built-in approval flows                  |
+| Widgets           | Declarative JSON UI from agent responses |
+| Streaming         | Real-time token streaming                |
+| Client-side tools | Tools that run in the browser            |
 
 ## Client-Side Tools Example
 
@@ -89,13 +89,13 @@ const scopedTools = createScopedTools(formRef)
 
 ## Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `proxyUrl` | string | API proxy endpoint |
-| `name` | string | Agent name (optional) |
-| `config` | AgentConfig | Agent configuration |
-| `allowFiles` | boolean | Enable file uploads |
-| `allowImages` | boolean | Enable image uploads |
+| Prop          | Type        | Description           |
+| ------------- | ----------- | --------------------- |
+| `proxyUrl`    | string      | API proxy endpoint    |
+| `name`        | string      | Agent name (optional) |
+| `config`      | AgentConfig | Agent configuration   |
+| `allowFiles`  | boolean     | Enable file uploads   |
+| `allowImages` | boolean     | Enable image uploads  |
 
 ## Related Skills
 
@@ -119,4 +119,3 @@ npx skills add inference-sh/skills@tools-ui
 - [Agent UX Patterns](https://inference.sh/blog/ux/agent-ux-patterns) - Best practices
 
 Component docs: [ui.inference.sh/blocks/agent](https://ui.inference.sh/blocks/agent)
-

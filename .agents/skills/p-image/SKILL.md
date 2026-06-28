@@ -1,6 +1,6 @@
 ---
 name: p-image
-description: "Generate images with Pruna P-Image models via inference.sh CLI. Models: P-Image, P-Image-LoRA, P-Image-Edit, P-Image-Edit-LoRA. Capabilities: text-to-image, image editing, LoRA styles, multi-image compositing, fast inference. Pruna optimizes models for speed without quality loss. Triggers: pruna, p-image, pruna image, fast image generation, optimized flux, pruna ai, p image, fast ai image, economic image generation, cheap image generation"
+description: 'Generate images with Pruna P-Image models via inference.sh CLI. Models: P-Image, P-Image-LoRA, P-Image-Edit, P-Image-Edit-LoRA. Capabilities: text-to-image, image editing, LoRA styles, multi-image compositing, fast inference. Pruna optimizes models for speed without quality loss. Triggers: pruna, p-image, pruna image, fast image generation, optimized flux, pruna ai, p image, fast ai image, economic image generation, cheap image generation'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,17 +22,16 @@ belt login
 belt app run pruna/p-image --input '{"prompt": "a futuristic cityscape at sunset"}'
 ```
 
-
 ## P-Image Models
 
 Pruna optimizes AI models for speed without sacrificing quality.
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| P-Image | `pruna/p-image` | Fast text-to-image, multiple aspect ratios |
-| P-Image-LoRA | `pruna/p-image-lora` | Custom styles with preset LoRAs |
-| P-Image-Edit | `pruna/p-image-edit` | Image editing with multi-image support |
-| P-Image-Edit-LoRA | `pruna/p-image-edit-lora` | Stylized image editing |
+| Model             | App ID                    | Best For                                   |
+| ----------------- | ------------------------- | ------------------------------------------ |
+| P-Image           | `pruna/p-image`           | Fast text-to-image, multiple aspect ratios |
+| P-Image-LoRA      | `pruna/p-image-lora`      | Custom styles with preset LoRAs            |
+| P-Image-Edit      | `pruna/p-image-edit`      | Image editing with multi-image support     |
+| P-Image-Edit-LoRA | `pruna/p-image-edit-lora` | Stylized image editing                     |
 
 ## Examples
 
@@ -137,4 +136,3 @@ Browse all apps: `belt app store`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image generation guide
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
-

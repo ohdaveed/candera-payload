@@ -17,6 +17,7 @@ export default defineConfig({
       'src/payload-types.ts',
       'src/payload-generated-schema.ts',
       'Candera Design System/**',
+      '.agents/**',
       '.next/**',
       'out/**',
       'build/**',

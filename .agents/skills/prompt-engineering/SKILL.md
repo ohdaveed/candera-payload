@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering
-description: "Master prompt engineering for AI models: LLMs, image generators, video models. Techniques: chain-of-thought, few-shot, system prompts, negative prompts. Models: Claude, GPT-4, Gemini, FLUX, Veo, Stable Diffusion prompting. Use for: better AI outputs, consistent results, complex tasks, optimization. Triggers: prompt engineering, how to prompt, better prompts, prompt tips, prompting guide, llm prompting, image prompt, ai prompting, prompt optimization, prompt template, prompt structure, effective prompts, prompt techniques"
+description: 'Master prompt engineering for AI models: LLMs, image generators, video models. Techniques: chain-of-thought, few-shot, system prompts, negative prompts. Models: Claude, GPT-4, Gemini, FLUX, Veo, Stable Diffusion prompting. Use for: better AI outputs, consistent results, complex tasks, optimization. Triggers: prompt engineering, how to prompt, better prompts, prompt tips, prompting guide, llm prompting, image prompt, ai prompting, prompt optimization, prompt template, prompt structure, effective prompts, prompt techniques'
 allowed-tools: Bash(belt *)
 ---
 
@@ -16,15 +16,14 @@ Master prompt engineering for AI models via [inference.sh](https://inference.sh)
 
 > Requires inference.sh CLI (`belt`). [Install instructions](https://raw.githubusercontent.com/inference-sh/skills/refs/heads/main/cli-install.md)
 
-```bash
+````bash
 belt login
 
 # Well-structured LLM prompt
 belt app run openrouter/claude-sonnet-45 --input '{
   "prompt": "You are a senior software engineer. Review this code for security vulnerabilities:\n\n```python\nuser_input = request.args.get(\"query\")\nresult = db.execute(f\"SELECT * FROM users WHERE name = {user_input}\")\n```\n\nProvide specific issues and fixes."
 }'
-```
-
+````
 
 ## LLM Prompting
 
@@ -270,13 +269,13 @@ belt app run openrouter/claude-sonnet-45 --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Too vague | Unpredictable output | Add specifics |
-| Too long | Model loses focus | Prioritize key info |
-| Conflicting | Confuses model | Remove contradictions |
-| No format | Inconsistent output | Specify format |
-| No examples | Unclear expectations | Add few-shot |
+| Mistake     | Problem              | Fix                   |
+| ----------- | -------------------- | --------------------- |
+| Too vague   | Unpredictable output | Add specifics         |
+| Too long    | Model loses focus    | Prioritize key info   |
+| Conflicting | Confuses model       | Remove contradictions |
+| No format   | Inconsistent output  | Specify format        |
+| No examples | Unclear expectations | Add few-shot          |
 
 ## Prompt Templates
 
@@ -340,4 +339,3 @@ npx skills add inference-sh/skills@infsh-cli
 ```
 
 Browse all apps: `belt app store`
-

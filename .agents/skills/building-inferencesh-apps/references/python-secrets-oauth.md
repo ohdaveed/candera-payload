@@ -15,11 +15,11 @@ secrets:
     optional: true
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `key` | string | Environment variable name |
-| `description` | string | Shown to users |
-| `optional` | boolean | If false, app won't run without it |
+| Property      | Type    | Description                        |
+| ------------- | ------- | ---------------------------------- |
+| `key`         | string  | Environment variable name          |
+| `description` | string  | Shown to users                     |
+| `optional`    | boolean | If false, app won't run without it |
 
 ## Accessing Secrets
 
@@ -90,11 +90,11 @@ integrations:
     optional: true
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `key` | string | Integration identifier |
-| `description` | string | Shown to users |
-| `optional` | boolean | If false, app won't run without it |
+| Property      | Type    | Description                        |
+| ------------- | ------- | ---------------------------------- |
+| `key`         | string  | Integration identifier             |
+| `description` | string  | Shown to users                     |
+| `optional`    | boolean | If false, app won't run without it |
 
 ### Available Integrations
 
@@ -102,12 +102,12 @@ integrations:
 belt integrations list
 ```
 
-| Key | Description |
-|-----|-------------|
-| `google.sheets` | Read/write Sheets |
-| `google.sheets.readonly` | Read-only Sheets |
-| `google.drive` | Google Drive files |
-| `google.sa` | Service account |
+| Key                      | Description        |
+| ------------------------ | ------------------ |
+| `google.sheets`          | Read/write Sheets  |
+| `google.sheets.readonly` | Read-only Sheets   |
+| `google.drive`           | Google Drive files |
+| `google.sa`              | Service account    |
 
 ### Accessing Credentials
 
@@ -139,12 +139,12 @@ class App(BaseApp):
 
 ### Secrets vs Integrations
 
-| Feature | Secrets | Integrations |
-|---------|---------|--------------|
+| Feature       | Secrets             | Integrations        |
+| ------------- | ------------------- | ------------------- |
 | User provides | Raw value (API key) | OAuth authorization |
-| Refresh | Manual | Automatic |
-| Scope control | None | Fine-grained |
-| Best for | API keys | OAuth services |
+| Refresh       | Manual              | Automatic           |
+| Scope control | None                | Fine-grained        |
+| Best for      | API keys            | OAuth services      |
 
 ### Best Practices
 

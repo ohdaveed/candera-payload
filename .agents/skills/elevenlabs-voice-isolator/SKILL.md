@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-voice-isolator
-description: "ElevenLabs voice isolator - remove background noise and isolate vocals from audio via inference.sh CLI. Capabilities: noise removal, voice extraction, audio cleanup, background removal. Use for: podcast cleanup, interview audio, music vocals, noisy recordings, audio restoration. Triggers: voice isolator, noise removal, background removal, isolate voice, clean audio, remove background noise, audio cleanup, voice extraction, elevenlabs isolator, eleven labs noise, vocal isolation, denoise, audio restoration, voice separation"
+description: 'ElevenLabs voice isolator - remove background noise and isolate vocals from audio via inference.sh CLI. Capabilities: noise removal, voice extraction, audio cleanup, background removal. Use for: podcast cleanup, interview audio, music vocals, noisy recordings, audio restoration. Triggers: voice isolator, noise removal, background removal, isolate voice, clean audio, remove background noise, audio cleanup, voice extraction, elevenlabs isolator, eleven labs noise, vocal isolation, denoise, audio restoration, voice separation'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,16 +23,15 @@ belt login
 belt app run elevenlabs/voice-isolator --input '{"audio": "https://noisy-recording.mp3"}'
 ```
 
-
 ## Supported Formats
 
 | Format | Max Size | Max Duration |
-|--------|----------|-------------|
-| WAV | 500MB | 1 hour |
-| MP3 | 500MB | 1 hour |
-| FLAC | 500MB | 1 hour |
-| OGG | 500MB | 1 hour |
-| AAC | 500MB | 1 hour |
+| ------ | -------- | ------------ |
+| WAV    | 500MB    | 1 hour       |
+| MP3    | 500MB    | 1 hour       |
+| FLAC   | 500MB    | 1 hour       |
+| OGG    | 500MB    | 1 hour       |
+| AAC    | 500MB    | 1 hour       |
 
 ## Examples
 

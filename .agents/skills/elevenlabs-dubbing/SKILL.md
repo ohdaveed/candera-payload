@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-dubbing
-description: "ElevenLabs automatic dubbing - translate and dub audio/video into 29 languages while preserving speaker voice via inference.sh CLI. Capabilities: auto speaker detection, voice-preserving translation, video dubbing, audio localization. Use for: content localization, video translation, multilingual content, international distribution. Triggers: dubbing, dub video, translate audio, video translation, audio translation, localize content, elevenlabs dubbing, eleven labs dub, multilingual dub, voice translation, auto dub, language dub, content localization"
+description: 'ElevenLabs automatic dubbing - translate and dub audio/video into 29 languages while preserving speaker voice via inference.sh CLI. Capabilities: auto speaker detection, voice-preserving translation, video dubbing, audio localization. Use for: content localization, video translation, multilingual content, international distribution. Triggers: dubbing, dub video, translate audio, video translation, audio translation, localize content, elevenlabs dubbing, eleven labs dub, multilingual dub, voice translation, auto dub, language dub, content localization'
 allowed-tools: Bash(belt *)
 ---
 
@@ -26,26 +26,25 @@ belt app run elevenlabs/dubbing --input '{
 }'
 ```
 
-
 ## Supported Languages
 
-| Code | Language | Code | Language |
-|------|----------|------|----------|
-| `en` | English | `ko` | Korean |
-| `es` | Spanish | `ru` | Russian |
-| `fr` | French | `tr` | Turkish |
-| `de` | German | `nl` | Dutch |
-| `it` | Italian | `sv` | Swedish |
-| `pt` | Portuguese | `da` | Danish |
-| `pl` | Polish | `fi` | Finnish |
-| `hi` | Hindi | `no` | Norwegian |
-| `ar` | Arabic | `cs` | Czech |
-| `zh` | Chinese | `el` | Greek |
-| `ja` | Japanese | `he` | Hebrew |
-| `hu` | Hungarian | `id` | Indonesian |
-| `ms` | Malay | `ro` | Romanian |
-| `th` | Thai | `uk` | Ukrainian |
-| `vi` | Vietnamese | | |
+| Code | Language   | Code | Language   |
+| ---- | ---------- | ---- | ---------- |
+| `en` | English    | `ko` | Korean     |
+| `es` | Spanish    | `ru` | Russian    |
+| `fr` | French     | `tr` | Turkish    |
+| `de` | German     | `nl` | Dutch      |
+| `it` | Italian    | `sv` | Swedish    |
+| `pt` | Portuguese | `da` | Danish     |
+| `pl` | Polish     | `fi` | Finnish    |
+| `hi` | Hindi      | `no` | Norwegian  |
+| `ar` | Arabic     | `cs` | Czech      |
+| `zh` | Chinese    | `el` | Greek      |
+| `ja` | Japanese   | `he` | Hebrew     |
+| `hu` | Hungarian  | `id` | Indonesian |
+| `ms` | Malay      | `ro` | Romanian   |
+| `th` | Thai       | `uk` | Ukrainian  |
+| `vi` | Vietnamese |      |            |
 
 ## Supported Input Formats
 

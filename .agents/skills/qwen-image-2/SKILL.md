@@ -1,6 +1,6 @@
 ---
 name: qwen-image-2
-description: "Generate and edit images with Alibaba Qwen-Image-2.0 models via inference.sh CLI. Models: Qwen-Image-2.0 (fast), Qwen-Image-2.0-Pro (professional text rendering). Capabilities: text-to-image, multi-image editing, complex text rendering. Triggers: qwen image, qwen-image, alibaba image, dashscope image, qwen image 2, qwen image pro"
+description: 'Generate and edit images with Alibaba Qwen-Image-2.0 models via inference.sh CLI. Models: Qwen-Image-2.0 (fast), Qwen-Image-2.0-Pro (professional text rendering). Capabilities: text-to-image, multi-image editing, complex text rendering. Triggers: qwen image, qwen-image, alibaba image, dashscope image, qwen image 2, qwen image pro'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,13 +22,12 @@ belt login
 belt app run alibaba/qwen-image-2 --input '{"prompt": "A serene mountain landscape at sunset"}'
 ```
 
-
 ## Models
 
-| Model | App ID | Speed | Text Rendering | Best For |
-|-------|--------|-------|----------------|----------|
-| Qwen-Image-2.0 | `alibaba/qwen-image-2` | Fast | Good | General use |
-| Qwen-Image-2.0-Pro | `alibaba/qwen-image-2-pro` | Standard | Professional | Posters, text-heavy designs |
+| Model              | App ID                     | Speed    | Text Rendering | Best For                    |
+| ------------------ | -------------------------- | -------- | -------------- | --------------------------- |
+| Qwen-Image-2.0     | `alibaba/qwen-image-2`     | Fast     | Good           | General use                 |
+| Qwen-Image-2.0-Pro | `alibaba/qwen-image-2-pro` | Standard | Professional   | Posters, text-heavy designs |
 
 ## Search Qwen Image Apps
 
@@ -109,30 +108,31 @@ belt app run alibaba/qwen-image-2 --input '{
 
 ## Input Options
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `prompt` | string | **Required.** What to generate or edit (max 800 chars) |
-| `reference_images` | array | Input images for editing (1-3 images) |
-| `num_images` | integer | Number of images to generate (1-6) |
-| `width` | integer | Output width in pixels (512-2048) |
-| `height` | integer | Output height in pixels (512-2048) |
-| `watermark` | boolean | Add "Qwen-Image" watermark |
-| `negative_prompt` | string | Content to avoid (max 500 chars) |
-| `prompt_extend` | boolean | Enable prompt rewriting (default: true) |
-| `seed` | integer | Random seed for reproducibility (0-2147483647) |
+| Parameter          | Type    | Description                                            |
+| ------------------ | ------- | ------------------------------------------------------ |
+| `prompt`           | string  | **Required.** What to generate or edit (max 800 chars) |
+| `reference_images` | array   | Input images for editing (1-3 images)                  |
+| `num_images`       | integer | Number of images to generate (1-6)                     |
+| `width`            | integer | Output width in pixels (512-2048)                      |
+| `height`           | integer | Output height in pixels (512-2048)                     |
+| `watermark`        | boolean | Add "Qwen-Image" watermark                             |
+| `negative_prompt`  | string  | Content to avoid (max 500 chars)                       |
+| `prompt_extend`    | boolean | Enable prompt rewriting (default: true)                |
+| `seed`             | integer | Random seed for reproducibility (0-2147483647)         |
 
 **Size constraint:** Total pixels must be between 512×512 and 2048×2048.
 
 ## Output
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | array | The generated or edited images (PNG format) |
-| `output_meta` | object | Metadata with dimensions and count |
+| Field         | Type   | Description                                 |
+| ------------- | ------ | ------------------------------------------- |
+| `images`      | array  | The generated or edited images (PNG format) |
+| `output_meta` | object | Metadata with dimensions and count          |
 
 ## Prompt Tips
 
 **For Text Rendering (use Pro model):**
+
 - Put exact text in quotes: `"Title: \"Hello World!\""`
 - Specify font style, color, position
 - Set `prompt_extend: false` for precise control
@@ -156,12 +156,12 @@ belt app run alibaba/qwen-image-2-pro --input input.json
 
 ## Model Comparison
 
-| Feature | qwen-image-2 | qwen-image-2-pro |
-|---------|--------------|------------------|
-| Speed | Faster | Standard |
-| Text Rendering | Good | Professional |
-| Realism | Standard | Fine-grained |
-| Semantic Adherence | Good | Enhanced |
+| Feature            | qwen-image-2 | qwen-image-2-pro |
+| ------------------ | ------------ | ---------------- |
+| Speed              | Faster       | Standard         |
+| Text Rendering     | Good         | Professional     |
+| Realism            | Standard     | Fine-grained     |
+| Semantic Adherence | Good         | Enhanced         |
 
 ## Related Skills
 
@@ -183,4 +183,3 @@ Browse all image apps: `belt app store --category image`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [File Handling](https://inference.sh/docs/api/sdk/files) - Working with images
-

@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-dialogue
-description: "ElevenLabs multi-speaker dialogue generation - create conversations with different voices in a single audio file via inference.sh CLI. Capabilities: multi-voice dialogue, script-based generation, voice direction, conversation audio. Use for: podcasts, audiobooks, explainers, tutorials, character dialogue, video scripts. Triggers: elevenlabs dialogue, eleven labs dialogue, multi speaker, conversation audio, dialogue generation, text to dialogue, multi voice, voice acting, podcast dialogue, character voices, script to audio, elevenlabs conversation, two speakers"
+description: 'ElevenLabs multi-speaker dialogue generation - create conversations with different voices in a single audio file via inference.sh CLI. Capabilities: multi-voice dialogue, script-based generation, voice direction, conversation audio. Use for: podcasts, audiobooks, explainers, tutorials, character dialogue, video scripts. Triggers: elevenlabs dialogue, eleven labs dialogue, multi speaker, conversation audio, dialogue generation, text to dialogue, multi voice, voice acting, podcast dialogue, character voices, script to audio, elevenlabs conversation, two speakers'
 allowed-tools: Bash(belt *)
 ---
 
@@ -29,20 +29,19 @@ belt app run elevenlabs/text-to-dialogue --input '{
 }'
 ```
 
-
 ## Voice Options
 
 22+ premium voices available for each speaker:
 
 ### Popular Pairings
 
-| Pairing | Voices | Best For |
-|---------|--------|----------|
-| Interview | `george` + `aria` | Professional Q&A |
-| Casual Chat | `brian` + `sarah` | Relaxed conversation |
-| Tutorial | `daniel` + `jessica` | Instructional |
-| Debate | `adam` + `alice` | Contrasting perspectives |
-| Podcast | `charlie` + `bella` | Entertainment |
+| Pairing     | Voices               | Best For                 |
+| ----------- | -------------------- | ------------------------ |
+| Interview   | `george` + `aria`    | Professional Q&A         |
+| Casual Chat | `brian` + `sarah`    | Relaxed conversation     |
+| Tutorial    | `daniel` + `jessica` | Instructional            |
+| Debate      | `adam` + `alice`     | Contrasting perspectives |
+| Podcast     | `charlie` + `bella`  | Entertainment            |
 
 ### All Voices
 
@@ -67,17 +66,17 @@ belt app run elevenlabs/text-to-dialogue --input '{
 
 ### Direction Keywords
 
-| Direction | Effect |
-|-----------|--------|
-| `[excitedly]` | Energetic, upbeat delivery |
-| `[sadly]` | Somber, emotional tone |
-| `[whispering]` | Soft, quiet speech |
-| `[angrily]` | Intense, forceful delivery |
-| `[sarcastically]` | Ironic intonation |
-| `[curiously]` | Questioning, intrigued |
-| `[proudly]` | Confident, accomplished |
-| `[nervously]` | Hesitant, uncertain |
-| `[cheerfully]` | Happy, bright |
+| Direction         | Effect                     |
+| ----------------- | -------------------------- |
+| `[excitedly]`     | Energetic, upbeat delivery |
+| `[sadly]`         | Somber, emotional tone     |
+| `[whispering]`    | Soft, quiet speech         |
+| `[angrily]`       | Intense, forceful delivery |
+| `[sarcastically]` | Ironic intonation          |
+| `[curiously]`     | Questioning, intrigued     |
+| `[proudly]`       | Confident, accomplished    |
+| `[nervously]`     | Hesitant, uncertain        |
+| `[cheerfully]`    | Happy, bright              |
 
 ## Examples
 

@@ -1,6 +1,6 @@
 ---
 name: widgets-ui
-description: "Declarative UI widgets from JSON for React/Next.js from ui.inference.sh. Render rich interactive UIs from structured agent responses. Capabilities: forms, buttons, cards, layouts, inputs, selects, checkboxes. Use for: agent-generated UIs, dynamic forms, data display, interactive cards. Triggers: widgets, declarative ui, json ui, widget renderer, agent widgets, dynamic ui, form widgets, card widgets, shadcn widgets, structured output ui"
+description: 'Declarative UI widgets from JSON for React/Next.js from ui.inference.sh. Render rich interactive UIs from structured agent responses. Capabilities: forms, buttons, cards, layouts, inputs, selects, checkboxes. Use for: agent-generated UIs, dynamic forms, data display, interactive cards. Triggers: widgets, declarative ui, json ui, widget renderer, agent widgets, dynamic ui, form widgets, card widgets, shadcn widgets, structured output ui'
 ---
 
 > **Install the belt CLI skill:** `npx skills add belt-sh/cli`
@@ -83,25 +83,36 @@ const flightWidget: Widget = {
   type: 'ui',
   children: [
     {
-      type: 'box', background: 'gradient-ocean', padding: 4, radius: 'lg', children: [
+      type: 'box',
+      background: 'gradient-ocean',
+      padding: 4,
+      radius: 'lg',
+      children: [
         {
-          type: 'row', justify: 'between', children: [
+          type: 'row',
+          justify: 'between',
+          children: [
             {
-              type: 'col', gap: 1, children: [
+              type: 'col',
+              gap: 1,
+              children: [
                 { type: 'caption', value: 'departure' },
                 { type: 'title', value: 'SFO', size: '2xl', weight: 'bold' },
-              ]
+              ],
             },
             { type: 'icon', iconName: 'plane', size: 'lg' },
             {
-              type: 'col', gap: 1, align: 'end', children: [
+              type: 'col',
+              gap: 1,
+              align: 'end',
+              children: [
                 { type: 'caption', value: 'arrival' },
                 { type: 'title', value: 'JFK', size: '2xl', weight: 'bold' },
-              ]
+              ],
             },
-          ]
+          ],
         },
-      ]
+      ],
     },
   ],
 }
@@ -116,12 +127,14 @@ const formWidget: Widget = {
   asForm: true,
   children: [
     {
-      type: 'col', gap: 3, children: [
+      type: 'col',
+      gap: 3,
+      children: [
         { type: 'input', name: 'name', placeholder: 'Your name' },
         { type: 'input', name: 'email', placeholder: 'Email address' },
         { type: 'textarea', name: 'message', placeholder: 'Message' },
         { type: 'button', label: 'Send', variant: 'default', onClickAction: { type: 'submit' } },
-      ]
+      ],
     },
   ],
 }
@@ -129,13 +142,13 @@ const formWidget: Widget = {
 
 ## Gradients
 
-| Name | Description |
-|------|-------------|
-| `gradient-ocean` | Blue teal gradient |
-| `gradient-sunset` | Orange pink gradient |
-| `gradient-purple` | Purple gradient |
-| `gradient-cool` | Cool blue gradient |
-| `gradient-midnight` | Dark blue gradient |
+| Name                | Description          |
+| ------------------- | -------------------- |
+| `gradient-ocean`    | Blue teal gradient   |
+| `gradient-sunset`   | Orange pink gradient |
+| `gradient-purple`   | Purple gradient      |
+| `gradient-cool`     | Cool blue gradient   |
+| `gradient-midnight` | Dark blue gradient   |
 
 ## Handling Actions
 
@@ -172,4 +185,3 @@ npx skills add inference-sh/skills@tools-ui
 - [Agents That Generate UI](https://inference.sh/blog/ux/generative-ui) - Building generative UIs
 
 Component docs: [ui.inference.sh/blocks/widgets](https://ui.inference.sh/blocks/widgets)
-

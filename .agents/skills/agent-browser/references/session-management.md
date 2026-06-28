@@ -17,6 +17,7 @@ Browser sessions for state persistence and parallel browsing.
 ## How Sessions Work
 
 Each session maintains an isolated browser context with:
+
 - Cookies
 - LocalStorage / SessionStorage
 - Browser history
@@ -64,6 +65,7 @@ belt app run agent-browser --function close --session $SESSION_ID --input '{}'
 ### What Persists
 
 Within a session, these persist across calls:
+
 - Cookies (login state, preferences)
 - LocalStorage and SessionStorage
 - IndexedDB data
@@ -122,6 +124,7 @@ belt app run agent-browser --function close --session $SESSION_ID --input '{}'
 ```
 
 **Why close matters:**
+
 - Releases server resources
 - Returns video recording (if enabled)
 - Prevents resource leaks

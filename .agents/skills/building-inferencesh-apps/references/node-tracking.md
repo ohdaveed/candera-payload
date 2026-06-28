@@ -24,20 +24,20 @@ async run(inputData) {
 
 ## MetaItem Types
 
-| Factory | Fields |
-|---------|--------|
-| `textMeta` | `tokens` |
+| Factory     | Fields                                               |
+| ----------- | ---------------------------------------------------- |
+| `textMeta`  | `tokens`                                             |
 | `imageMeta` | `width`, `height`, `resolution_mp`, `steps`, `count` |
-| `videoMeta` | `width`, `height`, `resolution`, `seconds` |
-| `audioMeta` | `seconds` |
-| `rawMeta` | `cost` (dollar cents) |
+| `videoMeta` | `width`, `height`, `resolution`, `seconds`           |
+| `audioMeta` | `seconds`                                            |
+| `rawMeta`   | `cost` (dollar cents)                                |
 
 ## Examples
 
 ### LLM/Text Generation
 
 ```javascript
-import { textMeta } from "@inferencesh/app";
+import { textMeta } from '@inferencesh/app'
 
 return {
   response: generatedText,
@@ -45,57 +45,61 @@ return {
     inputs: [textMeta({ tokens: promptTokens })],
     outputs: [textMeta({ tokens: completionTokens })],
   },
-};
+}
 ```
 
 ### Image Generation
 
 ```javascript
-import { File, imageMeta } from "@inferencesh/app";
+import { File, imageMeta } from '@inferencesh/app'
 
 return {
   image: File.fromPath(outputPath),
   output_meta: {
-    outputs: [imageMeta({
-      width: 1024,
-      height: 1024,
-      resolution_mp: 1.05,
-      steps: 20,
-      count: 1,
-    })],
+    outputs: [
+      imageMeta({
+        width: 1024,
+        height: 1024,
+        resolution_mp: 1.05,
+        steps: 20,
+        count: 1,
+      }),
+    ],
   },
-};
+}
 ```
 
 ### Video Generation
 
 ```javascript
-import { File, videoMeta } from "@inferencesh/app";
+import { File, videoMeta } from '@inferencesh/app'
 
 return {
   video: File.fromPath(outputPath),
   output_meta: {
-    outputs: [videoMeta({
-      width: 1280,
-      height: 720,
-      resolution: "720p",
-      seconds: 5.0,
-    })],
+    outputs: [
+      videoMeta({
+        width: 1280,
+        height: 720,
+        resolution: '720p',
+        seconds: 5.0,
+      }),
+    ],
   },
-};
+}
 ```
 
 ### Audio Generation
 
 ```javascript
-import { File, audioMeta } from "@inferencesh/app";
+import { File, audioMeta } from '@inferencesh/app'
 
 return {
   audio: File.fromPath(outputPath),
   output_meta: {
     outputs: [audioMeta({ seconds: 30.0 })],
   },
-};
+}
 ```
 
 ## Custom Data

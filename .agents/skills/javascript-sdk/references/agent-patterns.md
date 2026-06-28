@@ -7,21 +7,21 @@ Common patterns for building agents with the JavaScript SDK.
 Delegate tasks to specialized sub-agents:
 
 ```typescript
-import { inference, agentTool, string } from '@inferencesh/sdk';
+import { inference, agentTool, string } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 // Define sub-agents as tools
 const researcher = agentTool('research', 'my-org/researcher@latest')
   .describe('Research a topic thoroughly')
   .param('topic', string('Topic to research'))
-  .build();
+  .build()
 
 const writer = agentTool('write', 'my-org/writer@latest')
   .describe('Write content based on research')
   .param('outline', string('Content outline'))
   .param('research', string('Research findings'))
-  .build();
+  .build()
 
 // Orchestrator agent
 const orchestrator = client.agent({
@@ -30,10 +30,10 @@ const orchestrator = client.agent({
 1. Uses the research tool to gather information
 2. Uses the write tool to create content
 Coordinate between agents to produce high-quality output.`,
-  tools: [researcher, writer]
-});
+  tools: [researcher, writer],
+})
 
-const response = await orchestrator.sendMessage('Create a blog post about AI agents');
+const response = await orchestrator.sendMessage('Create a blog post about AI agents')
 ```
 
 ## RAG Pattern (Retrieval-Augmented Generation)
@@ -41,15 +41,15 @@ const response = await orchestrator.sendMessage('Create a blog post about AI age
 Combine search with LLM responses:
 
 ```typescript
-import { inference, appTool, string } from '@inferencesh/sdk';
+import { inference, appTool, string } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 // Search tool
 const search = appTool('search', 'tavily/search-assistant@latest')
   .describe('Search the web for current information')
   .param('query', string('Search query'))
-  .build();
+  .build()
 
 // RAG agent
 const ragAgent = client.agent({
@@ -58,12 +58,12 @@ const ragAgent = client.agent({
 When asked about recent events or facts you're unsure about,
 use the search tool to find accurate, up-to-date information.
 Always cite your sources.`,
-  tools: [search]
-});
+  tools: [search],
+})
 
 const response = await ragAgent.sendMessage(
-  'What are the latest developments in quantum computing?'
-);
+  'What are the latest developments in quantum computing?',
+)
 ```
 
 ## Code Execution Pattern
@@ -71,23 +71,21 @@ const response = await ragAgent.sendMessage(
 Agents that can write and run code:
 
 ```typescript
-import { inference, internalTools } from '@inferencesh/sdk';
+import { inference, internalTools } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
-const config = internalTools()
-  .codeExecution(true)
-  .build();
+const config = internalTools().codeExecution(true).build()
 
 const coder = client.agent({
   core_app: { ref: 'infsh/claude-sonnet-4@latest' },
   system_prompt: `You are a coding assistant.
 Write code to solve problems and execute it to verify it works.
 Explain your approach and show the output.`,
-  internal_tools: config
-});
+  internal_tools: config,
+})
 
-const response = await coder.sendMessage('Calculate the first 20 Fibonacci numbers');
+const response = await coder.sendMessage('Calculate the first 20 Fibonacci numbers')
 ```
 
 ## Human-in-the-Loop Pattern
@@ -95,53 +93,53 @@ const response = await coder.sendMessage('Calculate the first 20 Fibonacci numbe
 Require approval for sensitive operations:
 
 ```typescript
-import { inference, tool, string } from '@inferencesh/sdk';
-import * as readline from 'readline';
+import { inference, tool, string } from '@inferencesh/sdk'
+import * as readline from 'readline'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 // Tool requiring approval
 const deleteFile = tool('delete_file')
   .describe('Delete a file from the filesystem')
   .param('path', string('File path to delete'))
   .requireApproval()
-  .build();
+  .build()
 
 async function promptUser(question: string): Promise<boolean> {
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
-  });
+    output: process.stdout,
+  })
 
   return new Promise((resolve) => {
     rl.question(question, (answer) => {
-      rl.close();
-      resolve(answer.toLowerCase() === 'y');
-    });
-  });
+      rl.close()
+      resolve(answer.toLowerCase() === 'y')
+    })
+  })
 }
 
 const agent = client.agent({
   core_app: { ref: 'infsh/claude-sonnet-4@latest' },
-  tools: [deleteFile]
-});
+  tools: [deleteFile],
+})
 
 const response = await agent.sendMessage('Clean up temporary files in /tmp/myapp', {
   onToolCall: async (call) => {
     if (call.requiresApproval) {
-      console.log(`\n⚠️  Agent wants to: ${call.name}`);
-      console.log(`   Arguments: ${JSON.stringify(call.args)}`);
-      const approved = await promptUser('Allow? (y/n): ');
+      console.log(`\n⚠️  Agent wants to: ${call.name}`)
+      console.log(`   Arguments: ${JSON.stringify(call.args)}`)
+      const approved = await promptUser('Allow? (y/n): ')
 
       if (approved) {
-        const result = await executeOperation(call.name, call.args);
-        agent.submitToolResult(call.id, result);
+        const result = await executeOperation(call.name, call.args)
+        agent.submitToolResult(call.id, result)
       } else {
-        agent.submitToolResult(call.id, { error: 'Operation denied by user' });
+        agent.submitToolResult(call.id, { error: 'Operation denied by user' })
       }
     }
-  }
-});
+  },
+})
 ```
 
 ## Conversation Memory Pattern
@@ -149,36 +147,36 @@ const response = await agent.sendMessage('Clean up temporary files in /tmp/myapp
 Maintain context across sessions:
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { inference } from '@inferencesh/sdk'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 function saveChat(agent: any, filepath: string) {
-  const chat = agent.getChat();
-  writeFileSync(filepath, JSON.stringify(chat, null, 2));
+  const chat = agent.getChat()
+  writeFileSync(filepath, JSON.stringify(chat, null, 2))
 }
 
 async function loadAndContinue(filepath: string) {
-  const agent = client.agent('my-org/assistant@latest');
+  const agent = client.agent('my-org/assistant@latest')
 
   if (existsSync(filepath)) {
-    const chat = JSON.parse(readFileSync(filepath, 'utf-8'));
+    const chat = JSON.parse(readFileSync(filepath, 'utf-8'))
     // Restore by replaying user messages
     for (const msg of chat.messages) {
       if (msg.role === 'user') {
-        await agent.sendMessage(msg.content);
+        await agent.sendMessage(msg.content)
       }
     }
   }
 
-  return agent;
+  return agent
 }
 
 // Usage
-const agent = await loadAndContinue('conversation.json');
-const response = await agent.sendMessage('Continue where we left off');
-saveChat(agent, 'conversation.json');
+const agent = await loadAndContinue('conversation.json')
+const response = await agent.sendMessage('Continue where we left off')
+saveChat(agent, 'conversation.json')
 ```
 
 ## Streaming with Progress UI
@@ -186,26 +184,26 @@ saveChat(agent, 'conversation.json');
 Real-time updates for better UX:
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
-const agent = client.agent('my-org/assistant@latest');
+const client = inference({ apiKey: 'inf_...' })
+const agent = client.agent('my-org/assistant@latest')
 
 const response = await agent.sendMessage('Generate a report on market trends', {
   onMessage: (msg) => {
     if (msg.content) {
-      process.stdout.write(msg.content);
+      process.stdout.write(msg.content)
     }
   },
   onToolCall: async (call) => {
-    console.log(`\n🔧 Using tool: ${call.name}`);
-    const result = await executeTool(call.name, call.args);
-    agent.submitToolResult(call.id, result);
-    console.log('✅ Tool completed');
-  }
-});
+    console.log(`\n🔧 Using tool: ${call.name}`)
+    const result = await executeTool(call.name, call.args)
+    agent.submitToolResult(call.id, result)
+    console.log('✅ Tool completed')
+  },
+})
 
-console.log('\n\n📊 Report complete!');
+console.log('\n\n📊 Report complete!')
 ```
 
 ## React Integration Pattern
@@ -258,25 +256,25 @@ function ChatComponent() {
 Graceful handling of failures:
 
 ```typescript
-import { inference, RequirementsNotMetException, InferenceError } from '@inferencesh/sdk';
+import { inference, RequirementsNotMetException, InferenceError } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 async function robustRun(config: any, maxRetries = 3) {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      return await client.run(config);
+      return await client.run(config)
     } catch (e) {
       if (e instanceof RequirementsNotMetException) {
-        console.log('Missing requirements:', e.errors);
-        throw e;
+        console.log('Missing requirements:', e.errors)
+        throw e
       }
       if (e instanceof InferenceError && attempt < maxRetries - 1) {
-        const wait = Math.pow(2, attempt) * 1000;
-        console.log(`Error: ${e.message}. Retrying in ${wait}ms...`);
-        await new Promise(r => setTimeout(r, wait));
+        const wait = Math.pow(2, attempt) * 1000
+        console.log(`Error: ${e.message}. Retrying in ${wait}ms...`)
+        await new Promise((r) => setTimeout(r, wait))
       } else {
-        throw e;
+        throw e
       }
     }
   }
@@ -284,8 +282,8 @@ async function robustRun(config: any, maxRetries = 3) {
 
 const result = await robustRun({
   app: 'infsh/flux-schnell',
-  input: { prompt: 'A serene landscape' }
-});
+  input: { prompt: 'A serene landscape' },
+})
 ```
 
 ## Batch Processing Pattern
@@ -293,51 +291,46 @@ const result = await robustRun({
 Process multiple items efficiently:
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 async function processBatch(items: string[], concurrency = 5) {
-  const results: any[] = [];
-  const queue = [...items];
-  const inProgress: Promise<void>[] = [];
+  const results: any[] = []
+  const queue = [...items]
+  const inProgress: Promise<void>[] = []
 
   async function processOne(item: string) {
     const result = await client.run({
       app: 'infsh/flux-schnell',
-      input: { prompt: item }
-    });
-    results.push(result);
+      input: { prompt: item },
+    })
+    results.push(result)
   }
 
   while (queue.length > 0 || inProgress.length > 0) {
     // Fill up to concurrency limit
     while (queue.length > 0 && inProgress.length < concurrency) {
-      const item = queue.shift()!;
+      const item = queue.shift()!
       const promise = processOne(item).then(() => {
-        const index = inProgress.indexOf(promise);
-        if (index > -1) inProgress.splice(index, 1);
-      });
-      inProgress.push(promise);
+        const index = inProgress.indexOf(promise)
+        if (index > -1) inProgress.splice(index, 1)
+      })
+      inProgress.push(promise)
     }
 
     // Wait for at least one to complete
     if (inProgress.length > 0) {
-      await Promise.race(inProgress);
+      await Promise.race(inProgress)
     }
   }
 
-  return results;
+  return results
 }
 
-const prompts = [
-  'A mountain sunrise',
-  'A city at night',
-  'An ocean sunset',
-  'A forest path'
-];
+const prompts = ['A mountain sunrise', 'A city at night', 'An ocean sunset', 'A forest path']
 
-const results = await processBatch(prompts);
+const results = await processBatch(prompts)
 ```
 
 ## Next.js Server Actions Pattern
@@ -346,27 +339,27 @@ Use with React Server Components:
 
 ```typescript
 // app/actions.ts
-'use server';
+'use server'
 
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: process.env.INFERENCE_API_KEY });
+const client = inference({ apiKey: process.env.INFERENCE_API_KEY })
 
 export async function generateImage(prompt: string) {
   const result = await client.run({
     app: 'infsh/flux-schnell',
-    input: { prompt }
-  });
-  return result.output;
+    input: { prompt },
+  })
+  return result.output
 }
 
 export async function chat(message: string, sessionId?: string) {
-  const agent = client.agent('my-org/assistant@latest');
-  const response = await agent.sendMessage(message);
+  const agent = client.agent('my-org/assistant@latest')
+  const response = await agent.sendMessage(message)
   return {
     text: response.text,
-    sessionId: response.sessionId
-  };
+    sessionId: response.sessionId,
+  }
 }
 ```
 

@@ -58,4 +58,29 @@ export const searchFields: Field[] = [
       },
     ],
   },
+  // Product-specific fields for fast storefront search without hitting the products table
+  {
+    name: 'tagline',
+    type: 'text',
+    index: true,
+    admin: {
+      readOnly: true,
+    },
+  },
+  {
+    name: 'productType',
+    type: 'text',
+    index: true,
+    admin: {
+      readOnly: true,
+    },
+  },
+  {
+    name: 'price',
+    type: 'number',
+    index: true,
+    admin: {
+      readOnly: true,
+    },
+  },
 ]

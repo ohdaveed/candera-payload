@@ -1,6 +1,6 @@
 ---
 name: dialogue-audio
-description: "Multi-speaker dialogue audio creation with ElevenLabs and Dia TTS. Covers speaker tags, emotion control, pacing, conversation flow, and post-production. Use for: podcasts, audiobooks, explainers, character dialogue, conversational content. Triggers: dialogue audio, multi speaker, conversation audio, dia tts, two speakers, podcast audio, character voices, voice acting, dialogue generation, conversation tts, multi voice, speaker tags, dialogue recording, elevenlabs dialogue, eleven labs conversation"
+description: 'Multi-speaker dialogue audio creation with ElevenLabs and Dia TTS. Covers speaker tags, emotion control, pacing, conversation flow, and post-production. Use for: podcasts, audiobooks, explainers, character dialogue, conversational content. Triggers: dialogue audio, multi speaker, conversation audio, dia tts, two speakers, podcast audio, character voices, voice acting, dialogue generation, conversation tts, multi voice, speaker tags, dialogue recording, elevenlabs dialogue, eleven labs conversation'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,17 +23,17 @@ belt app run falai/dia-tts --input '{
 }'
 ```
 
-
 ## Speaker Tags
 
 Dia TTS uses `[S1]` and `[S2]` to distinguish two speakers.
 
-| Tag | Role | Voice |
-|-----|------|-------|
+| Tag    | Role      | Voice                          |
+| ------ | --------- | ------------------------------ |
 | `[S1]` | Speaker 1 | Automatically assigned voice A |
 | `[S2]` | Speaker 2 | Automatically assigned voice B |
 
 **Rules:**
+
 - Always start each speaker turn with the tag
 - Tags must be uppercase: `[S1]` not `[s1]`
 - Maximum 2 speakers per generation
@@ -45,14 +45,14 @@ Dia TTS interprets punctuation and non-speech cues for emotional delivery.
 
 ### Punctuation Effects
 
-| Punctuation | Effect | Example |
-|-------------|--------|---------|
-| `.` | Neutral, declarative, medium pause | "This is important." |
-| `!` | Emphasis, excitement, energy | "This is amazing!" |
-| `?` | Rising intonation, questioning | "Are you sure about that?" |
-| `...` | Hesitation, trailing off, long pause | "I thought it would work... but it didn't." |
-| `,` | Short breath pause | "First, we analyze. Then, we act." |
-| `—` or `--` | Interruption or pivot | "I was going to say — never mind." |
+| Punctuation | Effect                               | Example                                     |
+| ----------- | ------------------------------------ | ------------------------------------------- |
+| `.`         | Neutral, declarative, medium pause   | "This is important."                        |
+| `!`         | Emphasis, excitement, energy         | "This is amazing!"                          |
+| `?`         | Rising intonation, questioning       | "Are you sure about that?"                  |
+| `...`       | Hesitation, trailing off, long pause | "I thought it would work... but it didn't." |
+| `,`         | Short breath pause                   | "First, we analyze. Then, we act."          |
+| `—` or `--` | Interruption or pivot                | "I was going to say — never mind."          |
 
 ### Non-Speech Sounds
 
@@ -89,12 +89,12 @@ belt app run falai/dia-tts --input '{
 
 ### Pause Hierarchy
 
-| Technique | Pause Length | Use For |
-|-----------|-------------|---------|
-| Comma `,` | ~0.3 seconds | Between clauses, list items |
-| Period `.` | ~0.5 seconds | Between sentences |
-| Ellipsis `...` | ~1.0 seconds | Dramatic pause, thinking, hesitation |
-| New speaker tag | ~0.3 seconds | Natural turn-taking gap |
+| Technique       | Pause Length | Use For                              |
+| --------------- | ------------ | ------------------------------------ |
+| Comma `,`       | ~0.3 seconds | Between clauses, list items          |
+| Period `.`      | ~0.5 seconds | Between sentences                    |
+| Ellipsis `...`  | ~1.0 seconds | Dramatic pause, thinking, hesitation |
+| New speaker tag | ~0.3 seconds | Natural turn-taking gap              |
 
 ### Speed Control
 
@@ -192,26 +192,26 @@ belt app run infsh/media-merger --input '{
 
 ## Script Writing Tips
 
-| Do | Don't |
-|----|-------|
-| Write how people talk | Write how people write |
-| Short sentences (< 15 words) | Long academic sentences |
-| Contractions ("can't", "won't") | Formal ("cannot", "will not") |
-| Natural fillers ("So,", "Well,") | Every sentence perfectly formed |
-| Vary sentence length | All sentences same length |
-| Include reactions ("Exactly!", "Hmm.") | One-sided monologues |
-| Read it aloud before generating | Assume it sounds right |
+| Do                                     | Don't                           |
+| -------------------------------------- | ------------------------------- |
+| Write how people talk                  | Write how people write          |
+| Short sentences (< 15 words)           | Long academic sentences         |
+| Contractions ("can't", "won't")        | Formal ("cannot", "will not")   |
+| Natural fillers ("So,", "Well,")       | Every sentence perfectly formed |
+| Vary sentence length                   | All sentences same length       |
+| Include reactions ("Exactly!", "Hmm.") | One-sided monologues            |
+| Read it aloud before generating        | Assume it sounds right          |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Monologues longer than 3 sentences | Sounds like a lecture, not conversation | Break into exchanges |
-| No emotional variation | Flat, robotic delivery | Use punctuation and non-speech cues |
-| Missing speaker tags | Voices don't alternate | Start every turn with `[S1]` or `[S2]` |
-| Formal written language | Sounds unnatural spoken | Use contractions, short sentences |
-| No pauses between topics | Feels rushed | Use `...` or scene breaks |
-| All same energy level | Monotonous | Vary between high/low energy moments |
+| Mistake                            | Problem                                 | Fix                                    |
+| ---------------------------------- | --------------------------------------- | -------------------------------------- |
+| Monologues longer than 3 sentences | Sounds like a lecture, not conversation | Break into exchanges                   |
+| No emotional variation             | Flat, robotic delivery                  | Use punctuation and non-speech cues    |
+| Missing speaker tags               | Voices don't alternate                  | Start every turn with `[S1]` or `[S2]` |
+| Formal written language            | Sounds unnatural spoken                 | Use contractions, short sentences      |
+| No pauses between topics           | Feels rushed                            | Use `...` or scene breaks              |
+| All same energy level              | Monotonous                              | Vary between high/low energy moments   |
 
 ## Related Skills
 
@@ -225,4 +225,3 @@ npx skills add inference-sh/skills@ai-avatar-video
 ```
 
 Browse all apps: `belt app store`
-

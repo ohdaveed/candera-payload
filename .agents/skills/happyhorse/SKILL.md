@@ -1,6 +1,6 @@
 ---
 name: happyhorse
-description: "Generate and edit videos with Alibaba HappyHorse 1.0 models via inference.sh CLI. Models: HappyHorse T2V, I2V, R2V, Video Edit. Capabilities: text-to-video, image-to-video, reference-to-video, video editing with natural language, character preservation, 720P/1080P, up to 15 seconds. Use for: physically realistic video, video editing, character-consistent content, product demos, social media. Triggers: happyhorse, happy horse, alibaba video, happyhorse 1.0, dashscope video, alibaba happyhorse, video editing ai, ai video editor"
+description: 'Generate and edit videos with Alibaba HappyHorse 1.0 models via inference.sh CLI. Models: HappyHorse T2V, I2V, R2V, Video Edit. Capabilities: text-to-video, image-to-video, reference-to-video, video editing with natural language, character preservation, 720P/1080P, up to 15 seconds. Use for: physically realistic video, video editing, character-consistent content, product demos, social media. Triggers: happyhorse, happy horse, alibaba video, happyhorse 1.0, dashscope video, alibaba happyhorse, video editing ai, ai video editor'
 allowed-tools: Bash(belt *)
 ---
 
@@ -20,15 +20,14 @@ belt login
 belt app run alibaba/happyhorse-1-0-t2v --input '{"prompt": "a horse galloping across a sunlit meadow"}'
 ```
 
-
 ## HappyHorse Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| T2V | `alibaba/happyhorse-1-0-t2v` | Text-to-video, physically realistic motion |
-| I2V | `alibaba/happyhorse-1-0-i2v` | Animate a single image |
-| R2V | `alibaba/happyhorse-1-0-r2v` | Preserve characters from up to 9 reference images |
-| Video Edit | `alibaba/happyhorse-1-0-video-edit` | Edit existing videos with natural language |
+| Model      | App ID                              | Best For                                          |
+| ---------- | ----------------------------------- | ------------------------------------------------- |
+| T2V        | `alibaba/happyhorse-1-0-t2v`        | Text-to-video, physically realistic motion        |
+| I2V        | `alibaba/happyhorse-1-0-i2v`        | Animate a single image                            |
+| R2V        | `alibaba/happyhorse-1-0-r2v`        | Preserve characters from up to 9 reference images |
+| Video Edit | `alibaba/happyhorse-1-0-video-edit` | Edit existing videos with natural language        |
 
 All models support 720P/1080P resolution, up to 15 seconds duration.
 
@@ -114,55 +113,55 @@ belt app run alibaba/happyhorse-1-0-video-edit --input '{
 
 ## Pricing
 
-| Resolution | Price |
-|------------|-------|
-| 720P | $0.14 per second |
-| 1080P | $0.24 per second |
+| Resolution | Price            |
+| ---------- | ---------------- |
+| 720P       | $0.14 per second |
+| 1080P      | $0.24 per second |
 
 Video Edit is billed on input + output duration.
 
 ## Parameters (T2V)
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `prompt` | string | required | Text description of the video |
-| `duration` | integer | 5 | Duration in seconds (3–15) |
-| `resolution` | enum | 720P | 720P or 1080P |
-| `ratio` | enum | 16:9 | 16:9, 9:16, 1:1, 4:3, 3:4, 21:9 |
-| `seed` | integer | random | Reproducible generation |
-| `watermark` | boolean | false | Add HappyHorse watermark |
+| Parameter    | Type    | Default  | Description                     |
+| ------------ | ------- | -------- | ------------------------------- |
+| `prompt`     | string  | required | Text description of the video   |
+| `duration`   | integer | 5        | Duration in seconds (3–15)      |
+| `resolution` | enum    | 720P     | 720P or 1080P                   |
+| `ratio`      | enum    | 16:9     | 16:9, 9:16, 1:1, 4:3, 3:4, 21:9 |
+| `seed`       | integer | random   | Reproducible generation         |
+| `watermark`  | boolean | false    | Add HappyHorse watermark        |
 
 ## Parameters (I2V)
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `first_frame` | file | required | First frame image (JPEG, PNG, WebP) |
-| `prompt` | string | - | Optional text description |
-| `duration` | integer | 5 | Duration in seconds (3–15) |
-| `resolution` | enum | 720P | 720P or 1080P |
-| `seed` | integer | random | Reproducible generation |
+| Parameter     | Type    | Default  | Description                         |
+| ------------- | ------- | -------- | ----------------------------------- |
+| `first_frame` | file    | required | First frame image (JPEG, PNG, WebP) |
+| `prompt`      | string  | -        | Optional text description           |
+| `duration`    | integer | 5        | Duration in seconds (3–15)          |
+| `resolution`  | enum    | 720P     | 720P or 1080P                       |
+| `seed`        | integer | random   | Reproducible generation             |
 
 ## Parameters (R2V)
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `prompt` | string | required | Text description of the scene |
-| `reference_images` | array | required | Up to 9 character reference images |
-| `duration` | integer | 5 | Duration in seconds (3–15) |
-| `resolution` | enum | 720P | 720P or 1080P |
-| `ratio` | enum | 16:9 | 16:9, 9:16, 1:1, 4:3, 3:4, 21:9 |
-| `seed` | integer | random | Reproducible generation |
+| Parameter          | Type    | Default  | Description                        |
+| ------------------ | ------- | -------- | ---------------------------------- |
+| `prompt`           | string  | required | Text description of the scene      |
+| `reference_images` | array   | required | Up to 9 character reference images |
+| `duration`         | integer | 5        | Duration in seconds (3–15)         |
+| `resolution`       | enum    | 720P     | 720P or 1080P                      |
+| `ratio`            | enum    | 16:9     | 16:9, 9:16, 1:1, 4:3, 3:4, 21:9    |
+| `seed`             | integer | random   | Reproducible generation            |
 
 ## Parameters (Video Edit)
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `video` | file | required | Video to edit (MP4/MOV, H.264) |
-| `prompt` | string | required | Editing instruction |
-| `reference_images` | array | - | Up to 5 reference images |
-| `audio_setting` | enum | auto | auto, generate, or keep_original |
-| `resolution` | enum | 720P | 720P or 1080P |
-| `seed` | integer | random | Reproducible generation |
+| Parameter          | Type    | Default  | Description                      |
+| ------------------ | ------- | -------- | -------------------------------- |
+| `video`            | file    | required | Video to edit (MP4/MOV, H.264)   |
+| `prompt`           | string  | required | Editing instruction              |
+| `reference_images` | array   | -        | Up to 5 reference images         |
+| `audio_setting`    | enum    | auto     | auto, generate, or keep_original |
+| `resolution`       | enum    | 720P     | 720P or 1080P                    |
+| `seed`             | integer | random   | Reproducible generation          |
 
 ## Search HappyHorse Apps
 

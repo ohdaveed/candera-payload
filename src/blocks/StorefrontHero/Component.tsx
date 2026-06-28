@@ -1,6 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
@@ -8,8 +6,13 @@ import type { StorefrontHeroBlock as StorefrontHeroBlockType } from '@/payload-t
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { FilmGrain } from '@/components/FilmGrain'
+import { SmoothScrollLink } from './SmoothScrollLink'
 
 type Props = StorefrontHeroBlockType
+
+// CTA labels occasionally carry a trailing arrow glyph from the CMS; the button
+// renders its own <ArrowRight/>, so strip any glyph to avoid a doubled arrow.
+const stripTrailingArrow = (label: string) => label.replace(/\s*[→›»>]+\s*$/u, '')
 
 export const StorefrontHeroBlock: React.FC<Props> = ({
   heroTag,
@@ -17,21 +20,16 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   subheading,
   media,
   primaryCtaLabel,
-  primaryCtaUrl,
-  secondaryCtaLabel,
-  secondaryCtaUrl,
   showStatusCard,
-  statusCardTitle,
-  statusCardPrice = '$38',
-  statusCardSubtitle,
-  statusCardStatus,
-  statusCardShips,
-  statusCardLinkUrl = '/products/wild-lilac',
+  ethosCardEyebrow,
+  ethosCardBody,
+  ethosCardFooterLabel,
+  ethosCardLinkLabel,
 }) => {
   return (
     <Section
       padding="none"
-      className="relative flex min-h-[560px] md:min-h-[700px] items-end overflow-hidden bg-candera-obsidian"
+      className="relative flex min-h-[100svh] items-end overflow-hidden bg-candera-obsidian"
     >
       {/* Background image */}
       {media && typeof media === 'object' && (
@@ -41,16 +39,24 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
         </div>
       )}
 
-      {/* Gradient overlay */}
+      {/* Gradient overlay — heavier left-side scrim keeps subheading legible
+          against textured background imagery */}
       <span
-        className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,6,4,0.95)_0%,rgba(8,6,4,0.55)_50%,transparent_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,6,4,0.97)_0%,rgba(8,6,4,0.88)_30%,rgba(8,6,4,0.62)_55%,rgba(8,6,4,0.10)_80%,transparent_100%)]"
+        aria-hidden="true"
+      />
+
+      {/* Soft warm bottom fade — primes the eye for the cream palette of the
+          section that follows without muddying the obsidian hero. */}
+      <span
+        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-candera-linen/10"
         aria-hidden="true"
       />
 
       <FilmGrain />
 
       {/* Content */}
-      <Container className="relative z-10 pb-14 pt-32 md:pt-44 w-full">
+      <Container className="relative z-10 pb-20 md:pb-28 pt-32 md:pt-44 w-full">
         <div className="grid grid-cols-1 md:grid-cols-12 items-end justify-between gap-12 md:gap-16">
           <header className="md:col-span-8 flex flex-col items-start text-left max-w-[640px]">
             {heroTag && (
@@ -60,80 +66,63 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
               </div>
             )}
 
-            <h1 className="hero-heading text-candera-vellum m-0">{headline}</h1>
+            <h1 className="hero-heading text-candera-vellum m-0 drop-shadow-[0_2px_16px_rgba(8,6,4,0.45)]">
+              {headline}
+            </h1>
 
             <span className="block w-10 h-[1px] bg-candera-ember mt-5 mb-4" aria-hidden="true" />
 
             {subheading && (
-              <p className="editorial text-candera-vellum/80 max-w-[420px] m-0">{subheading}</p>
+              <p className="editorial text-candera-vellum/90 max-w-[420px] m-0 drop-shadow-[0_1px_10px_rgba(8,6,4,0.4)]">
+                {subheading}
+              </p>
             )}
 
-            <nav className="flex flex-wrap items-center gap-4 mt-8">
-              {primaryCtaLabel && primaryCtaUrl && (
+            {/* Single, dominant action — generous breathing room above, smooth-scrolls
+                to the product collection further down the page. */}
+            {primaryCtaLabel && (
+              <div className="mt-10 w-full sm:w-auto">
                 <Button
                   asChild
                   variant="cta-ember"
                   size="cta"
-                  className="bg-candera-ember text-candera-obsidian hover:bg-candera-vellum hover:text-candera-obsidian transition-colors"
+                  className="w-full justify-center px-4 tracking-[0.1em] sm:w-auto sm:px-10 sm:tracking-[.3em]"
                 >
-                  <Link href={primaryCtaUrl}>
-                    {primaryCtaLabel}
-                    <ArrowRight width={14} height={14} strokeWidth={1.5} aria-hidden="true" />
-                  </Link>
+                  <SmoothScrollLink targetId="collection">
+                    {stripTrailingArrow(primaryCtaLabel)}
+                  </SmoothScrollLink>
                 </Button>
-              )}
-              {secondaryCtaLabel && secondaryCtaUrl && (
-                <a
-                  href={secondaryCtaUrl}
-                  className="btn-text text-candera-vellum/85 hover:text-candera-vellum underline-offset-4 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
-                >
-                  {secondaryCtaLabel}
-                </a>
-              )}
-            </nav>
+              </div>
+            )}
           </header>
 
-          {/* Right — Status Card */}
+          {/* Right — Maker Ethos card: brand authority anchor that foreshadows
+              the Journal. Glassmorphic over the dark hero imagery. */}
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
-              <div className="bg-white/[0.02] border border-candera-vellum/15 p-6 flex flex-col gap-4 hover:border-candera-vellum/25 transition-all duration-300 rounded-none shadow-xl w-full max-w-[340px]">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <span className="font-display italic text-lg text-candera-vellum">
-                    {statusCardTitle || 'Featured Candle'}
+              <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm border border-border text-card-foreground shadow-card">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-candera-vellum/55 uppercase m-0">
+                  {ethosCardEyebrow || 'The Slow Pour'}
+                </p>
+
+                <p className="font-editorial italic text-sm text-candera-vellum/90 mt-2 leading-relaxed m-0">
+                  {ethosCardBody ||
+                    'No factories. No white labeling. Just real pressed botanicals and slow light.'}
+                </p>
+
+                <div className="pt-4 mt-4 border-t border-candera-vellum/10 flex items-center justify-between gap-4">
+                  <span className="font-mono text-[10px] tracking-[0.12em] text-candera-vellum/45 uppercase">
+                    {ethosCardFooterLabel || 'Exclusively on Etsy'}
                   </span>
-                  {statusCardPrice && (
-                    <span className="font-sans font-semibold text-lg text-candera-vellum">
-                      {statusCardPrice}
-                    </span>
-                  )}
-                </div>
-
-                {/* Subtitle */}
-                {statusCardSubtitle && (
-                  <p className="font-editorial italic text-candera-stone/85 text-sm m-0 -mt-1">
-                    {statusCardSubtitle}
-                  </p>
-                )}
-
-                <div className="h-px bg-candera-vellum/10" />
-
-                {/* Status summary — single line. Only shown when real batch
-                    data is supplied; we never fabricate a count or status. */}
-                <div className="flex items-center justify-between gap-4">
-                  {(statusCardStatus || statusCardShips) && (
-                    <span className="text-sm text-candera-vellum/70">
-                      {[statusCardStatus, statusCardShips].filter(Boolean).join(' · ')}
-                    </span>
-                  )}
-                  <Link
-                    href={statusCardLinkUrl || '/products/wild-lilac'}
-                    className="ml-auto text-xs font-bold uppercase tracking-[.18em] text-candera-linen/70 hover:text-white transition-colors underline decoration-1 underline-offset-4"
+                  <SmoothScrollLink
+                    targetId="journal"
+                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-candera-vellum hover:text-candera-vellum/60 transition-colors cursor-pointer"
                   >
-                    View Scent →
-                  </Link>
+                    {ethosCardLinkLabel || 'Read Journal'}
+                    <span aria-hidden="true">↓</span>
+                  </SmoothScrollLink>
                 </div>
-              </div>
+              </aside>
             </div>
           )}
         </div>

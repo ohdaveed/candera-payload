@@ -1,6 +1,6 @@
 ---
 name: video-prompting-guide
-description: "Best practices and techniques for writing effective AI video generation prompts. Covers: Veo, Seedance, Wan, Grok, Kling, Runway, Pika, Sora prompting strategies. Learn: shot types, camera movements, lighting, pacing, style keywords, negative prompts. Use for: improving video quality, getting consistent results, professional video prompts. Triggers: video prompt, how to prompt video, veo prompts, video generation tips, better ai video, video prompt engineering, video prompt guide, video prompt template, ai video tips, video prompt best practices, video prompt examples, cinematography prompts"
+description: 'Best practices and techniques for writing effective AI video generation prompts. Covers: Veo, Seedance, Wan, Grok, Kling, Runway, Pika, Sora prompting strategies. Learn: shot types, camera movements, lighting, pacing, style keywords, negative prompts. Use for: improving video quality, getting consistent results, professional video prompts. Triggers: video prompt, how to prompt video, veo prompts, video generation tips, better ai video, video prompt engineering, video prompt guide, video prompt template, ai video tips, video prompt best practices, video prompt examples, cinematography prompts'
 allowed-tools: Bash(belt *)
 ---
 
@@ -24,7 +24,6 @@ belt app run google/veo-3-1-fast --input '{
   "prompt": "Cinematic tracking shot of a red sports car driving through Tokyo at night, neon lights reflecting on wet streets, rain falling, 4K, shallow depth of field"
 }'
 ```
-
 
 ## Prompt Structure Formula
 
@@ -50,46 +49,46 @@ cinematic, 4K, shallow depth of field"
 
 ## Shot Types
 
-| Shot Type | Description | Use For |
-|-----------|-------------|---------|
-| Wide shot | Shows entire scene | Establishing location |
-| Medium shot | Waist-up framing | Conversations, actions |
-| Close-up | Face or detail | Emotion, product detail |
-| Extreme close-up | Single feature | Drama, texture |
-| Aerial shot | Bird's eye view | Landscapes, scale |
-| Low angle | Camera looking up | Power, grandeur |
-| High angle | Camera looking down | Vulnerability |
-| Dutch angle | Tilted camera | Unease, tension |
-| POV shot | First person view | Immersion |
+| Shot Type        | Description         | Use For                 |
+| ---------------- | ------------------- | ----------------------- |
+| Wide shot        | Shows entire scene  | Establishing location   |
+| Medium shot      | Waist-up framing    | Conversations, actions  |
+| Close-up         | Face or detail      | Emotion, product detail |
+| Extreme close-up | Single feature      | Drama, texture          |
+| Aerial shot      | Bird's eye view     | Landscapes, scale       |
+| Low angle        | Camera looking up   | Power, grandeur         |
+| High angle       | Camera looking down | Vulnerability           |
+| Dutch angle      | Tilted camera       | Unease, tension         |
+| POV shot         | First person view   | Immersion               |
 
 ## Camera Movements
 
-| Movement | Description | Effect |
-|----------|-------------|--------|
-| Tracking shot | Camera follows subject | Dynamic, engaging |
-| Dolly in/out | Camera moves toward/away | Focus, reveal |
-| Pan | Horizontal rotation | Survey scene |
-| Tilt | Vertical rotation | Reveal height |
-| Crane shot | Vertical + horizontal | Dramatic reveal |
-| Handheld | Slight shake | Realism, urgency |
-| Steadicam | Smooth following | Professional, cinematic |
-| Zoom | Lens zoom in/out | Quick focus change |
-| Static | No movement | Contemplation, stability |
+| Movement      | Description              | Effect                   |
+| ------------- | ------------------------ | ------------------------ |
+| Tracking shot | Camera follows subject   | Dynamic, engaging        |
+| Dolly in/out  | Camera moves toward/away | Focus, reveal            |
+| Pan           | Horizontal rotation      | Survey scene             |
+| Tilt          | Vertical rotation        | Reveal height            |
+| Crane shot    | Vertical + horizontal    | Dramatic reveal          |
+| Handheld      | Slight shake             | Realism, urgency         |
+| Steadicam     | Smooth following         | Professional, cinematic  |
+| Zoom          | Lens zoom in/out         | Quick focus change       |
+| Static        | No movement              | Contemplation, stability |
 
 ## Lighting Keywords
 
-| Keyword | Effect |
-|---------|--------|
-| Golden hour | Warm, soft, romantic |
-| Blue hour | Cool, moody, twilight |
-| High key | Bright, minimal shadows |
-| Low key | Dark, dramatic shadows |
-| Rim lighting | Subject outlined with light |
-| Backlit | Light from behind subject |
-| Soft lighting | Gentle, flattering |
-| Hard lighting | Sharp shadows, contrast |
-| Neon | Colorful, urban, cyberpunk |
-| Natural lighting | Realistic, documentary |
+| Keyword          | Effect                      |
+| ---------------- | --------------------------- |
+| Golden hour      | Warm, soft, romantic        |
+| Blue hour        | Cool, moody, twilight       |
+| High key         | Bright, minimal shadows     |
+| Low key          | Dark, dramatic shadows      |
+| Rim lighting     | Subject outlined with light |
+| Backlit          | Light from behind subject   |
+| Soft lighting    | Gentle, flattering          |
+| Hard lighting    | Sharp shadows, contrast     |
+| Neon             | Colorful, urban, cyberpunk  |
+| Natural lighting | Realistic, documentary      |
 
 ## Style Keywords
 
@@ -163,13 +162,13 @@ belt app run xai/grok-imagine-video --input '{
 
 ## Common Mistakes to Avoid
 
-| Mistake | Problem | Better Approach |
-|---------|---------|-----------------|
-| Too vague | "A nice video" | Specify shot, subject, style |
-| Too complex | Multiple scenes | One scene per prompt |
-| No motion | Static description | Include camera movement or action |
-| Conflicting styles | "Minimalist maximalist" | Choose one aesthetic |
-| No lighting | Undefined mood | Specify lighting conditions |
+| Mistake            | Problem                 | Better Approach                   |
+| ------------------ | ----------------------- | --------------------------------- |
+| Too vague          | "A nice video"          | Specify shot, subject, style      |
+| Too complex        | Multiple scenes         | One scene per prompt              |
+| No motion          | Static description      | Include camera movement or action |
+| Conflicting styles | "Minimalist maximalist" | Choose one aesthetic              |
+| No lighting        | Undefined mood          | Specify lighting conditions       |
 
 ## Model-Specific Tips
 
@@ -245,4 +244,3 @@ Browse all video apps: `belt app store --category video`
 
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Video Generation Guide](https://inference.sh/blog/guides/video-generation) - Comprehensive video guide
-

@@ -1,6 +1,6 @@
 interface:
-  display_name: "Candera Payload"
-  short_description: "Repo-specific patterns and workflows for candera-payload"
-  default_prompt: "Use the candera-payload repo skill to follow existing architecture, testing, and workflow conventions."
+  display_name: 'Candera Payload'
+  short_description: 'Repo-specific patterns and workflows for candera-payload'
+  default_prompt: 'Use the candera-payload repo skill to follow existing architecture, testing, and workflow conventions.'
 policy:
   allow_implicit_invocation: true

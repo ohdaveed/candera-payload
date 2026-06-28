@@ -6,10 +6,13 @@
 
 1. Ensure `"type": "module"` is in your `package.json`
 2. Use file extensions in imports:
+
 ```javascript
-import { helper } from "./helper.js"; // .js required for ESM
+import { helper } from './helper.js' // .js required for ESM
 ```
+
 3. Check that dependencies are listed in `package.json`:
+
 ```json
 {
   "dependencies": {
@@ -22,6 +25,7 @@ import { helper } from "./helper.js"; // .js required for ESM
 ### "Cannot use import statement outside a module"
 
 Your `package.json` must have `"type": "module"`:
+
 ```json
 {
   "type": "module"
@@ -31,10 +35,12 @@ Your `package.json` must have `"type": "module"`:
 ### Heap Out of Memory
 
 1. Increase RAM in `inf.yml`:
+
 ```yaml
 resources:
   ram: 8
 ```
+
 2. Stream large data instead of loading into memory
 3. Clean up references and let GC collect
 
@@ -55,14 +61,14 @@ async run(inputData) {
 Use `File.fromPath()` from `@inferencesh/app` for output files:
 
 ```javascript
-import { File } from "@inferencesh/app";
-import { writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { File } from '@inferencesh/app'
+import { writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
-const outputPath = join(tmpdir(), "result.txt");
-writeFileSync(outputPath, "output data");
-return { file: File.fromPath(outputPath) };
+const outputPath = join(tmpdir(), 'result.txt')
+writeFileSync(outputPath, 'output data')
+return { file: File.fromPath(outputPath) }
 ```
 
 ### Path Resolution
@@ -70,13 +76,14 @@ return { file: File.fromPath(outputPath) };
 Use `path.join` instead of string concatenation:
 
 ```javascript
-import { join } from "node:path";
-const configPath = join("models", "config", "settings.json");
+import { join } from 'node:path'
+const configPath = join('models', 'config', 'settings.json')
 ```
 
 ### Version Conflicts
 
 Pin compatible versions in `package.json`:
+
 ```json
 {
   "dependencies": {
@@ -88,6 +95,7 @@ Pin compatible versions in `package.json`:
 ### Native Modules
 
 Some packages (e.g., `sharp`, `canvas`) need system libraries. Add them to `packages.txt`:
+
 ```
 libvips-dev
 ```
@@ -117,8 +125,8 @@ Use async generators for long-running work — users see progress immediately:
 export class App {
   async *run(inputData) {
     for (const chunk of inputData.items) {
-      const result = await this.processChunk(chunk);
-      yield { partial: result, progress: chunk.index / inputData.items.length };
+      const result = await this.processChunk(chunk)
+      yield { partial: result, progress: chunk.index / inputData.items.length }
     }
   }
 }
@@ -199,25 +207,25 @@ async run(inputData) {
 ```javascript
 export class App {
   constructor() {
-    this.cancelFlag = false;
+    this.cancelFlag = false
   }
 
   async onCancel() {
-    console.log("Cancellation requested...");
-    this.cancelFlag = true;
-    return true;
+    console.log('Cancellation requested...')
+    this.cancelFlag = true
+    return true
   }
 
   async *run(inputData) {
-    this.cancelFlag = false;
+    this.cancelFlag = false
 
     for (let i = 0; i < 100; i++) {
       if (this.cancelFlag) {
-        console.log("Stopping work...");
-        break;
+        console.log('Stopping work...')
+        break
       }
 
-      yield await this.heavyComputation(i);
+      yield await this.heavyComputation(i)
     }
   }
 }

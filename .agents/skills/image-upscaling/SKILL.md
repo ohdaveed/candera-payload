@@ -1,6 +1,6 @@
 ---
 name: image-upscaling
-description: "Upscale and enhance images with Real-ESRGAN, Thera, Topaz, FLUX Upscaler via inference.sh CLI. Models: Real-ESRGAN, Thera (any size), FLUX Dev Upscaler, Topaz Image Upscaler. Use for: enhance low-res images, upscale AI art, restore old photos, increase resolution. Triggers: upscale image, image upscaler, enhance image, increase resolution, real esrgan, ai upscale, super resolution, image enhancement, upscaling, enlarge image, higher resolution, 4k upscale, hd upscale"
+description: 'Upscale and enhance images with Real-ESRGAN, Thera, Topaz, FLUX Upscaler via inference.sh CLI. Models: Real-ESRGAN, Thera (any size), FLUX Dev Upscaler, Topaz Image Upscaler. Use for: enhance low-res images, upscale AI art, restore old photos, increase resolution. Triggers: upscale image, image upscaler, enhance image, increase resolution, real esrgan, ai upscale, super resolution, image enhancement, upscaling, enlarge image, higher resolution, 4k upscale, hd upscale'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,11 +22,10 @@ belt login
 belt app run infsh/real-esrgan --input '{"image_url": "https://your-image.jpg"}'
 ```
 
-
 ## Available Upscalers
 
-| Model | App ID | Best For |
-|-------|--------|----------|
+| Model                | App ID                       | Best For                        |
+| -------------------- | ---------------------------- | ------------------------------- |
 | Topaz Image Upscaler | `falai/topaz-image-upscaler` | Professional quality, any image |
 
 ## Examples
@@ -78,4 +77,3 @@ Browse all image apps: `belt app store --category image`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image workflow guide
 - [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-

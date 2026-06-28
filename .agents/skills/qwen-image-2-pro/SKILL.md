@@ -1,6 +1,6 @@
 ---
 name: qwen-image-2-pro
-description: "Generate images with Alibaba Qwen-Image-2.0-Pro via inference.sh CLI. Professional text rendering, fine-grained realism, enhanced semantic adherence. Ideal for posters, banners, and text-heavy designs. Triggers: qwen image pro, qwen-image-pro, qwen 2 pro, alibaba image pro, dashscope pro, professional text rendering"
+description: 'Generate images with Alibaba Qwen-Image-2.0-Pro via inference.sh CLI. Professional text rendering, fine-grained realism, enhanced semantic adherence. Ideal for posters, banners, and text-heavy designs. Triggers: qwen image pro, qwen-image-pro, qwen 2 pro, alibaba image pro, dashscope pro, professional text rendering'
 allowed-tools: Bash(belt *)
 ---
 
@@ -21,7 +21,6 @@ belt login
 
 belt app run alibaba/qwen-image-2-pro --input '{"prompt": "Poster with title \"Welcome!\" in bold blue text"}'
 ```
-
 
 ## Pro Model Capabilities
 
@@ -96,26 +95,26 @@ belt app run alibaba/qwen-image-2-pro --input '{
 
 ## Input Options
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `prompt` | string | **Required.** What to generate or edit (max 800 chars) |
-| `reference_images` | array | Input images for editing (1-3 images) |
-| `num_images` | integer | Number of images to generate (1-6) |
-| `width` | integer | Output width in pixels (512-2048) |
-| `height` | integer | Output height in pixels (512-2048) |
-| `watermark` | boolean | Add "Qwen-Image" watermark |
-| `negative_prompt` | string | Content to avoid (max 500 chars) |
-| `prompt_extend` | boolean | Enable prompt rewriting (default: true) |
-| `seed` | integer | Random seed for reproducibility (0-2147483647) |
+| Parameter          | Type    | Description                                            |
+| ------------------ | ------- | ------------------------------------------------------ |
+| `prompt`           | string  | **Required.** What to generate or edit (max 800 chars) |
+| `reference_images` | array   | Input images for editing (1-3 images)                  |
+| `num_images`       | integer | Number of images to generate (1-6)                     |
+| `width`            | integer | Output width in pixels (512-2048)                      |
+| `height`           | integer | Output height in pixels (512-2048)                     |
+| `watermark`        | boolean | Add "Qwen-Image" watermark                             |
+| `negative_prompt`  | string  | Content to avoid (max 500 chars)                       |
+| `prompt_extend`    | boolean | Enable prompt rewriting (default: true)                |
+| `seed`             | integer | Random seed for reproducibility (0-2147483647)         |
 
 **Size constraint:** Total pixels must be between 512×512 and 2048×2048.
 
 ## Output
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | array | The generated or edited images (PNG format) |
-| `output_meta` | object | Metadata with dimensions and count |
+| Field         | Type   | Description                                 |
+| ------------- | ------ | ------------------------------------------- |
+| `images`      | array  | The generated or edited images (PNG format) |
+| `output_meta` | object | Metadata with dimensions and count          |
 
 ## Text Rendering Tips
 
@@ -127,6 +126,7 @@ For best text results with the Pro model:
 4. **Use negative prompts**: `"blurry text, distorted text, low quality"`
 
 **Example prompt structure:**
+
 ```
 Poster with the title "GRAND OPENING" in large red serif font at the top center.
 Below, the date "March 15, 2024" in smaller black text.
@@ -205,4 +205,3 @@ Browse all image apps: `belt app store --category image`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [File Handling](https://inference.sh/docs/api/sdk/files) - Working with images
-

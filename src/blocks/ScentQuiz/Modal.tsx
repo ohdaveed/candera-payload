@@ -102,11 +102,12 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
   if (!isOpen) return null
 
   return (
-    <div
-      role="dialog"
+    <dialog
+      open
+      onClose={close}
       aria-modal="true"
       aria-label="Scent Quiz"
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-0 m-0 w-full max-w-none border-0 text-candera-vellum"
     >
       {/* Backdrop */}
       <div
@@ -144,6 +145,6 @@ export const ScentQuizModal: React.FC<ScentQuizBlockType> = (props) => {
 
         <ScentQuizBlock {...props} />
       </div>
-    </div>
+    </dialog>
   )
 }

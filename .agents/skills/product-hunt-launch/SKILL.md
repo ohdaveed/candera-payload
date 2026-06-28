@@ -1,6 +1,6 @@
 ---
 name: product-hunt-launch
-description: "Product Hunt launch optimization with specific specs, timing, and gallery strategy. Covers taglines, gallery images, maker comments, and launch day tactics. Use for: product launches, startup launches, side project launches, Product Hunt optimization. Triggers: product hunt, ph launch, product hunt launch, launch strategy, product launch, startup launch, product hunt tips, product hunt gallery, ph optimization, launch day, product hunt maker"
+description: 'Product Hunt launch optimization with specific specs, timing, and gallery strategy. Covers taglines, gallery images, maker comments, and launch day tactics. Use for: product launches, startup launches, side project launches, Product Hunt optimization. Triggers: product hunt, ph launch, product hunt launch, launch strategy, product launch, startup launch, product hunt tips, product hunt gallery, ph optimization, launch day, product hunt maker'
 allowed-tools: Bash(belt *)
 ---
 
@@ -30,18 +30,17 @@ belt app run tavily/search-assistant --input '{
 }'
 ```
 
-
 ## Listing Specifications
 
-| Element | Spec | Notes |
-|---------|------|-------|
-| Product name | — | Keep it short, memorable |
-| Tagline | **60 character limit** | No period at end |
-| Description | First **260 chars** show in preview | Full description can be longer |
-| Gallery images | Up to **8 images** | 1270 x 760 px recommended |
-| Topics | **Max 3** | Pick the most specific ones |
-| Makers | Tag all team members | They can engage in comments |
-| Link | Product URL | Where upvoters go |
+| Element        | Spec                                | Notes                          |
+| -------------- | ----------------------------------- | ------------------------------ |
+| Product name   | —                                   | Keep it short, memorable       |
+| Tagline        | **60 character limit**              | No period at end               |
+| Description    | First **260 chars** show in preview | Full description can be longer |
+| Gallery images | Up to **8 images**                  | 1270 x 760 px recommended      |
+| Topics         | **Max 3**                           | Pick the most specific ones    |
+| Makers         | Tag all team members                | They can engage in comments    |
+| Link           | Product URL                         | Where upvoters go              |
 
 ## Gallery Images
 
@@ -49,13 +48,13 @@ belt app run tavily/search-assistant --input '{
 
 The first gallery image shows in the feed, email digest, and social shares. It IS your first impression.
 
-| Position | Content | Goal |
-|----------|---------|------|
-| **1 (Hero)** | Product in action, core value visible | Stop the scroll, communicate what it does |
-| **2** | Key feature demonstration | Show the "aha moment" |
-| **3** | Before/after or problem/solution | Show the transformation |
-| **4** | Social proof or metrics | Build credibility |
-| **5** | Technical differentiator or integrations | For evaluators |
+| Position     | Content                                  | Goal                                      |
+| ------------ | ---------------------------------------- | ----------------------------------------- |
+| **1 (Hero)** | Product in action, core value visible    | Stop the scroll, communicate what it does |
+| **2**        | Key feature demonstration                | Show the "aha moment"                     |
+| **3**        | Before/after or problem/solution         | Show the transformation                   |
+| **4**        | Social proof or metrics                  | Build credibility                         |
+| **5**        | Technical differentiator or integrations | For evaluators                            |
 
 ### Dimensions
 
@@ -100,13 +99,13 @@ belt app run falai/flux-dev-lora --input '{
 
 ### Formulas That Work
 
-| Formula | Example |
-|---------|---------|
-| [Action] for [audience] | "AI writing assistant for developers" |
-| [Result] without [pain] | "Beautiful docs without the design skills" |
-| [Tool] that [benefit] | "Analytics that explain themselves" |
-| [Adjective] [category] | "Instant customer feedback surveys" |
-| The [category] for [niche] | "The Figma for data visualization" |
+| Formula                    | Example                                    |
+| -------------------------- | ------------------------------------------ |
+| [Action] for [audience]    | "AI writing assistant for developers"      |
+| [Result] without [pain]    | "Beautiful docs without the design skills" |
+| [Tool] that [benefit]      | "Analytics that explain themselves"        |
+| [Adjective] [category]     | "Instant customer feedback surveys"        |
+| The [category] for [niche] | "The Figma for data visualization"         |
 
 ### Examples
 
@@ -124,12 +123,12 @@ belt app run falai/flux-dev-lora --input '{
 
 ### When to Launch
 
-| Factor | Recommendation |
-|--------|----------------|
-| Day | **Tuesday, Wednesday, or Thursday** (highest traffic) |
-| Time | **12:01 AM PT** (Pacific Time) — start of the PH day |
-| Avoid | Weekends, holidays, major Apple/Google events |
-| Duration | PH day = midnight PT to midnight PT |
+| Factor   | Recommendation                                        |
+| -------- | ----------------------------------------------------- |
+| Day      | **Tuesday, Wednesday, or Thursday** (highest traffic) |
+| Time     | **12:01 AM PT** (Pacific Time) — start of the PH day  |
+| Avoid    | Weekends, holidays, major Apple/Google events         |
+| Duration | PH day = midnight PT to midnight PT                   |
 
 ### Why 12:01 AM PT
 
@@ -190,16 +189,16 @@ your feedback — what reporting pain points do you have?
 
 ### Launch Day Timeline
 
-| Time (PT) | Action |
-|-----------|--------|
-| 12:01 AM | Product goes live, post maker comment immediately |
-| 12:15 AM | Share on personal social media |
-| 6:00 AM | First engagement check — reply to all comments |
-| 9:00 AM | Share in relevant communities (naturally, not spammy) |
-| 12:00 PM | Mid-day check — reply to all new comments |
-| 3:00 PM | Share any early traction or interesting feedback |
-| 6:00 PM | Evening engagement — reply to remaining comments |
-| 11:59 PM | Day ends — results are final |
+| Time (PT) | Action                                                |
+| --------- | ----------------------------------------------------- |
+| 12:01 AM  | Product goes live, post maker comment immediately     |
+| 12:15 AM  | Share on personal social media                        |
+| 6:00 AM   | First engagement check — reply to all comments        |
+| 9:00 AM   | Share in relevant communities (naturally, not spammy) |
+| 12:00 PM  | Mid-day check — reply to all new comments             |
+| 3:00 PM   | Share any early traction or interesting feedback      |
+| 6:00 PM   | Evening engagement — reply to remaining comments      |
+| 11:59 PM  | Day ends — results are final                          |
 
 ### Engagement Rules
 
@@ -230,25 +229,25 @@ belt app run tavily/search-assistant --input '{
 
 ## Post-Launch
 
-| When | Action |
-|------|--------|
-| Day 1-3 | Reply to all remaining comments, thank supporters |
-| Week 1 | Publish a "lessons learned" blog post / Twitter thread |
-| Week 2 | Follow up with interested users from comments |
+| When    | Action                                                   |
+| ------- | -------------------------------------------------------- |
+| Day 1-3 | Reply to all remaining comments, thank supporters        |
+| Week 1  | Publish a "lessons learned" blog post / Twitter thread   |
+| Week 2  | Follow up with interested users from comments            |
 | Month 1 | Check if you're eligible for "Product of the Week/Month" |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Launching on Friday/weekend | Low traffic, wasted launch | Tue-Thu only |
-| Launching at noon | Half the day already gone | 12:01 AM PT |
-| No maker comment | Looks abandoned | Post within 5 minutes |
-| Asking for upvotes | Against TOS, can get flagged | Share naturally, let product speak |
-| Generic gallery images | Doesn't show the product | Show real UI, real features |
-| Not replying to comments | Low engagement signal | Reply to every single comment |
-| Too many topics | Dilutes discoverability | Max 3, pick the most specific |
-| Tagline with buzzwords | Nobody knows what you do | Clear, specific, benefit-focused |
+| Mistake                     | Problem                      | Fix                                |
+| --------------------------- | ---------------------------- | ---------------------------------- |
+| Launching on Friday/weekend | Low traffic, wasted launch   | Tue-Thu only                       |
+| Launching at noon           | Half the day already gone    | 12:01 AM PT                        |
+| No maker comment            | Looks abandoned              | Post within 5 minutes              |
+| Asking for upvotes          | Against TOS, can get flagged | Share naturally, let product speak |
+| Generic gallery images      | Doesn't show the product     | Show real UI, real features        |
+| Not replying to comments    | Low engagement signal        | Reply to every single comment      |
+| Too many topics             | Dilutes discoverability      | Max 3, pick the most specific      |
+| Tagline with buzzwords      | Nobody knows what you do     | Clear, specific, benefit-focused   |
 
 ## Related Skills
 
@@ -259,4 +258,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

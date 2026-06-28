@@ -1,6 +1,6 @@
 ---
 name: building-inferencesh-apps
-description: "Build and deploy applications on inference.sh. Use when getting started, understanding the platform, creating apps, configuring resources, or needing an overview of inference.sh app development. Supports both Python and Node.js. Triggers: inference.sh app, belt app, inf.yml, inference.py, inference.js, deploy app, app development, build app, create app, GPU app, VRAM, app resources, app secrets, app integrations, multi-function app"
+description: 'Build and deploy applications on inference.sh. Use when getting started, understanding the platform, creating apps, configuring resources, or needing an overview of inference.sh app development. Supports both Python and Node.js. Triggers: inference.sh app, belt app, inf.yml, inference.py, inference.js, deploy app, app development, build app, create app, GPU app, VRAM, app resources, app secrets, app integrations, multi-function app'
 ---
 
 > **Install the belt CLI skill:** `npx skills add belt-sh/cli`
@@ -129,29 +129,29 @@ class App(BaseApp):
 ### Node.js
 
 ```javascript
-import { z } from "zod";
+import { z } from 'zod'
 
 export const AppSetup = z.object({
-  modelId: z.string().default("gpt2").describe("Model to load"),
-});
+  modelId: z.string().default('gpt2').describe('Model to load'),
+})
 
 export const RunInput = z.object({
-  prompt: z.string().describe("Input prompt"),
-});
+  prompt: z.string().describe('Input prompt'),
+})
 
 export const RunOutput = z.object({
-  result: z.string().describe("Output result"),
-});
+  result: z.string().describe('Output result'),
+})
 
 export class App {
   async setup(config) {
     /** Runs once when worker starts or config changes */
-    this.model = loadModel(config.modelId);
+    this.model = loadModel(config.modelId)
   }
 
   async run(inputData) {
     /** Default function — runs for each request */
-    return { result: "done" };
+    return { result: 'done' }
   }
 
   async unload() {
@@ -160,7 +160,7 @@ export class App {
 
   async onCancel() {
     /** Called when user cancels — for long-running tasks */
-    return true;
+    return true
   }
 }
 ```
@@ -236,6 +236,7 @@ class App(BaseApp):
 ### Project Structure
 
 **Python:**
+
 ```
 my-app/
 ├── inf.yml           # Configuration
@@ -245,6 +246,7 @@ my-app/
 ```
 
 **Node.js:**
+
 ```
 my-app/
 ├── inf.yml           # Configuration
@@ -260,7 +262,7 @@ my-app/
 name: my-app
 description: What my app does
 category: image
-kernel: python-3.11     # or node-22
+kernel: python-3.11 # or node-22
 
 # For multi-function apps (default: run)
 # default_function: generate
@@ -268,9 +270,9 @@ kernel: python-3.11     # or node-22
 resources:
   gpu:
     count: 1
-    vram: 24    # 24GB (auto-converted)
+    vram: 24 # 24GB (auto-converted)
     type: any
-  ram: 32       # 32GB
+  ram: 32 # 32GB
 
 env:
   MODEL_NAME: gpt-4
@@ -289,6 +291,7 @@ integrations:
 ### Resource Units
 
 CLI auto-converts human-friendly values:
+
 - **< 1000** → GB (e.g., `80` = 80GB)
 - **1000 to 1B** → MB
 
@@ -315,6 +318,7 @@ resources:
 ### Dependencies
 
 **Python** — `requirements.txt`:
+
 ```
 torch>=2.0
 transformers
@@ -322,6 +326,7 @@ accelerate
 ```
 
 **Node.js** — `package.json`:
+
 ```json
 {
   "type": "module",
@@ -333,6 +338,7 @@ accelerate
 ```
 
 **System packages** — `packages.txt` (apt-installable):
+
 ```
 ffmpeg
 libgl1-mesa-glx
@@ -340,10 +346,10 @@ libgl1-mesa-glx
 
 ### Base Images
 
-| Type | Image |
-|------|-------|
-| GPU | `docker.inference.sh/gpu:latest-cuda` |
-| CPU | `docker.inference.sh/cpu:latest` |
+| Type | Image                                 |
+| ---- | ------------------------------------- |
+| GPU  | `docker.inference.sh/gpu:latest-cuda` |
+| CPU  | `docker.inference.sh/cpu:latest`      |
 
 ## GPU Apps
 
@@ -374,22 +380,27 @@ Remember to add `accelerate` to `requirements.txt`.
 Load the appropriate reference file based on the language and topic:
 
 ### App Logic & Schemas
+
 - [references/python-app-logic.md](references/python-app-logic.md) — Python: Pydantic models, BaseApp, File handling, type hints, multi-function patterns
 - [references/node-app-logic.md](references/node-app-logic.md) — Node.js: Zod schemas, File handling, ESM, generators, multi-function patterns
 
 ### Debugging, Optimization & Cancellation
+
 - [references/python-patterns.md](references/python-patterns.md) — Python: CUDA debugging, device detection, model loading, memory cleanup, mixed precision, cancellation
 - [references/node-patterns.md](references/node-patterns.md) — Node.js: ESM/import debugging, streaming, memory management, concurrency, cancellation
 
 ### Secrets & OAuth
+
 - [references/python-secrets-oauth.md](references/python-secrets-oauth.md) — Python: os.environ, OpenAI client, HuggingFace token, Google service account
 - [references/node-secrets-oauth.md](references/node-secrets-oauth.md) — Node.js: process.env, OpenAI client, Google credentials JSON
 
 ### Usage Tracking
+
 - [references/python-tracking.md](references/python-tracking.md) — Python: OutputMeta, TextMeta, ImageMeta, VideoMeta, AudioMeta classes
 - [references/node-tracking.md](references/node-tracking.md) — Node.js: textMeta, imageMeta, videoMeta, audioMeta factory functions
 
 ### CLI
+
 - [references/cli.md](references/cli.md) — Full CLI command reference, prerequisites for both languages
 
 ## Resources

@@ -26,9 +26,9 @@ nvm install 22
 
 ### Hardware
 
-| App Type | Development |
-|----------|-------------|
-| CPU apps | Any machine |
+| App Type | Development              |
+| -------- | ------------------------ |
+| CPU apps | Any machine              |
 | GPU apps | NVIDIA CUDA GPU required |
 
 ## Installation
@@ -111,6 +111,6 @@ belt completion bash              # Shell completions (bash/zsh/fish)
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
+| Variable        | Description                     |
+| --------------- | ------------------------------- |
 | `INFSH_API_KEY` | API key (overrides config file) |

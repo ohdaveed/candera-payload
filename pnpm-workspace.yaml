@@ -1,6 +1,7 @@
 nodeLinker: hoisted
 
 allowBuilds:
+  '@sentry/cli': true
   bufferutil: false
   esbuild: true
   sharp: true

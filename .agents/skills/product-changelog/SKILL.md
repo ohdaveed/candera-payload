@@ -25,7 +25,6 @@ belt app run falai/flux-dev-lora --input '{
 }'
 ```
 
-
 ## Entry Format
 
 ### The Anatomy of a Good Entry
@@ -58,6 +57,7 @@ Previously limited to 500 rows per export.
 ```
 
 **Rules:**
+
 - Write what the user can DO, not what you BUILT
 - Start with "You can now..." / "Reports now..." / "Fixed an issue where..."
 - Include the benefit, not just the mechanism
@@ -67,13 +67,13 @@ Previously limited to 500 rows per export.
 
 ### Standard Categories
 
-| Category | Color | Icon | Use For |
-|----------|-------|------|---------|
-| **New** | Green | ✨ or 🆕 | Entirely new features or capabilities |
-| **Improved** | Blue | ⚡ or 🔧 | Enhancements to existing features |
-| **Fixed** | Yellow/Orange | 🐛 or 🔨 | Bug fixes |
-| **Removed** | Red | 🗑️ or ⚠️ | Deprecated or removed features |
-| **Security** | Purple | 🔒 | Security patches |
+| Category     | Color         | Icon     | Use For                               |
+| ------------ | ------------- | -------- | ------------------------------------- |
+| **New**      | Green         | ✨ or 🆕 | Entirely new features or capabilities |
+| **Improved** | Blue          | ⚡ or 🔧 | Enhancements to existing features     |
+| **Fixed**    | Yellow/Orange | 🐛 or 🔨 | Bug fixes                             |
+| **Removed**  | Red           | 🗑️ or ⚠️ | Deprecated or removed features        |
+| **Security** | Purple        | 🔒       | Security patches                      |
 
 ### Categorization Rules
 
@@ -91,11 +91,11 @@ MAJOR.MINOR.PATCH
   3   .  2  .  1
 ```
 
-| Component | Increment When | Example |
-|-----------|---------------|---------|
-| MAJOR | Breaking changes, major redesign | 2.0.0 -> 3.0.0 |
-| MINOR | New features, backward-compatible | 3.1.0 -> 3.2.0 |
-| PATCH | Bug fixes, small improvements | 3.2.0 -> 3.2.1 |
+| Component | Increment When                    | Example        |
+| --------- | --------------------------------- | -------------- |
+| MAJOR     | Breaking changes, major redesign  | 2.0.0 -> 3.0.0 |
+| MINOR     | New features, backward-compatible | 3.1.0 -> 3.2.0 |
+| PATCH     | Bug fixes, small improvements     | 3.2.0 -> 3.2.1 |
 
 ### Date-Based Versioning
 
@@ -113,14 +113,17 @@ Best for SaaS products with continuous deployment.
 ## February 8, 2026
 
 ### New
+
 - **Bulk Export for Reports** — Export up to 10,000 rows at once. [Learn more →](link)
 - **Dark Mode** — Toggle dark mode from Settings > Appearance.
 
 ### Improved
+
 - **Dashboard Loading** — Dashboards now load 3x faster on large datasets.
 - **Search** — Search results now include archived items.
 
 ### Fixed
+
 - Fixed an issue where exported CSV files had missing column headers.
 - Fixed a bug where the date picker showed incorrect timezone.
 
@@ -129,9 +132,11 @@ Best for SaaS products with continuous deployment.
 ## February 1, 2026
 
 ### New
+
 - **API Webhooks** — Get notified when events happen in your account.
 
 ### Fixed
+
 - Fixed an issue where email notifications were delayed by up to 2 hours.
 ```
 
@@ -139,13 +144,13 @@ Best for SaaS products with continuous deployment.
 
 ### When to Add Visuals
 
-| Change Type | Visual |
-|-------------|--------|
-| New UI feature | Screenshot of the new feature |
-| UI redesign | Before/after comparison |
-| New workflow | Step-by-step screenshots or short video |
-| Performance improvement | Chart showing improvement |
-| Complex feature | Animated GIF or video demo |
+| Change Type             | Visual                                  |
+| ----------------------- | --------------------------------------- |
+| New UI feature          | Screenshot of the new feature           |
+| UI redesign             | Before/after comparison                 |
+| New workflow            | Step-by-step screenshots or short video |
+| Performance improvement | Chart showing improvement               |
+| Complex feature         | Animated GIF or video demo              |
 
 ### Generating Visuals
 
@@ -186,11 +191,13 @@ Breaking changes need special treatment:
 **What changed:** API v1 endpoints will stop working on March 15, 2026.
 
 **What you need to do:**
+
 1. Update your API calls to use v2 endpoints ([migration guide →](link))
 2. Update authentication to use Bearer tokens instead of API keys
 3. Test your integration before March 15
 
 **Timeline:**
+
 - Now: v2 endpoints available, v1 still works
 - March 1: v1 returns deprecation warnings
 - March 15: v1 stops working
@@ -200,14 +207,14 @@ If you need help migrating, contact support@company.com.
 
 ## Distribution Channels
 
-| Channel | Format | When |
-|---------|--------|------|
-| **Changelog page** | Full detail, all entries | Every release |
-| **In-app notification** | 1-2 line summary | New features, breaking changes |
-| **Email** | Curated highlights, visuals | Major releases (monthly/quarterly) |
-| **Blog post** | Deep dive with context | Big launches |
-| **Social media** | Single feature highlight | Notable features |
-| **Slack/Discord** | Brief announcement | If you have a community |
+| Channel                 | Format                      | When                               |
+| ----------------------- | --------------------------- | ---------------------------------- |
+| **Changelog page**      | Full detail, all entries    | Every release                      |
+| **In-app notification** | 1-2 line summary            | New features, breaking changes     |
+| **Email**               | Curated highlights, visuals | Major releases (monthly/quarterly) |
+| **Blog post**           | Deep dive with context      | Big launches                       |
+| **Social media**        | Single feature highlight    | Notable features                   |
+| **Slack/Discord**       | Brief announcement          | If you have a community            |
 
 ### Social Media Snippet Format
 
@@ -242,24 +249,24 @@ Try it now → [link]
 
 ## Changelog Frequency
 
-| Product Type | Frequency | Notes |
-|-------------|-----------|-------|
-| SaaS (continuous deploy) | Weekly batch | Group a week of changes |
-| SaaS (major features) | Per feature launch | With blog post |
-| Versioned software | Per version release | Tied to semver |
-| API | Per version + deprecation notices | Include migration guides |
-| Mobile app | Per app store release | Match store listing "What's New" |
+| Product Type             | Frequency                         | Notes                            |
+| ------------------------ | --------------------------------- | -------------------------------- |
+| SaaS (continuous deploy) | Weekly batch                      | Group a week of changes          |
+| SaaS (major features)    | Per feature launch                | With blog post                   |
+| Versioned software       | Per version release               | Tied to semver                   |
+| API                      | Per version + deprecation notices | Include migration guides         |
+| Mobile app               | Per app store release             | Match store listing "What's New" |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Developer language | Users don't understand | Write what users can do |
-| "Bug fixes and improvements" | Zero information | List specific fixes |
-| No dates | Can't tell what's new | Date every entry |
-| No visuals | Users skip text | Screenshot major features |
-| Breaking changes buried | Users discover too late | Prominent warning + timeline |
-| Commit log as changelog | Noisy, unhelpful | Curate and rewrite |
+| Mistake                      | Problem                 | Fix                          |
+| ---------------------------- | ----------------------- | ---------------------------- |
+| Developer language           | Users don't understand  | Write what users can do      |
+| "Bug fixes and improvements" | Zero information        | List specific fixes          |
+| No dates                     | Can't tell what's new   | Date every entry             |
+| No visuals                   | Users skip text         | Screenshot major features    |
+| Breaking changes buried      | Users discover too late | Prominent warning + timeline |
+| Commit log as changelog      | Noisy, unhelpful        | Curate and rewrite           |
 
 ## Related Skills
 
@@ -269,4 +276,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

@@ -8,23 +8,24 @@ p3_count: 1
 timestamp: 2026-06-14T20-08-30Z
 slug: src-app-frontend-slug-page-tsx
 ---
+
 # Candera — Design Critique: Homepage + Supporting Pages
 
 ## Design Health Score
 
-| # | Heuristic | Score | Key Issue |
-|---|-----------|-------|-----------|
-| 1 | Visibility of System Status | 3 | ScentQuiz URL-driven state is good; Etsy redirect launches without feedback or "leaving site" notice |
-| 2 | Match System / Real World | 3 | Domain language (curing, batch, botanical) is consistent; "Inner Circle" explained only below the fold |
-| 3 | User Control and Freedom | 3 | ScentQuiz URL-state enables back-button nav; no "Start Over" or "Skip"; no breadcrumbs on product detail |
-| 4 | Consistency and Standards | 3 | Typography tokens rigorously followed; `rounded-full` on InnerCircleCTA email input and button break the 0–2px radius standard |
-| 5 | Error Prevention | 3 | Email validation and disabled states present; no "leave quiz?" confirmation, no autosave on contact form |
-| 6 | Recognition Rather Than Recall | 2 | "Inner Circle" and "Atmosphere Study" used without inline explanation; no tooltips on botanical terminology |
-| 7 | Flexibility and Efficiency | 1 | No keyboard shortcuts, bulk actions, recently viewed products, or wishlist |
-| 8 | Aesthetic and Minimalist Design | 3 | Palette restrained and purposeful; over-decorated with ember rules — section rhythm is one-size-fits-all; 9px labels fail readability |
-| 9 | Error Recovery | 3 | Inline error messages use plain language; "Something went wrong. Please try again." is generic; no retry or undo after email submission |
-| 10 | Help and Documentation | 1 | No FAQ, tooltips on curing/botanical terms, or advanced search help |
-| **Total** | | **25/40** | **Needs attention** |
+| #         | Heuristic                       | Score     | Key Issue                                                                                                                               |
+| --------- | ------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 1         | Visibility of System Status     | 3         | ScentQuiz URL-driven state is good; Etsy redirect launches without feedback or "leaving site" notice                                    |
+| 2         | Match System / Real World       | 3         | Domain language (curing, batch, botanical) is consistent; "Inner Circle" explained only below the fold                                  |
+| 3         | User Control and Freedom        | 3         | ScentQuiz URL-state enables back-button nav; no "Start Over" or "Skip"; no breadcrumbs on product detail                                |
+| 4         | Consistency and Standards       | 3         | Typography tokens rigorously followed; `rounded-full` on InnerCircleCTA email input and button break the 0–2px radius standard          |
+| 5         | Error Prevention                | 3         | Email validation and disabled states present; no "leave quiz?" confirmation, no autosave on contact form                                |
+| 6         | Recognition Rather Than Recall  | 2         | "Inner Circle" and "Atmosphere Study" used without inline explanation; no tooltips on botanical terminology                             |
+| 7         | Flexibility and Efficiency      | 1         | No keyboard shortcuts, bulk actions, recently viewed products, or wishlist                                                              |
+| 8         | Aesthetic and Minimalist Design | 3         | Palette restrained and purposeful; over-decorated with ember rules — section rhythm is one-size-fits-all; 9px labels fail readability   |
+| 9         | Error Recovery                  | 3         | Inline error messages use plain language; "Something went wrong. Please try again." is generic; no retry or undo after email submission |
+| 10        | Help and Documentation          | 1         | No FAQ, tooltips on curing/botanical terms, or advanced search help                                                                     |
+| **Total** |                                 | **25/40** | **Needs attention**                                                                                                                     |
 
 ## Anti-Patterns Verdict
 

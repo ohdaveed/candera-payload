@@ -38,8 +38,8 @@ export function ProductCTASection({ title, price, currency, vessel, etsyListingI
           </BoutiqueLink>
         </Button>
         <p className="text-center text-xs text-candera-sage-text tracking-[.1em]">
-          Secure checkout on Etsy · 14-day returns · Ships from California · Handmade in
-          micro-batches
+          Checkout hosted securely on our official Etsy storefront. 14-day returns. Ships from
+          California.
         </p>
       </Section>
 

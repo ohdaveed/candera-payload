@@ -1,6 +1,6 @@
 ---
 name: speech-to-text
-description: "Transcribe audio to text with ElevenLabs Scribe and Whisper models via inference.sh CLI. Models: ElevenLabs Scribe v2 (98%+ accuracy, diarization), Fast Whisper Large V3, Whisper V3 Large. Capabilities: transcription, translation, multi-language, timestamps, speaker diarization, audio event tagging. Use for: meeting transcription, subtitles, podcast transcripts, voice notes. Triggers: speech to text, transcription, whisper, audio to text, transcribe audio, voice to text, stt, automatic transcription, subtitles generation, transcribe meeting, audio transcription, whisper ai, elevenlabs stt, scribe, eleven labs transcribe"
+description: 'Transcribe audio to text with ElevenLabs Scribe and Whisper models via inference.sh CLI. Models: ElevenLabs Scribe v2 (98%+ accuracy, diarization), Fast Whisper Large V3, Whisper V3 Large. Capabilities: transcription, translation, multi-language, timestamps, speaker diarization, audio event tagging. Use for: meeting transcription, subtitles, podcast transcripts, voice notes. Triggers: speech to text, transcription, whisper, audio to text, transcribe audio, voice to text, stt, automatic transcription, subtitles generation, transcribe meeting, audio transcription, whisper ai, elevenlabs stt, scribe, eleven labs transcribe'
 allowed-tools: Bash(belt *)
 ---
 
@@ -22,14 +22,13 @@ belt login
 belt app run infsh/fast-whisper-large-v3 --input '{"audio_url": "https://audio.mp3"}'
 ```
 
-
 ## Available Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| ElevenLabs Scribe v2 | `elevenlabs/stt` | 98%+ accuracy, diarization, 90+ languages |
-| Fast Whisper V3 | `infsh/fast-whisper-large-v3` | Fast transcription |
-| Whisper V3 Large | `infsh/whisper-v3-large` | Highest accuracy |
+| Model                | App ID                        | Best For                                  |
+| -------------------- | ----------------------------- | ----------------------------------------- |
+| ElevenLabs Scribe v2 | `elevenlabs/stt`              | 98%+ accuracy, diarization, 90+ languages |
+| Fast Whisper V3      | `infsh/fast-whisper-large-v3` | Fast transcription                        |
+| Whisper V3 Large     | `infsh/whisper-v3-large`      | Highest accuracy                          |
 
 ## Examples
 
@@ -104,6 +103,7 @@ English, Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean
 ## Output Format
 
 Returns JSON with:
+
 - `text`: Full transcription
 - `segments`: Timestamped segments (if requested)
 - `language`: Detected language
@@ -137,4 +137,3 @@ Browse all audio apps: `belt app store --category audio`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Audio Transcription Example](https://inference.sh/docs/examples/audio-transcription) - Complete transcription guide
 - [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-

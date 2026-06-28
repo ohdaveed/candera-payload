@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-voice-changer
-description: "ElevenLabs voice changer - transform any voice to a different voice while preserving speech content and emotion via inference.sh CLI. Models: eleven_multilingual_sts_v2 (70+ languages), eleven_english_sts_v2. Capabilities: speech-to-speech, voice transformation, accent change, voice disguise. Use for: content creation, voice acting, privacy, dubbing, character voices. Triggers: voice changer, speech to speech, voice transformation, change voice, voice swap, voice conversion, voice disguise, eleven labs voice changer, elevenlabs sts, transform voice, ai voice changer, voice modifier"
+description: 'ElevenLabs voice changer - transform any voice to a different voice while preserving speech content and emotion via inference.sh CLI. Models: eleven_multilingual_sts_v2 (70+ languages), eleven_english_sts_v2. Capabilities: speech-to-speech, voice transformation, accent change, voice disguise. Use for: content creation, voice acting, privacy, dubbing, character voices. Triggers: voice changer, speech to speech, voice transformation, change voice, voice swap, voice conversion, voice disguise, eleven labs voice changer, elevenlabs sts, transform voice, ai voice changer, voice modifier'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,29 +23,28 @@ belt login
 belt app run elevenlabs/voice-changer --input '{"audio": "https://recording.mp3", "voice": "aria"}'
 ```
 
-
 ## Available Models
 
-| Model | ID | Best For |
-|-------|----|----------|
+| Model               | ID                           | Best For                |
+| ------------------- | ---------------------------- | ----------------------- |
 | Multilingual STS v2 | `eleven_multilingual_sts_v2` | 70+ languages (default) |
-| English STS v2 | `eleven_english_sts_v2` | English-optimized |
+| English STS v2      | `eleven_english_sts_v2`      | English-optimized       |
 
 ## Voice Options
 
 Same 22+ premium voices as ElevenLabs TTS:
 
-| Voice | Style |
-|-------|-------|
-| `george` | British, authoritative (default) |
-| `aria` | American, conversational |
-| `alice` | British, confident |
-| `brian` | American, conversational |
-| `charlie` | Australian, natural |
-| `daniel` | British, commanding |
-| `jessica` | American, expressive |
-| `sarah` | American, friendly |
-| `adam`, `bella`, `bill`, `callum`, `chris`, `eric`, `harry`, `laura`, `liam`, `lily`, `matilda`, `river`, `roger`, `will` | Various styles |
+| Voice                                                                                                                     | Style                            |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `george`                                                                                                                  | British, authoritative (default) |
+| `aria`                                                                                                                    | American, conversational         |
+| `alice`                                                                                                                   | British, confident               |
+| `brian`                                                                                                                   | American, conversational         |
+| `charlie`                                                                                                                 | Australian, natural              |
+| `daniel`                                                                                                                  | British, commanding              |
+| `jessica`                                                                                                                 | American, expressive             |
+| `sarah`                                                                                                                   | American, friendly               |
+| `adam`, `bella`, `bill`, `callum`, `chris`, `eric`, `harry`, `laura`, `liam`, `lily`, `matilda`, `river`, `roger`, `will` | Various styles                   |
 
 ## Examples
 

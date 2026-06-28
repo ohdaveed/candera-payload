@@ -6,21 +6,22 @@ p1_count: 2
 timestamp: 2026-06-14T20-34-24Z
 slug: src-app-frontend-slug-page-tsx
 ---
+
 #### Design Health Score
 
-| # | Heuristic | Score | Key Issue |
-|---|-----------|-------|-----------|
-| 1 | Visibility of System Status | 3 | Quiz progress & feedback present; testimonial count hidden (slice 3) |
-| 2 | Match System / Real World | 3 | Consistent brand voice; "Atmosphere Study" is somewhat abstract |
-| 3 | User Control and Freedom | 2 | No quiz back button; no restart after result; email gate is a dark pattern |
-| 4 | Consistency and Standards | 3 | Theme tokens used throughout; minor btn-text vs Button mismatch |
-| 5 | Error Prevention | 3 | Email validation with react-hook-form; InnerCircleCTA input outline fragile |
-| 6 | Recognition Rather Than Recall | 2 | Quiz progress shown but no reviewable previous answers; URL state not discoverable |
-| 7 | Flexibility and Efficiency | 2 | URL-driven quiz state enables sharing; no skip-to-content, no search |
-| 8 | Aesthetic and Minimalist Design | 3 | Strong editorial system; status card slightly dense; quiz reveal rings over-designed |
-| 9 | Error Recovery | 3 | Inline errors, dismiss + "Try Again" on ScentQuiz; InnerCircleCTA error not dismissable |
-| 10 | Help and Documentation | 2 | Tooltip on "Botanical Composition" only inline help; no FAQ, no privacy links |
-| **Total** | | **26/40** | **Acceptable** |
+| #         | Heuristic                       | Score     | Key Issue                                                                               |
+| --------- | ------------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| 1         | Visibility of System Status     | 3         | Quiz progress & feedback present; testimonial count hidden (slice 3)                    |
+| 2         | Match System / Real World       | 3         | Consistent brand voice; "Atmosphere Study" is somewhat abstract                         |
+| 3         | User Control and Freedom        | 2         | No quiz back button; no restart after result; email gate is a dark pattern              |
+| 4         | Consistency and Standards       | 3         | Theme tokens used throughout; minor btn-text vs Button mismatch                         |
+| 5         | Error Prevention                | 3         | Email validation with react-hook-form; InnerCircleCTA input outline fragile             |
+| 6         | Recognition Rather Than Recall  | 2         | Quiz progress shown but no reviewable previous answers; URL state not discoverable      |
+| 7         | Flexibility and Efficiency      | 2         | URL-driven quiz state enables sharing; no skip-to-content, no search                    |
+| 8         | Aesthetic and Minimalist Design | 3         | Strong editorial system; status card slightly dense; quiz reveal rings over-designed    |
+| 9         | Error Recovery                  | 3         | Inline errors, dismiss + "Try Again" on ScentQuiz; InnerCircleCTA error not dismissable |
+| 10        | Help and Documentation          | 2         | Tooltip on "Botanical Composition" only inline help; no FAQ, no privacy links           |
+| **Total** |                                 | **26/40** | **Acceptable**                                                                          |
 
 #### Anti-Patterns Verdict
 

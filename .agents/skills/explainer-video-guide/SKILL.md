@@ -1,6 +1,6 @@
 ---
 name: explainer-video-guide
-description: "Explainer video production guide: scripting, voiceover, visuals, and assembly. Covers script formulas, pacing rules, scene planning, and multi-tool pipelines. Use for: product demos, how-it-works videos, onboarding videos, social explainers. Triggers: explainer video, how to make explainer, product video, demo video, video production, video script, animated explainer, product demo video, tutorial video, onboarding video, walkthrough video, video pipeline"
+description: 'Explainer video production guide: scripting, voiceover, visuals, and assembly. Covers script formulas, pacing rules, scene planning, and multi-tool pipelines. Use for: product demos, how-it-works videos, onboarding videos, social explainers. Triggers: explainer video, how to make explainer, product video, demo video, video production, video script, animated explainer, product demo video, tutorial video, onboarding video, walkthrough video, video pipeline'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,46 +23,45 @@ belt app run google/veo-3-1-fast --input '{
 }'
 ```
 
-
 ## Script Formulas
 
 ### Problem-Agitate-Solve (PAS) — 60 seconds
 
-| Section | Duration | Content | Word Count |
-|---------|----------|---------|------------|
-| **Problem** | 10s | State the pain point the viewer has | ~25 words |
-| **Agitate** | 10s | Show why it's worse than they think | ~25 words |
-| **Solution** | 15s | Introduce your product/idea | ~35 words |
-| **How It Works** | 20s | Show 3 key steps or features | ~50 words |
-| **CTA** | 5s | One clear next action | ~12 words |
+| Section          | Duration | Content                             | Word Count |
+| ---------------- | -------- | ----------------------------------- | ---------- |
+| **Problem**      | 10s      | State the pain point the viewer has | ~25 words  |
+| **Agitate**      | 10s      | Show why it's worse than they think | ~25 words  |
+| **Solution**     | 15s      | Introduce your product/idea         | ~35 words  |
+| **How It Works** | 20s      | Show 3 key steps or features        | ~50 words  |
+| **CTA**          | 5s       | One clear next action               | ~12 words  |
 
 ### Before-After-Bridge (BAB) — 90 seconds
 
-| Section | Duration | Content |
-|---------|----------|---------|
-| **Before** | 15s | Show the current frustrating state |
-| **After** | 15s | Show the ideal outcome |
-| **Bridge** | 40s | Explain how your product gets them there |
-| **Social Proof** | 10s | Quick stat or testimonial |
-| **CTA** | 10s | Clear next step |
+| Section          | Duration | Content                                  |
+| ---------------- | -------- | ---------------------------------------- |
+| **Before**       | 15s      | Show the current frustrating state       |
+| **After**        | 15s      | Show the ideal outcome                   |
+| **Bridge**       | 40s      | Explain how your product gets them there |
+| **Social Proof** | 10s      | Quick stat or testimonial                |
+| **CTA**          | 10s      | Clear next step                          |
 
 ### Feature Spotlight — 30 seconds (social)
 
-| Section | Duration | Content |
-|---------|----------|---------|
-| **Hook** | 3s | Surprising fact or question |
-| **Feature** | 15s | Show one feature solving one problem |
-| **Result** | 7s | The outcome/benefit |
-| **CTA** | 5s | Try it / Learn more |
+| Section     | Duration | Content                              |
+| ----------- | -------- | ------------------------------------ |
+| **Hook**    | 3s       | Surprising fact or question          |
+| **Feature** | 15s      | Show one feature solving one problem |
+| **Result**  | 7s       | The outcome/benefit                  |
+| **CTA**     | 5s       | Try it / Learn more                  |
 
 ## Pacing Rules
 
-| Content Type | Words Per Minute | Notes |
-|-------------|-----------------|-------|
-| Standard narration | 150 wpm | Conversational pace |
-| Complex/technical | 120 wpm | Allow processing time |
-| Energetic/social | 170 wpm | Faster for short-form |
-| Children's content | 100 wpm | Clear and slow |
+| Content Type       | Words Per Minute | Notes                 |
+| ------------------ | ---------------- | --------------------- |
+| Standard narration | 150 wpm          | Conversational pace   |
+| Complex/technical  | 120 wpm          | Allow processing time |
+| Energetic/social   | 170 wpm          | Faster for short-form |
+| Children's content | 100 wpm          | Clear and slow        |
 
 **Key rule:** 1 scene per key message. Don't pack multiple ideas into one visual.
 
@@ -136,13 +135,13 @@ belt app run falai/dia-tts --input '{
 
 ### Pacing Control in TTS
 
-| Technique | Effect | Example |
-|-----------|--------|---------|
-| Period `.` | Medium pause | "This changes everything. Here's how." |
-| Ellipsis `...` | Long pause (dramatic) | "And the result... was incredible." |
-| Comma `,` | Short pause | "Fast, simple, powerful." |
-| Exclamation `!` | Emphasis/energy | "Start building today!" |
-| Question `?` | Rising intonation | "What if there was a better way?" |
+| Technique       | Effect                | Example                                |
+| --------------- | --------------------- | -------------------------------------- |
+| Period `.`      | Medium pause          | "This changes everything. Here's how." |
+| Ellipsis `...`  | Long pause (dramatic) | "And the result... was incredible."    |
+| Comma `,`       | Short pause           | "Fast, simple, powerful."              |
+| Exclamation `!` | Emphasis/energy       | "Start building today!"                |
+| Question `?`    | Rising intonation     | "What if there was a better way?"      |
 
 ## Music & Audio
 
@@ -195,34 +194,34 @@ belt app run infsh/caption-videos --input '{
 
 ## Video Length by Format
 
-| Format | Length | Platform |
-|--------|--------|----------|
-| Social teaser | 15-30s | TikTok, Instagram Reels, YouTube Shorts |
-| Product demo | 60-90s | Website, landing page |
-| Feature explainer | 90-120s | YouTube, email |
-| Tutorial/walkthrough | 2-5min | YouTube, help center |
-| Investor pitch video | 2-3min | Pitch deck supplement |
+| Format               | Length  | Platform                                |
+| -------------------- | ------- | --------------------------------------- |
+| Social teaser        | 15-30s  | TikTok, Instagram Reels, YouTube Shorts |
+| Product demo         | 60-90s  | Website, landing page                   |
+| Feature explainer    | 90-120s | YouTube, email                          |
+| Tutorial/walkthrough | 2-5min  | YouTube, help center                    |
+| Investor pitch video | 2-3min  | Pitch deck supplement                   |
 
 ## Transition Types
 
-| Transition | When to Use | Effect |
-|------------|-------------|--------|
-| **Cut** | Default between related scenes | Clean, professional |
-| **Dissolve/Crossfade** | Time passing, mood shift | Soft, contemplative |
-| **Wipe** | New topic or section | Clear separation |
-| **Zoom/Push** | Drilling into detail | Focus attention |
-| **Match cut** | Visual similarity between scenes | Clever, memorable |
+| Transition             | When to Use                      | Effect              |
+| ---------------------- | -------------------------------- | ------------------- |
+| **Cut**                | Default between related scenes   | Clean, professional |
+| **Dissolve/Crossfade** | Time passing, mood shift         | Soft, contemplative |
+| **Wipe**               | New topic or section             | Clear separation    |
+| **Zoom/Push**          | Drilling into detail             | Focus attention     |
+| **Match cut**          | Visual similarity between scenes | Clever, memorable   |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Script too wordy | Voiceover rushed, viewer overwhelmed | Cut to 150 wpm max |
-| No hook in first 3s | Viewers leave immediately | Start with the problem or surprising stat |
-| Visuals lag narration | Confusing disconnect | Visuals should match or slightly precede words |
-| Background music too loud | Can't hear narration | Duck music 6-12dB under voice |
-| No captions | 85% of social video watched silent | Always add captions |
-| Too many ideas | Viewer retains nothing | One core message per video |
+| Mistake                   | Problem                              | Fix                                            |
+| ------------------------- | ------------------------------------ | ---------------------------------------------- |
+| Script too wordy          | Voiceover rushed, viewer overwhelmed | Cut to 150 wpm max                             |
+| No hook in first 3s       | Viewers leave immediately            | Start with the problem or surprising stat      |
+| Visuals lag narration     | Confusing disconnect                 | Visuals should match or slightly precede words |
+| Background music too loud | Can't hear narration                 | Duck music 6-12dB under voice                  |
+| No captions               | 85% of social video watched silent   | Always add captions                            |
+| Too many ideas            | Viewer retains nothing               | One core message per video                     |
 
 ## Related Skills
 
@@ -234,4 +233,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-
