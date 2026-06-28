@@ -103,9 +103,10 @@ export const StorefrontHero: Block = {
     {
       name: 'statusCardShips',
       type: 'text',
-      defaultValue: '47 units total',
       label: 'Status Card Left Value (e.g. 47 units total)',
       admin: {
+        description:
+          'Optional. Leave blank unless you have a real figure for this batch — we never ship a fabricated count as a default.',
         condition: (_, { showStatusCard } = {}) => Boolean(showStatusCard),
       },
     },

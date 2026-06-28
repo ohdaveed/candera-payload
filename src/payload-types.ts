@@ -519,6 +519,9 @@ export interface StorefrontHeroBlock {
   statusCardPrice?: string | null;
   statusCardSubtitle?: string | null;
   statusCardStatus?: string | null;
+  /**
+   * Optional. Leave blank unless you have a real figure for this batch — we never ship a fabricated count as a default.
+   */
   statusCardShips?: string | null;
   statusCardLinkUrl?: string | null;
   id?: string | null;
