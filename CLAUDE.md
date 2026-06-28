@@ -18,7 +18,7 @@ AI gateway.
 - **CMS / backend:** Payload CMS 3.85.x, Lexical rich text
 - **DB:** Postgres — Neon (Vercel) in prod, Docker Postgres locally
 - **Media:** Vercel Blob
-- **External:** Etsy Open API v3, Anthropic/Claude (AI gateway), Mailchimp
+- **External:** Etsy Open API v3, Anthropic/Claude (AI gateway), FormSubmit.co (form delivery)
 - **Runtime:** Node `24.x`, package manager **pnpm 11.8** (`pnpm-workspace.yaml` present)
 
 ## Quick start
@@ -132,8 +132,8 @@ store, and media storage so it can run in-memory under test.
 ### Revalidation & forms
 
 - `src/utilities/revalidate.ts` — revalidation engine with `CacheBusterPort` seam; `afterChange`/`afterDelete` hooks call `revalidatePath`/`revalidateTag` for on-demand ISR. Redirects via `redirectRevalidateHooks`.
-- Form submissions: `submitForm` server action writes through Payload Local API → `processFormSubmission` `afterChange` hook fans out to Mailchimp (`Promise.allSettled`). Same hook fires for admin-created submissions.
-- Search: `beforeSyncWithSearch` indexes published posts into a `search` collection; `src/lib/queries/search.ts` runs ILIKE queries via the Neon SQL client.
+- Form submissions: `submitForm` server action writes through Payload Local API → `processFormSubmission` `afterChange` hook forwards to **FormSubmit.co** via `sendToFormSubmit` (`src/services/formsubmit.ts`), wrapped in `Promise.allSettled`. Same hook fires for admin-created submissions. Target inbox is `FORMSUBMIT_EMAIL` (defaults to `studio@canderacandles.com`).
+- Search: `beforeSyncWithSearch` indexes published posts into a `search` collection; `src/lib/queries/search.ts` queries it via the Payload Local API (`payload.find` with `contains` filters over title/slug/meta) — not raw SQL.
 
 ## Database & migrations
 
@@ -180,6 +180,7 @@ token (see `jobs.access.run` in `payload.config.ts`).
 | `CRON_SECRET` | Bearer token for Vercel cron / jobs |
 | `ETSY_API_KEY` / `ETSY_SHARED_SECRET` / `ETSY_REDIRECT_URI` / `ETSY_SHOP_ID` | Etsy Open API v3 + OAuth (`ETSY_SHOP_ID` required) |
 | `AI_GATEWAY_API_KEY` | AI gateway key for product copy (local only; OIDC on Vercel) |
+| `FORMSUBMIT_EMAIL` | Inbox for form submissions forwarded to FormSubmit.co (defaults to `studio@canderacandles.com`) |
 | `SMTP_HOST/PORT/USER/PASS` | Email transport (falls back to `jsonTransport`) |
 | `EMAIL_FROM_ADDRESS` / `EMAIL_FROM_NAME` | Default sender |
 
