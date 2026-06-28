@@ -1,6 +1,13 @@
+import 'dotenv/config'
 import { renderHook, act } from '@testing-library/react'
-import { expect, test, vi } from 'vite-plus/test'
+import { afterEach, expect, test, vi } from 'vite-plus/test'
 import { useDebounce } from '@/app/(frontend)/hooks/useDebounce'
+
+// Restore real timers even if an assertion throws mid-test, so a failure here
+// can't bleed fake timers into later tests.
+afterEach(() => {
+  vi.useRealTimers()
+})
 
 test('should debounce value updates', () => {
   vi.useFakeTimers()
@@ -18,5 +25,4 @@ test('should debounce value updates', () => {
   })
 
   expect(result.current).toBe('updated') // Should update after delay
-  vi.useRealTimers()
 })

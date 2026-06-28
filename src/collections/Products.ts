@@ -6,7 +6,6 @@ import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 
 import { productRevalidateHooks } from '../utilities/revalidate'
 import { PRODUCT_TAGS } from '../lib/productTags'
-import { revalidateProduct } from './Products/hooks/revalidateProduct'
 
 import {
   MetaDescriptionField,
@@ -30,7 +29,7 @@ export const Products: CollectionConfig = {
     group: 'Commerce',
   },
   hooks: {
-    afterChange: [productRevalidateHooks.afterChange, revalidateProduct],
+    afterChange: [productRevalidateHooks.afterChange],
     afterDelete: [productRevalidateHooks.afterDelete],
   },
   versions: {

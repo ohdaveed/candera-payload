@@ -298,7 +298,9 @@ function truncate(text: string, max: number): string {
 // Cleans up redundant brand prefixes from Etsy titles and keeps breadcrumbs short
 function formatBreadcrumb(text: string): string {
   const clean = text.replace(/^(candera\s*(candles?)?\s*-?\s*)/i, '').trim()
-  return truncate(clean, 32)
+  // Titles that are only the brand prefix (e.g. "Candera Candles") collapse to an
+  // empty string — fall back to the original title so the crumb never renders blank.
+  return truncate(clean || text.trim(), 32)
 }
 
 // Resolves the best available image URL for a product, preferring the SEO

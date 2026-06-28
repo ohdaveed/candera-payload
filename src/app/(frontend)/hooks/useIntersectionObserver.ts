@@ -22,9 +22,14 @@ export function useIntersectionObserver<T extends Element = Element>({
   const thresholdString = JSON.stringify(threshold)
 
   useEffect(() => {
-    const hasIOSupport = !!window.IntersectionObserver
+    if (frozen || !node) return
 
-    if (!hasIOSupport || frozen || !node) return
+    // Older browsers / embedded webviews without IntersectionObserver: reveal
+    // immediately so consumers (e.g. ProductGrid) don't stay hidden forever.
+    if (!window.IntersectionObserver) {
+      setEntry({ isIntersecting: true } as IntersectionObserverEntry)
+      return
+    }
 
     const observerParams = { threshold, root, rootMargin }
     const observer = new IntersectionObserver(updateEntry, observerParams)
