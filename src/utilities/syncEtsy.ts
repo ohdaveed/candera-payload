@@ -11,9 +11,9 @@ const SUPPORTED_CURRENCIES = ['USD', 'CAD', 'EUR', 'GBP']
 
 // Matches shipping/packaging contexts whose dimensions are logistics noise, not
 // customer-facing product specs (the raw text is still kept in rawEtsyDescription).
-// Anchored to word boundaries so legitimate specs whose labels merely *contain*
-// these substrings (e.g. "Boxwood", "Parcel-gilt finish") are not dropped.
-const SHIPPING_CONTEXT_RE = /\b(?:box|shipping|package|parcel|postage)\b/i
+// Anchored to boundaries that treat `-` as part of a word, so labels that merely
+// contain these substrings (e.g. "Boxwood", "Parcel-gilt finish") are not dropped.
+const SHIPPING_CONTEXT_RE = /(?<![\w-])(?:box|shipping|package|parcel|postage)(?![\w-])/i
 
 // Validation schema for candle listings
 const CandleListingSchema = z.object({
