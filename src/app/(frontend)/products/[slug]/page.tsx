@@ -24,6 +24,7 @@ import { InnerCircleEmailForm } from '@/blocks/InnerCircleCTA/EmailForm'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ArrowRight } from 'lucide-react'
 import { FORM_TITLES } from '@/constants/forms'
+import { EndSentinel } from './EndSentinel'
 
 export async function generateStaticParams() {
   return []
@@ -206,6 +207,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
       {/* Brand story strip — light ground so the dark capture below leads the page-end funnel.
           id marks where the product detail ends; the sticky buy bar hides from here down. */}
+      <EndSentinel />
       <aside
         id="pdp-detail-end"
         className="bg-candera-linen border-t border-candera-stone/20 mt-20 px-8 py-14 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:px-16 lg:py-16"

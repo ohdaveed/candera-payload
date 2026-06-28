@@ -231,6 +231,11 @@ export class EtsySyncEngine {
           }
         }
 
+        if (parsed.specifications.length === 0) {
+          // @ts-expect-error Omit empty specifications so we don't wipe out manual entries in Payload
+          delete parsed.specifications
+        }
+
         const productData: ProductUpsertInput = {
           title,
           slug,

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { BoutiqueLink } from '@/components/EtsyHandshake/BoutiqueLink'
 import { etsyListingUrl } from '@/lib/etsy'
+import { subscribeToEndSentinel } from './EndSentinelStore'
 
 type Props = {
   title: string
@@ -19,9 +20,6 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
 
   useEffect(() => {
     const sentinel = sentinelRef.current
-    // Bottom boundary: once the closing brand-story / email region appears, the
-    // bar retracts so it never overlays the page-end content.
-    const endEl = document.getElementById('pdp-detail-end')
 
     if (!window.IntersectionObserver) {
       setVisible(true)
@@ -32,25 +30,37 @@ export function StickyCTABar({ title, price, etsyListingId, sentinelRef }: Props
     let atEnd = false
     const apply = () => setVisible(pastTop && !atEnd)
 
-    const observers: IntersectionObserver[] = []
+    let topObserver: IntersectionObserver | null = null
     if (sentinel) {
-      const top = new IntersectionObserver(([e]) => ((pastTop = !e.isIntersecting), apply()), {
+      topObserver = new IntersectionObserver(([e]) => ((pastTop = !e.isIntersecting), apply()), {
         threshold: 0,
       })
-      top.observe(sentinel)
-      observers.push(top)
+      topObserver.observe(sentinel)
     } else {
       pastTop = true
     }
-    if (endEl) {
-      const bottom = new IntersectionObserver(([e]) => ((atEnd = e.isIntersecting), apply()), {
-        threshold: 0,
-      })
-      bottom.observe(endEl)
-      observers.push(bottom)
-    }
+
+    let bottomObserver: IntersectionObserver | null = null
+    const unsubscribeEndSentinel = subscribeToEndSentinel((endEl) => {
+      if (bottomObserver) {
+        bottomObserver.disconnect()
+        bottomObserver = null
+      }
+      if (endEl) {
+        bottomObserver = new IntersectionObserver(([e]) => ((atEnd = e.isIntersecting), apply()), {
+          threshold: 0,
+        })
+        bottomObserver.observe(endEl)
+      }
+    })
+
     apply()
-    return () => observers.forEach((o) => o.disconnect())
+
+    return () => {
+      if (topObserver) topObserver.disconnect()
+      if (bottomObserver) bottomObserver.disconnect()
+      unsubscribeEndSentinel()
+    }
   }, [sentinelRef])
 
   return (
