@@ -6,7 +6,7 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
     doc: { relationTo: collection },
   } = searchDoc
 
-  const { slug, id, categories, title, meta } = originalDoc
+  const { slug, id, categories, title, meta, tagline, productType, price } = originalDoc
 
   const modifiedDoc: DocToSync = {
     ...searchDoc,
@@ -18,6 +18,10 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
       description: meta?.description,
     },
     categories: [],
+    // Populated for products; undefined for posts (ignored by the search index)
+    ...(tagline !== undefined && { tagline }),
+    ...(productType !== undefined && { productType }),
+    ...(price !== undefined && { price }),
   }
 
   if (categories && Array.isArray(categories) && categories.length > 0) {

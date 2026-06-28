@@ -1289,6 +1289,9 @@ export interface Search {
         id?: string | null;
       }[]
     | null;
+  tagline?: string | null;
+  productType?: string | null;
+  price?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2269,6 +2272,9 @@ export interface SearchSelect<T extends boolean = true> {
         title?: T;
         id?: T;
       };
+  tagline?: T;
+  productType?: T;
+  price?: T;
   updatedAt?: T;
   createdAt?: T;
 }

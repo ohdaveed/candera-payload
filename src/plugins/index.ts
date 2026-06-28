@@ -5,7 +5,12 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { redirectRevalidateHooks } from '@/utilities/revalidate'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import {
+  GenerateDescription,
+  GenerateImage,
+  GenerateTitle,
+  GenerateURL,
+} from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -15,6 +20,18 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { processFormSubmission } from '@/hooks/formSubmissions/processSubmission'
 import { validateSubmission } from '@/hooks/formSubmissions/validateSubmission'
 import { revalidateForm, revalidateFormOnDelete } from '@/hooks/forms/revalidateForm'
+
+// Recursively extracts plain text from a Payload Lexical rich-text value.
+function lexicalToPlainText(value: unknown): string {
+  if (!value || typeof value !== 'object') return ''
+  const node = value as Record<string, unknown>
+  if (node.type === 'text') return typeof node.text === 'string' ? node.text : ''
+  if (Array.isArray(node.children)) {
+    return (node.children as unknown[]).map(lexicalToPlainText).join(' ')
+  }
+  if (node.root) return lexicalToPlainText(node.root)
+  return ''
+}
 
 const generateTitle: GenerateTitle<Post | Page | Product> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Candera Candles` : 'Candera Candles'
@@ -29,6 +46,39 @@ const generateURL: GenerateURL<Post | Page | Product> = ({ doc, collectionSlug }
   const prefix =
     collectionSlug === 'products' ? '/products' : collectionSlug === 'posts' ? '/posts' : ''
   return `${url}${prefix}/${doc.slug}`
+}
+
+// Generates a meta description from clean product copy or post content.
+// Products: tagline + parsed description (≤155 chars). Posts/Pages: empty
+// so the editor's own meta.description field is used unmodified.
+const generateDescription: GenerateDescription<Post | Page | Product> = ({
+  doc,
+  collectionSlug,
+}) => {
+  if (collectionSlug === 'products') {
+    const product = doc as Product
+    const tagline = product?.tagline ?? ''
+    const body = lexicalToPlainText(product?.description).replace(/\s+/g, ' ').trim()
+    const combined = tagline ? `${tagline}. ${body}` : body
+    return combined.slice(0, 155)
+  }
+  return ''
+}
+
+// Picks the primary image for OG/Twitter cards.
+// Products: sync-owned etsyPrimaryImage. Posts: heroImage. Pages: nothing.
+const generateImage: GenerateImage<Post | Page | Product> = ({ doc, collectionSlug }) => {
+  if (collectionSlug === 'products') {
+    const product = doc as Product
+    const img = product?.etsyPrimaryImage
+    if (img) return typeof img === 'object' ? (img as { id: string | number }).id : img
+  }
+  if (collectionSlug === 'posts') {
+    const post = doc as Post
+    const img = post?.heroImage
+    if (img) return typeof img === 'object' ? (img as { id: string | number }).id : img
+  }
+  return ''
 }
 
 export const plugins: Plugin[] = [
@@ -63,6 +113,8 @@ export const plugins: Plugin[] = [
   }),
   seoPlugin({
     generateTitle,
+    generateDescription,
+    generateImage,
     generateURL,
   }),
   formBuilderPlugin({

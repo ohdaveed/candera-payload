@@ -129,21 +129,21 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           items={[
             { label: 'Home', href: '/' },
             { label: 'Collection', href: '/products' },
-            { label: truncate(product.title, 48) },
+            { label: formatBreadcrumb(product.title) },
           ]}
         />
 
         <Section
           as="article"
           padding="none"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start mt-10"
+          className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 lg:gap-24 items-start mt-10"
           data-section="product-layout-grid"
         >
           {/* Left: image gallery — sticky on desktop so it stays in view while scrolling details */}
           <Section
             as="aside"
             padding="none"
-            className="lg:col-span-7 relative lg:sticky lg:top-[var(--nav-height)] lg:h-[calc(100vh-var(--nav-height))] lg:overflow-hidden"
+            className="md:col-span-6 lg:col-span-7 relative md:sticky md:top-[var(--nav-height)] md:h-[calc(100vh-var(--nav-height))] md:overflow-hidden"
             data-section="image-gallery"
           >
             <ImageGallery
@@ -155,7 +155,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           <Section
             as="aside"
             padding="none"
-            className="lg:col-span-5 flex flex-col gap-10 py-4 lg:min-h-[calc(100vh-var(--nav-height)-120px)]"
+            className="md:col-span-6 lg:col-span-5 flex flex-col gap-10 py-4 md:min-h-[calc(100vh-var(--nav-height)-120px)]"
             data-section="product-details"
           >
             {/* Identity block */}
@@ -206,18 +206,6 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               etsyListingId={product.etsyListingId}
             />
 
-            {/* Editorial story — given prime space with generous line height */}
-            {product.description && (
-              <Section padding="none" className="flex flex-col gap-4" data-section="editorial">
-                <Eyebrow className="text-candera-sage-text tracking-[.28em]">The Story</Eyebrow>
-                <RichText
-                  data={product.description}
-                  enableGutter={false}
-                  className="editorial text-candera-sage-text leading-loose max-w-[52ch] [&_p]:mb-4 [&_p:last-child]:mb-0"
-                />
-              </Section>
-            )}
-
             {/* Fragrance Profile — featured prominently, not hidden in an accordion */}
             {showFragrance && (
               <Section padding="none" className="flex flex-col" data-section="fragrance">
@@ -228,6 +216,18 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
                   profile={product.scentProfile}
                   burnTime={product.burnTime}
                   atmosphere={product.atmosphere}
+                />
+              </Section>
+            )}
+
+            {/* Editorial story — given prime space with generous line height */}
+            {product.description && (
+              <Section padding="none" className="flex flex-col gap-4" data-section="editorial">
+                <Eyebrow className="text-candera-sage-text tracking-[.28em]">The Story</Eyebrow>
+                <RichText
+                  data={product.description}
+                  enableGutter={false}
+                  className="editorial text-candera-sage-text leading-loose max-w-[52ch] [&_p]:mb-4 [&_p:last-child]:mb-0"
                 />
               </Section>
             )}
@@ -293,6 +293,12 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 // names from overflowing the breadcrumb on narrow viewports.
 function truncate(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
+}
+
+// Cleans up redundant brand prefixes from Etsy titles and keeps breadcrumbs short
+function formatBreadcrumb(text: string): string {
+  const clean = text.replace(/^(candera\s*(candles?)?\s*-?\s*)/i, '').trim()
+  return truncate(clean, 32)
 }
 
 // Resolves the best available image URL for a product, preferring the SEO

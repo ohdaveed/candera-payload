@@ -19,12 +19,12 @@ export const HeaderNav: React.FC<{
 
   const linkClass = (isActive?: boolean) =>
     [
-      'text-xs font-bold uppercase tracking-[.3em] transition-[background-color,color] duration-200 hover:text-candera-ember-strong px-4 py-2 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] inline-flex items-center',
+      'text-xs uppercase tracking-[.3em] transition-[color,text-decoration-color] duration-200 px-4 py-2 min-h-[44px] inline-flex items-center underline-offset-[6px] decoration-2',
       isActive
-        ? 'text-candera-ember-strong bg-candera-ember-strong/8'
+        ? 'text-candera-ember-strong font-bold underline decoration-candera-ember-strong'
         : transparent
-          ? 'text-candera-vellum/90 hover:bg-candera-vellum/10'
-          : 'text-candera-sage-text',
+          ? 'text-candera-vellum/90 font-medium hover:text-candera-vellum hover:underline decoration-transparent hover:decoration-candera-vellum/50'
+          : 'text-candera-sage-text font-medium hover:text-candera-obsidian hover:underline decoration-transparent hover:decoration-candera-sage-text/50',
     ].join(' ')
 
   return (

@@ -157,11 +157,17 @@ export default buildConfig({
       ? [
           vercelBlobStorage({
             collections: {
-              media: true,
+              media: {
+                // Prevent Payload from writing to local disk when Blob is active
+                disableLocalStorage: true,
+              },
             },
             token: blobToken as string,
             // Re-seeding re-uploads the same filenames; the blob store rejects duplicates otherwise
             addRandomSuffix: true,
+            // Ensure Blob-specific schema fields (e.g. prefix) are always present,
+            // keeping the DB schema consistent across local and production environments.
+            alwaysInsertFields: true,
           }),
         ]
       : []),
