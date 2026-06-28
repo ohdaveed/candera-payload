@@ -141,7 +141,7 @@ store, and media storage so it can run in-memory under test.
 - **Local:** Docker Compose Postgres on port `54320`. Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>`; localhost bypasses the Vercel adapter.
 - **Workflow:** schema change → `pnpm payload migrate:create` → commit the migration file (`src/migrations/`). Vercel runs `pnpm run ci` on every deploy, so migrations apply automatically (preview + production). **Do not seed in preview builds.**
 - **Seeding** is destructive (overwrites local data). Trigger from the admin dashboard, or use the scripts in `scripts/` (`seed-db.ts`, `reseed.ts`, etc.).
-- Neon: compute suspends after ~5 min idle (cold-start penalty on first query); use `-pooler` host for pooled connections; ILIKE search relies on `pg_trgm`.
+- Neon: compute suspends after ~5 min idle (cold-start penalty on first query); use `-pooler` host for pooled connections; ILIKE search is accelerated by `pg_trgm` (GIN trigram) indexes.
 
 ## Generated files — never edit by hand
 
