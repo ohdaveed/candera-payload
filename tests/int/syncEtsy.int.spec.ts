@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vite-plus/test'
+import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richtext-lexical'
+import configPromise from '@payload-config'
 import {
   EtsySyncEngine,
   EtsySourcePort,
@@ -406,5 +408,22 @@ describe('EtsySyncEngine', () => {
     expect(sent?.title).toBeUndefined()
     expect(sent?.description).toBeUndefined()
     expect(sent?._status).toBeUndefined()
+  })
+})
+
+describe('Etsy description → Lexical (official Payload converter)', () => {
+  it('converts markdown headings and lists into structured Lexical nodes', async () => {
+    // Uses the project's real editor config so the stored JSON matches the
+    // Products.description field editor — proving production sync produces rich
+    // Lexical (heading/list), not one paragraph per line.
+    const editorConfig = await editorConfigFactory.default({ config: await configPromise })
+    const lexical = convertMarkdownToLexical({
+      editorConfig,
+      markdown: '# Scent Notes\n\n- Top: Bergamot\n- Heart: Jasmine\n- Base: Cedar',
+    })
+
+    const types = (lexical.root.children as Array<{ type: string }>).map((c) => c.type)
+    expect(types).toContain('heading')
+    expect(types).toContain('list')
   })
 })

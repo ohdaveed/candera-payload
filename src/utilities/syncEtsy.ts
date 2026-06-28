@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { type Payload } from 'payload'
+import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richtext-lexical'
 import { EtsyClient, DefaultPayloadTokenRepository } from './etsyClient'
 import type { Product } from '@/payload-types'
 import { syncLogger } from './logger'
@@ -135,6 +136,11 @@ export class EtsySyncEngine {
       productStore: ProductStorePort
       mediaStorage: MediaStoragePort
       logger: LoggerPort
+      // Converts a (markdown-ish) Etsy description string into Lexical JSON.
+      // Injected so the pure engine stays decoupled from the Payload editor
+      // config; production wires Payload's official `convertMarkdownToLexical`,
+      // and unit tests fall back to the simple paragraph builder below.
+      descriptionToRichText?: (markdown: string) => Product['description']
     },
   ): Promise<SyncResult> {
     ports.logger.info(
@@ -142,6 +148,10 @@ export class EtsySyncEngine {
         ? `Starting Etsy sync for ${source.listingIds.length} listing IDs...`
         : `Starting Etsy sync for shop ${source.shopId}...`,
     )
+
+    // Prefer the injected (official Payload) converter; fall back to the simple
+    // line-based builder so the engine works headless in unit tests.
+    const toRichText = ports.descriptionToRichText ?? ((md: string) => this.textToRichText(md))
 
     const failures: Array<{ listingId: number; error: string }> = []
     let listings: RawEtsyListing[] = []
@@ -271,7 +281,7 @@ export class EtsySyncEngine {
         const editorOwned: ProductUpsertInput = {
           etsyListingId: listing_id,
           title: this.deriveCleanTitle(title),
-          description: this.textToRichText(this.cleanEtsyDescription(description)),
+          description: toRichText(this.cleanEtsyDescription(description)),
           productType,
           // Publish on first sync so active Etsy listings appear immediately;
           // visibility is editor-owned thereafter (a manual unpublish sticks).
@@ -762,12 +772,19 @@ export async function syncEtsyListings(source: number | number[], payload: Paylo
     ? { type: 'listings', listingIds: source }
     : { type: 'shop', shopId: source }
 
+  // Build the editor config once, then convert each Etsy description with
+  // Payload's official Markdown→Lexical converter so bullet lists, headings, and
+  // paragraphs become real Lexical nodes instead of one paragraph per line.
+  const editorConfig = await editorConfigFactory.default({ config: payload.config })
+
   const engine = new EtsySyncEngine()
   const ports = {
     etsySource: new ProductionEtsySourceAdapter(client),
     productStore: new ProductionProductStoreAdapter(payload),
     mediaStorage: new ProductionMediaStorageAdapter(payload),
     logger: syncLogger,
+    descriptionToRichText: (markdown: string) =>
+      convertMarkdownToLexical({ editorConfig, markdown }) as unknown as Product['description'],
   }
 
   const result = await engine.sync(syncSource, ports)
