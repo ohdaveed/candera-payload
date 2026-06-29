@@ -4772,7 +4772,8 @@
           paintedHeight = paintedWidth * (intrinsicHeight / intrinsicWidth)
         else if (heightToken.endsWith('%'))
           paintedHeight = containerRect.height * (parseFloat(heightToken) / 100)
-        else if (heightToken.endsWith('px')) paintedHeight = parseFloat(heightToken) || paintedHeight
+        else if (heightToken.endsWith('px'))
+          paintedHeight = parseFloat(heightToken) || paintedHeight
       }
 
       const [xToken, yToken] = parsePositionPair(positionValue)
