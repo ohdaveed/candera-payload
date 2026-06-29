@@ -15,6 +15,7 @@ describe('validateBootConfig', () => {
 
     vi.spyOn(payloadLogger, 'success').mockImplementation(() => payloadLogger)
     vi.spyOn(payloadLogger, 'warn').mockImplementation(() => payloadLogger)
+    vi.spyOn(payloadLogger, 'info').mockImplementation(() => payloadLogger)
     vi.spyOn(payloadLogger, 'error').mockImplementation(() => payloadLogger)
   })
 
@@ -51,21 +52,23 @@ describe('validateBootConfig', () => {
   })
 
   describe('Non-fatal validation (Warnings)', () => {
-    it('logs warning if Etsy shop id is missing or invalid', () => {
+    it('logs info/warning if Etsy shop id is missing or invalid', () => {
       // Set valid Etsy credentials first
       process.env.ETSY_API_KEY = 'apikey'
       process.env.ETSY_SHARED_SECRET = 'secret'
 
       // Missing shop ID
-      delete process.env.ETSY_SHOP_ID
+      delete (process.env as Record<string, string | undefined>).ETSY_SHOP_ID
       validateBootConfig()
-      expect(payloadLogger.warn).toHaveBeenCalledWith(expect.stringContaining('ETSY_SHOP_ID'))
+      expect(payloadLogger.info).toHaveBeenCalledWith(
+        expect.stringContaining('ETSY_SHOP_ID is not set'),
+      )
 
       // Invalid shop ID
       process.env.ETSY_SHOP_ID = 'not-an-integer'
       validateBootConfig()
       expect(payloadLogger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('must be a positive integer'),
+        expect.stringContaining('is invalid (must be a positive integer)'),
       )
     })
 

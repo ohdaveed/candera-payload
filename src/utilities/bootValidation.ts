@@ -35,9 +35,11 @@ export function validateBootConfig(): void {
 
   const missingEtsy: string[] = []
   if (!shopIdRaw) {
-    missingEtsy.push('ETSY_SHOP_ID')
+    payloadLogger.info('ETSY_SHOP_ID is not set. Defaulting to Candera Candles shop (25894791).')
   } else if (!hasValidShopId) {
-    missingEtsy.push('ETSY_SHOP_ID (must be a positive integer)')
+    payloadLogger.warn(
+      `ETSY_SHOP_ID (${shopIdRaw}) is invalid (must be a positive integer). Defaulting to Candera Candles shop (25894791).`,
+    )
   }
   if (!hasApiKey) {
     missingEtsy.push('ETSY_API_KEY')
