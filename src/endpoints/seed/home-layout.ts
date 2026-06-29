@@ -10,8 +10,8 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
  *  - seed/home.ts        → buildHomePage({ heroImageId, vesselImageIds, scentQuizFormId, scentQuizId })
  *  - seed/home-static.ts → buildHomePage()  (no media/quiz; used as the fallback)
  *
- * Canonical design (lead with the object, not the reading):
- *   hero → The Vessels → scentQuiz → testimonials → journal → product archive →
+ * Canonical design (lead with the object, then product, then the reading):
+ *   hero → The Vessels → product archive → scentQuiz → testimonials → journal →
  *   innerCircleCTA. Status card shown, primary CTA → /products.
  */
 
@@ -135,6 +135,20 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
     },
     // Lead with the object: the photography showcase sits directly under the hero.
     ...vesselsBlock,
+    // Then the buyable product grid — surfaced high, before the supporting
+    // narrative (quiz, testimonials, journal) so visitors reach product fast.
+    {
+      blockName: 'Product Archive',
+      blockType: 'archive',
+      categories: [],
+      introContent: createRichText([
+        createHeading(COLLECTION_HEADING, 'h2'),
+        createParagraph(COLLECTION_BODY),
+      ]),
+      populateBy: 'collection',
+      relationTo: 'products',
+      limit: 6,
+    },
     {
       blockName: 'Scent Quiz',
       blockType: 'scentQuiz',
@@ -157,19 +171,7 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       ]),
       populateBy: 'collection',
       relationTo: 'posts',
-      limit: 3,
-    },
-    {
-      blockName: 'Product Archive',
-      blockType: 'archive',
-      categories: [],
-      introContent: createRichText([
-        createHeading(COLLECTION_HEADING, 'h2'),
-        createParagraph(COLLECTION_BODY),
-      ]),
-      populateBy: 'collection',
-      relationTo: 'products',
-      limit: 6,
+      limit: 1,
     },
     {
       blockName: 'Inner Circle CTA',

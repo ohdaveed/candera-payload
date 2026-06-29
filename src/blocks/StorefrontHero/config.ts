@@ -37,7 +37,7 @@ export const StorefrontHero: Block = {
     {
       name: 'primaryCtaLabel',
       type: 'text',
-      defaultValue: 'Explore the Collection',
+      defaultValue: 'Shop the Collection',
       label: 'Primary CTA Label',
     },
     // Legacy fields — retained in the schema for data safety but hidden from the
