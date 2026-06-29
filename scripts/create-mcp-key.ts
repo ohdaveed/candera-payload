@@ -125,7 +125,11 @@ async function main(): Promise<void> {
   // A unique title so we can resolve the stored item's id afterward.
   const title = `Candera MCP API Key — ${label} [${user.id}-${Date.now()}]`
 
-  // Mint the key. Payload returns the unhashed `apiKey` only on this create call.
+  // Generate random API key locally because disableLocalStrategy might prevent auto-generation on create
+  const crypto = await import('node:crypto')
+  const generatedKey = crypto.randomBytes(24).toString('hex')
+
+  // Mint the key.
   const created = await payload.create({
     collection: MCP_COLLECTION,
     data: {
@@ -133,12 +137,13 @@ async function main(): Promise<void> {
       label,
       description: `MCP access for ${userEmail}`,
       enableAPIKey: true,
+      apiKey: generatedKey,
       ...collectionPerms,
       ...globalPerms,
     },
   })
 
-  const apiKey = created.apiKey
+  const apiKey = generatedKey
   if (!apiKey) {
     payloadLogger.error('Payload did not return an apiKey on create. Aborting (no item written).')
     process.exit(1)

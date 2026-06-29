@@ -40,6 +40,7 @@ const collections: CollectionSlug[] = [
   'scent-profiles',
   'how-to-guides',
   'documentation',
+  'payload-mcp-api-keys',
 ]
 
 const _globals: GlobalSlug[] = ['header', 'footer']
@@ -80,18 +81,16 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding demo author and admin user...`)
 
-  await Promise.all([
-    payload.delete({
-      collection: 'users',
-      depth: 0,
-      where: { email: { equals: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com' } },
-    }),
-    payload.delete({
-      collection: 'users',
-      depth: 0,
-      where: { email: { equals: process.env.SEED_ADMIN_EMAIL } },
-    }),
-  ])
+  await payload.delete({
+    collection: 'users',
+    depth: 0,
+    where: { email: { equals: process.env.SEED_DEMO_AUTHOR_EMAIL || 'demo-author@example.com' } },
+  })
+  await payload.delete({
+    collection: 'users',
+    depth: 0,
+    where: { email: { equals: process.env.SEED_ADMIN_EMAIL } },
+  })
 
   const adminPassword = process.env.SEED_ADMIN_PASSWORD
   if (!adminPassword)
@@ -103,7 +102,7 @@ export const seed = async ({
   await payload.create({
     collection: 'users',
     data: {
-      name: process.env.SEED_ADMIN_NAME,
+      name: process.env.SEED_ADMIN_NAME || 'Admin',
       email: adminEmail,
       password: adminPassword,
       roles: ['admin'],
