@@ -80,7 +80,7 @@
     "prism-react-renderer": "^2.4.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-hook-form": "7.77.0",
+    "react-hook-form": "7.80.0",
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "resend": "^6.16.0",
