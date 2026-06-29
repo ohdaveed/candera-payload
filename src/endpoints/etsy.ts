@@ -4,12 +4,16 @@ import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClien
 import { syncEtsyListings } from '@/utilities/syncEtsy'
 import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
 
+export const CANDERA_CANDLES_SHOP_ID = 25894791
+
 const getEtsyShopId = (): number => {
-  const shopId = Number(process.env.ETSY_SHOP_ID)
+  const shopIdRaw = process.env.ETSY_SHOP_ID
+  if (!shopIdRaw) {
+    return CANDERA_CANDLES_SHOP_ID
+  }
+  const shopId = Number(shopIdRaw)
   if (!Number.isInteger(shopId) || shopId <= 0) {
-    throw new Error(
-      'ETSY_SHOP_ID is not set to a valid numeric shop id. Refusing to sync against an unknown shop.',
-    )
+    return CANDERA_CANDLES_SHOP_ID
   }
   return shopId
 }
