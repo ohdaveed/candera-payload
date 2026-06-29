@@ -1,13 +1,17 @@
 import type { Metadata } from 'next/types'
+import Link from 'next/link'
 
-import { CollectionArchive } from '@/components/CollectionArchive'
-import { PageRange } from '@/components/PageRange'
+import { ArticleCard } from '@/components/ArticleCard'
 import { Pagination } from '@/components/Pagination'
-import { PageHeader } from '@/components/PageHeader'
+import { Container } from '@/components/ui/container'
+import { Section } from '@/components/ui/section'
+import { EditorialPageHero } from '@/components/EditorialPageHero'
+import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
-import { notFound } from 'next/navigation'
+import { getMetaImage } from '@/utilities/getMetaImage'
+import { notFound, redirect } from 'next/navigation'
 
 export const revalidate = 600
 
@@ -19,11 +23,15 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { pageNumber } = await paramsPromise
-  const payload = await getPayload({ config: configPromise })
 
   const sanitizedPageNumber = Number(pageNumber)
 
   if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
+
+  // Page 1 duplicates the canonical /posts route — redirect to avoid duplicate content.
+  if (sanitizedPageNumber === 1) redirect('/posts')
+
+  const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
     collection: 'posts',
@@ -34,44 +42,90 @@ export default async function Page({ params: paramsPromise }: Args) {
     select: {
       title: true,
       slug: true,
-      categories: true,
       meta: true,
-      populatedAuthors: true,
       publishedAt: true,
       heroImage: true,
     },
   })
 
   // Out-of-range page numbers should 404 rather than render an empty grid.
-  // `|| 1` keeps page 1 valid (its empty state) when the collection is empty,
-  // while still 404ing page 2+ in that case.
   if (sanitizedPageNumber > (posts.totalPages || 1)) notFound()
 
   return (
-    <div className="pt-24 pb-24">
-      <SetHeaderTheme theme="light" />
+    <main className="bg-candera-vellum overflow-x-hidden" data-page="posts-listing">
+      <SetHeaderTheme theme="dark" />
 
-      <div className="container mb-16">
-        <PageHeader eyebrow="Candera Stories" title="The Journal" />
-      </div>
+      <EditorialPageHero
+        eyebrow="Candera Stories"
+        title="The Journal"
+        description="Reflections on intentional living, the art of scent, and the stories behind our seasonal batches."
+        decorativeWord="Journal"
+      />
 
-      <div className="container mb-8">
-        <PageRange
-          collection="posts"
-          currentPage={posts.page}
-          limit={12}
-          totalDocs={posts.totalDocs}
-        />
-      </div>
+      <Section
+        padding="large"
+        className="bg-candera-vellum pt-8 md:pt-12"
+        data-section="post-archive"
+      >
+        <Container>
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-24 pb-16 md:pb-24">
+            {/* Left sidebar — sticky */}
+            <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
+              <p className="eyebrow text-candera-sage-text m-0">More from the Journal</p>
+              <h2 className="text-[1.85rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
+                Reflections <span className="whitespace-nowrap">&amp; Rituals.</span>
+              </h2>
+              <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
+                Deep dives into botanical history, studio notes, and the philosophy of slow living.
+              </p>
+              <Link
+                href="/posts"
+                className="btn-text text-candera-obsidian no-underline border-b border-candera-ember-strong pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember-strong transition-colors mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              >
+                View all stories →
+              </Link>
+            </div>
 
-      <CollectionArchive posts={posts.docs} />
+            {/* Right — article card grid */}
+            <div className="flex-1 min-w-0">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-8 list-none p-0 m-0">
+                {posts.docs.map((post) => {
+                  const { url: imageUrl, alt: imageAlt } = getMetaImage(
+                    post.meta?.image || post.heroImage,
+                  )
 
-      <div className="container">
-        {posts?.page && posts?.totalPages > 1 && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
-        )}
-      </div>
-    </div>
+                  return (
+                    <li key={post.slug}>
+                      <ArticleCard
+                        title={post.title}
+                        slug={post.slug}
+                        excerpt={post.meta?.description}
+                        date={post.publishedAt}
+                        imageUrl={imageUrl}
+                        imageAlt={imageAlt}
+                      />
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
+
+          {posts.totalPages > 1 && posts.page && (
+            <div className="mt-16">
+              <Pagination page={posts.page} totalPages={posts.totalPages} />
+            </div>
+          )}
+        </Container>
+      </Section>
+
+      {/* Peak-End Rule: close the journey on a strong, on-brand conversion moment */}
+      <InnerCircleCTABlock
+        blockType="innerCircleCTA"
+        headline="Stories, straight from the studio."
+        description="Join the Inner Circle for new journal entries, behind-the-scenes notes, and seasonal ritual invitations."
+      />
+    </main>
   )
 }
 
