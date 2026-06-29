@@ -1,5 +1,14 @@
 nodeLinker: hoisted
 
+# Exempt one already-vetted version from pnpm v11's default 24h supply-chain
+# cooldown (minimumReleaseAge: 1440). Dependabot (#142) bumped lucide-react to
+# 1.22.0 on its publish day, which otherwise blocks every `pnpm install`
+# (local, CI, Vercel) until the version is 24h old. Pinned to the exact version
+# (not the bare package name) so the cooldown still applies to all *future*
+# lucide-react releases and every other dependency. Remove once it ages out.
+minimumReleaseAgeExclude:
+  - lucide-react@1.22.0
+
 allowBuilds:
   '@sentry/cli': true
   bufferutil: false
