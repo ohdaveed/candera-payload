@@ -35,7 +35,6 @@ function lexicalToPlainText(value: unknown): string {
   if (node.root) return lexicalToPlainText(node.root)
   return ''
 }
-
 const generateTitle: GenerateTitle<Post | Page | Product> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Candera Candles` : 'Candera Candles'
 }
