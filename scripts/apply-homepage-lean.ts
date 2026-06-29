@@ -45,9 +45,14 @@ const run = async () => {
     ? [...(home.layout as unknown as Record<string, unknown>[])]
     : []
 
-  // Reorder in place (stable sort), and trim the posts archive to one featured post.
+  // Reorder in place (stable sort), and align archive limits with a fresh seed
+  // (products → 6, featured posts → 1) so the migrated DB matches seed output
+  // regardless of its prior limits.
   layout.sort((a, b) => rank(a) - rank(b))
   for (const block of layout) {
+    if (block.blockType === 'archive' && block.relationTo === 'products') {
+      block.limit = 6
+    }
     if (block.blockType === 'archive' && block.relationTo === 'posts') {
       block.limit = 1
     }
@@ -61,6 +66,21 @@ const run = async () => {
   })
   payload.logger.info(`Home layout reordered → ${layout.map((b) => b.blockType).join(' → ')}`)
 
+  // Match the seed contract: About is a page reference (not a hard-coded path),
+  // so the link survives an about-page slug change. Fall back to a custom path
+  // only if the about page is missing.
+  const aboutPage = (
+    await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: 'about' } },
+      limit: 1,
+      depth: 0,
+    })
+  ).docs[0]
+  const aboutLink = aboutPage
+    ? { type: 'reference', label: 'About', reference: { relationTo: 'pages', value: aboutPage.id } }
+    : { type: 'custom', label: 'About', url: '/about' }
+
   await payload.updateGlobal({
     slug: 'footer',
     context: { disableRevalidate: true },
@@ -69,7 +89,7 @@ const run = async () => {
         { link: { type: 'custom', label: 'Collection', url: '/products' } },
         { link: { type: 'custom', label: 'Journal', url: '/posts' } },
         { link: { type: 'custom', label: 'How To', url: '/how-to' } },
-        { link: { type: 'custom', label: 'About', url: '/about' } },
+        { link: aboutLink as never },
       ],
     },
   })
