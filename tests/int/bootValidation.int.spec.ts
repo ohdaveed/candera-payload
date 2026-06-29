@@ -70,6 +70,13 @@ describe('validateBootConfig', () => {
       expect(payloadLogger.warn).toHaveBeenCalledWith(
         expect.stringContaining('is invalid (must be a positive integer)'),
       )
+
+      // Pass reference (should be valid and not log warning or info)
+      process.env.ETSY_SHOP_ID = 'pass://some_vault/some_item/ETSY_SHOP_ID'
+      vi.clearAllMocks()
+      validateBootConfig()
+      expect(payloadLogger.info).not.toHaveBeenCalled()
+      expect(payloadLogger.warn).not.toHaveBeenCalled()
     })
 
     it('logs warning if Etsy credentials (API Key or Shared Secret) are missing', () => {

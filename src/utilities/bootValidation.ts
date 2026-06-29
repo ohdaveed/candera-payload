@@ -28,8 +28,9 @@ export function validateBootConfig(): void {
 
   // 2. Verify Etsy & SMTP configs (Non-Fatal - logs startup warnings)
   const shopIdRaw = process.env.ETSY_SHOP_ID
-  const shopId = shopIdRaw ? Number(shopIdRaw) : NaN
-  const hasValidShopId = Number.isInteger(shopId) && shopId > 0
+  const isPassReference = shopIdRaw?.startsWith('pass://') === true
+  const shopId = shopIdRaw && !isPassReference ? Number(shopIdRaw) : NaN
+  const hasValidShopId = isPassReference || (Number.isInteger(shopId) && shopId > 0)
   const hasApiKey = !!process.env.ETSY_API_KEY
   const hasSharedSecret = !!process.env.ETSY_SHARED_SECRET
 
