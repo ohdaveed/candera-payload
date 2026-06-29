@@ -1,5 +1,5 @@
 import type { CollectionAfterChangeHook } from 'payload'
-import { sendToFormSubmit } from '@/services/formsubmit'
+import { type FormRelayPort, defaultFormRelay } from '@/services/formRelay'
 
 type SubmissionField = { field: string; value: string }
 
@@ -16,8 +16,10 @@ export const processFormSubmission: CollectionAfterChangeHook = async ({ doc, re
     const form = await req.payload.findByID({ collection: 'forms', id: formId, depth: 0 })
     const formTitle: string = form.title
 
+    const relay = (req.context.formRelay as FormRelayPort) || defaultFormRelay
+
     const results = await Promise.allSettled([
-      sendToFormSubmit({
+      relay.send({
         formTitle,
         email,
         submissionData,

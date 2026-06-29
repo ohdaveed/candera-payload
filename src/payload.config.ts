@@ -1,13 +1,11 @@
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
+import { validateBootConfig } from './utilities/bootValidation'
 
-import { payloadLogger } from './utilities/logger'
+// Run boot-time verification of configuration and environment variables
+validateBootConfig()
 
-if (!process.env.PAYLOAD_SECRET) {
-  throw new Error('PAYLOAD_SECRET is not set. Set this environment variable before starting.')
-}
-payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -42,16 +40,7 @@ import { BRAND } from './constants/brand'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-// Prefer DATABASE_URI (manually managed, valid credentials) over POSTGRES_URL,
-// which the Neon Vercel integration injects and can override with a stale
-// password. Passing an explicit connectionString forces VercelPool to use it
-// instead of falling back to the integration-managed POSTGRES_URL env var.
-const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
-if (!databaseConnectionString) {
-  throw new Error(
-    'DATABASE_URI (or POSTGRES_URL) is not set. Set a Postgres connection string before starting.',
-  )
-}
+const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL || ''
 // The Vercel adapter speaks Neon's serverless protocol and only works against a
 // Neon-hosted database. Production uses Neon (a `*.neon.tech` host) and keeps the
 // Vercel adapter; plain Postgres (local dev / CI service container) falls back to
@@ -67,10 +56,6 @@ const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
     })
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
-
-if (process.env.VERCEL_ENV === 'production' && !hasValidBlobToken) {
-  throw new Error('BLOB_READ_WRITE_TOKEN must be set to a valid Vercel Blob token in production.')
-}
 
 const corsOrigins: string[] = [
   getServerSideURL(),

@@ -14,58 +14,10 @@ import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { EMAIL_PATTERN } from '@/constants/validation'
-import type {
-  ScentQuizBlock as ScentQuizBlockType,
-  Quiz,
-  ScentProfile,
-  Product,
-} from '@/payload-types'
+import type { ScentQuizBlock as ScentQuizBlockType, Quiz, Product } from '@/payload-types'
+import { ScentRecommendationEngine } from './recommendationEngine'
 
 type EmailFormValues = { email: string }
-
-// Derive scores from recorded answer indices so the URL is the single source of truth.
-function deriveScores(
-  answers: number[],
-  questions: NonNullable<Quiz['questions']>,
-): Record<string, number> {
-  return answers.reduce(
-    (acc, optionIdx, qIdx) => {
-      const option = questions[qIdx]?.options?.[optionIdx]
-      option?.scores?.forEach((s) => {
-        const profileId = String(
-          s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile,
-        )
-        acc[profileId] = (acc[profileId] ?? 0) + (s.points || 0)
-      })
-      return acc
-    },
-    {} as Record<string, number>,
-  )
-}
-
-function deriveResultFromScores(
-  scoreMap: Record<string, number>,
-  questions: NonNullable<Quiz['questions']>,
-): ScentProfile | null {
-  let topId = ''
-  let topScore = -1
-  for (const [id, score] of Object.entries(scoreMap)) {
-    if (score > topScore) {
-      topScore = score
-      topId = id
-    }
-  }
-
-  const foundProfile = questions
-    .flatMap((q) => q.options.flatMap((o) => o.scores || []))
-    .find(
-      (s) =>
-        String(s.profile && typeof s.profile === 'object' ? s.profile.id : s.profile) ===
-        String(topId),
-    )?.profile as ScentProfile | undefined
-
-  return foundProfile || null
-}
 
 // Parse "1-0-2" from the URL into [1, 0, 2]
 function parseAnswers(raw: string | null): number[] {
@@ -93,11 +45,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   const step = Math.min(answers.length, questions.length)
   const isEmailStep = answers.length >= questions.length
 
-  // Scores and result are always derived — no stale useState mirrors
-  const scores = useMemo(() => deriveScores(answers, questions), [answers, questions])
-  const result = useMemo(
-    () => (isEmailStep ? deriveResultFromScores(scores, questions) : null),
-    [isEmailStep, scores, questions],
+  // Result is always derived using the pure recommendation engine
+  const { result } = useMemo(
+    () => ScentRecommendationEngine.getRecommendation(answers, questions, isEmailStep),
+    [answers, questions, isEmailStep],
   )
 
   const revealTimerRef = useRef<number | null>(null)

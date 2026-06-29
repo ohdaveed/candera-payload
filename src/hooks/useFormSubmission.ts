@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { getClientSideURL } from '@/utilities/getURL'
+import { submitFormAction } from '@/app/actions/submitForm'
 
 export type SubmissionField = { field: string; value: string }
 
@@ -12,18 +12,18 @@ type UseFormSubmission = {
   setError: (error: string | undefined) => void
   /** Clears loading/submitted/error state (e.g. when a multi-step form restarts). */
   reset: () => void
-  /** POSTs to /api/form-submissions; returns true on success. */
+  /** Invokes the type-safe submitFormAction server action; returns true on success. */
   submit: (
     formId: string | number | null | undefined,
     submissionData: SubmissionField[],
+    turnstileToken?: string,
   ) => Promise<boolean>
 }
 
 /**
  * Shared submit flow for the storefront's direct-fetch forms (Inner Circle
  * email capture, Scent Quiz email step). Encapsulates the isLoading/hasSubmitted/
- * error state, the POST to the Payload form-submissions endpoint, and error
- * handling that were previously duplicated across components.
+ * error state, invoking the submitFormAction server action, and handling errors.
  */
 export function useFormSubmission(): UseFormSubmission {
   const [isLoading, setIsLoading] = useState(false)
@@ -37,7 +37,11 @@ export function useFormSubmission(): UseFormSubmission {
   }, [])
 
   const submit = useCallback(
-    async (formId: string | number | null | undefined, submissionData: SubmissionField[]) => {
+    async (
+      formId: string | number | null | undefined,
+      submissionData: SubmissionField[],
+      turnstileToken?: string,
+    ) => {
       setError(undefined)
 
       if (!formId) {
@@ -47,25 +51,39 @@ export function useFormSubmission(): UseFormSubmission {
 
       setIsLoading(true)
 
+      // Coerce formId to a number since the relationship uses numeric IDs in the Postgres database schema
+      const numericFormId = typeof formId === 'string' ? Number(formId) : formId
+
       try {
-        const res = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ form: formId, submissionData }),
+        const result = await submitFormAction({
+          formId: numericFormId,
+          submissionData,
+          turnstileToken,
         })
 
-        if (res.status >= 400) {
-          const json = await res.json()
-          setError(json.errors?.[0]?.message || 'Something went wrong. Please try again.')
+        if (!result || result.validationErrors) {
+          setError('Invalid form submission data. Please check your entries.')
           setIsLoading(false)
           return false
         }
 
+        if (result.serverError) {
+          setError(result.serverError)
+          setIsLoading(false)
+          return false
+        }
+
+        if (result.data?.success) {
+          setIsLoading(false)
+          setHasSubmitted(true)
+          return true
+        }
+
+        setError('An unexpected error occurred. Please try again.')
         setIsLoading(false)
-        setHasSubmitted(true)
-        return true
-      } catch {
-        setError('Something went wrong. Please try again.')
+        return false
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
         setIsLoading(false)
         return false
       }

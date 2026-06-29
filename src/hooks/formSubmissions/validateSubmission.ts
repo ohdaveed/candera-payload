@@ -1,5 +1,6 @@
 import type { CollectionBeforeValidateHook } from 'payload'
 import { ValidationError } from 'payload'
+import { validateAndSanitizeSubmission } from '@/utilities/formValidation'
 
 /**
  * Hard server-side caps for public form submissions.
@@ -13,12 +14,6 @@ import { ValidationError } from 'payload'
  * Not a substitute for bot mitigation (honeypot / CAPTCHA / rate limiting),
  * which is tracked as a follow-up requiring provisioned infrastructure.
  */
-const MAX_FIELDS = 50
-const MAX_VALUE_LENGTH = 5000
-const MAX_FIELD_NAME_LENGTH = 200
-
-type SubmissionField = { field?: unknown; value?: unknown }
-
 export const validateSubmission: CollectionBeforeValidateHook = ({ data }) => {
   if (!data) return data
 
@@ -26,55 +21,15 @@ export const validateSubmission: CollectionBeforeValidateHook = ({ data }) => {
 
   if (submissionData == null) return data
 
-  if (!Array.isArray(submissionData)) {
+  try {
+    const sanitized = validateAndSanitizeSubmission(submissionData)
+    data.submissionData = sanitized
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Validation failed.'
     throw new ValidationError({
-      errors: [{ path: 'submissionData', message: 'Submission data is malformed.' }],
+      errors: [{ path: 'submissionData', message }],
     })
   }
-
-  if (submissionData.length > MAX_FIELDS) {
-    throw new ValidationError({
-      errors: [{ path: 'submissionData', message: 'Too many fields in submission.' }],
-    })
-  }
-
-  const sanitized = (submissionData as SubmissionField[])
-    // Drop entries without a usable field name.
-    .filter((entry) => typeof entry?.field === 'string' && entry.field.trim().length > 0)
-    .map((entry) => {
-      const field = String(entry.field).slice(0, MAX_FIELD_NAME_LENGTH)
-      // Coerce non-string values to strings so downstream services never choke.
-      const value = entry.value
-      const rawValue =
-        value == null
-          ? ''
-          : typeof value === 'string'
-            ? value
-            : typeof value === 'object'
-              ? JSON.stringify(value)
-              : String(value as number | bigint | boolean)
-
-      if (rawValue.length > MAX_VALUE_LENGTH) {
-        throw new ValidationError({
-          errors: [
-            { path: 'submissionData', message: `Field "${field}" exceeds the maximum length.` },
-          ],
-        })
-      }
-
-      return { field, value: rawValue }
-    })
-
-  // Reject submissions that have no usable fields left after sanitization, so
-  // empty/garbage payloads can't trigger the afterChange fan-out to external
-  // services.
-  if (sanitized.length === 0) {
-    throw new ValidationError({
-      errors: [{ path: 'submissionData', message: 'Submission contained no valid fields.' }],
-    })
-  }
-
-  data.submissionData = sanitized
 
   return data
 }
