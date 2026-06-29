@@ -24,7 +24,6 @@ npx shadcn@latest add https://ui.inference.sh/r/chat.json
 
 ```tsx
 import { ChatContainer } from '@/registry/blocks/chat/chat-container'
-
 ;<ChatContainer>{/* messages go here */}</ChatContainer>
 ```
 
@@ -48,7 +47,6 @@ import { ChatMessage } from "@/registry/blocks/chat/chat-message"
 
 ```tsx
 import { ChatInput } from '@/registry/blocks/chat/chat-input'
-
 ;<ChatInput
   onSubmit={(message) => handleSend(message)}
   placeholder="Type a message..."

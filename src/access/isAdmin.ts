@@ -17,8 +17,8 @@ export const isAdmin: isAdmin = ({ req: { user } }) => {
 export const userIsAdmin = (user: unknown): boolean => {
   return Boolean(
     user &&
-      typeof user === 'object' &&
-      'roles' in user &&
-      (user as { roles?: string[] }).roles?.includes('admin'),
+    typeof user === 'object' &&
+    'roles' in user &&
+    (user as { roles?: string[] }).roles?.includes('admin'),
   )
 }
