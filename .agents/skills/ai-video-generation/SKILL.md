@@ -1,6 +1,6 @@
 ---
 name: ai-video-generation
-description: "Generate AI videos with Google Veo, Seedance 2.0, HappyHorse, Wan, Grok and 40+ models via inference.sh CLI. Models: Veo 3.1, Veo 3, Seedance 2.0, HappyHorse 1.0, Wan 2.5, Grok Imagine Video, OmniHuman, Fabric, HunyuanVideo. Capabilities: text-to-video, image-to-video, reference-to-video, video editing, lipsync, avatar animation, video upscaling, foley sound. Use for: social media videos, marketing content, explainer videos, product demos, AI avatars. Triggers: video generation, ai video, text to video, image to video, veo, animate image, video from image, ai animation, video generator, generate video, t2v, i2v, ai video maker, create video with ai, runway alternative, pika alternative, sora alternative, kling alternative, seedance, happyhorse"
+description: 'Generate AI videos with Google Veo, Seedance 2.0, HappyHorse, Wan, Grok and 40+ models via inference.sh CLI. Models: Veo 3.1, Veo 3, Seedance 2.0, HappyHorse 1.0, Wan 2.5, Grok Imagine Video, OmniHuman, Fabric, HunyuanVideo. Capabilities: text-to-video, image-to-video, reference-to-video, video editing, lipsync, avatar animation, video upscaling, foley sound. Use for: social media videos, marketing content, explainer videos, product demos, AI avatars. Triggers: video generation, ai video, text to video, image to video, veo, animate image, video from image, ai animation, video generator, generate video, t2v, i2v, ai video maker, create video with ai, runway alternative, pika alternative, sora alternative, kling alternative, seedance, happyhorse'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,60 +23,59 @@ belt login
 belt app run google/veo-3-1-fast --input '{"prompt": "drone shot flying over a forest"}'
 ```
 
-
 ## Available Models
 
 ### Text-to-Video
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| Veo 3.1 Fast | `google/veo-3-1-fast` | Fast, with optional audio |
-| Veo 3.1 | `google/veo-3-1` | Best quality, frame interpolation |
-| Veo 3 | `google/veo-3` | High quality with audio |
-| Veo 3 Fast | `google/veo-3-fast` | Fast with audio |
-| Veo 2 | `google/veo-2` | Realistic videos |
-| **P-Video** | `pruna/p-video` | Fast, economical, with audio support |
-| **WAN-T2V** | `pruna/wan-t2v` | Economical 480p/720p |
-| Grok Video | `xai/grok-imagine-video` | xAI, configurable duration |
-| **Seedance 2.0** | `bytedance/seedance-2-0` | Text/image/ref-to-video with sync audio, up to 1080p |
-| **Seedance 2.0 Fast** | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities |
-| **HappyHorse T2V** | `alibaba/happyhorse-1-0-t2v` | Physically realistic, up to 15s |
+| Model                 | App ID                        | Best For                                             |
+| --------------------- | ----------------------------- | ---------------------------------------------------- |
+| Veo 3.1 Fast          | `google/veo-3-1-fast`         | Fast, with optional audio                            |
+| Veo 3.1               | `google/veo-3-1`              | Best quality, frame interpolation                    |
+| Veo 3                 | `google/veo-3`                | High quality with audio                              |
+| Veo 3 Fast            | `google/veo-3-fast`           | Fast with audio                                      |
+| Veo 2                 | `google/veo-2`                | Realistic videos                                     |
+| **P-Video**           | `pruna/p-video`               | Fast, economical, with audio support                 |
+| **WAN-T2V**           | `pruna/wan-t2v`               | Economical 480p/720p                                 |
+| Grok Video            | `xai/grok-imagine-video`      | xAI, configurable duration                           |
+| **Seedance 2.0**      | `bytedance/seedance-2-0`      | Text/image/ref-to-video with sync audio, up to 1080p |
+| **Seedance 2.0 Fast** | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities                      |
+| **HappyHorse T2V**    | `alibaba/happyhorse-1-0-t2v`  | Physically realistic, up to 15s                      |
 
 ### Image-to-Video
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| Wan 2.5 | `falai/wan-2-5` | Animate any image |
-| Wan 2.5 I2V | `falai/wan-2-5-i2v` | High quality i2v |
-| **WAN-I2V** | `pruna/wan-i2v` | Economical 480p/720p |
-| **P-Video** | `pruna/p-video` | Fast i2v with audio |
-| **Seedance 2.0** | `bytedance/seedance-2-0` | Animate images with sync audio, up to 1080p |
-| **Seedance 2.0 Fast** | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities |
-| **HappyHorse I2V** | `alibaba/happyhorse-1-0-i2v` | Animate images, up to 1080P/15s |
-| **HappyHorse R2V** | `alibaba/happyhorse-1-0-r2v` | Character-preserving from references |
+| Model                 | App ID                        | Best For                                    |
+| --------------------- | ----------------------------- | ------------------------------------------- |
+| Wan 2.5               | `falai/wan-2-5`               | Animate any image                           |
+| Wan 2.5 I2V           | `falai/wan-2-5-i2v`           | High quality i2v                            |
+| **WAN-I2V**           | `pruna/wan-i2v`               | Economical 480p/720p                        |
+| **P-Video**           | `pruna/p-video`               | Fast i2v with audio                         |
+| **Seedance 2.0**      | `bytedance/seedance-2-0`      | Animate images with sync audio, up to 1080p |
+| **Seedance 2.0 Fast** | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities             |
+| **HappyHorse I2V**    | `alibaba/happyhorse-1-0-i2v`  | Animate images, up to 1080P/15s             |
+| **HappyHorse R2V**    | `alibaba/happyhorse-1-0-r2v`  | Character-preserving from references        |
 
 ### Avatar / Lipsync
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | Multi-character |
-| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | Single character |
-| Fabric 1.0 | `falai/fabric-1-0` | Image talks with lipsync |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | Realistic lipsync |
+| Model            | App ID                    | Best For                 |
+| ---------------- | ------------------------- | ------------------------ |
+| OmniHuman 1.5    | `bytedance/omnihuman-1-5` | Multi-character          |
+| OmniHuman 1.0    | `bytedance/omnihuman-1-0` | Single character         |
+| Fabric 1.0       | `falai/fabric-1-0`        | Image talks with lipsync |
+| PixVerse Lipsync | `falai/pixverse-lipsync`  | Realistic lipsync        |
 
 ### Video Editing
 
-| Model | App ID | Best For |
-|-------|--------|----------|
+| Model           | App ID                              | Best For                       |
+| --------------- | ----------------------------------- | ------------------------------ |
 | HappyHorse Edit | `alibaba/happyhorse-1-0-video-edit` | Natural language video editing |
 
 ### Utilities
 
-| Tool | App ID | Description |
-|------|--------|-------------|
-| HunyuanVideo Foley | `infsh/hunyuanvideo-foley` | Add sound effects to video |
-| Topaz Upscaler | `falai/topaz-video-upscaler` | Upscale video quality |
-| Media Merger | `infsh/media-merger` | Merge videos with transitions |
+| Tool               | App ID                       | Description                   |
+| ------------------ | ---------------------------- | ----------------------------- |
+| HunyuanVideo Foley | `infsh/hunyuanvideo-foley`   | Add sound effects to video    |
+| Topaz Upscaler     | `falai/topaz-video-upscaler` | Upscale video quality         |
+| Media Merger       | `infsh/media-merger`         | Merge videos with transitions |
 
 ## Browse All Video Apps
 
@@ -249,4 +248,3 @@ Browse all apps: `belt app store`
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
 - [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
-

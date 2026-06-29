@@ -1,6 +1,6 @@
 ---
 name: youtube-thumbnail-design
-description: "YouTube thumbnail design with specific dimensions, contrast rules, and mobile preview optimization. Covers safe zones, text placement, face expression psychology, and A/B testing. Use for: YouTube thumbnails, video cover images, click-through optimization. Triggers: youtube thumbnail, thumbnail design, video thumbnail, click through rate, ctr optimization, youtube cover, video cover image, thumbnail maker, thumbnail tips, youtube design, video preview image"
+description: 'YouTube thumbnail design with specific dimensions, contrast rules, and mobile preview optimization. Covers safe zones, text placement, face expression psychology, and A/B testing. Use for: YouTube thumbnails, video cover images, click-through optimization. Triggers: youtube thumbnail, thumbnail design, video thumbnail, click through rate, ctr optimization, youtube cover, video cover image, thumbnail maker, thumbnail tips, youtube design, video preview image'
 allowed-tools: Bash(belt *)
 ---
 
@@ -25,22 +25,22 @@ belt app run falai/flux-dev-lora --input '{
 }'
 ```
 
-
 ## Specifications
 
-| Spec | Value |
-|------|-------|
-| Dimensions | 1280 x 720 px (minimum) |
-| Recommended | 1920 x 1080 px |
-| Aspect ratio | 16:9 |
-| Max file size | 2 MB |
-| Formats | JPG, GIF, PNG |
+| Spec          | Value                   |
+| ------------- | ----------------------- |
+| Dimensions    | 1280 x 720 px (minimum) |
+| Recommended   | 1920 x 1080 px          |
+| Aspect ratio  | 16:9                    |
+| Max file size | 2 MB                    |
+| Formats       | JPG, GIF, PNG           |
 
 ## The 120px Test
 
 Your thumbnail appears at roughly **120px wide** on mobile — that's how most viewers first see it.
 
 **At 120px, viewers must be able to identify:**
+
 1. The mood/emotion (from colors and expression)
 2. The general subject (from composition)
 3. The text (if any — only if large enough)
@@ -67,6 +67,7 @@ Your thumbnail appears at roughly **120px wide** on mobile — that's how most v
 ```
 
 **Avoid placing critical elements in:**
+
 - Bottom-right corner (video duration timestamp)
 - Bottom-left corner (chapter markers, progress bar)
 - Extreme edges (cropping varies by device)
@@ -75,14 +76,14 @@ Your thumbnail appears at roughly **120px wide** on mobile — that's how most v
 
 ### High-Contrast Pairs That Work
 
-| Combination | Mood | Best For |
-|-------------|------|----------|
-| Yellow + Black | Urgency, attention | Tech, business, lists |
-| Red + White | Energy, excitement | Entertainment, reactions |
-| Blue + Orange | Professional contrast | Education, tutorials |
-| Green + White | Growth, money | Finance, success stories |
-| Purple + Yellow | Premium, creative | Design, art, creativity |
-| White + Dark | Clean, minimal | Luxury, minimalist channels |
+| Combination     | Mood                  | Best For                    |
+| --------------- | --------------------- | --------------------------- |
+| Yellow + Black  | Urgency, attention    | Tech, business, lists       |
+| Red + White     | Energy, excitement    | Entertainment, reactions    |
+| Blue + Orange   | Professional contrast | Education, tutorials        |
+| Green + White   | Growth, money         | Finance, success stories    |
+| Purple + Yellow | Premium, creative     | Design, art, creativity     |
+| White + Dark    | Clean, minimal        | Luxury, minimalist channels |
 
 ### Color Rules
 
@@ -108,26 +109,26 @@ Your thumbnail appears at roughly **120px wide** on mobile — that's how most v
 
 ### Text Rules
 
-| Rule | Reason |
-|------|--------|
-| Max 6 words | Readability at thumbnail size |
-| Min 60pt equivalent | Must be legible at 120px width |
-| Bold sans-serif font | Thin fonts disappear at small sizes |
+| Rule                   | Reason                                |
+| ---------------------- | ------------------------------------- |
+| Max 6 words            | Readability at thumbnail size         |
+| Min 60pt equivalent    | Must be legible at 120px width        |
+| Bold sans-serif font   | Thin fonts disappear at small sizes   |
 | Contrast stroke/shadow | Ensures readability on any background |
-| No small text | If it's not readable small, cut it |
+| No small text          | If it's not readable small, cut it    |
 
 ## Face Expression Psychology
 
 Thumbnails with faces get **higher CTR** than faceless thumbnails. Expression matters:
 
-| Expression | CTR Impact | Best For |
-|------------|-----------|----------|
-| **Surprise/shock** | Highest | Reaction, reveal, discovery content |
-| **Curiosity** | High | Tutorial, how-to, tips |
-| **Excitement** | High | Unboxing, reviews, announcements |
-| **Concern/worry** | Medium-high | Warning, mistake, problem content |
-| **Confidence** | Medium | Expert advice, authority content |
-| **Neutral** | Lowest | Avoid unless your brand is minimalist |
+| Expression         | CTR Impact  | Best For                              |
+| ------------------ | ----------- | ------------------------------------- |
+| **Surprise/shock** | Highest     | Reaction, reveal, discovery content   |
+| **Curiosity**      | High        | Tutorial, how-to, tips                |
+| **Excitement**     | High        | Unboxing, reviews, announcements      |
+| **Concern/worry**  | Medium-high | Warning, mistake, problem content     |
+| **Confidence**     | Medium      | Expert advice, authority content      |
+| **Neutral**        | Lowest      | Avoid unless your brand is minimalist |
 
 ### Face Composition Rules
 
@@ -154,6 +155,7 @@ belt app run bytedance/seedream-4-5 --input '{
 ## Thumbnail Patterns by Content Type
 
 ### Tutorial / How-To
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "overhead flat lay of organized workspace with laptop showing code editor, colorful sticky notes, coffee cup, clean bright background, professional setup, tutorial style composition, warm lighting",
@@ -163,6 +165,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 ### Before/After
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "split composition, left side dark and messy disorganized desk, right side bright clean organized minimalist workspace, dramatic contrast between chaos and order, clear dividing line in center, high contrast",
@@ -172,6 +175,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 ### Product Review / Comparison
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "two products facing each other with dramatic lighting and sparks between them, competition battle concept, dark background with colorful rim lighting, versus comparison style, high energy, product photography",
@@ -181,6 +185,7 @@ belt app run falai/flux-dev-lora --input '{
 ```
 
 ### Listicle / Number
+
 ```bash
 belt app run falai/flux-dev-lora --input '{
   "prompt": "dynamic arrangement of 7 different colorful objects floating in space against dark gradient background, each item distinct and clearly separated, energetic composition, vibrant saturated colors, studio lighting",
@@ -193,14 +198,14 @@ belt app run falai/flux-dev-lora --input '{
 
 Test one variable at a time:
 
-| Variable | Test A vs B |
-|----------|-------------|
+| Variable        | Test A vs B                           |
+| --------------- | ------------------------------------- |
 | Face vs No face | Same composition, with/without person |
-| Expression | Surprise vs curiosity |
-| Color scheme | Warm vs cool palette |
-| Text vs No text | With/without text overlay |
-| Background | Bright vs dark |
-| Composition | Left-facing vs right-facing subject |
+| Expression      | Surprise vs curiosity                 |
+| Color scheme    | Warm vs cool palette                  |
+| Text vs No text | With/without text overlay             |
+| Background      | Bright vs dark                        |
+| Composition     | Left-facing vs right-facing subject   |
 
 ```bash
 # Generate variant A
@@ -231,15 +236,15 @@ belt app run falai/flux-dev-lora --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Too much text | Unreadable at thumbnail size | Max 6 words or no text |
-| Low contrast | Disappears in the feed | Use complementary colors |
-| Cluttered composition | Eye doesn't know where to look | One focal point |
-| Generic stock photo feel | No personality, gets skipped | Authentic expressions, unique angles |
-| Tiny details | Lost at 120px | Bold, simple shapes |
-| Same style every video | Viewer fatigue | Vary within brand guidelines |
-| Misleading thumbnail | Kills trust, hurts retention | Match the actual content |
+| Mistake                  | Problem                        | Fix                                  |
+| ------------------------ | ------------------------------ | ------------------------------------ |
+| Too much text            | Unreadable at thumbnail size   | Max 6 words or no text               |
+| Low contrast             | Disappears in the feed         | Use complementary colors             |
+| Cluttered composition    | Eye doesn't know where to look | One focal point                      |
+| Generic stock photo feel | No personality, gets skipped   | Authentic expressions, unique angles |
+| Tiny details             | Lost at 120px                  | Bold, simple shapes                  |
+| Same style every video   | Viewer fatigue                 | Vary within brand guidelines         |
+| Misleading thumbnail     | Kills trust, hurts retention   | Match the actual content             |
 
 ## Related Skills
 
@@ -250,4 +255,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

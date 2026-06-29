@@ -1,6 +1,6 @@
 ---
 name: ai-podcast-creation
-description: "Create AI-powered podcasts with text-to-speech, music, and audio editing. Tools: Kokoro TTS, DIA TTS, Chatterbox, AI music generation, media merger. Capabilities: multi-voice conversations, background music, intro/outro, full episodes. Use for: podcast production, audiobooks, voice content, audio newsletters. Triggers: podcast, ai podcast, text to speech podcast, audio content, voice over, ai audiobook, multi voice, conversation ai, notebooklm alternative, audio generation, podcast automation, ai narrator, voice content, audio newsletter, podcast maker"
+description: 'Create AI-powered podcasts with text-to-speech, music, and audio editing. Tools: Kokoro TTS, DIA TTS, Chatterbox, AI music generation, media merger. Capabilities: multi-voice conversations, background music, intro/outro, full episodes. Use for: podcast production, audiobooks, voice content, audio newsletters. Triggers: podcast, ai podcast, text to speech podcast, audio content, voice over, ai audiobook, multi voice, conversation ai, notebooklm alternative, audio generation, podcast automation, ai narrator, voice content, audio newsletter, podcast maker'
 allowed-tools: Bash(belt *)
 ---
 
@@ -26,31 +26,30 @@ belt app run infsh/kokoro-tts --input '{
 }'
 ```
 
-
 ## Available Voices
 
 ### Kokoro TTS
 
-| Voice ID | Description | Best For |
-|----------|-------------|----------|
-| `af_sarah` | American female, warm | Host, narrator |
-| `af_nicole` | American female, professional | News, business |
-| `am_michael` | American male, authoritative | Documentary, tech |
-| `am_adam` | American male, conversational | Casual podcast |
-| `bf_emma` | British female, refined | Audiobooks |
-| `bm_george` | British male, classic | Formal content |
+| Voice ID     | Description                   | Best For          |
+| ------------ | ----------------------------- | ----------------- |
+| `af_sarah`   | American female, warm         | Host, narrator    |
+| `af_nicole`  | American female, professional | News, business    |
+| `am_michael` | American male, authoritative  | Documentary, tech |
+| `am_adam`    | American male, conversational | Casual podcast    |
+| `bf_emma`    | British female, refined       | Audiobooks        |
+| `bm_george`  | British male, classic         | Formal content    |
 
 ### DIA TTS (Conversational)
 
-| Voice ID | Description | Best For |
-|----------|-------------|----------|
+| Voice ID             | Description          | Best For             |
+| -------------------- | -------------------- | -------------------- |
 | `dia-conversational` | Natural conversation | Dialogue, interviews |
 
 ### Chatterbox
 
-| Voice ID | Description | Best For |
-|----------|-------------|----------|
-| `chatterbox-default` | Expressive | Casual, entertainment |
+| Voice ID             | Description | Best For              |
+| -------------------- | ----------- | --------------------- |
+| `chatterbox-default` | Expressive  | Casual, entertainment |
 
 ## Podcast Workflows
 
@@ -290,4 +289,3 @@ npx skills add inference-sh/skills@infsh-cli
 ```
 
 Browse all apps: `belt app store --category audio`
-

@@ -10,8 +10,8 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
  *  - seed/home.ts        → buildHomePage({ heroImageId, vesselImageIds, scentQuizFormId, scentQuizId })
  *  - seed/home-static.ts → buildHomePage()  (no media/quiz; used as the fallback)
  *
- * Canonical design (lead with the object, not the reading):
- *   hero → The Vessels → scentQuiz → testimonials → journal → product archive →
+ * Canonical design (lead with the object, then product, then the reading):
+ *   hero → The Vessels → product archive → scentQuiz → testimonials → journal →
  *   innerCircleCTA. Status card shown, primary CTA → /products.
  */
 
@@ -19,7 +19,13 @@ import { createRichText, createHeading, createParagraph } from '@/utilities/lexi
 const HERO_TAG = 'Handmade by Olesia'
 const HERO_HEADLINE = 'Candles made to make you stop.'
 const HERO_SUBHEADING =
-  'Small-batch candles crafted with real botanicals and natural wax — made by one maker, one at a time, for the quiet moments that belong entirely to you.'
+  'Small-batch botanical pillars poured with slow-cured natural wax — crafted for the quiet, unhurried moments that belong entirely to you.'
+
+const ETHOS_CARD_EYEBROW = 'The Slow Pour'
+const ETHOS_CARD_BODY =
+  'No factories. No white labeling. Just real pressed botanicals and slow light.'
+const ETHOS_CARD_FOOTER_LABEL = 'Exclusively on Etsy'
+const ETHOS_CARD_LINK_LABEL = 'Read Journal'
 
 const VESSEL_EYEBROW = 'The Vessels'
 const VESSEL_HEADING = 'Unlit. Unhurried.'
@@ -117,6 +123,10 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       secondaryCtaLabel: 'Take the Scent Quiz →',
       secondaryCtaUrl: '#scent-quiz',
       showStatusCard: true,
+      ethosCardEyebrow: ETHOS_CARD_EYEBROW,
+      ethosCardBody: ETHOS_CARD_BODY,
+      ethosCardFooterLabel: ETHOS_CARD_FOOTER_LABEL,
+      ethosCardLinkLabel: ETHOS_CARD_LINK_LABEL,
       statusCardTitle: 'Current Pour',
       statusCardSubtitle: 'Series 01 · Batch of 50',
       statusCardStatus: 'Now Pouring',
@@ -125,6 +135,20 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
     },
     // Lead with the object: the photography showcase sits directly under the hero.
     ...vesselsBlock,
+    // Then the buyable product grid — surfaced high, before the supporting
+    // narrative (quiz, testimonials, journal) so visitors reach product fast.
+    {
+      blockName: 'Product Archive',
+      blockType: 'archive',
+      categories: [],
+      introContent: createRichText([
+        createHeading(COLLECTION_HEADING, 'h2'),
+        createParagraph(COLLECTION_BODY),
+      ]),
+      populateBy: 'collection',
+      relationTo: 'products',
+      limit: 6,
+    },
     {
       blockName: 'Scent Quiz',
       blockType: 'scentQuiz',
@@ -147,19 +171,7 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       ]),
       populateBy: 'collection',
       relationTo: 'posts',
-      limit: 3,
-    },
-    {
-      blockName: 'Product Archive',
-      blockType: 'archive',
-      categories: [],
-      introContent: createRichText([
-        createHeading(COLLECTION_HEADING, 'h2'),
-        createParagraph(COLLECTION_BODY),
-      ]),
-      populateBy: 'collection',
-      relationTo: 'products',
-      limit: 6,
+      limit: 1,
     },
     {
       blockName: 'Inner Circle CTA',

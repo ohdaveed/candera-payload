@@ -6,6 +6,31 @@ import { defineConfig, devices } from '@playwright/test'
  */
 import 'dotenv/config'
 
+// Guard: fail fast if E2E tests would start with unresolved pass:// refs.
+const PASSCLI_GUARD_KEYS = [
+  'DATABASE_URI',
+  'PAYLOAD_SECRET',
+  'DATABASE_URL',
+  'CRON_SECRET',
+  'PREVIEW_SECRET',
+  'BLOB_READ_WRITE_TOKEN',
+  'VERCEL_OIDC_TOKEN',
+  'ETSY_API_KEY',
+  'ETSY_SHARED_SECRET',
+]
+
+for (const key of PASSCLI_GUARD_KEYS) {
+  if (process.env[key]?.startsWith('pass://')) {
+    throw new Error(
+      'Unresolved pass:// URI detected in ' +
+        key +
+        '.\n' +
+        'E2E tests require pass-cli to resolve secrets.\n' +
+        'Run: pass-cli run --env-file .env -- pnpm test:e2e',
+    )
+  }
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */

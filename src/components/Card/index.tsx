@@ -9,9 +9,9 @@ import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
-import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { formatPrice } from '@/lib/formatPrice'
+import { productGalleryPhotos } from '@/lib/productImages'
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
@@ -26,7 +26,7 @@ const cardContainerVariants = cva('group relative flex h-full cursor-pointer fle
       post: '',
       product: [
         'bg-candera-linen overflow-hidden',
-        'shadow-[0_1px_3px_rgba(20,20,18,0.06),0_4px_16px_rgba(20,20,18,0.04)]',
+        'shadow-card rounded-card',
         'transition-all duration-300 motion-reduce:transition-none',
         'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
       ].join(' '),
@@ -69,6 +69,7 @@ export type CardPostData = Omit<
   currency?: Product['currency']
   categories?: Array<{ title?: string | null } | string | number> | null
   extraPhotos?: Product['extraPhotos']
+  etsyPrimaryImage?: Product['etsyPrimaryImage']
   etsyListingId?: Product['etsyListingId']
   tagline?: Product['tagline']
   scentProfile?: Product['scentProfile']
@@ -113,10 +114,10 @@ export const Card: React.FC<CardProps> = (props) => {
     title,
     tagline,
     extraPhotos,
+    etsyPrimaryImage,
     scentProfile,
     price,
     currency,
-    populatedAuthors,
     publishedAt,
     heroImage,
   } = doc || {}
@@ -126,13 +127,11 @@ export const Card: React.FC<CardProps> = (props) => {
   const sanitizedDescription = description?.replace(/\s/g, ' ')
   const href = `/${relationTo}/${slug}`
 
-  const imageToUse =
-    metaImage || heroImage || (extraPhotos && extraPhotos.length > 0 ? extraPhotos[0] : null)
+  const gallery = productGalleryPhotos(etsyPrimaryImage, extraPhotos)
+  const imageToUse = metaImage || heroImage || gallery[0] || null
 
   const isPosts = relationTo === 'posts'
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   const hasScentNotes =
     scentProfile && (scentProfile.top || scentProfile.heart || scentProfile.base)
@@ -187,25 +186,16 @@ export const Card: React.FC<CardProps> = (props) => {
         </div>
 
         <div className="pt-5 pb-3 px-4 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
-          {/* Date + author row */}
-          {(hasAuthors || publishedAt) && (
+          {/* Date row — Olesia is the sole maker sitewide, so the author byline
+              is intentionally omitted to avoid repeating "· Olesia" on every card. */}
+          {publishedAt && (
             <div className="flex items-center gap-2 mb-2">
-              {publishedAt && (
-                <time
-                  className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
-                  dateTime={publishedAt}
-                >
-                  {formatDateTime(publishedAt)}
-                </time>
-              )}
-              {hasAuthors && publishedAt && (
-                <span className="text-candera-stone/50 text-sm">·</span>
-              )}
-              {hasAuthors && (
-                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70">
-                  {formatAuthors(populatedAuthors)}
-                </span>
-              )}
+              <time
+                className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
+                dateTime={publishedAt}
+              >
+                {formatDateTime(publishedAt)}
+              </time>
             </div>
           )}
 
@@ -240,13 +230,8 @@ export const Card: React.FC<CardProps> = (props) => {
     )
   }
 
-  // Determine secondary image for crossfade (from extraPhotos list)
-  const secondaryImage =
-    extraPhotos && extraPhotos.length > 1
-      ? extraPhotos[1]
-      : extraPhotos && extraPhotos.length > 0 && extraPhotos[0] !== imageToUse
-        ? extraPhotos[0]
-        : null
+  // Determine secondary image for crossfade (from the unified gallery)
+  const secondaryImage = gallery.length > 1 ? gallery[1] : null
 
   const scentNotesText = [scentProfile?.top, scentProfile?.heart, scentProfile?.base]
     .filter(Boolean)
@@ -330,7 +315,7 @@ export const Card: React.FC<CardProps> = (props) => {
 
         {/* Product name */}
         {titleToUse && (
-          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem]">
+          <p className="font-display text-xl font-normal not-italic leading-[1.25] text-candera-obsidian m-0 mb-[0.55rem] line-clamp-1 min-h-[1.25em]">
             <Link
               href={href}
               ref={linkRef}

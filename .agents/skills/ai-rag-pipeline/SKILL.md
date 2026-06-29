@@ -1,6 +1,6 @@
 ---
 name: ai-rag-pipeline
-description: "Build RAG (Retrieval Augmented Generation) pipelines with web search and LLMs. Tools: Tavily Search, Exa Search, Exa Answer, Claude, GPT-4, Gemini via OpenRouter. Capabilities: research, fact-checking, grounded responses, knowledge retrieval. Use for: AI agents, research assistants, fact-checkers, knowledge bases. Triggers: rag, retrieval augmented generation, grounded ai, search and answer, research agent, fact checking, knowledge retrieval, ai research, search + llm, web grounded, perplexity alternative, ai with sources, citation, research pipeline"
+description: 'Build RAG (Retrieval Augmented Generation) pipelines with web search and LLMs. Tools: Tavily Search, Exa Search, Exa Answer, Claude, GPT-4, Gemini via OpenRouter. Capabilities: research, fact-checking, grounded responses, knowledge retrieval. Use for: AI agents, research assistants, fact-checkers, knowledge bases. Triggers: rag, retrieval augmented generation, grounded ai, search and answer, research agent, fact checking, knowledge retrieval, ai research, search + llm, web grounded, perplexity alternative, ai with sources, citation, research pipeline'
 allowed-tools: Bash(belt *)
 ---
 
@@ -26,10 +26,10 @@ belt app run openrouter/claude-sonnet-45 --input "{
 }"
 ```
 
-
 ## What is RAG?
 
 RAG combines:
+
 1. **Retrieval**: Fetch relevant information from external sources
 2. **Augmentation**: Add retrieved context to the prompt
 3. **Generation**: LLM generates response using the context
@@ -60,27 +60,27 @@ This produces more accurate, up-to-date, and verifiable AI responses.
 
 ### Search Tools
 
-| Tool | App ID | Best For |
-|------|--------|----------|
-| Tavily Search | `tavily/search-assistant` | AI-powered search with answers |
-| Exa Search | `exa/search` | Neural search, semantic matching |
-| Exa Answer | `exa/answer` | Direct factual answers |
+| Tool          | App ID                    | Best For                         |
+| ------------- | ------------------------- | -------------------------------- |
+| Tavily Search | `tavily/search-assistant` | AI-powered search with answers   |
+| Exa Search    | `exa/search`              | Neural search, semantic matching |
+| Exa Answer    | `exa/answer`              | Direct factual answers           |
 
 ### Extraction Tools
 
-| Tool | App ID | Best For |
-|------|--------|----------|
+| Tool           | App ID           | Best For                |
+| -------------- | ---------------- | ----------------------- |
 | Tavily Extract | `tavily/extract` | Clean content from URLs |
-| Exa Extract | `exa/extract` | Analyze web content |
+| Exa Extract    | `exa/extract`    | Analyze web content     |
 
 ### LLM Tools
 
-| Model | App ID | Best For |
-|-------|--------|----------|
+| Model             | App ID                        | Best For         |
+| ----------------- | ----------------------------- | ---------------- |
 | Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | Complex analysis |
-| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | Fast processing |
-| GPT-4o | `openrouter/gpt-4o` | General purpose |
-| Gemini 2.5 Pro | `openrouter/gemini-25-pro` | Long context |
+| Claude Haiku 4.5  | `openrouter/claude-haiku-45`  | Fast processing  |
+| GPT-4o            | `openrouter/gpt-4o`           | General purpose  |
+| Gemini 2.5 Pro    | `openrouter/gemini-25-pro`    | Long context     |
 
 ## Pipeline Examples
 
@@ -311,4 +311,3 @@ Browse all apps: `belt app store`
 
 - [Adding Tools to Agents](https://inference.sh/docs/agents/adding-tools) - Agent tool integration
 - [Building a Research Agent](https://inference.sh/blog/guides/research-agent) - Full guide
-

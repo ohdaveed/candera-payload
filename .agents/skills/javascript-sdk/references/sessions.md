@@ -13,19 +13,19 @@ Sessions keep workers warm between requests, enabling:
 ## Creating a Session
 
 ```typescript
-import { inference } from '@inferencesh/sdk';
+import { inference } from '@inferencesh/sdk'
 
-const client = inference({ apiKey: 'inf_...' });
+const client = inference({ apiKey: 'inf_...' })
 
 // Start new session
 const result = await client.run({
   app: 'my-app',
   input: { action: 'initialize' },
-  session: 'new'
-});
+  session: 'new',
+})
 
-const sessionId = result.session_id;
-console.log(`Session: ${sessionId}`);
+const sessionId = result.session_id
+console.log(`Session: ${sessionId}`)
 ```
 
 ## Using an Existing Session
@@ -35,8 +35,8 @@ console.log(`Session: ${sessionId}`);
 const result = await client.run({
   app: 'my-app',
   input: { action: 'process', data: '...' },
-  session: sessionId
-});
+  session: sessionId,
+})
 ```
 
 ## Session Timeout
@@ -49,8 +49,8 @@ const result = await client.run({
   app: 'my-app',
   input: { action: 'init' },
   session: 'new',
-  session_timeout: 300
-});
+  session_timeout: 300,
+})
 ```
 
 ## Session Lifecycle
@@ -79,18 +79,18 @@ const result = await client.run({
   app: 'ml-inference',
   input: { action: 'load_model', model: 'large-model-v2' },
   session: 'new',
-  session_timeout: 600
-});
-const sessionId = result.session_id;
+  session_timeout: 600,
+})
+const sessionId = result.session_id
 
 // Fast inference calls
 for (const item of dataBatch) {
   const result = await client.run({
     app: 'ml-inference',
     input: { action: 'predict', data: item },
-    session: sessionId
-  });
-  console.log(result.output);
+    session: sessionId,
+  })
+  console.log(result.output)
 }
 ```
 
@@ -104,30 +104,30 @@ const result = await client.run({
   app: 'browser-automation',
   input: { action: 'start', url: 'https://example.com' },
   session: 'new',
-  session_timeout: 300
-});
-const sessionId = result.session_id;
+  session_timeout: 300,
+})
+const sessionId = result.session_id
 
 // Navigate
 await client.run({
   app: 'browser-automation',
   input: { action: 'click', selector: '#login-btn' },
-  session: sessionId
-});
+  session: sessionId,
+})
 
 // Fill form
 await client.run({
   app: 'browser-automation',
   input: { action: 'type', selector: '#username', text: 'user@example.com' },
-  session: sessionId
-});
+  session: sessionId,
+})
 
 // Take screenshot
 const screenshot = await client.run({
   app: 'browser-automation',
   input: { action: 'screenshot' },
-  session: sessionId
-});
+  session: sessionId,
+})
 ```
 
 ### Stateful Conversations
@@ -138,24 +138,24 @@ const result = await client.run({
   app: 'chat-with-memory',
   input: { action: 'init', system: 'You are a helpful assistant.' },
   session: 'new',
-  session_timeout: 1800  // 30 minutes
-});
-const sessionId = result.session_id;
+  session_timeout: 1800, // 30 minutes
+})
+const sessionId = result.session_id
 
 // Multi-turn conversation
 const messages = [
   'What is quantum computing?',
   'Can you give me a simple example?',
-  'How is it different from classical computing?'
-];
+  'How is it different from classical computing?',
+]
 
 for (const msg of messages) {
   const result = await client.run({
     app: 'chat-with-memory',
     input: { message: msg },
-    session: sessionId
-  });
-  console.log(`Assistant: ${result.output.response}`);
+    session: sessionId,
+  })
+  console.log(`Assistant: ${result.output.response}`)
 }
 ```
 
@@ -167,20 +167,20 @@ const result = await client.run({
   app: 'data-processor',
   input: { action: 'load', dataset: 'large_dataset.parquet' },
   session: 'new',
-  session_timeout: 900
-});
-const sessionId = result.session_id;
+  session_timeout: 900,
+})
+const sessionId = result.session_id
 
 // Run multiple analyses
-const analyses = ['summary', 'correlations', 'outliers', 'trends'];
+const analyses = ['summary', 'correlations', 'outliers', 'trends']
 
 for (const analysis of analyses) {
   const result = await client.run({
     app: 'data-processor',
     input: { action: 'analyze', type: analysis },
-    session: sessionId
-  });
-  console.log(`${analysis}:`, result.output);
+    session: sessionId,
+  })
+  console.log(`${analysis}:`, result.output)
 }
 ```
 
@@ -190,15 +190,15 @@ for (const analysis of analyses) {
 
 ```typescript
 class SessionManager {
-  private client: any;
-  private app: string;
-  private timeout: number;
-  private sessionId: string | null = null;
+  private client: any
+  private app: string
+  private timeout: number
+  private sessionId: string | null = null
 
   constructor(client: any, app: string, timeout = 300) {
-    this.client = client;
-    this.app = app;
-    this.timeout = timeout;
+    this.client = client
+    this.app = app
+    this.timeout = timeout
   }
 
   private async ensureSession(): Promise<string> {
@@ -207,11 +207,11 @@ class SessionManager {
         app: this.app,
         input: { action: 'init' },
         session: 'new',
-        session_timeout: this.timeout
-      });
-      this.sessionId = result.session_id;
+        session_timeout: this.timeout,
+      })
+      this.sessionId = result.session_id
     }
-    return this.sessionId;
+    return this.sessionId
   }
 
   async run(input: any) {
@@ -219,26 +219,26 @@ class SessionManager {
       return await this.client.run({
         app: this.app,
         input,
-        session: await this.ensureSession()
-      });
+        session: await this.ensureSession(),
+      })
     } catch (e: any) {
       if (e.message?.toLowerCase().includes('session')) {
         // Session expired, create new one
-        this.sessionId = null;
+        this.sessionId = null
         return await this.client.run({
           app: this.app,
           input,
-          session: await this.ensureSession()
-        });
+          session: await this.ensureSession(),
+        })
       }
-      throw e;
+      throw e
     }
   }
 }
 
 // Usage
-const manager = new SessionManager(client, 'my-app', 600);
-const result = await manager.run({ action: 'process', data: '...' });
+const manager = new SessionManager(client, 'my-app', 600)
+const result = await manager.run({ action: 'process', data: '...' })
 ```
 
 ## React Hook for Sessions
@@ -309,59 +309,59 @@ function BrowserAutomation() {
 ## Express Session API
 
 ```typescript
-import express from 'express';
-import { inference } from '@inferencesh/sdk';
+import express from 'express'
+import { inference } from '@inferencesh/sdk'
 
-const app = express();
-const client = inference({ apiKey: process.env.INFERENCE_API_KEY });
+const app = express()
+const client = inference({ apiKey: process.env.INFERENCE_API_KEY })
 
 // Store sessions per user
-const userSessions: Map<string, string> = new Map();
+const userSessions: Map<string, string> = new Map()
 
 app.post('/api/browser/start', async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.id
 
   const result = await client.run({
     app: 'browser-automation',
     input: { action: 'start', url: req.body.url },
     session: 'new',
-    session_timeout: 300
-  });
+    session_timeout: 300,
+  })
 
-  userSessions.set(userId, result.session_id);
-  res.json({ sessionId: result.session_id });
-});
+  userSessions.set(userId, result.session_id)
+  res.json({ sessionId: result.session_id })
+})
 
 app.post('/api/browser/action', async (req, res) => {
-  const userId = req.user.id;
-  const sessionId = userSessions.get(userId);
+  const userId = req.user.id
+  const sessionId = userSessions.get(userId)
 
   if (!sessionId) {
-    return res.status(400).json({ error: 'No active session' });
+    return res.status(400).json({ error: 'No active session' })
   }
 
   try {
     const result = await client.run({
       app: 'browser-automation',
       input: req.body,
-      session: sessionId
-    });
-    res.json(result.output);
+      session: sessionId,
+    })
+    res.json(result.output)
   } catch (e: any) {
     if (e.message?.includes('session')) {
-      userSessions.delete(userId);
-      res.status(400).json({ error: 'Session expired' });
+      userSessions.delete(userId)
+      res.status(400).json({ error: 'Session expired' })
     } else {
-      throw e;
+      throw e
     }
   }
-});
+})
 
 app.post('/api/browser/end', (req, res) => {
-  const userId = req.user.id;
-  userSessions.delete(userId);
-  res.json({ ok: true });
-});
+  const userId = req.user.id
+  userSessions.delete(userId)
+  res.json({ ok: true })
+})
 ```
 
 ## Best Practices

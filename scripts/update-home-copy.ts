@@ -19,7 +19,14 @@ import { createRichText, createHeading, createParagraph } from '../src/utilities
 
 // Keep these strings in sync with src/endpoints/seed/home.ts
 const HERO_HEADLINE = 'Candles made to make you stop.'
+const HERO_SUBHEADING =
+  'Small-batch botanical pillars poured with slow-cured natural wax — crafted for the quiet, unhurried moments that belong entirely to you.'
 const HERO_PRIMARY_CTA = 'Shop the Collection'
+const ETHOS_CARD_EYEBROW = 'The Slow Pour'
+const ETHOS_CARD_BODY =
+  'No factories. No white labeling. Just real pressed botanicals and slow light.'
+const ETHOS_CARD_FOOTER_LABEL = 'Exclusively on Etsy'
+const ETHOS_CARD_LINK_LABEL = 'Read Journal'
 const TESTIMONIALS_CTA_HEADING = 'Join the Inner Circle'
 const TESTIMONIALS_CTA_BODY =
   'Batches are poured by hand, one at a time, and often sell out in days. Join for early access before each drop opens to the public.'
@@ -49,7 +56,16 @@ async function main(): Promise<void> {
     switch (block.blockType) {
       case 'storefrontHero':
         patched++
-        return { ...block, headline: HERO_HEADLINE, primaryCtaLabel: HERO_PRIMARY_CTA }
+        return {
+          ...block,
+          headline: HERO_HEADLINE,
+          subheading: HERO_SUBHEADING,
+          primaryCtaLabel: HERO_PRIMARY_CTA,
+          ethosCardEyebrow: ETHOS_CARD_EYEBROW,
+          ethosCardBody: ETHOS_CARD_BODY,
+          ethosCardFooterLabel: ETHOS_CARD_FOOTER_LABEL,
+          ethosCardLinkLabel: ETHOS_CARD_LINK_LABEL,
+        }
       case 'testimonials':
         patched++
         return {

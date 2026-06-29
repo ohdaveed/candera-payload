@@ -1,6 +1,6 @@
 ---
 name: seo-content-brief
-description: "SEO content brief creation with keyword research, search intent analysis, and content structure. Covers SERP analysis, heading hierarchy, word count targets, and internal linking strategy. Use for: content briefs, SEO writing, blog strategy, content planning, keyword targeting. Triggers: seo content brief, content brief, seo brief, keyword research, search intent, content strategy, blog brief, seo writing, content planning, keyword targeting, serp analysis, content outline, seo article, blog seo"
+description: 'SEO content brief creation with keyword research, search intent analysis, and content structure. Covers SERP analysis, heading hierarchy, word count targets, and internal linking strategy. Use for: content briefs, SEO writing, blog strategy, content planning, keyword targeting. Triggers: seo content brief, content brief, seo brief, keyword research, search intent, content strategy, blog brief, seo writing, content planning, keyword targeting, serp analysis, content outline, seo article, blog seo'
 allowed-tools: Bash(belt *)
 ---
 
@@ -28,7 +28,6 @@ belt app run exa/search --input '{
 }'
 ```
 
-
 ## Content Brief Template
 
 Every brief should answer these questions before writing begins:
@@ -37,6 +36,7 @@ Every brief should answer these questions before writing begins:
 # Content Brief: [Working Title]
 
 ## Target
+
 - **Primary keyword:** [exact keyword]
 - **Secondary keywords:** [3-5 related terms]
 - **Search intent:** [informational / commercial / transactional / navigational]
@@ -44,38 +44,43 @@ Every brief should answer these questions before writing begins:
 - **Target URL:** /blog/[slug]
 
 ## Search Intent Analysis
+
 - What is the searcher trying to accomplish?
 - What format do top results use? (listicle, guide, comparison, tutorial)
 - What questions need answering?
 
 ## Outline
+
 H1: [Title with primary keyword]
-  H2: [Section 1]
-    H3: [Subsection]
-  H2: [Section 2]
-  ...
+H2: [Section 1]
+H3: [Subsection]
+H2: [Section 2]
+...
 
 ## Competitors to Beat
+
 1. [URL] — [word count] — [what they do well] — [gap/weakness]
 2. [URL] — [word count] — [what they do well] — [gap/weakness]
 3. [URL] — [word count] — [what they do well] — [gap/weakness]
 
 ## Unique Angle
+
 What makes this piece different/better than what already ranks?
 
 ## Internal Links
+
 - Link TO: [existing pages to link to from this article]
 - Link FROM: [existing pages that should link to this new article]
 ```
 
 ## Search Intent Types
 
-| Intent | What Searcher Wants | Content Format | Example Query |
-|--------|-------------------|----------------|--------------|
-| **Informational** | Learn something | Guide, tutorial, explainer | "what is CI/CD" |
-| **Commercial** | Compare before buying | Comparison, listicle, review | "best CI/CD tools 2024" |
-| **Transactional** | Buy/sign up | Product page, pricing page | "GitHub Actions pricing" |
-| **Navigational** | Find a specific page | — (don't target these) | "GitHub login" |
+| Intent            | What Searcher Wants   | Content Format               | Example Query            |
+| ----------------- | --------------------- | ---------------------------- | ------------------------ |
+| **Informational** | Learn something       | Guide, tutorial, explainer   | "what is CI/CD"          |
+| **Commercial**    | Compare before buying | Comparison, listicle, review | "best CI/CD tools 2024"  |
+| **Transactional** | Buy/sign up           | Product page, pricing page   | "GitHub Actions pricing" |
+| **Navigational**  | Find a specific page  | — (don't target these)       | "GitHub login"           |
 
 **Match format to intent.** If top 10 results are all listicles, write a listicle. If they're all tutorials, write a tutorial. Fighting the SERP format loses.
 
@@ -105,26 +110,26 @@ belt app run exa/search --input '{
 
 ### What to Extract from Top Results
 
-| Data Point | Why |
-|-----------|-----|
-| **Word count** | Sets your minimum (match or exceed top 3) |
-| **Heading structure** | Shows what Google considers complete coverage |
-| **Topics covered** | Every topic they cover, you must cover |
-| **Topics missed** | Your opportunity to be more comprehensive |
-| **Content format** | Listicle, guide, tutorial, comparison |
-| **Media used** | Images, videos, tables, infographics |
-| **Internal/external links** | Reference quality signals |
+| Data Point                  | Why                                           |
+| --------------------------- | --------------------------------------------- |
+| **Word count**              | Sets your minimum (match or exceed top 3)     |
+| **Heading structure**       | Shows what Google considers complete coverage |
+| **Topics covered**          | Every topic they cover, you must cover        |
+| **Topics missed**           | Your opportunity to be more comprehensive     |
+| **Content format**          | Listicle, guide, tutorial, comparison         |
+| **Media used**              | Images, videos, tables, infographics          |
+| **Internal/external links** | Reference quality signals                     |
 
 ## Keyword Research
 
 ### Keyword Metrics
 
-| Metric | What It Means | Target |
-|--------|--------------|--------|
-| **Search volume** | Monthly searches | Depends on niche (100+ for long-tail) |
-| **Keyword difficulty** | Competition level | < 30 for new sites, < 50 for established |
-| **CPC** | What advertisers pay | Higher CPC = more commercial value |
-| **Search intent** | What users want | Must match your content type |
+| Metric                 | What It Means        | Target                                   |
+| ---------------------- | -------------------- | ---------------------------------------- |
+| **Search volume**      | Monthly searches     | Depends on niche (100+ for long-tail)    |
+| **Keyword difficulty** | Competition level    | < 30 for new sites, < 50 for established |
+| **CPC**                | What advertisers pay | Higher CPC = more commercial value       |
+| **Search intent**      | What users want      | Must match your content type             |
 
 ### Finding Keywords
 
@@ -165,15 +170,15 @@ Cluster:
 
 ### Rules
 
-| Rule | Why |
-|------|-----|
-| One H1 per page | SEO standard, contains primary keyword |
-| H2s = main sections | Each should target a secondary keyword or question |
-| H3s = subsections | Break up long H2 sections |
-| Primary keyword in H1 | Direct ranking signal |
-| Secondary keywords in H2s | Topical coverage signal |
-| Question format for some H2s | Targets "People Also Ask" |
-| Logical hierarchy | Never skip levels (H1 → H3 without H2) |
+| Rule                         | Why                                                |
+| ---------------------------- | -------------------------------------------------- |
+| One H1 per page              | SEO standard, contains primary keyword             |
+| H2s = main sections          | Each should target a secondary keyword or question |
+| H3s = subsections            | Break up long H2 sections                          |
+| Primary keyword in H1        | Direct ranking signal                              |
+| Secondary keywords in H2s    | Topical coverage signal                            |
+| Question format for some H2s | Targets "People Also Ask"                          |
+| Logical hierarchy            | Never skip levels (H1 → H3 without H2)             |
 
 ### Example Structure
 
@@ -196,42 +201,42 @@ H1: Best Project Management Tools for Small Teams (2025)
 
 ## Word Count Targets
 
-| Content Type | Word Count | When |
-|-------------|-----------|------|
-| Short-form blog | 800-1,200 | News, updates, opinions |
-| Standard blog | 1,500-2,000 | How-tos, tutorials |
-| Long-form guide | 2,500-4,000 | Comprehensive guides, comparisons |
-| Pillar content | 4,000-7,000 | Definitive guides, hub pages |
-| Glossary/definition | 300-800 | Quick reference terms |
+| Content Type        | Word Count  | When                              |
+| ------------------- | ----------- | --------------------------------- |
+| Short-form blog     | 800-1,200   | News, updates, opinions           |
+| Standard blog       | 1,500-2,000 | How-tos, tutorials                |
+| Long-form guide     | 2,500-4,000 | Comprehensive guides, comparisons |
+| Pillar content      | 4,000-7,000 | Definitive guides, hub pages      |
+| Glossary/definition | 300-800     | Quick reference terms             |
 
 **Rule: match or exceed the average word count of the top 3 ranking results.** Don't pad — every word should add value.
 
 ## On-Page SEO Checklist
 
-| Element | Rule |
-|---------|------|
-| **Title tag** | Primary keyword + compelling hook, 50-60 characters |
-| **Meta description** | Includes keyword, 150-160 characters, includes CTA |
-| **URL slug** | Short, keyword-rich: `/best-project-management-tools` |
-| **H1** | Primary keyword, matches search intent |
-| **First 100 words** | Include primary keyword naturally |
-| **Image alt text** | Descriptive, includes keyword where natural |
-| **Internal links** | 3-5 links to related content |
-| **External links** | 2-3 authoritative sources |
-| **Schema markup** | FAQ, HowTo, or Article schema where applicable |
+| Element              | Rule                                                  |
+| -------------------- | ----------------------------------------------------- |
+| **Title tag**        | Primary keyword + compelling hook, 50-60 characters   |
+| **Meta description** | Includes keyword, 150-160 characters, includes CTA    |
+| **URL slug**         | Short, keyword-rich: `/best-project-management-tools` |
+| **H1**               | Primary keyword, matches search intent                |
+| **First 100 words**  | Include primary keyword naturally                     |
+| **Image alt text**   | Descriptive, includes keyword where natural           |
+| **Internal links**   | 3-5 links to related content                          |
+| **External links**   | 2-3 authoritative sources                             |
+| **Schema markup**    | FAQ, HowTo, or Article schema where applicable        |
 
 ## Content Differentiation
 
 ### Unique Angles
 
-| Angle | Example |
-|-------|---------|
-| **Original data** | "We surveyed 500 PMs — here's what they use" |
-| **Expert quotes** | Interview practitioners for original insights |
-| **Real examples** | Screenshots, case studies, not just descriptions |
-| **More comprehensive** | Cover subtopics competitors skip |
-| **More current** | Updated data, newer tools, recent changes |
-| **Better visuals** | Comparison tables, infographics, decision trees |
+| Angle                  | Example                                          |
+| ---------------------- | ------------------------------------------------ |
+| **Original data**      | "We surveyed 500 PMs — here's what they use"     |
+| **Expert quotes**      | Interview practitioners for original insights    |
+| **Real examples**      | Screenshots, case studies, not just descriptions |
+| **More comprehensive** | Cover subtopics competitors skip                 |
+| **More current**       | Updated data, newer tools, recent changes        |
+| **Better visuals**     | Comparison tables, infographics, decision trees  |
 
 ```bash
 # Generate comparison infographic
@@ -242,12 +247,12 @@ belt app run infsh/html-to-image --input '{
 
 ## Internal Linking Strategy
 
-| Type | Purpose |
-|------|---------|
-| **Hub → Spoke** | Pillar page links to all subtopic articles |
-| **Spoke → Hub** | Subtopic articles link back to pillar page |
-| **Spoke → Spoke** | Related articles cross-link to each other |
-| **Contextual** | Natural in-text links where topic is mentioned |
+| Type              | Purpose                                        |
+| ----------------- | ---------------------------------------------- |
+| **Hub → Spoke**   | Pillar page links to all subtopic articles     |
+| **Spoke → Hub**   | Subtopic articles link back to pillar page     |
+| **Spoke → Spoke** | Related articles cross-link to each other      |
+| **Contextual**    | Natural in-text links where topic is mentioned |
 
 ### Rules
 
@@ -259,17 +264,17 @@ belt app run infsh/html-to-image --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| No SERP analysis | Writing blind, wrong format | Always analyze top 3-5 before writing |
-| Wrong intent match | Guide when they want comparison, or vice versa | Match SERP format exactly |
-| Keyword stuffing | Penalized, reads poorly | Use naturally, 1-2% density max |
-| Ignoring "People Also Ask" | Missing easy ranking opportunities | Answer PAA questions in your content |
-| Too short | Can't compete with comprehensive results | Match or exceed top 3 word count |
-| No unique angle | Just another "me too" article | Original data, expert quotes, better visuals |
-| Keyword cannibalization | Multiple pages competing | One page per keyword cluster |
-| No internal links | Wasted link equity, poor site structure | 3-5 internal links per article |
-| Missing meta description | Google generates one (often poorly) | Write compelling meta with keyword + CTA |
+| Mistake                    | Problem                                        | Fix                                          |
+| -------------------------- | ---------------------------------------------- | -------------------------------------------- |
+| No SERP analysis           | Writing blind, wrong format                    | Always analyze top 3-5 before writing        |
+| Wrong intent match         | Guide when they want comparison, or vice versa | Match SERP format exactly                    |
+| Keyword stuffing           | Penalized, reads poorly                        | Use naturally, 1-2% density max              |
+| Ignoring "People Also Ask" | Missing easy ranking opportunities             | Answer PAA questions in your content         |
+| Too short                  | Can't compete with comprehensive results       | Match or exceed top 3 word count             |
+| No unique angle            | Just another "me too" article                  | Original data, expert quotes, better visuals |
+| Keyword cannibalization    | Multiple pages competing                       | One page per keyword cluster                 |
+| No internal links          | Wasted link equity, poor site structure        | 3-5 internal links per article               |
+| Missing meta description   | Google generates one (often poorly)            | Write compelling meta with keyword + CTA     |
 
 ## Related Skills
 
@@ -280,4 +285,3 @@ npx skills add inference-sh/skills@web-search
 ```
 
 Browse all apps: `belt app store`
-

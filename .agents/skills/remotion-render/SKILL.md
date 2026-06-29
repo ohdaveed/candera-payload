@@ -1,6 +1,6 @@
 ---
 name: remotion-render
-description: "Render videos from React/Remotion component code via inference.sh. Pass TSX code, get MP4. Supports all Remotion APIs: useCurrentFrame, useVideoConfig, spring, interpolate, AbsoluteFill, Sequence. Configurable resolution, FPS, duration, codec. Use for: programmatic video generation, animated graphics, motion design, data-driven videos, React animations to video. Triggers: remotion, render video from code, tsx to video, react video, programmatic video, remotion render, code to video, animated video, motion graphics code, react animation video"
+description: 'Render videos from React/Remotion component code via inference.sh. Pass TSX code, get MP4. Supports all Remotion APIs: useCurrentFrame, useVideoConfig, spring, interpolate, AbsoluteFill, Sequence. Configurable resolution, FPS, duration, codec. Use for: programmatic video generation, animated graphics, motion design, data-driven videos, React animations to video. Triggers: remotion, render video from code, tsx to video, react video, programmatic video, remotion render, code to video, animated video, motion graphics code, react animation video'
 allowed-tools: Bash(belt *)
 ---
 
@@ -29,19 +29,18 @@ belt app run infsh/remotion-render --input '{
 }'
 ```
 
-
 ## Input Schema
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `code` | string | Yes | React component TSX code. Must export default a component. |
-| `composition_id` | string | No | Composition ID to render |
-| `props` | object | No | Props passed to the component |
-| `width` | number | No | Video width in pixels |
-| `height` | number | No | Video height in pixels |
-| `fps` | number | No | Frames per second |
-| `duration_seconds` | number | No | Video duration in seconds |
-| `codec` | string | No | Output codec |
+| Parameter          | Type   | Required | Description                                                |
+| ------------------ | ------ | -------- | ---------------------------------------------------------- |
+| `code`             | string | Yes      | React component TSX code. Must export default a component. |
+| `composition_id`   | string | No       | Composition ID to render                                   |
+| `props`            | object | No       | Props passed to the component                              |
+| `width`            | number | No       | Video width in pixels                                      |
+| `height`           | number | No       | Video height in pixels                                     |
+| `fps`              | number | No       | Frames per second                                          |
+| `duration_seconds` | number | No       | Video duration in seconds                                  |
+| `codec`            | string | No       | Output codec                                               |
 
 ## Available Imports
 
@@ -58,11 +57,11 @@ import {
   Sequence,
   Audio,
   Video,
-  Img
-} from "remotion";
+  Img,
+} from 'remotion'
 
 // React
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 ```
 
 ## Examples
@@ -209,4 +208,3 @@ npx skills add inference-sh/skills@infsh-cli
 - [Remotion Documentation](https://www.remotion.dev/docs) - Official Remotion docs
 - [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
 - [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
-

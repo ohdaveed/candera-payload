@@ -165,7 +165,7 @@ SESSION=$(belt app run agent-browser --function open --session new --input '{
 ### SOCKS5 Proxy
 
 ```json
-{"proxy_url": "socks5://proxy.example.com:1080"}
+{ "proxy_url": "socks5://proxy.example.com:1080" }
 ```
 
 ### With Authentication
@@ -208,6 +208,7 @@ Error: Failed to open URL: net::ERR_PROXY_CONNECTION_FAILED
 ```
 
 **Solutions:**
+
 1. Verify proxy URL is correct
 2. Check proxy is running and accessible
 3. Confirm port is correct
@@ -220,6 +221,7 @@ Error: 407 Proxy Authentication Required
 ```
 
 **Solutions:**
+
 1. Verify username/password are correct
 2. Check if proxy requires different auth method
 3. Ensure credentials don't contain special characters that need escaping
@@ -236,6 +238,7 @@ Some proxies perform SSL inspection. If you see certificate errors:
 ### Slow Performance
 
 **Solutions:**
+
 1. Choose proxy closer to target site
 2. Use faster proxy provider
 3. Reduce number of requests per session

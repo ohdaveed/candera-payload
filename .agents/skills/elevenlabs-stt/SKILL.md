@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-stt
-description: "ElevenLabs speech-to-text with Scribe models and forced alignment via inference.sh CLI. Models: Scribe v1/v2 (98%+ accuracy, 90+ languages). Capabilities: transcription, speaker diarization, audio event tagging, word-level timestamps, forced alignment, subtitle generation. Use for: meeting transcription, subtitles, podcast transcripts, lip-sync timing, karaoke. Triggers: elevenlabs stt, elevenlabs transcription, scribe, elevenlabs speech to text, forced alignment, word alignment, subtitle timing, diarization, speaker identification, audio event detection, eleven labs transcribe"
+description: 'ElevenLabs speech-to-text with Scribe models and forced alignment via inference.sh CLI. Models: Scribe v1/v2 (98%+ accuracy, 90+ languages). Capabilities: transcription, speaker diarization, audio event tagging, word-level timestamps, forced alignment, subtitle generation. Use for: meeting transcription, subtitles, podcast transcripts, lip-sync timing, karaoke. Triggers: elevenlabs stt, elevenlabs transcription, scribe, elevenlabs speech to text, forced alignment, word alignment, subtitle timing, diarization, speaker identification, audio event detection, eleven labs transcribe'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,13 +23,12 @@ belt login
 belt app run elevenlabs/stt --input '{"audio": "https://audio.mp3"}'
 ```
 
-
 ## Available Models
 
-| Model | ID | Best For |
-|-------|----|----------|
+| Model     | ID          | Best For                           |
+| --------- | ----------- | ---------------------------------- |
 | Scribe v2 | `scribe_v2` | Latest, highest accuracy (default) |
-| Scribe v1 | `scribe_v1` | Stable, proven |
+| Scribe v1 | `scribe_v1` | Stable, proven                     |
 
 - 98%+ transcription accuracy
 - 90+ languages with auto-detection
@@ -99,9 +98,9 @@ belt app run elevenlabs/forced-alignment --input '{
 ```json
 {
   "words": [
-    {"text": "This", "start": 0.0, "end": 0.3},
-    {"text": "is", "start": 0.35, "end": 0.5},
-    {"text": "the", "start": 0.55, "end": 0.65}
+    { "text": "This", "start": 0.0, "end": 0.3 },
+    { "text": "is", "start": 0.35, "end": 0.5 },
+    { "text": "the", "start": 0.55, "end": 0.65 }
   ],
   "text": "This is the exact text spoken in the audio file."
 }

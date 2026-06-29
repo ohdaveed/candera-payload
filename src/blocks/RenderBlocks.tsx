@@ -73,16 +73,24 @@ export const RenderBlocks: React.FC<{
               }
 
               const isFullBleed = fullBleedBlocks.has(blockType)
-              // Anchor #collection to the product archive only — a posts/journal
-              // archive (or a selection-populated one with no relationTo) on the
-              // same page must not duplicate the id.
-              const isProductArchive =
-                blockType === 'archive' &&
-                (block as { relationTo?: string }).relationTo === 'products'
+              // Anchor #collection to the product archive and #journal to the
+              // posts archive — scoped to those relationTo values so a
+              // selection-populated archive (no relationTo) on the same page
+              // never duplicates an id. Both are smooth-scroll targets from the
+              // hero, so they carry scroll-mt to clear the fixed header.
+              const relationTo = (block as { relationTo?: string }).relationTo
+              const anchorId =
+                blockType === 'archive' && relationTo === 'products'
+                  ? 'collection'
+                  : blockType === 'archive' && relationTo === 'posts'
+                    ? 'journal'
+                    : undefined
               return (
                 <div
-                  className={isFullBleed ? '' : 'my-16'}
-                  id={isProductArchive ? 'collection' : undefined}
+                  className={[isFullBleed ? '' : 'my-16', anchorId && 'scroll-mt-28']
+                    .filter(Boolean)
+                    .join(' ')}
+                  id={anchorId}
                   data-block={blockType}
                   data-block-index={index}
                   key={index}

@@ -191,25 +191,25 @@ github = (
 
 ### Common Methods
 
-| Method | Description |
-|--------|-------------|
-| `.describe(text)` | Set tool description |
-| `.display(name)` | Set display name |
-| `.param(name, type, default=None)` | Add parameter |
-| `.require_approval()` | Require human approval |
-| `.build()` | Build the tool |
+| Method                             | Description            |
+| ---------------------------------- | ---------------------- |
+| `.describe(text)`                  | Set tool description   |
+| `.display(name)`                   | Set display name       |
+| `.param(name, type, default=None)` | Add parameter          |
+| `.require_approval()`              | Require human approval |
+| `.build()`                         | Build the tool         |
 
 ### App Tool Methods
 
-| Method | Description |
-|--------|-------------|
-| `.setup(config)` | Hidden setup configuration |
-| `.input(defaults)` | Default input values |
+| Method             | Description                |
+| ------------------ | -------------------------- |
+| `.setup(config)`   | Hidden setup configuration |
+| `.input(defaults)` | Default input values       |
 
 ### Webhook Tool Methods
 
-| Method | Description |
-|--------|-------------|
+| Method          | Description                |
+| --------------- | -------------------------- |
 | `.secret(name)` | Use stored secret for auth |
 
 ## Internal Tools
@@ -235,13 +235,13 @@ config = (
 
 ### Internal Tool Options
 
-| Tool | Description |
-|------|-------------|
-| `.plan()` | Enable task breakdown and planning |
-| `.memory()` | Enable information storage |
-| `.web_search(enabled)` | Enable/disable web search |
-| `.code_execution(enabled)` | Enable/disable code running |
-| `.image_generation(config)` | Configure image generation |
+| Tool                        | Description                        |
+| --------------------------- | ---------------------------------- |
+| `.plan()`                   | Enable task breakdown and planning |
+| `.memory()`                 | Enable information storage         |
+| `.web_search(enabled)`      | Enable/disable web search          |
+| `.code_execution(enabled)`  | Enable/disable code running        |
+| `.image_generation(config)` | Configure image generation         |
 
 ## Handling Tool Calls
 

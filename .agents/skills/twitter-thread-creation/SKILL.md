@@ -1,6 +1,6 @@
 ---
 name: twitter-thread-creation
-description: "Twitter/X thread writing with hook tweets, thread structure, and engagement optimization. Covers tweet formatting, character limits, media attachments, and posting strategies. Use for: Twitter threads, X posts, tweet storms, Twitter content, social media writing. Triggers: twitter thread, tweet thread, x thread, twitter post, tweet writing, thread creation, tweet storm, twitter content, x post, twitter writing, twitter hook, tweet formatting, thread structure"
+description: 'Twitter/X thread writing with hook tweets, thread structure, and engagement optimization. Covers tweet formatting, character limits, media attachments, and posting strategies. Use for: Twitter threads, X posts, tweet storms, Twitter content, social media writing. Triggers: twitter thread, tweet thread, x thread, twitter post, tweet writing, thread creation, tweet storm, twitter content, x post, twitter writing, twitter hook, tweet formatting, thread structure'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,17 +23,16 @@ belt app run x/post-create --input '{
 }'
 ```
 
-
 ## Character Limits
 
-| Element | Limit |
-|---------|-------|
-| Tweet text | 280 characters (free), 25,000 (Premium) |
-| Thread length | No limit (10-15 tweets is sweet spot) |
-| Image alt text | 1,000 characters |
-| Quote tweet addition | 280 characters |
-| Reply | 280 characters |
-| Display name | 50 characters |
+| Element              | Limit                                   |
+| -------------------- | --------------------------------------- |
+| Tweet text           | 280 characters (free), 25,000 (Premium) |
+| Thread length        | No limit (10-15 tweets is sweet spot)   |
+| Image alt text       | 1,000 characters                        |
+| Quote tweet addition | 280 characters                          |
+| Reply                | 280 characters                          |
+| Display name         | 50 characters                           |
 
 ## Thread Structure
 
@@ -51,14 +50,14 @@ Tweet 11:           CTA (follow, retweet, bookmark)
 
 This tweet lives or dies alone in the timeline. It must work WITHOUT the thread.
 
-| Hook Type | Template |
-|-----------|----------|
-| I did X + result | "I analyzed 1,000 [things]. Here's what I found:" |
-| Number + list | "10 [topic] tips that [benefit]:" |
-| Contrarian | "Unpopular opinion: [bold take]" |
-| Story opener | "In 2019, I [dramatic event]. Here's what happened:" |
-| How-to promise | "How to [achieve outcome] (step by step):" |
-| Surprising fact | "[Stat that seems wrong]. Let me explain:" |
+| Hook Type        | Template                                             |
+| ---------------- | ---------------------------------------------------- |
+| I did X + result | "I analyzed 1,000 [things]. Here's what I found:"    |
+| Number + list    | "10 [topic] tips that [benefit]:"                    |
+| Contrarian       | "Unpopular opinion: [bold take]"                     |
+| Story opener     | "In 2019, I [dramatic event]. Here's what happened:" |
+| How-to promise   | "How to [achieve outcome] (step by step):"           |
+| Surprising fact  | "[Stat that seems wrong]. Let me explain:"           |
 
 ```bash
 # Post hook tweet
@@ -69,14 +68,14 @@ belt app run x/post-create --input '{
 
 ### Content Tweets (3-9)
 
-| Rule | Why |
-|------|-----|
-| One idea per tweet | Clarity and retweetability |
-| Number them (1/, 2/, etc.) | Progress signal, easy to reference |
-| Each tweet should stand alone | People share individual tweets |
-| Lead with the insight | Don't bury the point |
-| Use line breaks | Visual breathing room |
-| Include examples | Abstract → concrete |
+| Rule                          | Why                                |
+| ----------------------------- | ---------------------------------- |
+| One idea per tweet            | Clarity and retweetability         |
+| Number them (1/, 2/, etc.)    | Progress signal, easy to reference |
+| Each tweet should stand alone | People share individual tweets     |
+| Lead with the insight         | Don't bury the point               |
+| Use line breaks               | Visual breathing room              |
+| Include examples              | Abstract → concrete                |
 
 ```bash
 # Content tweet with visual
@@ -116,14 +115,14 @@ No shortcuts."
 
 ### Symbols for Lists
 
-| Symbol | Use For |
-|--------|---------|
-| → | Steps, actions, directions |
-| • | Bullet points, lists |
-| — | Asides, attributions |
-| ✅ | Do's, positives |
-| ❌ | Don'ts, negatives |
-| 1/ 2/ 3/ | Numbered thread tweets |
+| Symbol   | Use For                    |
+| -------- | -------------------------- |
+| →        | Steps, actions, directions |
+| •        | Bullet points, lists       |
+| —        | Asides, attributions       |
+| ✅       | Do's, positives            |
+| ❌       | Don'ts, negatives          |
+| 1/ 2/ 3/ | Numbered thread tweets     |
 
 ### Line Break Strategy
 
@@ -141,11 +140,11 @@ Line breaks create **pacing**. Use them to control reading speed and emphasis.
 
 ### When to Add Images
 
-| Tweet Position | Image Type | Purpose |
-|---------------|-----------|---------|
-| Hook (tweet 1) | Eye-catching graphic | Stop the scroll |
-| Key points | Screenshots, examples | Evidence |
-| Summary | Infographic | Shareable recap |
+| Tweet Position | Image Type            | Purpose         |
+| -------------- | --------------------- | --------------- |
+| Hook (tweet 1) | Eye-catching graphic  | Stop the scroll |
+| Key points     | Screenshots, examples | Evidence        |
+| Summary        | Infographic           | Shareable recap |
 
 ```bash
 # Generate thread header image
@@ -162,12 +161,12 @@ belt app run infsh/agent-browser --input '{
 
 ### Image Specs
 
-| Format | Dimensions | Max Size |
-|--------|-----------|----------|
-| Single image | 1200 x 675 (16:9) recommended | 5 MB |
-| Two images | 700 x 800 each | 5 MB each |
-| Four images | 600 x 600 each | 5 MB each |
-| GIF | 1280 x 1080 max | 15 MB |
+| Format       | Dimensions                    | Max Size  |
+| ------------ | ----------------------------- | --------- |
+| Single image | 1200 x 675 (16:9) recommended | 5 MB      |
+| Two images   | 700 x 800 each                | 5 MB each |
+| Four images  | 600 x 600 each                | 5 MB each |
+| GIF          | 1280 x 1080 max               | 15 MB     |
 
 ## Thread Types
 
@@ -216,14 +215,14 @@ belt app run infsh/agent-browser --input '{
 
 ## Engagement Strategy
 
-| Action | Timing | Why |
-|--------|--------|-----|
-| Post hook tweet | Peak hours (8-10 AM, 12-1 PM your audience's TZ) | Maximum initial visibility |
-| Reply-chain the thread | Immediately after hook | Complete the thread |
-| Pin the thread | Right after posting | Visitors see your best work |
-| Engage with replies | First 60 minutes | Algorithm boost |
-| Quote-tweet highlight | Next day | Second wave of visibility |
-| Repost hook | 1-2 weeks later | Catch new followers |
+| Action                 | Timing                                           | Why                         |
+| ---------------------- | ------------------------------------------------ | --------------------------- |
+| Post hook tweet        | Peak hours (8-10 AM, 12-1 PM your audience's TZ) | Maximum initial visibility  |
+| Reply-chain the thread | Immediately after hook                           | Complete the thread         |
+| Pin the thread         | Right after posting                              | Visitors see your best work |
+| Engage with replies    | First 60 minutes                                 | Algorithm boost             |
+| Quote-tweet highlight  | Next day                                         | Second wave of visibility   |
+| Repost hook            | 1-2 weeks later                                  | Catch new followers         |
 
 ## Repurposing to Thread
 
@@ -241,17 +240,17 @@ belt app run infsh/html-to-image --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Weak hook tweet | Thread dies at tweet 1 | Use hook formulas — bold, specific, curiosity-driving |
-| Too many tweets (20+) | Readers drop off after 10-12 | Sweet spot is 8-12 tweets |
-| Multiple ideas per tweet | Confusing, not retweetable | One idea = one tweet |
-| No numbers on tweets | Hard to follow, no progress signal | Always number: 1/, 2/, 3/ |
-| No images | Threads with images get 2x engagement | Add visuals to hook + key points |
-| Thread only (no standalone) | Miss the non-thread audience | Post standalone tweets too, not just threads |
-| No CTA at the end | Missed follow/engagement opportunity | Always ask to RT, follow, bookmark |
-| Posting at wrong time | Low initial engagement kills reach | Post during your audience's peak hours |
-| Wall of text tweets | Nobody reads dense tweets | Line breaks, symbols, short sentences |
+| Mistake                     | Problem                               | Fix                                                   |
+| --------------------------- | ------------------------------------- | ----------------------------------------------------- |
+| Weak hook tweet             | Thread dies at tweet 1                | Use hook formulas — bold, specific, curiosity-driving |
+| Too many tweets (20+)       | Readers drop off after 10-12          | Sweet spot is 8-12 tweets                             |
+| Multiple ideas per tweet    | Confusing, not retweetable            | One idea = one tweet                                  |
+| No numbers on tweets        | Hard to follow, no progress signal    | Always number: 1/, 2/, 3/                             |
+| No images                   | Threads with images get 2x engagement | Add visuals to hook + key points                      |
+| Thread only (no standalone) | Miss the non-thread audience          | Post standalone tweets too, not just threads          |
+| No CTA at the end           | Missed follow/engagement opportunity  | Always ask to RT, follow, bookmark                    |
+| Posting at wrong time       | Low initial engagement kills reach    | Post during your audience's peak hours                |
+| Wall of text tweets         | Nobody reads dense tweets             | Line breaks, symbols, short sentences                 |
 
 ## Related Skills
 
@@ -262,4 +261,3 @@ npx skills add inference-sh/skills@social-media-carousel
 ```
 
 Browse all apps: `belt app store`
-

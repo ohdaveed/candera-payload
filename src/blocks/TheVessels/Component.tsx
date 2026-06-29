@@ -10,8 +10,8 @@ export const TheVesselsBlock: React.FC<Props> = ({ eyebrow, heading, items }) =>
   if (!items?.length) return null
 
   return (
-    <Section padding="none" className="bg-candera-vellum">
-      <Container className="py-20 md:py-28">
+    <Section padding="medium" className="bg-candera-vellum">
+      <Container>
         {(eyebrow || heading) && (
           <div className="flex flex-col gap-4 mb-12 md:mb-16">
             {eyebrow && (

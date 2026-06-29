@@ -1,6 +1,6 @@
 ---
 name: elevenlabs-sound-effects
-description: "Generate AI sound effects from text descriptions with ElevenLabs via inference.sh CLI. Capabilities: text-to-sound-effect, custom duration, royalty-free audio. Use for: video production, game audio, podcasts, films, presentations, social media. Triggers: sound effects, sfx, sound generation, ai sound effects, generate sound, foley, audio effects, sound design, text to sound, elevenlabs sound, eleven labs sfx, ambient sound, cinematic sound, game sound effects"
+description: 'Generate AI sound effects from text descriptions with ElevenLabs via inference.sh CLI. Capabilities: text-to-sound-effect, custom duration, royalty-free audio. Use for: video production, game audio, podcasts, films, presentations, social media. Triggers: sound effects, sfx, sound generation, ai sound effects, generate sound, foley, audio effects, sound design, text to sound, elevenlabs sound, eleven labs sfx, ambient sound, cinematic sound, game sound effects'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,12 +23,11 @@ belt login
 belt app run elevenlabs/sound-effects --input '{"text": "Thunder rumbling in the distance"}'
 ```
 
-
 ## Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `text` | string | Description of the sound effect (max 1000 chars) |
+| Parameter          | Type   | Description                                         |
+| ------------------ | ------ | --------------------------------------------------- |
+| `text`             | string | Description of the sound effect (max 1000 chars)    |
 | `duration_seconds` | number | Duration 0.5-22 seconds (optional, auto if omitted) |
 | `prompt_influence` | number | 0-1, how literal to interpret prompt (default: 0.3) |
 
@@ -120,12 +119,12 @@ belt app run elevenlabs/sound-effects --input '{
 
 Control how literally the model interprets your description:
 
-| Value | Effect | Best For |
-|-------|--------|----------|
-| 0.0 | Very loose interpretation | Creative, surprising results |
-| 0.3 | Balanced (default) | General purpose |
-| 0.7 | Close to description | Specific sound needs |
-| 1.0 | Very literal | Exact sound reproduction |
+| Value | Effect                    | Best For                     |
+| ----- | ------------------------- | ---------------------------- |
+| 0.0   | Very loose interpretation | Creative, surprising results |
+| 0.3   | Balanced (default)        | General purpose              |
+| 0.7   | Close to description      | Specific sound needs         |
+| 1.0   | Very literal              | Exact sound reproduction     |
 
 ```bash
 # Loose interpretation - creative result

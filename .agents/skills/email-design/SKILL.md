@@ -1,6 +1,6 @@
 ---
 name: email-design
-description: "Email marketing design with layout patterns, subject line formulas, and deliverability rules. Covers welcome sequences, promotional emails, transactional templates, and mobile optimization. Use for: email marketing, newsletter design, drip campaigns, email templates, transactional emails. Triggers: email design, email template, email marketing, newsletter design, email layout, email campaign, drip campaign, welcome email, promotional email, transactional email, email subject line, email header image, email banner"
+description: 'Email marketing design with layout patterns, subject line formulas, and deliverability rules. Covers welcome sequences, promotional emails, transactional templates, and mobile optimization. Use for: email marketing, newsletter design, drip campaigns, email templates, transactional emails. Triggers: email design, email template, email marketing, newsletter design, email layout, email campaign, drip campaign, welcome email, promotional email, transactional email, email subject line, email header image, email banner'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,19 +23,18 @@ belt app run infsh/html-to-image --input '{
 }'
 ```
 
-
 ## Email Width & Layout
 
-| Constraint | Value | Why |
-|-----------|-------|-----|
-| **Max width** | 600px | Gmail, Outlook rendering standard |
-| **Mobile width** | 320-414px | Responsive fallback |
-| **Single column** | Preferred | Better mobile rendering |
-| **Two column** | Use sparingly | Breaks on many clients |
-| **Image width** | 600px max, 300px for 2-col | Retina: provide 2x (1200px) |
-| **Font size (body)** | 14-16px | Below 14px is hard to read on mobile |
-| **Font size (heading)** | 22-28px | Must be scannable |
-| **Line height** | 1.5 | Readability on all devices |
+| Constraint              | Value                      | Why                                  |
+| ----------------------- | -------------------------- | ------------------------------------ |
+| **Max width**           | 600px                      | Gmail, Outlook rendering standard    |
+| **Mobile width**        | 320-414px                  | Responsive fallback                  |
+| **Single column**       | Preferred                  | Better mobile rendering              |
+| **Two column**          | Use sparingly              | Breaks on many clients               |
+| **Image width**         | 600px max, 300px for 2-col | Retina: provide 2x (1200px)          |
+| **Font size (body)**    | 14-16px                    | Below 14px is hard to read on mobile |
+| **Font size (heading)** | 22-28px                    | Must be scannable                    |
+| **Line height**         | 1.5                        | Readability on all devices           |
 
 ### The Inverted Pyramid Layout
 
@@ -65,25 +64,25 @@ The most effective email layout funnels attention to a single CTA:
 
 ### Formulas That Work
 
-| Formula | Example | Open Rate Impact |
-|---------|---------|-----------------|
-| Number + benefit | "5 ways to cut your build time in half" | High |
-| Question | "Are you still deploying on Fridays?" | High |
-| How-to | "How to automate your reports in 3 steps" | Medium-High |
-| Urgency (genuine) | "Last day: 30% off annual plans" | High (if real) |
-| Personalized | "[Name], your weekly report is ready" | Very High |
-| Curiosity gap | "The one feature our users can't stop talking about" | Medium-High |
+| Formula           | Example                                              | Open Rate Impact |
+| ----------------- | ---------------------------------------------------- | ---------------- |
+| Number + benefit  | "5 ways to cut your build time in half"              | High             |
+| Question          | "Are you still deploying on Fridays?"                | High             |
+| How-to            | "How to automate your reports in 3 steps"            | Medium-High      |
+| Urgency (genuine) | "Last day: 30% off annual plans"                     | High (if real)   |
+| Personalized      | "[Name], your weekly report is ready"                | Very High        |
+| Curiosity gap     | "The one feature our users can't stop talking about" | Medium-High      |
 
 ### Rules
 
-| Rule | Value |
-|------|-------|
-| **Length** | 30-50 characters (mobile truncates at ~35) |
-| **Preview text** | First 40-100 chars after subject — design this intentionally |
-| **Emoji** | Max 1, at start or end, test with your audience |
-| **ALL CAPS** | Never — triggers spam filters |
+| Rule                   | Value                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| **Length**             | 30-50 characters (mobile truncates at ~35)                        |
+| **Preview text**       | First 40-100 chars after subject — design this intentionally      |
+| **Emoji**              | Max 1, at start or end, test with your audience                   |
+| **ALL CAPS**           | Never — triggers spam filters                                     |
 | **Spam trigger words** | Avoid: "free", "act now", "limited time", "click here" in subject |
-| **Personalization** | [First name] in subject lifts open rates 20%+ |
+| **Personalization**    | [First name] in subject lifts open rates 20%+                     |
 
 ### Preview Text
 
@@ -104,40 +103,40 @@ The preview text appears after the subject line in the inbox. Don't waste it.
 
 ### Welcome Email (Automated, Day 0)
 
-| Element | Content |
-|---------|---------|
-| Subject | "Welcome to [Product] — here's what's next" |
-| Header | Brand image or product screenshot |
-| Body | 3-4 sentences: what they signed up for, what to expect, one quick win |
-| CTA | "Complete your setup" or "Try your first [action]" |
-| Timing | Immediately after signup |
+| Element | Content                                                               |
+| ------- | --------------------------------------------------------------------- |
+| Subject | "Welcome to [Product] — here's what's next"                           |
+| Header  | Brand image or product screenshot                                     |
+| Body    | 3-4 sentences: what they signed up for, what to expect, one quick win |
+| CTA     | "Complete your setup" or "Try your first [action]"                    |
+| Timing  | Immediately after signup                                              |
 
 ### Promotional / Campaign
 
-| Element | Content |
-|---------|---------|
-| Subject | Benefit-focused, urgency if real |
-| Header | Hero image showing the offer/outcome |
-| Body | Problem → solution → offer → deadline |
-| CTA | "Get 30% Off" or "Start Free Trial" |
-| Urgency | Real deadline, not fake scarcity |
+| Element | Content                               |
+| ------- | ------------------------------------- |
+| Subject | Benefit-focused, urgency if real      |
+| Header  | Hero image showing the offer/outcome  |
+| Body    | Problem → solution → offer → deadline |
+| CTA     | "Get 30% Off" or "Start Free Trial"   |
+| Urgency | Real deadline, not fake scarcity      |
 
 ### Product Update / Changelog
 
-| Element | Content |
-|---------|---------|
-| Subject | "New: [Feature name] is here" |
-| Header | Screenshot or visual of the feature |
-| Body | What's new, why it matters, how to use it |
-| CTA | "Try [feature]" |
+| Element | Content                                   |
+| ------- | ----------------------------------------- |
+| Subject | "New: [Feature name] is here"             |
+| Header  | Screenshot or visual of the feature       |
+| Body    | What's new, why it matters, how to use it |
+| CTA     | "Try [feature]"                           |
 
 ### Transactional (Receipts, Confirmations)
 
-| Rule | Why |
-|------|-----|
-| Clear purpose in subject | "Your order #1234 is confirmed" |
-| Minimal design | Don't confuse with marketing |
-| Key info above the fold | Order number, amount, date |
+| Rule                            | Why                                    |
+| ------------------------------- | -------------------------------------- |
+| Clear purpose in subject        | "Your order #1234 is confirmed"        |
+| Minimal design                  | Don't confuse with marketing           |
+| Key info above the fold         | Order number, amount, date             |
 | No promotional content (mostly) | CAN-SPAM allows some, but keep minimal |
 
 ## Header Image Design
@@ -163,15 +162,15 @@ belt app run falai/flux-dev-lora --input '{
 
 ## CTA Buttons
 
-| Rule | Value |
-|------|-------|
-| **Width** | 200-300px, not full width |
-| **Height** | 44-50px minimum (tap target) |
-| **Color** | High contrast with background |
-| **Text** | Action verb + outcome: "Start Free Trial" |
-| **Shape** | Rounded corners (4-8px border-radius) |
+| Rule          | Value                                              |
+| ------------- | -------------------------------------------------- |
+| **Width**     | 200-300px, not full width                          |
+| **Height**    | 44-50px minimum (tap target)                       |
+| **Color**     | High contrast with background                      |
+| **Text**      | Action verb + outcome: "Start Free Trial"          |
+| **Shape**     | Rounded corners (4-8px border-radius)              |
 | **Placement** | Above the fold, repeated at bottom for long emails |
-| **Quantity** | ONE primary CTA per email |
+| **Quantity**  | ONE primary CTA per email                          |
 
 ### Bulletproof Buttons
 
@@ -182,10 +181,13 @@ HTML buttons render differently across email clients. Use the "bulletproof butto
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td align="center" bgcolor="#22c55e" style="border-radius:6px;">
-      <a href="https://yoursite.com/action" target="_blank"
-         style="font-size:16px;font-family:sans-serif;color:#ffffff;
+      <a
+        href="https://yoursite.com/action"
+        target="_blank"
+        style="font-size:16px;font-family:sans-serif;color:#ffffff;
                 text-decoration:none;padding:12px 24px;display:inline-block;
-                font-weight:bold;">
+                font-weight:bold;"
+      >
         Start Free Trial
       </a>
     </td>
@@ -195,42 +197,42 @@ HTML buttons render differently across email clients. Use the "bulletproof butto
 
 ## Mobile Optimization
 
-| Rule | Why |
-|------|-----|
-| Single column layout | Multi-column breaks on mobile |
-| Font minimum 14px | Smaller is unreadable |
-| CTA button minimum 44px tall | Apple/Android tap target |
-| Images scale to 100% width | Prevent horizontal scroll |
-| Stack elements vertically | Side-by-side breaks on narrow screens |
-| Test on Gmail app, Apple Mail, Outlook | The big 3 email clients |
+| Rule                                   | Why                                   |
+| -------------------------------------- | ------------------------------------- |
+| Single column layout                   | Multi-column breaks on mobile         |
+| Font minimum 14px                      | Smaller is unreadable                 |
+| CTA button minimum 44px tall           | Apple/Android tap target              |
+| Images scale to 100% width             | Prevent horizontal scroll             |
+| Stack elements vertically              | Side-by-side breaks on narrow screens |
+| Test on Gmail app, Apple Mail, Outlook | The big 3 email clients               |
 
 **60%+ of emails are opened on mobile.** Design mobile-first.
 
 ## Deliverability Checklist
 
-| Factor | Rule |
-|--------|------|
+| Factor              | Rule                                                            |
+| ------------------- | --------------------------------------------------------------- |
 | Image-to-text ratio | Max 40% images, 60% text (spam filters flag image-heavy emails) |
-| Alt text on images | Always — images blocked by default in many clients |
-| Unsubscribe link | Required by law (CAN-SPAM, GDPR) — make it easy to find |
-| From name | Recognizable person or brand name |
-| Reply-to | Real address, not no-reply@ (hurts deliverability) |
-| List hygiene | Remove bounces, clean inactive subscribers quarterly |
-| SPF/DKIM/DMARC | Technical authentication — set up once, critical for inbox |
+| Alt text on images  | Always — images blocked by default in many clients              |
+| Unsubscribe link    | Required by law (CAN-SPAM, GDPR) — make it easy to find         |
+| From name           | Recognizable person or brand name                               |
+| Reply-to            | Real address, not no-reply@ (hurts deliverability)              |
+| List hygiene        | Remove bounces, clean inactive subscribers quarterly            |
+| SPF/DKIM/DMARC      | Technical authentication — set up once, critical for inbox      |
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| No preview text | Shows "View in browser" or random code | Set preview text intentionally |
-| Image-only emails | Blocked images = blank email + spam risk | 60%+ text, alt text on images |
-| Multiple CTAs | Decision paralysis, lower click rate | One primary CTA per email |
-| Tiny text | Unreadable on mobile | Minimum 14px body, 22px headings |
-| no-reply@ sender | Hurts deliverability, feels impersonal | Use real reply address |
-| No mobile testing | Broken layout for 60%+ of readers | Test on Gmail app + Apple Mail |
-| Missing unsubscribe | Illegal (CAN-SPAM) + spam complaints | Clear unsubscribe link in footer |
-| Over-designing | Email clients render CSS inconsistently | Simple layouts, inline styles |
-| Fake urgency | Erodes trust, trains users to ignore | Only use real deadlines |
+| Mistake             | Problem                                  | Fix                              |
+| ------------------- | ---------------------------------------- | -------------------------------- |
+| No preview text     | Shows "View in browser" or random code   | Set preview text intentionally   |
+| Image-only emails   | Blocked images = blank email + spam risk | 60%+ text, alt text on images    |
+| Multiple CTAs       | Decision paralysis, lower click rate     | One primary CTA per email        |
+| Tiny text           | Unreadable on mobile                     | Minimum 14px body, 22px headings |
+| no-reply@ sender    | Hurts deliverability, feels impersonal   | Use real reply address           |
+| No mobile testing   | Broken layout for 60%+ of readers        | Test on Gmail app + Apple Mail   |
+| Missing unsubscribe | Illegal (CAN-SPAM) + spam complaints     | Clear unsubscribe link in footer |
+| Over-designing      | Email clients render CSS inconsistently  | Simple layouts, inline styles    |
+| Fake urgency        | Erodes trust, trains users to ignore     | Only use real deadlines          |
 
 ## Related Skills
 
@@ -241,4 +243,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

@@ -1,6 +1,6 @@
 ---
 name: related-skill
-description: "Discover and install related skills from inference.sh skill registry. Helps find complementary skills for your AI workflow. Use for: skill discovery, workflow expansion, capability exploration. Triggers: related skills, find skills, skill discovery, complementary skills, expand workflow, more capabilities, similar skills, skill suggestions"
+description: 'Discover and install related skills from inference.sh skill registry. Helps find complementary skills for your AI workflow. Use for: skill discovery, workflow expansion, capability exploration. Triggers: related skills, find skills, skill discovery, complementary skills, expand workflow, more capabilities, similar skills, skill suggestions'
 allowed-tools: Bash(npx skills *)
 ---
 
@@ -27,26 +27,27 @@ npx skills add inference-sh/skills@ai-image-generation
 
 ## Available Skill Categories
 
-| Category | Skill | Description |
-|----------|-------|-------------|
-| **AI Models** | `llm-models` | Access 250+ LLM models |
-| **Images** | `ai-image-generation` | Generate images with AI |
-| **Images** | `flux-image` | FLUX image models |
-| **Images** | `image-upscaling` | Upscale and enhance images |
-| **Images** | `background-removal` | Remove backgrounds from images |
-| **Video** | `ai-video-generation` | Generate videos with AI |
-| **Video** | `ai-avatar-video` | Create avatar videos |
-| **Video** | `google-veo` | Google Veo video generation |
-| **Audio** | `text-to-speech` | Convert text to speech |
-| **Audio** | `speech-to-text` | Transcribe audio to text |
-| **Audio** | `ai-music-generation` | Generate music with AI |
-| **Search** | `web-search` | Search the web with AI |
-| **Social** | `twitter-automation` | Automate Twitter/X actions |
-| **Full** | `inference-sh` | All 250+ apps in one skill |
+| Category      | Skill                 | Description                    |
+| ------------- | --------------------- | ------------------------------ |
+| **AI Models** | `llm-models`          | Access 250+ LLM models         |
+| **Images**    | `ai-image-generation` | Generate images with AI        |
+| **Images**    | `flux-image`          | FLUX image models              |
+| **Images**    | `image-upscaling`     | Upscale and enhance images     |
+| **Images**    | `background-removal`  | Remove backgrounds from images |
+| **Video**     | `ai-video-generation` | Generate videos with AI        |
+| **Video**     | `ai-avatar-video`     | Create avatar videos           |
+| **Video**     | `google-veo`          | Google Veo video generation    |
+| **Audio**     | `text-to-speech`      | Convert text to speech         |
+| **Audio**     | `speech-to-text`      | Transcribe audio to text       |
+| **Audio**     | `ai-music-generation` | Generate music with AI         |
+| **Search**    | `web-search`          | Search the web with AI         |
+| **Social**    | `twitter-automation`  | Automate Twitter/X actions     |
+| **Full**      | `inference-sh`        | All 250+ apps in one skill     |
 
 ## Install by Category
 
 ### Media Generation
+
 ```bash
 npx skills add inference-sh/skills@ai-image-generation
 npx skills add inference-sh/skills@ai-video-generation
@@ -54,6 +55,7 @@ npx skills add inference-sh/skills@ai-music-generation
 ```
 
 ### Image Processing
+
 ```bash
 npx skills add inference-sh/skills@image-upscaling
 npx skills add inference-sh/skills@background-removal
@@ -61,18 +63,21 @@ npx skills add inference-sh/skills@flux-image
 ```
 
 ### Audio Processing
+
 ```bash
 npx skills add inference-sh/skills@text-to-speech
 npx skills add inference-sh/skills@speech-to-text
 ```
 
 ### Research & Automation
+
 ```bash
 npx skills add inference-sh/skills@web-search
 npx skills add inference-sh/skills@twitter-automation
 ```
 
 ### Everything at Once
+
 ```bash
 # Install the full platform skill with all 250+ apps
 npx skills add inference-sh/skills@infsh-cli
@@ -81,12 +86,14 @@ npx skills add inference-sh/skills@infsh-cli
 ## Skill Combinations
 
 ### Research Agent
+
 ```bash
 npx skills add inference-sh/skills@web-search
 npx skills add inference-sh/skills@llm-models
 ```
 
 ### Content Creator
+
 ```bash
 npx skills add inference-sh/skills@ai-image-generation
 npx skills add inference-sh/skills@ai-video-generation
@@ -94,6 +101,7 @@ npx skills add inference-sh/skills@text-to-speech
 ```
 
 ### Media Processor
+
 ```bash
 npx skills add inference-sh/skills@image-upscaling
 npx skills add inference-sh/skills@background-removal
@@ -122,4 +130,3 @@ npx skills remove inference-sh/skills@ai-image-generation
 - [What is inference.sh?](https://inference.sh/docs/getting-started/what-is-inference) - Platform overview
 
 Explore: [inference.sh/explore](https://inference.sh/explore)
-

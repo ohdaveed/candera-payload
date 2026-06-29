@@ -1,6 +1,6 @@
 ---
 name: ai-voice-cloning
-description: "AI voice generation, text-to-speech, and voice synthesis via inference.sh CLI. Models: Inworld TTS-2 (100+ languages, emotion/non-verbal steering), Inworld TTS 1.5 (ultra-low latency), ElevenLabs (22+ premium voices, 32 languages), Kokoro TTS, DIA, Chatterbox, Higgs, VibeVoice for natural speech. Capabilities: multiple voices, emotions, accents, long-form narration, conversation, voice transformation, delivery mode control, character voices. Use for: voiceovers, audiobooks, podcasts, video narration, accessibility, gaming NPCs, avatar audio, UGC. Triggers: voice cloning, tts, text to speech, ai voice, voice generation, voice synthesis, voice over, narration, speech synthesis, ai narrator, elevenlabs, eleven labs, natural voice, realistic speech, voice ai, voice changer, inworld, inworld tts, character voice, npc voice"
+description: 'AI voice generation, text-to-speech, and voice synthesis via inference.sh CLI. Models: Inworld TTS-2 (100+ languages, emotion/non-verbal steering), Inworld TTS 1.5 (ultra-low latency), ElevenLabs (22+ premium voices, 32 languages), Kokoro TTS, DIA, Chatterbox, Higgs, VibeVoice for natural speech. Capabilities: multiple voices, emotions, accents, long-form narration, conversation, voice transformation, delivery mode control, character voices. Use for: voiceovers, audiobooks, podcasts, video narration, accessibility, gaming NPCs, avatar audio, UGC. Triggers: voice cloning, tts, text to speech, ai voice, voice generation, voice synthesis, voice over, narration, speech synthesis, ai narrator, elevenlabs, eleven labs, natural voice, realistic speech, voice ai, voice changer, inworld, inworld tts, character voice, npc voice'
 allowed-tools: Bash(belt *)
 ---
 
@@ -26,43 +26,42 @@ belt app run infsh/kokoro-tts --input '{
 }'
 ```
 
-
 ## Available Models
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| **Inworld TTS-2** | `inworld/text-to-speech-2` | **100+ languages, emotion/non-verbal steering, delivery modes** |
-| Inworld TTS 1.5 Max | `inworld/text-to-speech-1-5-max` | Low latency (<200ms), 15 languages |
-| Inworld TTS 1.5 Mini | `inworld/text-to-speech-1-5-mini` | Ultra-low latency (~120ms), 15 languages, real-time |
-| ElevenLabs TTS | `elevenlabs/tts` | Premium quality, 22+ voices, 32 languages |
-| ElevenLabs Voice Changer | `elevenlabs/voice-changer` | Transform existing voice recordings |
-| Kokoro TTS | `infsh/kokoro-tts` | Natural, multiple voices |
-| DIA | `infsh/dia-tts` | Conversational, expressive |
-| Chatterbox | `infsh/chatterbox` | Casual, entertainment |
-| Higgs | `infsh/higgs-tts` | Professional narration |
-| VibeVoice | `infsh/vibevoice` | Emotional range |
+| Model                    | App ID                            | Best For                                                        |
+| ------------------------ | --------------------------------- | --------------------------------------------------------------- |
+| **Inworld TTS-2**        | `inworld/text-to-speech-2`        | **100+ languages, emotion/non-verbal steering, delivery modes** |
+| Inworld TTS 1.5 Max      | `inworld/text-to-speech-1-5-max`  | Low latency (<200ms), 15 languages                              |
+| Inworld TTS 1.5 Mini     | `inworld/text-to-speech-1-5-mini` | Ultra-low latency (~120ms), 15 languages, real-time             |
+| ElevenLabs TTS           | `elevenlabs/tts`                  | Premium quality, 22+ voices, 32 languages                       |
+| ElevenLabs Voice Changer | `elevenlabs/voice-changer`        | Transform existing voice recordings                             |
+| Kokoro TTS               | `infsh/kokoro-tts`                | Natural, multiple voices                                        |
+| DIA                      | `infsh/dia-tts`                   | Conversational, expressive                                      |
+| Chatterbox               | `infsh/chatterbox`                | Casual, entertainment                                           |
+| Higgs                    | `infsh/higgs-tts`                 | Professional narration                                          |
+| VibeVoice                | `infsh/vibevoice`                 | Emotional range                                                 |
 
 ## Kokoro Voice Library
 
 ### American English
 
-| Voice ID | Gender | Style |
-|----------|--------|-------|
-| `af_sarah` | Female | Warm, friendly |
-| `af_nicole` | Female | Professional |
-| `af_sky` | Female | Youthful |
-| `am_michael` | Male | Authoritative |
-| `am_adam` | Male | Conversational |
-| `am_echo` | Male | Clear, neutral |
+| Voice ID     | Gender | Style          |
+| ------------ | ------ | -------------- |
+| `af_sarah`   | Female | Warm, friendly |
+| `af_nicole`  | Female | Professional   |
+| `af_sky`     | Female | Youthful       |
+| `am_michael` | Male   | Authoritative  |
+| `am_adam`    | Male   | Conversational |
+| `am_echo`    | Male   | Clear, neutral |
 
 ### British English
 
-| Voice ID | Gender | Style |
-|----------|--------|-------|
-| `bf_emma` | Female | Refined |
-| `bf_isabella` | Female | Warm |
-| `bm_george` | Male | Classic |
-| `bm_lewis` | Male | Modern |
+| Voice ID      | Gender | Style   |
+| ------------- | ------ | ------- |
+| `bf_emma`     | Female | Refined |
+| `bf_isabella` | Female | Warm    |
+| `bm_george`   | Male   | Classic |
+| `bm_lewis`    | Male   | Modern  |
 
 ## Inworld TTS — Character & Emotion Voices
 
@@ -240,13 +239,13 @@ belt app run bytedance/omnihuman-1-5 --input '{
 
 ## Speed and Pacing
 
-| Speed | Effect | Use For |
-|-------|--------|---------|
-| 0.8 | Slow, deliberate | Audiobooks, meditation |
-| 0.9 | Slightly slow | Education, tutorials |
-| 1.0 | Normal | General purpose |
-| 1.1 | Slightly fast | Commercials, energy |
-| 1.2 | Fast | Quick announcements |
+| Speed | Effect           | Use For                |
+| ----- | ---------------- | ---------------------- |
+| 0.8   | Slow, deliberate | Audiobooks, meditation |
+| 0.9   | Slightly slow    | Education, tutorials   |
+| 1.0   | Normal           | General purpose        |
+| 1.1   | Slightly fast    | Commercials, energy    |
+| 1.2   | Fast             | Quick announcements    |
 
 ```bash
 # Slow narration
@@ -261,14 +260,14 @@ belt app run infsh/kokoro-tts --input '{
 
 Use punctuation to control speech rhythm:
 
-| Punctuation | Effect |
-|-------------|--------|
-| Period `.` | Full pause |
-| Comma `,` | Brief pause |
-| `...` | Extended pause |
-| `!` | Emphasis |
-| `?` | Question intonation |
-| `-` | Quick break |
+| Punctuation | Effect              |
+| ----------- | ------------------- |
+| Period `.`  | Full pause          |
+| Comma `,`   | Brief pause         |
+| `...`       | Extended pause      |
+| `!`         | Emphasis            |
+| `?`         | Question intonation |
+| `-`         | Quick break         |
 
 ```bash
 belt app run infsh/kokoro-tts --input '{
@@ -322,4 +321,3 @@ npx skills add inference-sh/skills@infsh-cli
 ```
 
 Browse audio apps: `belt app store --category audio`
-

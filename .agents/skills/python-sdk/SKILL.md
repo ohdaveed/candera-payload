@@ -1,6 +1,6 @@
 ---
 name: python-sdk
-description: "Python SDK for inference.sh - run AI apps, build agents, and integrate with 250+ models. Package: inferencesh (pip install inferencesh). Supports sync/async, streaming, file uploads. Build agents with template or ad-hoc patterns, tool builder API, skills, and human approval. Use for: Python integration, AI apps, agent development, RAG pipelines, automation. Triggers: python sdk, inferencesh, pip install, python api, python client, async inference, python agent, tool builder python, programmatic ai, python integration, sdk python"
+description: 'Python SDK for inference.sh - run AI apps, build agents, and integrate with 250+ models. Package: inferencesh (pip install inferencesh). Supports sync/async, streaming, file uploads. Build agents with template or ad-hoc patterns, tool builder API, skills, and human approval. Use for: Python integration, AI apps, agent development, RAG pipelines, automation. Triggers: python sdk, inferencesh, pip install, python api, python client, async inference, python agent, tool builder python, programmatic ai, python integration, sdk python'
 allowed-tools: Bash(pip install inferencesh), Bash(python *)
 ---
 
@@ -98,14 +98,14 @@ for update in client.run({
 
 ### Run Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `app` | string | App ID (namespace/name@version) |
-| `input` | dict | Input matching app schema |
-| `setup` | dict | Hidden setup configuration |
-| `infra` | string | 'cloud' or 'private' |
-| `session` | string | Session ID for stateful execution |
-| `session_timeout` | int | Idle timeout (1-3600 seconds) |
+| Parameter         | Type   | Description                       |
+| ----------------- | ------ | --------------------------------- |
+| `app`             | string | App ID (namespace/name@version)   |
+| `input`           | dict   | Input matching app schema         |
+| `setup`           | dict   | Hidden setup configuration        |
+| `infra`           | string | 'cloud' or 'private'              |
+| `session`         | string | Session ID for stateful execution |
+| `session_timeout` | int    | Idle timeout (1-3600 seconds)     |
 
 ## File Handling
 
@@ -225,12 +225,12 @@ response = agent.send_message("What is 25 * 4?")
 
 ### Available Core Apps
 
-| Model | App Reference |
-|-------|---------------|
-| Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |
+| Model            | App Reference                  |
+| ---------------- | ------------------------------ |
+| Claude Sonnet 4  | `infsh/claude-sonnet-4@latest` |
 | Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |
-| GPT-4o | `infsh/gpt-4o@latest` |
-| GPT-4o Mini | `infsh/gpt-4o-mini@latest` |
+| GPT-4o           | `infsh/gpt-4o@latest`          |
+| GPT-4o Mini      | `infsh/gpt-4o-mini@latest`     |
 
 ## Tool Builder API
 
@@ -483,4 +483,3 @@ npx skills add inference-sh/skills@ai-image-generation
 - [Authentication](https://inference.sh/docs/api/authentication) - API key setup
 - [Streaming](https://inference.sh/docs/api/sdk/streaming) - Real-time updates
 - [File Uploads](https://inference.sh/docs/api/sdk/files) - File handling
-

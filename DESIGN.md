@@ -134,6 +134,7 @@ The palette is warm without being rustic, refined without being cold. Near-black
 **This system explicitly rejects:** generic mass-market candle aesthetics (farmhouse visuals, Mason jar tropes, stock-photo candle imagery), the DTC SaaS cliché of super-white hyper-minimal pages, and any ornament that doesn't serve the product.
 
 **Key Characteristics:**
+
 - Editorial typography as the primary design material — Fraunces italic at generous scales
 - Near-zero border radius; the only curvature is a 2px micro-radius that says "designed," not "softened"
 - Warm paper-toned backgrounds (vellum, linen) with a subtle film grain texture for tactility
@@ -146,22 +147,27 @@ The palette is warm without being rustic, refined without being cold. Near-black
 The palette is drawn from a botanical studio's materials: paper, ink, clay, dried flowers, fired copper. Chroma is reserved for accent; the page is primarily ink on warm paper.
 
 ### Primary
+
 - **Obsidian** (#141412): Near-black with the faintest warmth. Used for body text, headings, and the primary CTA button background. The ink of the brand.
 
 ### Neutral
+
 - **Vellum** (#f5f2ed): Warm off-white. The main page background — the "paper" of the brand. All surfaces rest on this.
 - **Linen** (#fdfbf7): Bright warm white. Card backgrounds, tinted section backgrounds, inverse CTA buttons. Slightly brighter than vellum for surface distinction.
 - **Ash** (#e2ddd6): Warm grey. Subtle dividers, secondary border treatment, muted decorative elements.
 
 ### Accent
+
 - **Ember** (#dd7d52): Warm copper-orange. Primary accent for CTA buttons, highlight elements, emphasis. Appears on ≤10% of any given screen.
 - **Ember Strong** (#a8502b): Deep burnt orange. Hover states for ember accents, focus rings, stronger emphasis.
 
 ### Secondary
+
 - **Rose** (#b28c9c): Muted rose. Used as an alternate primary accent in skin variants. Softens the warmth when used.
 - **Rose Strong** (#8a5e72): Deep rose. Hover states and stronger accent in rose-based skins.
 
 ### Muted
+
 - **Sage Text** (#5f6459): Muted green-grey. Secondary body text, label text, editorial pull-quote color. It carries a botanical whisper without shouting "green."
 - **Sage** (#7a8174): Mid-tone green-grey. Decorative ambient use, secondary borders.
 - **Stone** (#dacbb8): Warm tan. Input borders, card borders, subtle outline elements.
@@ -183,6 +189,7 @@ The palette is drawn from a botanical studio's materials: paper, ink, clay, drie
 **Character:** The pairing is editorial sans-serif body with a distinctive serif display voice. Fraunces italic carries the brand's personality — warm, refined, slightly calligraphic — while DM Sans provides clean, readable body text that doesn't compete. EB Garamond italic is reserved for pull quotes and editorial asides; it signals "this is the voice of the maker."
 
 ### Hierarchy
+
 - **Display** (Fraunces 400 italic, clamp(2.5rem, 5vw, 4.5rem), line-height 1, letter-spacing -0.02em): Hero headlines only. `text-wrap: balance`. The most prominent typographic statement on any page.
 - **Headline** (Fraunces 400 italic, 3rem, line-height 1.1, letter-spacing -0.01em): Section headings (h2). `text-wrap: balance`.
 - **Title** (Fraunces 400 italic, 1.953rem, line-height 1.15): Subsection headings (h3), card titles. `text-wrap: balance`.
@@ -207,6 +214,7 @@ Candera uses grounded, object-like shadows rather than tonal layering or flat de
 The only tonal layering is the grain texture overlay (film grain at 4% opacity, `mix-blend-mode: overlay`), which adds tactile atmosphere without simulating depth.
 
 ### Shadow Vocabulary
+
 - **Card shadow** (`0 1px 3px rgba(20, 20, 18, 0.06), 0 0 0 1px rgba(20, 20, 18, 0.04)`): Default card, product card, any raised surface. The 1px pseudo-border is essential — it gives the card a crisp edge without a full border stroke.
 - **Small shadow** (`0 1px 2px rgba(20, 20, 18, 0.05)`): Subtle elevation for hovered small elements, tooltips.
 - **Large shadow** (`0 18px 40px -12px rgba(20, 20, 18, 0.25)`): Modals, dialogs, floating panels. Noticeably lifted from the page.
@@ -219,23 +227,28 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 ## 5. Components
 
 ### Buttons
+
 - **Shape:** Sharp rectangle throughout (0px radius for CTA variants, 4px for standard variants). No rounding — the absence of curves says "this is intentional."
 - **Primary CTA (obsidian):** Obsidian (#141412) background, vellum (#f5f2ed) text, DM Sans 700 at 0.8rem uppercase with 0.3em letter-spacing. 52px height, 40px horizontal padding. `shadow-lg` at rest; on hover, lifts 2px (`hover:-translate-y-0.5`) with `hover:shadow-xl`. Transitions in 300ms ease-candera-enter.
 - **Ember CTA (conversion):** Ember-strong (#a8502b) background, vellum text. Same typography and sizing as primary CTA. On hover, shifts to obsidian background.
 - **Inverse CTA:** Linen (#fdfbf7) background, obsidian text. For placement on dark or tinted sections.
 - **Ghost CTA (dark):** Transparent with a 40%-opacity vellum border, vellum text. For overlays on hero imagery.
 - **Standard buttons:** shadcn/ui variants (default, destructive, outline, secondary, ghost, link) at 44px default height with 4px radius. These follow the semantic CSS variables and are used in admin-adjacent contexts.
+- **Button Wrapping Rule:** All specialized button components (e.g., `SubmitButton`, `PrimaryButton`) must wrap the canonical `Button` component from `src/components/ui/button.tsx` to inherit standard focus-visible rings and tap-scale animations.
 - **Hover/Focus:** Hover applies `hover:shadow-xl hover:-translate-y-0.5` for CTA variants; standard variants apply `hover:bg-primary/90`. Focus-visible shows a `ring-4 ring-ring/50` outline with 1px visible outline. `active:scale-[0.98]` press effect on all variants.
 
 ### Cards
+
 - **Corner Style:** 2px radius — a subtle micro-curve that prevents sharpness without softening the brand's character.
 - **Background:** Linen (#fdfbf7) for product cards and content cards; vellum (#f5f2ed) for cards that need to recede.
 - **Shadow Strategy:** Card shadow (1px pseudo-border + soft drop shadow). On hover, elevates the shadow and applies `-translate-y-0.5`.
 - **Border:** None — the shadow's 1px pseudo-border (`0 0 0 1px rgba(20,20,18,0.04)`) provides the edge definition.
 - **Internal Padding:** 24px (p-6). Product cards use `p-0` with content padding inside.
 - **Image Aspect Ratios:** Product images at `aspect-[4/5]`, post cards at `aspect-[3/2]`, grid product thumbnails at `aspect-square`.
+- **CMS Content Safeguard:** Because all card details (titles, descriptions, scent profiles) are dynamically populated via Payload CMS, cards must enforce strict line-clamping (`line-clamp-1` / `line-clamp-2`) and minimum heights (`min-h-*`) on their text blocks to prevent grid misalignment.
 
 ### Inputs & Fields
+
 - **Style:** Vellum background at 50% opacity, stone border at 30% opacity, DM Sans 300 text. 2px radius. 48px default height with 12px/16px padding.
 - **Focus:** Ember-strong border at 50% opacity, linen background, 2px semi-transparent ember-strong outline ring at `outline-offset: 2px`. Transitions in 300ms.
 - **Error:** Red border + ring via semantic `--error` token. Same focus behavior with error-colored ring.
@@ -243,6 +256,7 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Minimal variant:** Bottom-border only (`border-b border-obsidian/70`) for inline, understated contexts.
 
 ### Navigation
+
 - **Style:** Inline horizontal links across the top of the page, DM Sans 700 at label size (0.8rem) with 0.2em uppercase tracking. Near-black text at rest.
 - **Link Hover:** Underline via `background-size` technique — growing underline from center, 300ms transition.
 - **Active/Current:** Bold weight, underline always visible.
@@ -250,10 +264,12 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Header background:** Transparent by default (hero bleeds behind); `bg-background/80 backdrop-blur-sm` on scroll. 4.5rem height with sticky positioning.
 
 ### Scent Notes (Chips)
+
 - **Style:** Vellum (#f5f2ed) background, obsidian text, 2px radius pills. `px-2 py-0.5` with `text-xs` DM Sans.
 - **State:** Static decorative elements (not interactive). Used on product cards to communicate scent notes.
 
 ### Badges
+
 - **Shape:** Full rounded pill (`rounded-full`), 2px radius border, `px-2.5 py-0.5` with `text-xs font-semibold`.
 - **Variants:** Default (primary bg, primary-foreground text), secondary, destructive, outline — mapped to semantic tokens.
 
@@ -268,6 +284,7 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 ## 6. Do's and Don'ts
 
 ### Do:
+
 - **Do** use obsidian (#141412) for body text against vellum (#f5f2ed) or linen (#fdfbf7) backgrounds. This is the brand's ink-on-paper contract.
 - **Do** use ember (#dd7d52) or ember-strong (#a8502b) as the primary accent, limited to ≤10% of any given screen.
 - **Do** keep body text line length at 70ch maximum. Prose should never span the full viewport width.
@@ -278,8 +295,10 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Do** use the card shadow (1px pseudo-border + soft drop) for cards and raised surfaces. The pseudo-border is essential — it crisps the edge without a full border stroke.
 - **Do** use `text-wrap: balance` on h1–h3, `text-wrap: pretty` on body paragraphs.
 - **Do** use `prefers-reduced-motion: reduce` media queries to disable all non-essential motion.
+- **Do** wrap all dynamic card layout fields in `line-clamp` and `min-h` to enforce visual consistency when rendering content managed via Payload CMS.
 
 ### Don't:
+
 - **Don't** use generic mass-market candle aesthetics — no farmhouse visuals, Mason jar tropes, or stock-photo candle imagery.
 - **Don't** use a warm-tinted off-white body background as a default move. Candera's warm paper is vellum, not cream or beige — it's a specific color choice, not a category default.
 - **Don't** use border-left or border-right greater than 1px as a colored accent stripe on cards, list items, or callouts.
@@ -294,3 +313,5 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Don't** pair `border: 1px solid` with `box-shadow` with blur ≥ 16px on the same element. Pick one border treatment.
 - **Don't** use `repeating-linear-gradient` stripe backgrounds, diagonal stripes, or sketchy SVG illustrations as decoration.
 - **Don't** use the slop pattern: "vessels" where you mean "products," "Studio Boutique" where you mean "Etsy," or qualitative claims posed as quantitative metrics.
+- **Don't** hardcode visual shadows (such as `shadow-[0_1px_3px...]`) or visual border radii inline within component variants; use standard `shadow-card` and `rounded-card` (2px) tokens instead.
+- **Don't** use glassmorphic aside styles or backdrop blurs (like `backdrop-blur-md bg-candera-obsidian/40 rounded-2xl`) on cards or hero callouts; all layouts must remain flat, solid, and aligned to the 2px radius rule.

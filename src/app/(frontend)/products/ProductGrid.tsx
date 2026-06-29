@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Card, type CardPostData } from '@/components/Card'
+import { useIntersectionObserver } from '@/app/(frontend)/hooks/useIntersectionObserver'
 
 interface ProductGridProps {
   products: CardPostData[]
@@ -10,6 +11,10 @@ interface ProductGridProps {
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   const shouldReduceMotion = useReducedMotion()
+  const { ref, isIntersecting } = useIntersectionObserver<HTMLUListElement>({
+    threshold: 0.1,
+    freezeOnceVisible: true,
+  })
 
   const container = {
     hidden: { opacity: 0 },
@@ -38,10 +43,11 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
 
   return (
     <motion.ul
+      ref={ref}
       variants={container}
       initial={shouldReduceMotion ? false : 'hidden'}
-      animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 list-none p-0 m-0"
+      animate={isIntersecting ? 'show' : 'hidden'}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 md:gap-y-20 list-none p-0 m-0"
     >
       {products.map((product, i) => (
         <motion.li key={product.slug ?? i} variants={item} className="flex">

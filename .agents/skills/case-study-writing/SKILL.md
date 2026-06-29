@@ -1,6 +1,6 @@
 ---
 name: case-study-writing
-description: "B2B case study writing with STAR framework, data visualization, and research. Covers structure, customer quotes, metrics presentation, and distribution formats. Use for: customer success stories, portfolio pieces, sales enablement, marketing content. Triggers: case study, customer story, success story, b2b case study, client testimonial, customer case study, portfolio case study, use case, customer win, results story"
+description: 'B2B case study writing with STAR framework, data visualization, and research. Covers structure, customer quotes, metrics presentation, and distribution formats. Use for: customer success stories, portfolio pieces, sales enablement, marketing content. Triggers: case study, customer story, success story, b2b case study, client testimonial, customer case study, portfolio case study, use case, customer win, results story'
 allowed-tools: Bash(belt *)
 ---
 
@@ -23,17 +23,16 @@ belt app run tavily/search-assistant --input '{
 }'
 ```
 
-
 ## The STAR Framework
 
 Every case study follows: **Situation -> Task -> Action -> Result**
 
-| Section | Length | Content | Purpose |
-|---------|--------|---------|---------|
-| **Situation** | 100-150 words | Who the customer is, their context | Set the scene |
-| **Task** | 100-150 words | The specific challenge they faced | Create empathy |
-| **Action** | 200-300 words | What solution was implemented, how | Show your product |
-| **Result** | 100-200 words | Measurable outcomes, before/after | Prove value |
+| Section       | Length        | Content                            | Purpose           |
+| ------------- | ------------- | ---------------------------------- | ----------------- |
+| **Situation** | 100-150 words | Who the customer is, their context | Set the scene     |
+| **Task**      | 100-150 words | The specific challenge they faced  | Create empathy    |
+| **Action**    | 200-300 words | What solution was implemented, how | Show your product |
+| **Result**    | 100-200 words | Measurable outcomes, before/after  | Prove value       |
 
 **Total: 800-1200 words.** Longer loses readers. Shorter lacks credibility.
 
@@ -109,12 +108,12 @@ Place at the top for skimmers:
 
 ### Metric Categories
 
-| Category | Examples |
-|----------|---------|
-| **Time** | Hours saved, time-to-completion, deployment speed |
-| **Money** | Revenue increase, cost reduction, ROI |
-| **Efficiency** | Throughput, error rate, automation rate |
-| **Growth** | Users gained, market expansion, feature adoption |
+| Category         | Examples                                            |
+| ---------------- | --------------------------------------------------- |
+| **Time**         | Hours saved, time-to-completion, deployment speed   |
+| **Money**        | Revenue increase, cost reduction, ROI               |
+| **Efficiency**   | Throughput, error rate, automation rate             |
+| **Growth**       | Users gained, market expansion, feature adoption    |
 | **Satisfaction** | NPS change, retention rate, support tickets reduced |
 
 ### Data Visualization
@@ -179,14 +178,14 @@ belt app run exa/answer --input '{
 
 ## Distribution Formats
 
-| Format | Where | Notes |
-|--------|-------|-------|
-| **Web page** | /customers/ or /case-studies/ | Full version, SEO-optimized |
-| **PDF** | Sales team, email attachment | Designed, downloadable, gated optional |
-| **Slide deck** | Sales calls, presentations | 5-8 slides, visual-heavy |
-| **One-pager** | Trade shows, quick reference | Snapshot + key metrics + quote |
-| **Social post** | LinkedIn, Twitter | Key stat + quote + link to full |
-| **Video** | Website, YouTube | Customer interview or animated |
+| Format          | Where                         | Notes                                  |
+| --------------- | ----------------------------- | -------------------------------------- |
+| **Web page**    | /customers/ or /case-studies/ | Full version, SEO-optimized            |
+| **PDF**         | Sales team, email attachment  | Designed, downloadable, gated optional |
+| **Slide deck**  | Sales calls, presentations    | 5-8 slides, visual-heavy               |
+| **One-pager**   | Trade shows, quick reference  | Snapshot + key metrics + quote         |
+| **Social post** | LinkedIn, Twitter             | Key stat + quote + link to full        |
+| **Video**       | Website, YouTube              | Customer interview or animated         |
 
 ### Social Media Snippet
 
@@ -219,14 +218,14 @@ Read the full story → [link]"
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| No specific numbers | Reads like marketing fluff | Quantify everything |
-| All about your product | Reads like a sales pitch | Story is about the CUSTOMER |
-| Generic quotes | No credibility | Get specific, attributed quotes |
-| Missing the "before" | No contrast to show impact | Always show the starting point |
-| Too long | Loses reader attention | 800-1200 words max |
-| No customer approval | Legal/relationship risk | Always get sign-off |
+| Mistake                | Problem                    | Fix                             |
+| ---------------------- | -------------------------- | ------------------------------- |
+| No specific numbers    | Reads like marketing fluff | Quantify everything             |
+| All about your product | Reads like a sales pitch   | Story is about the CUSTOMER     |
+| Generic quotes         | No credibility             | Get specific, attributed quotes |
+| Missing the "before"   | No contrast to show impact | Always show the starting point  |
+| Too long               | Loses reader attention     | 800-1200 words max              |
+| No customer approval   | Legal/relationship risk    | Always get sign-off             |
 
 ## Related Skills
 
@@ -236,4 +235,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

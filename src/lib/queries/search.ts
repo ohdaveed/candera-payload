@@ -21,6 +21,8 @@ export async function searchContent(query: string): Promise<Search[]> {
         { 'meta.description': { contains: q } },
         { 'meta.title': { contains: q } },
         { slug: { contains: q } },
+        { tagline: { contains: q } },
+        { productType: { contains: q } },
       ],
     },
   })

@@ -1,6 +1,6 @@
 ---
 name: image-to-video
-description: "Still-to-video conversion guide: model selection, motion prompting, and camera movement. Covers Wan 2.5 i2v, Seedance, Fabric, Grok Video with when to use each. Use for: animating images, creating video from stills, adding motion, product animations. Triggers: image to video, i2v, animate image, still to video, add motion to image, image animation, photo to video, animate still, wan i2v, image2video, bring image to life, animate photo, motion from image"
+description: 'Still-to-video conversion guide: model selection, motion prompting, and camera movement. Covers Wan 2.5 i2v, Seedance, Fabric, Grok Video with when to use each. Use for: animating images, creating video from stills, adding motion, product animations. Triggers: image to video, i2v, animate image, still to video, add motion to image, image animation, photo to video, animate still, wan i2v, image2video, bring image to life, animate photo, motion from image'
 allowed-tools: Bash(belt *)
 ---
 
@@ -31,54 +31,53 @@ belt app run falai/wan-2-5-i2v --input '{
 }'
 ```
 
-
 ## Model Selection
 
-| Model | App ID | Best For | Motion Style |
-|-------|--------|----------|-------------|
-| **Wan 2.5 i2v** | `falai/wan-2-5-i2v` | Realistic motion, natural movement | Photorealistic, subtle |
-| **WAN-I2V (Pruna)** | `pruna/wan-i2v` | Economical, fast, 480p/720p | Natural, efficient |
-| **Seedance 2.0** | `bytedance/seedance-2-0` | Up to 1080p, sync audio, all input types | Versatile, high quality |
-| **Seedance 2.0 Fast** | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities | Versatile, fast |
-| **Fabric 1.0** | `falai/fabric-1-0` | Cloth, fabric, liquid, flowing materials | Physics-based flow |
-| **Grok Imagine Video** | `xai/grok-imagine-video` | General animation, text-guided | Versatile |
+| Model                  | App ID                        | Best For                                 | Motion Style            |
+| ---------------------- | ----------------------------- | ---------------------------------------- | ----------------------- |
+| **Wan 2.5 i2v**        | `falai/wan-2-5-i2v`           | Realistic motion, natural movement       | Photorealistic, subtle  |
+| **WAN-I2V (Pruna)**    | `pruna/wan-i2v`               | Economical, fast, 480p/720p              | Natural, efficient      |
+| **Seedance 2.0**       | `bytedance/seedance-2-0`      | Up to 1080p, sync audio, all input types | Versatile, high quality |
+| **Seedance 2.0 Fast**  | `bytedance/seedance-2-0-fast` | Fast variant, same capabilities          | Versatile, fast         |
+| **Fabric 1.0**         | `falai/fabric-1-0`            | Cloth, fabric, liquid, flowing materials | Physics-based flow      |
+| **Grok Imagine Video** | `xai/grok-imagine-video`      | General animation, text-guided           | Versatile               |
 
 ### When to Use Each
 
-| Scenario | Best Model | Why |
-|----------|-----------|-----|
-| Landscape with water/clouds | **Wan 2.5 i2v** | Best at natural, realistic motion |
-| Portrait with subtle expression | **Wan 2.5 i2v** | Maintains face fidelity |
-| Product with fabric/cloth | **Fabric 1.0** | Specialized in material physics |
-| Flag waving, curtain flowing | **Fabric 1.0** | Cloth simulation |
-| Illustrated/artistic image | **Seedance 2.0** | Matches stylized content |
-| General "bring to life" | **Seedance 2.0** | Good all-rounder, up to 1080p |
-| Quick test/iteration | **Seedance 2.0 Fast** | Faster generation |
+| Scenario                        | Best Model            | Why                               |
+| ------------------------------- | --------------------- | --------------------------------- |
+| Landscape with water/clouds     | **Wan 2.5 i2v**       | Best at natural, realistic motion |
+| Portrait with subtle expression | **Wan 2.5 i2v**       | Maintains face fidelity           |
+| Product with fabric/cloth       | **Fabric 1.0**        | Specialized in material physics   |
+| Flag waving, curtain flowing    | **Fabric 1.0**        | Cloth simulation                  |
+| Illustrated/artistic image      | **Seedance 2.0**      | Matches stylized content          |
+| General "bring to life"         | **Seedance 2.0**      | Good all-rounder, up to 1080p     |
+| Quick test/iteration            | **Seedance 2.0 Fast** | Faster generation                 |
 
 ## Motion Types
 
 ### Camera Movement
 
-| Movement | Prompt Keyword | Effect |
-|----------|---------------|--------|
+| Movement                | Prompt Keyword                           | Effect                    |
+| ----------------------- | ---------------------------------------- | ------------------------- |
 | Push in / Dolly forward | "slow dolly forward", "camera pushes in" | Increasing intimacy/focus |
-| Pull out / Dolly back | "camera pulls back", "slow zoom out" | Reveal, context |
-| Pan left/right | "camera pans slowly to the right" | Scanning, following |
-| Tilt up/down | "camera tilts upward" | Revealing height |
-| Orbit | "camera orbits around the subject" | 3D exploration |
-| Crane up | "camera rises upward" | Grand reveal |
-| Static | (no camera movement prompt) | Subject motion only |
+| Pull out / Dolly back   | "camera pulls back", "slow zoom out"     | Reveal, context           |
+| Pan left/right          | "camera pans slowly to the right"        | Scanning, following       |
+| Tilt up/down            | "camera tilts upward"                    | Revealing height          |
+| Orbit                   | "camera orbits around the subject"       | 3D exploration            |
+| Crane up                | "camera rises upward"                    | Grand reveal              |
+| Static                  | (no camera movement prompt)              | Subject motion only       |
 
 ### Subject Motion
 
-| Type | Prompt Examples |
-|------|----------------|
+| Type             | Prompt Examples                                                  |
+| ---------------- | ---------------------------------------------------------------- |
 | Natural elements | "water rippling", "clouds drifting", "leaves rustling in breeze" |
-| Hair/clothing | "hair blowing gently in wind", "dress fabric flowing" |
-| Atmospheric | "fog slowly rolling", "dust particles floating in light beams" |
-| Character | "person slowly turns to camera", "subtle breathing motion" |
-| Mechanical | "gears turning", "clock hands moving" |
-| Liquid | "coffee steam rising", "paint dripping", "water pouring" |
+| Hair/clothing    | "hair blowing gently in wind", "dress fabric flowing"            |
+| Atmospheric      | "fog slowly rolling", "dust particles floating in light beams"   |
+| Character        | "person slowly turns to camera", "subtle breathing motion"       |
+| Mechanical       | "gears turning", "clock hands moving"                            |
+| Liquid           | "coffee steam rising", "paint dripping", "water pouring"         |
 
 ## Prompting Best Practices
 
@@ -140,12 +139,12 @@ belt app run falai/wan-2-5-i2v --input '{
 
 ## Duration Guidelines
 
-| Duration | Quality | Use For |
-|----------|---------|---------|
-| 2-3 seconds | Highest quality | GIFs, looping backgrounds, cinemagraphs |
-| 4-5 seconds | High quality | Social media posts, product reveals |
-| 6-8 seconds | Good quality | Short clips, transitions |
-| 10+ seconds | Quality degrades | Avoid unless stitching shorter clips |
+| Duration    | Quality          | Use For                                 |
+| ----------- | ---------------- | --------------------------------------- |
+| 2-3 seconds | Highest quality  | GIFs, looping backgrounds, cinemagraphs |
+| 4-5 seconds | High quality     | Social media posts, product reveals     |
+| 6-8 seconds | Good quality     | Short clips, transitions                |
+| 10+ seconds | Quality degrades | Avoid unless stitching shorter clips    |
 
 ### Extending Duration
 
@@ -221,15 +220,15 @@ belt app run falai/wan-2-5-i2v --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Too much motion requested | Distortion, artifacts, warping | Subtle > dramatic, always |
-| Wrong model for content type | Poor results | Use selection guide above |
-| Clips too long (10s+) | Quality degrades significantly | Keep to 3-5 seconds, stitch if needed |
-| No camera movement specified | Random/unpredictable motion | Always specify camera behavior |
-| Conflicting motion directions | Chaotic, unnatural | One primary motion direction |
-| Low-res source image | Low-res video output | Start with highest quality source |
-| Complex action scenes | Models can't handle | Keep motion simple and natural |
+| Mistake                       | Problem                        | Fix                                   |
+| ----------------------------- | ------------------------------ | ------------------------------------- |
+| Too much motion requested     | Distortion, artifacts, warping | Subtle > dramatic, always             |
+| Wrong model for content type  | Poor results                   | Use selection guide above             |
+| Clips too long (10s+)         | Quality degrades significantly | Keep to 3-5 seconds, stitch if needed |
+| No camera movement specified  | Random/unpredictable motion    | Always specify camera behavior        |
+| Conflicting motion directions | Chaotic, unnatural             | One primary motion direction          |
+| Low-res source image          | Low-res video output           | Start with highest quality source     |
+| Complex action scenes         | Models can't handle            | Keep motion simple and natural        |
 
 ## Related Skills
 
@@ -242,4 +241,3 @@ npx skills add inference-sh/skills@prompt-engineering
 ```
 
 Browse all apps: `belt app store`
-

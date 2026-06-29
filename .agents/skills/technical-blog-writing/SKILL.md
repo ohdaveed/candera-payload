@@ -1,6 +1,6 @@
 ---
 name: technical-blog-writing
-description: "Technical blog post writing with structure, code examples, and developer audience conventions. Covers post types, code formatting, explanation depth, and developer-specific engagement patterns. Use for: engineering blogs, dev tutorials, technical writing, developer content, documentation posts. Triggers: technical blog, dev blog, engineering blog, technical writing, developer tutorial, tech post, code tutorial, programming blog, developer content, technical article, engineering post, coding tutorial, technical content"
+description: 'Technical blog post writing with structure, code examples, and developer audience conventions. Covers post types, code formatting, explanation depth, and developer-specific engagement patterns. Use for: engineering blogs, dev tutorials, technical writing, developer content, documentation posts. Triggers: technical blog, dev blog, engineering blog, technical writing, developer tutorial, tech post, code tutorial, programming blog, developer content, technical article, engineering post, coding tutorial, technical content'
 allowed-tools: Bash(belt *)
 ---
 
@@ -28,7 +28,6 @@ belt app run infsh/html-to-image --input '{
 }'
 ```
 
-
 ## Post Types
 
 ### 1. Tutorial / How-To
@@ -46,14 +45,14 @@ Structure:
 7. Next steps / extensions
 ```
 
-| Rule | Why |
-|------|-----|
-| Show the end result first | Reader knows if it's worth continuing |
-| List prerequisites explicitly | Don't waste time of wrong audience |
-| Every code block should be runnable | Copy-paste-run is the test |
+| Rule                                 | Why                                         |
+| ------------------------------------ | ------------------------------------------- |
+| Show the end result first            | Reader knows if it's worth continuing       |
+| List prerequisites explicitly        | Don't waste time of wrong audience          |
+| Every code block should be runnable  | Copy-paste-run is the test                  |
 | Explain the "why" not just the "how" | Tutorials that explain reasoning get shared |
-| Include error handling | Real code has errors |
-| Link to complete code repo | Reference after tutorial |
+| Include error handling               | Real code has errors                        |
+| Link to complete code repo           | Reference after tutorial                    |
 
 ### 2. Deep Dive / Explainer
 
@@ -115,14 +114,14 @@ Structure:
 
 ### Voice and Tone
 
-| Do | Don't |
-|----|-------|
-| Be direct: "Use connection pooling" | "You might want to consider using..." |
-| Admit trade-offs: "This adds complexity" | Pretend your solution is perfect |
-| Use "we" for team decisions | "I single-handedly architected..." |
-| Specific numbers: "reduced p99 from 800ms to 90ms" | "significantly improved performance" |
-| Cite sources and benchmarks | Make unsourced claims |
-| Acknowledge alternatives | Pretend yours is the only way |
+| Do                                                 | Don't                                 |
+| -------------------------------------------------- | ------------------------------------- |
+| Be direct: "Use connection pooling"                | "You might want to consider using..." |
+| Admit trade-offs: "This adds complexity"           | Pretend your solution is perfect      |
+| Use "we" for team decisions                        | "I single-handedly architected..."    |
+| Specific numbers: "reduced p99 from 800ms to 90ms" | "significantly improved performance"  |
+| Cite sources and benchmarks                        | Make unsourced claims                 |
+| Acknowledge alternatives                           | Pretend yours is the only way         |
 
 ### What Developers Hate
 
@@ -138,17 +137,17 @@ Structure:
 
 ### Code Examples
 
-| Rule | Why |
-|------|-----|
-| Every code block must be runnable | Broken examples destroy trust |
-| Show complete, working examples | Snippets without context are useless |
-| Include language identifier in fenced blocks | Syntax highlighting |
-| Show output/result after code | Reader verifies understanding |
-| Use realistic variable names | `calculateTotalRevenue` not `foo` |
-| Include error handling in examples | Real code handles errors |
-| Pin dependency versions | "Works with React 18.2" not "React" |
+| Rule                                         | Why                                  |
+| -------------------------------------------- | ------------------------------------ |
+| Every code block must be runnable            | Broken examples destroy trust        |
+| Show complete, working examples              | Snippets without context are useless |
+| Include language identifier in fenced blocks | Syntax highlighting                  |
+| Show output/result after code                | Reader verifies understanding        |
+| Use realistic variable names                 | `calculateTotalRevenue` not `foo`    |
+| Include error handling in examples           | Real code handles errors             |
+| Pin dependency versions                      | "Works with React 18.2" not "React"  |
 
-```
+````
 Good code block format:
 
 ```python
@@ -161,7 +160,8 @@ def calculate_retry_delay(attempt: int, base_delay: float = 1.0) -> float:
 
 # Usage
 delay = calculate_retry_delay(attempt=3)  # ~8.0-8.8 seconds
-```
+````
+
 ```
 
 ### Explanation Depth
@@ -176,9 +176,11 @@ delay = calculate_retry_delay(attempt=3)  # ~8.0-8.8 seconds
 **State your assumed audience level explicitly** at the start:
 
 ```
+
 "This post assumes familiarity with Docker and basic Kubernetes concepts.
 If you're new to containers, start with [our intro post]."
-```
+
+````
 
 ## Blog Post Structure
 
@@ -214,30 +216,30 @@ If you're new to containers, start with [our intro post]."
 
 ## Further Reading
 [3-5 relevant links]
-```
+````
 
 ### Word Count by Type
 
-| Type | Word Count | Why |
-|------|-----------|-----|
-| Quick tip | 500-800 | One concept, one example |
-| Tutorial | 1,500-3,000 | Step-by-step needs detail |
-| Deep dive | 2,000-4,000 | Thorough exploration |
-| Architecture post | 2,000-3,500 | Diagrams carry some load |
-| Benchmark | 1,500-2,500 | Data and charts do heavy lifting |
+| Type              | Word Count  | Why                              |
+| ----------------- | ----------- | -------------------------------- |
+| Quick tip         | 500-800     | One concept, one example         |
+| Tutorial          | 1,500-3,000 | Step-by-step needs detail        |
+| Deep dive         | 2,000-4,000 | Thorough exploration             |
+| Architecture post | 2,000-3,500 | Diagrams carry some load         |
+| Benchmark         | 1,500-2,500 | Data and charts do heavy lifting |
 
 ## Diagrams and Visuals
 
 ### When to Use Diagrams
 
-| Scenario | Diagram Type |
-|----------|-------------|
-| Request flow | Sequence diagram |
-| System architecture | Box-and-arrow diagram |
-| Decision logic | Flowchart |
-| Data model | ER diagram |
-| Performance comparison | Bar/line chart |
-| Before/after | Side-by-side |
+| Scenario               | Diagram Type          |
+| ---------------------- | --------------------- |
+| Request flow           | Sequence diagram      |
+| System architecture    | Box-and-arrow diagram |
+| Decision logic         | Flowchart             |
+| Data model             | ER diagram            |
+| Performance comparison | Bar/line chart        |
+| Before/after           | Side-by-side          |
 
 ```bash
 # Generate architecture diagram
@@ -255,15 +257,15 @@ belt app run infsh/python-executor --input '{
 
 ### Where Developers Read
 
-| Platform | Format | How to Post |
-|----------|--------|-------------|
-| Your blog | Full article | Primary — own your content |
-| Dev.to | Cross-post (canonical URL back to yours) | Markdown import |
-| Hashnode | Cross-post (canonical URL) | Markdown import |
-| Hacker News | Link submission | Show HN for projects, tell HN for stories |
-| Reddit (r/programming, r/webdev, etc.) | Link or discussion | Follow subreddit rules |
-| Twitter/X | Thread summary + link | See twitter-thread-creation skill |
-| LinkedIn | Adapted version + link | See linkedin-content skill |
+| Platform                               | Format                                   | How to Post                               |
+| -------------------------------------- | ---------------------------------------- | ----------------------------------------- |
+| Your blog                              | Full article                             | Primary — own your content                |
+| Dev.to                                 | Cross-post (canonical URL back to yours) | Markdown import                           |
+| Hashnode                               | Cross-post (canonical URL)               | Markdown import                           |
+| Hacker News                            | Link submission                          | Show HN for projects, tell HN for stories |
+| Reddit (r/programming, r/webdev, etc.) | Link or discussion                       | Follow subreddit rules                    |
+| Twitter/X                              | Thread summary + link                    | See twitter-thread-creation skill         |
+| LinkedIn                               | Adapted version + link                   | See linkedin-content skill                |
 
 ```bash
 # Cross-post thread to X
@@ -274,18 +276,18 @@ belt app run x/post-create --input '{
 
 ## Common Mistakes
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| No TL;DR | Busy devs leave before getting the point | 2-3 sentence summary at the top |
-| Broken code examples | Destroys all credibility | Test every code block before publishing |
-| No version pinning | Code breaks in 6 months | "Works with Node 20, React 18.2" |
-| "Simply do X" | Dismissive, condescending | Remove "simply", "just", "easily" |
-| No diagrams for architecture | Walls of text describing systems | One diagram > 500 words of description |
-| Marketing tone | Developers instantly disengage | Direct, technical, honest |
-| No trade-offs section | Reads as biased marketing | Always discuss downsides |
-| Giant introduction before content | Readers bounce | Get to the point in 2-3 paragraphs |
-| Unpinned dependencies | Tutorial breaks for future readers | Pin versions, note date written |
-| No "Further Reading" | Dead end, no context | 3-5 links to deepen understanding |
+| Mistake                           | Problem                                  | Fix                                     |
+| --------------------------------- | ---------------------------------------- | --------------------------------------- |
+| No TL;DR                          | Busy devs leave before getting the point | 2-3 sentence summary at the top         |
+| Broken code examples              | Destroys all credibility                 | Test every code block before publishing |
+| No version pinning                | Code breaks in 6 months                  | "Works with Node 20, React 18.2"        |
+| "Simply do X"                     | Dismissive, condescending                | Remove "simply", "just", "easily"       |
+| No diagrams for architecture      | Walls of text describing systems         | One diagram > 500 words of description  |
+| Marketing tone                    | Developers instantly disengage           | Direct, technical, honest               |
+| No trade-offs section             | Reads as biased marketing                | Always discuss downsides                |
+| Giant introduction before content | Readers bounce                           | Get to the point in 2-3 paragraphs      |
+| Unpinned dependencies             | Tutorial breaks for future readers       | Pin versions, note date written         |
+| No "Further Reading"              | Dead end, no context                     | 3-5 links to deepen understanding       |
 
 ## Related Skills
 
@@ -296,4 +298,3 @@ npx skills add inference-sh/skills@og-image-design
 ```
 
 Browse all apps: `belt app store`
-
