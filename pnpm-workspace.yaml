@@ -1,5 +1,12 @@
 nodeLinker: hoisted
 
+# Exempt specific trusted deps from pnpm v11's default 24h supply-chain
+# cooldown (minimumReleaseAge: 1440). Dependabot bumps these on the day they
+# publish, which otherwise blocks every `pnpm install` (local, CI, Vercel)
+# until the version is 24h old. The cooldown stays enforced for all other deps.
+minimumReleaseAgeExclude:
+  - lucide-react
+
 allowBuilds:
   '@sentry/cli': true
   bufferutil: false
