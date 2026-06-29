@@ -9,7 +9,6 @@ import type { Post, Product, ScentProfile as ScentProfileType } from '@/payload-
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Media } from '@/components/Media'
-import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { formatPrice } from '@/lib/formatPrice'
 import { productGalleryPhotos } from '@/lib/productImages'
@@ -119,7 +118,6 @@ export const Card: React.FC<CardProps> = (props) => {
     scentProfile,
     price,
     currency,
-    populatedAuthors,
     publishedAt,
     heroImage,
   } = doc || {}
@@ -134,8 +132,6 @@ export const Card: React.FC<CardProps> = (props) => {
 
   const isPosts = relationTo === 'posts'
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   const hasScentNotes =
     scentProfile && (scentProfile.top || scentProfile.heart || scentProfile.base)
@@ -190,25 +186,16 @@ export const Card: React.FC<CardProps> = (props) => {
         </div>
 
         <div className="pt-5 pb-3 px-4 bg-candera-linen flex-1 flex flex-col border-t border-candera-ash/60">
-          {/* Date + author row */}
-          {(hasAuthors || publishedAt) && (
+          {/* Date row — Olesia is the sole maker sitewide, so the author byline
+              is intentionally omitted to avoid repeating "· Olesia" on every card. */}
+          {publishedAt && (
             <div className="flex items-center gap-2 mb-2">
-              {publishedAt && (
-                <time
-                  className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
-                  dateTime={publishedAt}
-                >
-                  {formatDateTime(publishedAt)}
-                </time>
-              )}
-              {hasAuthors && publishedAt && (
-                <span className="text-candera-stone/50 text-sm">·</span>
-              )}
-              {hasAuthors && (
-                <span className="font-sans text-sm font-semibold uppercase tracking-[.14em] text-candera-stone/70">
-                  {formatAuthors(populatedAuthors)}
-                </span>
-              )}
+              <time
+                className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70"
+                dateTime={publishedAt}
+              >
+                {formatDateTime(publishedAt)}
+              </time>
             </div>
           )}
 

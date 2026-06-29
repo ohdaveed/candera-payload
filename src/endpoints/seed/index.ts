@@ -525,35 +525,33 @@ export const seed = async ({
         navItems: [
           {
             link: {
+              type: 'custom',
+              label: 'Collection',
+              url: '/products',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Journal',
+              url: '/posts',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'How To',
+              url: '/how-to',
+            },
+          },
+          {
+            link: {
               type: 'reference',
               label: 'About',
               reference: {
                 relationTo: 'pages',
                 value: aboutPage.id,
               },
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
             },
           },
         ],
