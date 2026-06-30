@@ -94,8 +94,8 @@ export const ArchiveBlock: React.FC<
       ? {
           eyebrow: 'The Journal',
           heading: 'Quiet in the studio.',
-          body: 'Studio notes, scent stories, and slow-living rituals are on their way. Check back soon.',
-          cta: null,
+          body: 'Studio notes, scent stories, and slow-living rituals are on their way. Join 2,400+ intentional living readers and we’ll let you know when the next story drops.',
+          cta: { href: '/inner-circle', label: 'Get notified' },
         }
       : {
           eyebrow: 'Between Pours',

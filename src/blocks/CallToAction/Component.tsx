@@ -16,7 +16,13 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
           <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
         </div>
 
-        <div className="flex flex-col gap-12 md:flex-row md:items-end md:justify-between">
+        <div
+          className={`flex flex-col gap-12 md:flex-row ${
+            links?.length === 2
+              ? 'md:items-center md:justify-center'
+              : 'md:items-end md:justify-between'
+          }`}
+        >
           {/* Rich text — large editorial display */}
           <div className="max-w-[36rem]">
             {richText && (
@@ -31,9 +37,13 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
             )}
           </div>
 
-          {/* CTAs — stacked, right-anchored */}
+          {/* CTAs — stacked, right-anchored (or centered for 2 links) */}
           {links && links.length > 0 && (
-            <div className="flex flex-col gap-3 shrink-0 md:items-end">
+            <div
+              className={`flex flex-col gap-3 shrink-0 ${
+                links?.length === 2 ? 'md:items-center' : 'md:items-end'
+              }`}
+            >
               {links.map(({ link }, i) => (
                 <CMSLink key={i} {...link} appearance={i === 0 ? 'cta' : 'outline'} />
               ))}

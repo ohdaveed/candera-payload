@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { Media } from '@/components/Media'
 import { Button } from '@/components/ui/button'
 import { Eyebrow } from '@/components/ui/eyebrow'
@@ -29,7 +30,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
   return (
     <Section
       padding="none"
-      className="relative flex min-h-[100svh] items-end overflow-hidden bg-candera-obsidian"
+      className="relative flex min-h-[85svh] sm:min-h-[90svh] md:min-h-[100svh] items-end overflow-hidden bg-candera-obsidian"
     >
       {/* Background image */}
       {media && typeof media === 'object' && (
@@ -78,10 +79,9 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
               </p>
             )}
 
-            {/* Single, dominant action — generous breathing room above, smooth-scrolls
-                to the product collection further down the page. */}
+            {/* Primary action + secondary text link */}
             {primaryCtaLabel && (
-              <div className="mt-10 w-full sm:w-auto">
+              <div className="mt-10 flex flex-col gap-3 w-full sm:w-auto">
                 <Button
                   asChild
                   variant="cta-ember"
@@ -92,6 +92,12 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                     {stripTrailingArrow(primaryCtaLabel)}
                   </SmoothScrollLink>
                 </Button>
+                <Link
+                  href="/posts"
+                  className="text-xs font-bold uppercase tracking-[.2em] text-candera-vellum/80 hover:text-candera-vellum transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+                >
+                  Explore the Journal →
+                </Link>
               </div>
             )}
           </header>
