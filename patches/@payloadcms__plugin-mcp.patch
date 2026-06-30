@@ -1,0 +1,28 @@
+diff --git a/dist/utils/schemaConversion/convertCollectionSchemaToZod.js b/dist/utils/schemaConversion/convertCollectionSchemaToZod.js
+index 07a2628fdc987d663885c7e918152539ca7c1766..2b0b2da5a50fd0e0f196748cbdac491baf8baeda 100644
+--- a/dist/utils/schemaConversion/convertCollectionSchemaToZod.js
++++ b/dist/utils/schemaConversion/convertCollectionSchemaToZod.js
+@@ -28,7 +28,9 @@ export const convertCollectionSchemaToZod = (schema)=>{
+      * 4. The resulting Zod schema is used only for parameter validation in MCP tools, not for data processing
+      * 5. No user input or external data is involved in the schema generation process
+      */ // eslint-disable-next-line @typescript-eslint/no-implied-eval
+-        return new Function('z', `return ${transpileResult.outputText}`)(z);
++        let code = transpileResult.outputText;
++        code = code.replace(/^["']use strict["'];\s*/, '');
++        return new Function('z', `return ${code}`)(z);
+     } catch (error) {
+         // If schema conversion fails (e.g., due to Zod v4 toJSONSchema null-check bug
+         // with record schemas that have undefined valueType, or bundler transforms
+diff --git a/dist/endpoints/mcp.js b/dist/endpoints/mcp.js
+index 7b6b62d82ed708d679e329d43c424595c39b81b1..77b81dd6a479a7c3142b55a41c228373a835442f 100644
+--- a/dist/endpoints/mcp.js
++++ b/dist/endpoints/mcp.js
+@@ -10,7 +10,7 @@ export const initializeMCPHandler = (pluginOptions)=>{
+         const useVerboseLogs = MCPHandlerOptions.verboseLogs ?? false;
+         req.payloadAPI = 'MCP';
+         const getDefaultMcpAccessSettings = async (overrideApiKey)=>{
+-            const apiKey = overrideApiKey ?? req.headers.get('Authorization')?.startsWith('Bearer ') ? req.headers.get('Authorization')?.replace('Bearer ', '').trim() : null;
++            const apiKey = overrideApiKey ?? (req.headers.get('Authorization')?.startsWith('Bearer ') ? req.headers.get('Authorization')?.replace('Bearer ', '').trim() : null);
+             if (apiKey === null) {
+                 throw new UnauthorizedError();
+             }
