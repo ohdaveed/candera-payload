@@ -1,0 +1,55 @@
+name: Migration Drift Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  migration-drift:
+    name: migrations in sync with config
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    # migrate:create diffs the Payload config against the latest committed
+    # .json migration snapshot. Like generate:types it never connects to the
+    # database, so dummy values satisfy the config's startup guards
+    # (PAYLOAD_SECRET + a Postgres connection string) without any real secrets.
+    env:
+      PAYLOAD_SECRET: ci-migration-drift-dummy-secret
+      DATABASE_URI: postgres://user:pass@localhost:5432/ci
+      POSTGRES_URL: postgres://user:pass@localhost:5432/ci
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify migrations are in sync with the Payload config
+        run: |
+          # Generates a migration ONLY if the config differs from the latest
+          # committed snapshot. `</dev/null` makes the "create a blank
+          # migration?" prompt default to No, so a clean config produces no
+          # file; --skip-empty reinforces that. A schema change with no
+          # committed migration leaves a new/changed file under src/migrations,
+          # which fails the porcelain check below.
+          pnpm payload migrate:create __ci_drift_check --skip-empty </dev/null
+          if [ -n "$(git status --porcelain src/migrations)" ]; then
+            echo "::error::Payload config has schema changes with no committed migration."
+            echo "Run 'pnpm payload migrate:create <name>' locally and commit the generated files (.ts + .json + index.ts)."
+            git status --porcelain src/migrations
+            exit 1
+          fi
+          echo "Migrations are in sync with the Payload config."
