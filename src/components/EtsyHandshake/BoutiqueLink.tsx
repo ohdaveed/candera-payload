@@ -15,8 +15,8 @@ export const BoutiqueLink: React.FC<BoutiqueLinkProps> = ({
   ...props
 }) => {
   const handleClick = () => {
-    toast.info('Opening on Etsy', {
-      description: 'Taking you to the product listing.',
+    toast.info('Opening Etsy', {
+      description: 'Completing your purchase on our official Etsy storefront.',
       duration: 1500,
     })
   }

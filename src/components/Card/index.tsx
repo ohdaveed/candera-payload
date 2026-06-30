@@ -238,6 +238,8 @@ export const Card: React.FC<CardProps> = (props) => {
     .join(' · ')
 
   // ── PRODUCT VARIANT ───────────────────────────────────────────
+  const ctaLabel = doc?.isCustomizable ? 'Customize →' : 'View Details →'
+
   return (
     <motion.div
       initial="initial"
@@ -248,47 +250,54 @@ export const Card: React.FC<CardProps> = (props) => {
       className={cn(cardContainerVariants({ type: 'product', design }), className)}
     >
       {/* ── Image ── */}
-      <div className={cn(cardImageVariants({ aspectRatio }))}>
-        {imageToUse && typeof imageToUse !== 'string' ? (
-          <>
-            <Media
-              fill
-              imgClassName="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-              resource={imageToUse}
-              size="33vw"
-            />
-            {/* Secondary image for hover crossfade */}
-            {design === 'modern' && secondaryImage && typeof secondaryImage !== 'string' && (
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[1]"
-                aria-hidden="true"
-              >
-                <Media fill imgClassName="object-cover" resource={secondaryImage} size="33vw" />
+      <div className="relative">
+        {doc?.productTag && (
+          <span className="absolute top-3 left-3 z-10 bg-candera-obsidian/90 text-candera-vellum text-[10px] font-bold uppercase tracking-[0.18em] px-2.5 py-1 rounded-sm">
+            {doc.productTag}
+          </span>
+        )}
+        <div className={cn(cardImageVariants({ aspectRatio }))}>
+          {imageToUse && typeof imageToUse !== 'string' ? (
+            <>
+              <Media
+                fill
+                imgClassName="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                resource={imageToUse}
+                size="33vw"
+              />
+              {/* Secondary image for hover crossfade */}
+              {design === 'modern' && secondaryImage && typeof secondaryImage !== 'string' && (
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[1]"
+                  aria-hidden="true"
+                >
+                  <Media fill imgClassName="object-cover" resource={secondaryImage} size="33vw" />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="absolute inset-0 flex items-end p-5 candle-bg">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative flex flex-col items-center mb-[8%]">
+                  <div className="candle-flame" />
+                  <div className="candle-glow" />
+                  <div className="candle-wick" />
+                  <div className="candle-body" />
+                </div>
               </div>
-            )}
-          </>
-        ) : (
-          <div className="absolute inset-0 flex items-end p-5 candle-bg">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative flex flex-col items-center mb-[8%]">
-                <div className="candle-flame" />
-                <div className="candle-glow" />
-                <div className="candle-wick" />
-                <div className="candle-body" />
-              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
             </div>
-            <div className="absolute bottom-0 left-0 right-0 h-16 candle-floor-glow" />
-          </div>
-        )}
+          )}
 
-        {/* Hover slide-up bar for scent notes */}
-        {design === 'modern' && scentNotesText && (
-          <div className="absolute bottom-0 left-0 right-0 bg-[#121210]/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 py-3 px-4 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white m-0">
-              {scentNotesText}
-            </p>
-          </div>
-        )}
+          {/* Hover slide-up bar for scent notes */}
+          {design === 'modern' && scentNotesText && (
+            <div className="absolute bottom-0 left-0 right-0 bg-[#121210]/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-10 py-3 px-4 text-center">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white m-0">
+                {scentNotesText}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ── Body ── */}
@@ -373,7 +382,7 @@ export const Card: React.FC<CardProps> = (props) => {
               onClick={(e) => e.stopPropagation()}
               className="text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              View Details →
+              {ctaLabel}
             </Link>
           ) : (
             <span
