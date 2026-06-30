@@ -14,23 +14,8 @@ if [ -z "$CONN" ]; then
 fi
 
 if ! command -v psql >/dev/null 2>&1; then
-  echo "psql not found in PATH." >&2
-  if command -v docker >/dev/null 2>&1; then
-    echo "Docker found — attempting to run psql in a temporary container..." >&2
-    mkdir -p "$(dirname \"$OUT\")"
-    # Use the official postgres image which includes the psql client.
-    # Run psql in the container and stream output back to the host file.
-    if docker run --rm postgres:16-alpine psql "$CONN" -c "$SQL" > "$OUT"; then
-      echo "Wrote schema to: $OUT (via dockerized psql)"
-      exit 0
-    else
-      echo "Dockerized psql failed to run or connect to the database." >&2
-      exit 4
-    fi
-  else
-    echo "Error: psql not found and docker is not available. Install 'psql' or 'docker' to run this script." >&2
-    exit 3
-  fi
+  echo "Error: psql not found in PATH. Install the PostgreSQL client to run this script." >&2
+  exit 3
 fi
 
 mkdir -p "$(dirname "$OUT")"

@@ -8,7 +8,7 @@ Guidance for Claude / AI assistants working in this repository. This is the cano
 
 - **Frontend:** Next.js 16, React 19, Tailwind CSS v4, shadcn/ui (Radix), Framer Motion
 - **CMS / Backend:** Payload CMS 3.85.x, Lexical rich text
-- **Database:** Postgres — Neon (Vercel) in prod, Docker Postgres locally
+- **Database:** Postgres — Neon (Vercel) in prod, native Postgres 18 locally
 - **Media:** Vercel Blob
 - **External APIs:** Etsy Open API v3, Anthropic/Claude (AI gateway), FormSubmit.co (form delivery)
 - **Runtime & Tools:** Node `24.x`, **pnpm 11.8** (`pnpm-workspace.yaml`), and **Vite+ (`vp`)** unified toolchain.
@@ -100,7 +100,7 @@ Hexagonal (ports/adapters) design decoupling domain logic from client and storag
 ## Database & migrations
 
 - **Prod:** Neon Serverless Postgres.
-- **Local:** Docker Compose Postgres on port `54320`. Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>`.
+- **Local:** Native Postgres 18 on the default port `5432`. Set `POSTGRES_URL=postgres://postgres@localhost:5432/<dbname>`.
 - **Workflow:** Schema change → `pnpm payload migrate:create` → commit the migration file (`src/migrations/`). CI applies migrations automatically.
 - **Seeding:** Destructive (overwrites local data). Use scripts in `scripts/` (`seed-db.ts`, `reseed.ts`). **Do not seed in preview builds.**
 

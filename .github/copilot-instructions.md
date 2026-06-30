@@ -70,7 +70,7 @@ Never overwrite `.env` with plaintext secrets.
 `src/utilities/databaseAdapter.ts` auto-selects the adapter:
 
 - `*.neon.tech` hostname → `@payloadcms/db-vercel-postgres` (Neon serverless)
-- everything else (local Docker, CI) → `@payloadcms/db-postgres`
+- everything else (local Postgres, CI) → `@payloadcms/db-postgres`
 
 `DATABASE_URI` takes precedence over `POSTGRES_URL`. Both adapters use `push: false` — **migrations are always required, never push schema.**
 
