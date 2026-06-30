@@ -2,6 +2,9 @@
 dist/
 build/
 
+# Local agent/skill tooling (not shared)
+.agents/
+
 # Node modules
 node_modules/
 
