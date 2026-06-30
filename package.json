@@ -75,7 +75,7 @@
     "dotenv": "17.4.2",
     "framer-motion": "^12.42.0",
     "geist": "^1.7.2",
-    "graphql": "^16.14.2",
+    "graphql": "^17.0.1",
     "html-entities": "^2.6.0",
     "lucide-react": "1.22.0",
     "match-sorter": "^8.3.0",
