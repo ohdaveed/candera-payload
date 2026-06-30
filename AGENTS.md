@@ -77,7 +77,7 @@ Run all command executions via `pnpm` or `vp`. Node >=24.15.0 is required.
 - **Compute suspend:** Neon compute suspends after 5 minutes of idle time. Expect a cold-start penalty (~hundreds of ms) on first connection.
 - **Case-insensitive search:** ILIKE queries utilize `pg_trgm`. Ensure this extension is enabled if performing case-insensitive searches at scale.
 
-**Local Development:** Uses Docker Compose Postgres on port 54320. Set `POSTGRES_URL=postgres://postgres@localhost:54320/<dbname>` and match `POSTGRES_DB` in `docker-compose.yml`. Standard `@payloadcms/db-postgres` is used for localhost URLs.
+**Local Development:** Uses a native Postgres 18 install on the default port 5432. Set `POSTGRES_URL=postgres://postgres@localhost:5432/<dbname>`. Standard `@payloadcms/db-postgres` is used for localhost URLs.
 
 **Migration workflow:**
 
