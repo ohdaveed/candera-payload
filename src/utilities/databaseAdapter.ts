@@ -9,8 +9,6 @@
  * wire protocol. Empty or malformed connection strings also use the standard
  * adapter and fail at connect time instead of config time.
  */
-import 'server-only'
-
 export function shouldUseVercelPostgresAdapter(connectionString: string): boolean {
   if (!connectionString) {
     return false

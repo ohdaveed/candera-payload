@@ -9,7 +9,7 @@ import { Container } from '@/components/ui/container'
 import { FORM_TITLES } from '@/constants/forms'
 import { DEFAULT_INNER_CIRCLE_BENEFITS, NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
-export const revalidate = 3600
+import { cacheLife } from 'next/cache'
 
 export const metadata: Metadata = {
   title: 'The Inner Circle — Candera',
@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 }
 
 export default async function InnerCirclePage() {
+  'use cache'
+  cacheLife({ expire: 3600 })
+
   const [form, studioInfo] = await Promise.all([
     getCachedFormByTitle(FORM_TITLES.INNER_CIRCLE)(),
     getCachedGlobal('studio-info')(),

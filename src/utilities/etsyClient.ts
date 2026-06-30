@@ -1,4 +1,3 @@
-import 'server-only'
 import { getPayload, type Payload } from 'payload'
 import { etsyLogger } from './logger'
 

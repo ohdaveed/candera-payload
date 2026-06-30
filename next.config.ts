@@ -45,6 +45,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    workerThreads: false,
+    cpus: 1,
   },
   outputFileTracingIncludes: {
     '**/*': ['./node_modules/@img/**'],

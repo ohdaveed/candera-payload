@@ -4,6 +4,7 @@ import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
+import { FooterYear } from './FooterYear'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
@@ -96,7 +97,7 @@ export async function Footer() {
           className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <p className="caption text-candera-sage-text">
-            © {new Date().getFullYear()} Candera Studio. All rights reserved.
+            © <FooterYear /> Candera Studio. All rights reserved.
           </p>
           <Section as="nav" padding="none" className="flex gap-6">
             {footerLinks.map(({ link }, i) => (

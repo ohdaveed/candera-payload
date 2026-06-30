@@ -21,10 +21,6 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getServerSideURL } from '@/utilities/getURL'
 import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
-export async function generateStaticParams() {
-  return []
-}
-
 type Args = {
   params: Promise<{ slug?: string }>
 }

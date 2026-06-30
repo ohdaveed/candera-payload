@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { Fraunces, DM_Sans, EB_Garamond } from 'next/font/google'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { GlobalLayout } from '@/components/GlobalLayout'
@@ -42,11 +42,19 @@ const ebGaramond = EB_Garamond({
   display: 'swap',
 })
 
+async function AdminBarWrapper() {
+  const { isEnabled } = await draftMode()
+  return (
+    <AdminBar
+      adminBarProps={{
+        preview: isEnabled,
+      }}
+    />
+  )
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [{ isEnabled }, siteTheme] = await Promise.all([
-    draftMode(),
-    getCachedGlobal('site-theme')(),
-  ])
+  const siteTheme = await getCachedGlobal('site-theme')()
   const theme = normalizeSiteThemeSettings(siteTheme)
 
   return (
@@ -74,11 +82,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="candera">
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <Suspense fallback={null}>
+            <AdminBarWrapper />
+          </Suspense>
 
           <a
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
@@ -86,7 +92,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           >
             Skip to Main Content
           </a>
-          <GlobalLayout>{children}</GlobalLayout>
+          <Suspense fallback={null}>
+            <GlobalLayout>{children}</GlobalLayout>
+          </Suspense>
         </Providers>
         <BackToTop />
         <Toaster position="bottom-right" richColors />

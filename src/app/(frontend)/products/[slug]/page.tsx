@@ -30,10 +30,6 @@ import RichText from '@/components/RichText'
 import { FragranceProfile } from '@/components/FragranceProfile'
 import { formatPrice } from '@/lib/formatPrice'
 
-export async function generateStaticParams() {
-  return []
-}
-
 type Args = { params: Promise<{ slug?: string }> }
 
 export default async function ProductPage({ params: paramsPromise }: Args) {

@@ -12,8 +12,7 @@ import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { getMetaImage } from '@/utilities/getMetaImage'
 
-export const dynamic = 'force-static'
-export const revalidate = 600
+import { cacheLife } from 'next/cache'
 
 type Args = {
   params: Promise<{
@@ -22,6 +21,9 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  'use cache'
+  cacheLife({ expire: 600 })
+
   const { pageNumber } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
 
@@ -112,8 +114,4 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return {
     title: `How-To Guides — Page ${pageNumber} — Candera`,
   }
-}
-
-export async function generateStaticParams() {
-  return []
 }

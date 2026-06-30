@@ -13,7 +13,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { getMetaImage } from '@/utilities/getMetaImage'
 import { notFound, redirect } from 'next/navigation'
 
-export const revalidate = 600
+import { cacheLife } from 'next/cache'
 
 type Args = {
   params: Promise<{
@@ -22,6 +22,9 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  'use cache'
+  cacheLife({ expire: 600 })
+
   const { pageNumber } = await paramsPromise
 
   const sanitizedPageNumber = Number(pageNumber)
@@ -139,8 +142,4 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     description,
     openGraph: { title, description, type: 'website' },
   }
-}
-
-export async function generateStaticParams() {
-  return []
 }

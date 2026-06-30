@@ -16,10 +16,6 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { BRAND } from '@/constants/brand'
 
-export async function generateStaticParams() {
-  return []
-}
-
 type Args = {
   params: Promise<{
     slug?: string

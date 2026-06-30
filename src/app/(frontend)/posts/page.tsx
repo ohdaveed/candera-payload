@@ -13,10 +13,12 @@ import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { getMetaImage } from '@/utilities/getMetaImage'
 
-export const dynamic = 'force-static'
-export const revalidate = 600
+import { cacheLife } from 'next/cache'
 
 export default async function Page() {
+  'use cache'
+  cacheLife({ expire: 600 })
+
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({

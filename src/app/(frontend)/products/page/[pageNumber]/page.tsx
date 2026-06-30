@@ -13,7 +13,7 @@ import { notFound, redirect } from 'next/navigation'
 import type { Product } from '@/payload-types'
 import type { CardPostData } from '@/components/Card'
 
-export const revalidate = 600
+import { cacheLife } from 'next/cache'
 
 function toGridProduct(product: Product): CardPostData {
   return {
@@ -39,6 +39,9 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  'use cache'
+  cacheLife({ expire: 600 })
+
   const { pageNumber } = await paramsPromise
 
   const sanitizedPageNumber = Number(pageNumber)
@@ -113,8 +116,4 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     description,
     openGraph: { title, description, type: 'website' },
   }
-}
-
-export async function generateStaticParams() {
-  return []
 }

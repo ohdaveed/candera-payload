@@ -9,7 +9,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { BRAND } from '@/constants/brand'
 import { FORM_TITLES } from '@/constants/forms'
 
-export const revalidate = 3600
+import { cacheLife } from 'next/cache'
 
 export const metadata: Metadata = {
   title: 'Contact — Candera',
@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
+  'use cache'
+  cacheLife({ expire: 3600 })
+
   const [contactForm, studioInfo] = await Promise.all([
     getCachedFormByTitle(FORM_TITLES.CONTACT)(),
     getCachedGlobal('studio-info')(),
