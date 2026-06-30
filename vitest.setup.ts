@@ -1,4 +1,6 @@
 // Any setup scripts you might need go here
+import { vi } from 'vite-plus/test'
+vi.mock('server-only', () => ({}))
 
 // Load .env files
 import 'dotenv/config'

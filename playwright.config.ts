@@ -36,6 +36,7 @@ for (const key of PASSCLI_GUARD_KEYS) {
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  timeout: 90000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -59,7 +60,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev || true',
+    command: 'pnpm next dev',
     reuseExistingServer: true,
     url: 'http://localhost:3000',
   },

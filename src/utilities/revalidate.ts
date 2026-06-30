@@ -1,3 +1,4 @@
+import 'server-only'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from 'payload'
 
 /**

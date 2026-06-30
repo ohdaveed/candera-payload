@@ -1,6 +1,7 @@
+import 'server-only'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { unstable_cache } from 'next/cache'
+import { cacheTag } from 'next/cache'
 import type { Form } from '@/payload-types'
 import { logger } from '@/utilities/logger'
 
@@ -21,10 +22,13 @@ async function getFormByTitle(title: string): Promise<Form | null> {
 }
 
 /**
- * Returns an unstable_cache function keyed by form title.
+ * Returns a cached function keyed by form title.
  * Tag: form_<title_snake_case> — revalidate via revalidateTag() when forms change.
  */
-export const getCachedFormByTitle = (title: string) =>
-  unstable_cache(async () => getFormByTitle(title), [`form_by_title_${title}`], {
-    tags: [`form_${title.toLowerCase().replace(/\s+/g, '_')}`],
-  })
+export const getCachedFormByTitle = (title: string) => {
+  return async () => {
+    'use cache'
+    cacheTag(`form_${title.toLowerCase().replace(/\s+/g, '_')}`)
+    return getFormByTitle(title)
+  }
+}
