@@ -12,9 +12,9 @@ credential failed auth and raw TCP was blocked, so it was not representative):
 | Step | Command | Result |
 | --- | --- | --- |
 | Install | `pnpm install --frozen-lockfile` | ✅ exit 0 |
-| Migrate | `payload migrate` | ✅ `20260629_204245_initial` applied, 108 tables |
+| Migrate | `pnpm payload migrate` | ✅ `20260629_204245_initial` applied, 108 tables |
 | Build | `pnpm build` (`next build` + `next-sitemap`) | ✅ Next.js 16 build w/ Partial Prerendering |
-| Tests | `vp test run` (18 int spec files) | ✅ 82/82 |
+| Tests | `pnpm test:int` (`vp test run`, 18 int spec files) | ✅ 82/82 |
 
 Takeaway: the recent **Next.js 16 upgrade** (cache components, server-boundary
 hardening, build-time DB bail fixes) builds and tests cleanly on a properly
@@ -36,13 +36,15 @@ statusCardShips:    varchar('status_card_ships').default('47 units total'),  // 
 Production (migrate-based, `push: false`) is unaffected — the
 `20260629_204245_initial` migration defines `status_card_ships` as plain
 `varchar` with no default. This file only bites `push`-based dev / drizzle
-tooling. Fix: regenerate with `payload generate:db-schema` and commit.
+tooling. Fix: regenerate with `pnpm payload generate:db-schema` and commit.
 
 ### 2. Legacy hidden hero fields carry placeholder defaults (low)
-`statusCardTitle / statusCardSubtitle / statusCardStatus / statusCardShips` in
-`src/blocks/StorefrontHero/config.ts` are `admin: { hidden: true }` and are no
-longer rendered (the hero now uses the Maker Ethos card). They still carry
-seeded defaults (`'Featured Candle'`, `'Wild Lilac (8 oz)'`, `'Limited Batch'`).
+`statusCardTitle / statusCardPrice / statusCardSubtitle / statusCardStatus /
+statusCardShips / statusCardLinkUrl` in `src/blocks/StorefrontHero/config.ts`
+are `admin: { hidden: true }` and are no longer rendered (the hero now uses the
+Maker Ethos card). All but `statusCardShips` still carry seeded defaults
+(`'Featured Candle'`, `'$38'`, `'Wild Lilac (8 oz)'`, `'Limited Batch'`,
+`'/products/wild-lilac'`).
 Harmless dead data — the earlier "47 units total" honesty concern is resolved
 since these are unrendered — but prunable if you want the schema clean. If
 removed, pair with a migration to drop the columns.
