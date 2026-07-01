@@ -7,26 +7,39 @@ type Props = TestimonialsBlockType
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
- * The TestimonialsBlock was designed to respond to the page's data-section-mood
- * setting via CSS variables (--mood-bg, --mood-fg, --mood-accent). In practice,
- * the default 'light-editorial' mood declares those vars as the literal keyword
- * `inherit` on the <html> root, which — having no parent to inherit from —
- * resolves to the CSS guaranteed-invalid value. That silently defeats every
- * var(--mood-*, fallback) below and falls through to the fallback colors
- * instead, which were tuned for a dark treatment and are unreadable against
- * this section's actual (light) background. Until the root theme.css mood
- * tokens are fixed, this block hardcodes its own guaranteed-readable dark
- * treatment rather than trusting the mood variables.
+ * The TestimonialsBlock is designed to be theme-adaptable. It responds to the
+ * page's data-section-mood setting via CSS variables (--mood-bg, --mood-fg,
+ * and --mood-accent). The default 'light-editorial' mood declares --mood-fg
+ * as the literal keyword `inherit` on the <html> root, which — having no
+ * parent to inherit from — resolves to the CSS guaranteed-invalid value. That
+ * silently defeats `var(--mood-fg, ...)` and falls through to the fallback
+ * color below, so the fallback must itself be a legible dark tone (matching
+ * --foreground), not the old off-white value that was tuned for a dark card
+ * and left text invisible against this section's actual (light/transparent)
+ * background. --mood-bg validly resolves to `transparent` for this mood, so
+ * it is left as-is. Do not hardcode a dark section background here — other
+ * moods (rose-wash, noir-contrast) rely on these vars resolving correctly.
  */
 export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <Section padding="none" className="bg-candera-obsidian text-candera-vellum">
+    <Section
+      padding="none"
+      style={{
+        backgroundColor: 'var(--mood-bg, #141412)',
+        color: 'var(--mood-fg, #141412)',
+      }}
+      className="transition-colors duration-300"
+    >
       <Container className="py-16 md:py-24">
         {eyebrow && (
           <div className="flex items-center gap-2 mb-12">
-            <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
+            <span
+              className="block w-6 h-px"
+              style={{ backgroundColor: 'var(--mood-accent, #dd7d52)' }}
+              aria-hidden="true"
+            />
             <p className="eyebrow opacity-75">{eyebrow}</p>
           </div>
         )}
