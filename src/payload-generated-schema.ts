@@ -294,16 +294,22 @@ export const pages_blocks_storefront_hero = pgTable(
     media: integer('media_id').references(() => media.id, {
       onDelete: 'set null',
     }),
-    primaryCtaLabel: varchar('primary_cta_label').default('Explore the Collection'),
+    primaryCtaLabel: varchar('primary_cta_label').default('Shop the Collection'),
     primaryCtaUrl: varchar('primary_cta_url').default('#collection'),
     secondaryCtaLabel: varchar('secondary_cta_label').default('Take the Scent Quiz'),
     secondaryCtaUrl: varchar('secondary_cta_url').default('#scent-quiz'),
     showStatusCard: boolean('show_status_card').default(true),
+    ethosCardEyebrow: varchar('ethos_card_eyebrow').default('The Slow Pour'),
+    ethosCardBody: varchar('ethos_card_body').default(
+      'No factories. No white labeling. Just real pressed botanicals and slow light.',
+    ),
+    ethosCardFooterLabel: varchar('ethos_card_footer_label').default('Exclusively on Etsy'),
+    ethosCardLinkLabel: varchar('ethos_card_link_label').default('Read Journal'),
     statusCardTitle: varchar('status_card_title').default('Featured Candle'),
     statusCardPrice: varchar('status_card_price').default('$38'),
     statusCardSubtitle: varchar('status_card_subtitle').default('Wild Lilac (8 oz)'),
     statusCardStatus: varchar('status_card_status').default('Limited Batch'),
-    statusCardShips: varchar('status_card_ships').default('47 units total'),
+    statusCardShips: varchar('status_card_ships'),
     statusCardLinkUrl: varchar('status_card_link_url').default('/products/wild-lilac'),
     blockName: varchar('block_name'),
   },
@@ -759,16 +765,22 @@ export const _pages_v_blocks_storefront_hero = pgTable(
     media: integer('media_id').references(() => media.id, {
       onDelete: 'set null',
     }),
-    primaryCtaLabel: varchar('primary_cta_label').default('Explore the Collection'),
+    primaryCtaLabel: varchar('primary_cta_label').default('Shop the Collection'),
     primaryCtaUrl: varchar('primary_cta_url').default('#collection'),
     secondaryCtaLabel: varchar('secondary_cta_label').default('Take the Scent Quiz'),
     secondaryCtaUrl: varchar('secondary_cta_url').default('#scent-quiz'),
     showStatusCard: boolean('show_status_card').default(true),
+    ethosCardEyebrow: varchar('ethos_card_eyebrow').default('The Slow Pour'),
+    ethosCardBody: varchar('ethos_card_body').default(
+      'No factories. No white labeling. Just real pressed botanicals and slow light.',
+    ),
+    ethosCardFooterLabel: varchar('ethos_card_footer_label').default('Exclusively on Etsy'),
+    ethosCardLinkLabel: varchar('ethos_card_link_label').default('Read Journal'),
     statusCardTitle: varchar('status_card_title').default('Featured Candle'),
     statusCardPrice: varchar('status_card_price').default('$38'),
     statusCardSubtitle: varchar('status_card_subtitle').default('Wild Lilac (8 oz)'),
     statusCardStatus: varchar('status_card_status').default('Limited Batch'),
-    statusCardShips: varchar('status_card_ships').default('47 units total'),
+    statusCardShips: varchar('status_card_ships'),
     statusCardLinkUrl: varchar('status_card_link_url').default('/products/wild-lilac'),
     _uuid: varchar('_uuid'),
     blockName: varchar('block_name'),
@@ -1480,6 +1492,12 @@ export const products = pgTable(
     }),
     meta_description: varchar('meta_description'),
     etsyListingId: numeric('etsy_listing_id', { mode: 'number' }),
+    etsyTitle: varchar('etsy_title'),
+    rawEtsyDescription: varchar('raw_etsy_description'),
+    etsyPrimaryImage: integer('etsy_primary_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    generateSlug: boolean('generate_slug').default(true),
     slug: varchar('slug'),
     productTag: enum_products_product_tag('product_tag'),
     vessel: varchar('vessel'),
@@ -1502,6 +1520,7 @@ export const products = pgTable(
     index('products_atmosphere_idx').on(columns.atmosphere),
     index('products_meta_meta_image_idx').on(columns.meta_image),
     uniqueIndex('products_etsy_listing_id_idx').on(columns.etsyListingId),
+    index('products_etsy_primary_image_idx').on(columns.etsyPrimaryImage),
     uniqueIndex('products_slug_idx').on(columns.slug),
     index('products_updated_at_idx').on(columns.updatedAt),
     index('products_created_at_idx').on(columns.createdAt),
@@ -1591,6 +1610,12 @@ export const _products_v = pgTable(
     }),
     version_meta_description: varchar('version_meta_description'),
     version_etsyListingId: numeric('version_etsy_listing_id', { mode: 'number' }),
+    version_etsyTitle: varchar('version_etsy_title'),
+    version_rawEtsyDescription: varchar('version_raw_etsy_description'),
+    version_etsyPrimaryImage: integer('version_etsy_primary_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    version_generateSlug: boolean('version_generate_slug').default(true),
     version_slug: varchar('version_slug'),
     version_productTag: enum__products_v_version_product_tag('version_product_tag'),
     version_vessel: varchar('version_vessel'),
@@ -1626,6 +1651,9 @@ export const _products_v = pgTable(
     index('_products_v_version_version_atmosphere_idx').on(columns.version_atmosphere),
     index('_products_v_version_meta_version_meta_image_idx').on(columns.version_meta_image),
     index('_products_v_version_version_etsy_listing_id_idx').on(columns.version_etsyListingId),
+    index('_products_v_version_version_etsy_primary_image_idx').on(
+      columns.version_etsyPrimaryImage,
+    ),
     index('_products_v_version_version_slug_idx').on(columns.version_slug),
     index('_products_v_version_version_updated_at_idx').on(columns.version_updatedAt),
     index('_products_v_version_version_created_at_idx').on(columns.version_createdAt),
@@ -2674,6 +2702,9 @@ export const search = pgTable(
     meta_image: integer('meta_image_id').references(() => media.id, {
       onDelete: 'set null',
     }),
+    tagline: varchar('tagline'),
+    productType: varchar('product_type'),
+    price: numeric('price', { mode: 'number' }),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -2684,6 +2715,9 @@ export const search = pgTable(
   (columns) => [
     index('search_slug_idx').on(columns.slug),
     index('search_meta_meta_image_idx').on(columns.meta_image),
+    index('search_tagline_idx').on(columns.tagline),
+    index('search_product_type_idx').on(columns.productType),
+    index('search_price_idx').on(columns.price),
     index('search_updated_at_idx').on(columns.updatedAt),
     index('search_created_at_idx').on(columns.createdAt),
   ],
@@ -2720,6 +2754,94 @@ export const search_rels = pgTable(
       foreignColumns: [products.id],
       name: 'search_rels_products_fk',
     }).onDelete('cascade'),
+  ],
+)
+
+export const payload_mcp_api_keys = pgTable(
+  'payload_mcp_api_keys',
+  {
+    id: serial('id').primaryKey(),
+    user: integer('user_id')
+      .notNull()
+      .references(() => users.id, {
+        onDelete: 'set null',
+      }),
+    label: varchar('label'),
+    description: varchar('description'),
+    folders_find: boolean('folders_find').default(false),
+    folders_create: boolean('folders_create').default(false),
+    folders_update: boolean('folders_update').default(false),
+    folders_delete: boolean('folders_delete').default(false),
+    pages_find: boolean('pages_find').default(false),
+    pages_create: boolean('pages_create').default(false),
+    pages_update: boolean('pages_update').default(false),
+    pages_delete: boolean('pages_delete').default(false),
+    posts_find: boolean('posts_find').default(false),
+    posts_create: boolean('posts_create').default(false),
+    posts_update: boolean('posts_update').default(false),
+    posts_delete: boolean('posts_delete').default(false),
+    products_find: boolean('products_find').default(false),
+    products_create: boolean('products_create').default(false),
+    products_update: boolean('products_update').default(false),
+    products_delete: boolean('products_delete').default(false),
+    media_find: boolean('media_find').default(false),
+    media_create: boolean('media_create').default(false),
+    media_update: boolean('media_update').default(false),
+    media_delete: boolean('media_delete').default(false),
+    categories_find: boolean('categories_find').default(false),
+    categories_create: boolean('categories_create').default(false),
+    categories_update: boolean('categories_update').default(false),
+    categories_delete: boolean('categories_delete').default(false),
+    briefs_find: boolean('briefs_find').default(false),
+    briefs_create: boolean('briefs_create').default(false),
+    briefs_update: boolean('briefs_update').default(false),
+    briefs_delete: boolean('briefs_delete').default(false),
+    quizzes_find: boolean('quizzes_find').default(false),
+    quizzes_create: boolean('quizzes_create').default(false),
+    quizzes_update: boolean('quizzes_update').default(false),
+    quizzes_delete: boolean('quizzes_delete').default(false),
+    scentProfiles_find: boolean('scent_profiles_find').default(false),
+    scentProfiles_create: boolean('scent_profiles_create').default(false),
+    scentProfiles_update: boolean('scent_profiles_update').default(false),
+    scentProfiles_delete: boolean('scent_profiles_delete').default(false),
+    documentation_find: boolean('documentation_find').default(false),
+    documentation_create: boolean('documentation_create').default(false),
+    documentation_update: boolean('documentation_update').default(false),
+    documentation_delete: boolean('documentation_delete').default(false),
+    howToGuides_find: boolean('how_to_guides_find').default(false),
+    howToGuides_create: boolean('how_to_guides_create').default(false),
+    howToGuides_update: boolean('how_to_guides_update').default(false),
+    howToGuides_delete: boolean('how_to_guides_delete').default(false),
+    redirects_find: boolean('redirects_find').default(false),
+    redirects_create: boolean('redirects_create').default(false),
+    redirects_update: boolean('redirects_update').default(false),
+    redirects_delete: boolean('redirects_delete').default(false),
+    forms_find: boolean('forms_find').default(false),
+    forms_create: boolean('forms_create').default(false),
+    forms_update: boolean('forms_update').default(false),
+    forms_delete: boolean('forms_delete').default(false),
+    header_find: boolean('header_find').default(false),
+    header_update: boolean('header_update').default(false),
+    footer_find: boolean('footer_find').default(false),
+    footer_update: boolean('footer_update').default(false),
+    siteTheme_find: boolean('site_theme_find').default(false),
+    siteTheme_update: boolean('site_theme_update').default(false),
+    studioInfo_find: boolean('studio_info_find').default(false),
+    studioInfo_update: boolean('studio_info_update').default(false),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    enableAPIKey: boolean('enable_a_p_i_key'),
+    apiKey: varchar('api_key'),
+    apiKeyIndex: varchar('api_key_index'),
+  },
+  (columns) => [
+    index('payload_mcp_api_keys_user_idx').on(columns.user),
+    index('payload_mcp_api_keys_updated_at_idx').on(columns.updatedAt),
+    index('payload_mcp_api_keys_created_at_idx').on(columns.createdAt),
   ],
 )
 
@@ -2885,6 +3007,7 @@ export const payload_locked_documents_rels = pgTable(
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
     searchID: integer('search_id'),
+    'payload-mcp-api-keysID': integer('payload_mcp_api_keys_id'),
     'payload-foldersID': integer('payload_folders_id'),
   },
   (columns) => [
@@ -2910,6 +3033,9 @@ export const payload_locked_documents_rels = pgTable(
       columns['form-submissionsID'],
     ),
     index('payload_locked_documents_rels_search_id_idx').on(columns.searchID),
+    index('payload_locked_documents_rels_payload_mcp_api_keys_id_idx').on(
+      columns['payload-mcp-api-keysID'],
+    ),
     index('payload_locked_documents_rels_payload_folders_id_idx').on(columns['payload-foldersID']),
     foreignKey({
       columns: [columns['parent']],
@@ -3002,6 +3128,11 @@ export const payload_locked_documents_rels = pgTable(
       name: 'payload_locked_documents_rels_search_fk',
     }).onDelete('cascade'),
     foreignKey({
+      columns: [columns['payload-mcp-api-keysID']],
+      foreignColumns: [payload_mcp_api_keys.id],
+      name: 'payload_locked_documents_rels_payload_mcp_api_keys_fk',
+    }).onDelete('cascade'),
+    foreignKey({
       columns: [columns['payload-foldersID']],
       foreignColumns: [payload_folders.id],
       name: 'payload_locked_documents_rels_payload_folders_fk',
@@ -3037,12 +3168,16 @@ export const payload_preferences_rels = pgTable(
     parent: integer('parent_id').notNull(),
     path: varchar('path').notNull(),
     usersID: integer('users_id'),
+    'payload-mcp-api-keysID': integer('payload_mcp_api_keys_id'),
   },
   (columns) => [
     index('payload_preferences_rels_order_idx').on(columns.order),
     index('payload_preferences_rels_parent_idx').on(columns.parent),
     index('payload_preferences_rels_path_idx').on(columns.path),
     index('payload_preferences_rels_users_id_idx').on(columns.usersID),
+    index('payload_preferences_rels_payload_mcp_api_keys_id_idx').on(
+      columns['payload-mcp-api-keysID'],
+    ),
     foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_preferences.id],
@@ -3052,6 +3187,11 @@ export const payload_preferences_rels = pgTable(
       columns: [columns['usersID']],
       foreignColumns: [users.id],
       name: 'payload_preferences_rels_users_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['payload-mcp-api-keysID']],
+      foreignColumns: [payload_mcp_api_keys.id],
+      name: 'payload_preferences_rels_payload_mcp_api_keys_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -3965,6 +4105,11 @@ export const relations_products = relations(products, ({ one, many }) => ({
     references: [media.id],
     relationName: 'meta_image',
   }),
+  etsyPrimaryImage: one(media, {
+    fields: [products.etsyPrimaryImage],
+    references: [media.id],
+    relationName: 'etsyPrimaryImage',
+  }),
   _rels: many(products_rels, {
     relationName: '_rels',
   }),
@@ -4014,6 +4159,11 @@ export const relations__products_v = relations(_products_v, ({ one, many }) => (
     fields: [_products_v.version_meta_image],
     references: [media.id],
     relationName: 'version_meta_image',
+  }),
+  version_etsyPrimaryImage: one(media, {
+    fields: [_products_v.version_etsyPrimaryImage],
+    references: [media.id],
+    relationName: 'version_etsyPrimaryImage',
   }),
   _rels: many(_products_v_rels, {
     relationName: '_rels',
@@ -4393,6 +4543,13 @@ export const relations_search = relations(search, ({ one, many }) => ({
     relationName: '_rels',
   }),
 }))
+export const relations_payload_mcp_api_keys = relations(payload_mcp_api_keys, ({ one }) => ({
+  user: one(users, {
+    fields: [payload_mcp_api_keys.user],
+    references: [users.id],
+    relationName: 'user',
+  }),
+}))
 export const relations_payload_kv = relations(payload_kv, () => ({}))
 export const relations_payload_jobs_log = relations(payload_jobs_log, ({ one }) => ({
   _parentID: one(payload_jobs, {
@@ -4519,6 +4676,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [search.id],
       relationName: 'search',
     }),
+    'payload-mcp-api-keysID': one(payload_mcp_api_keys, {
+      fields: [payload_locked_documents_rels['payload-mcp-api-keysID']],
+      references: [payload_mcp_api_keys.id],
+      relationName: 'payload-mcp-api-keys',
+    }),
     'payload-foldersID': one(payload_folders, {
       fields: [payload_locked_documents_rels['payload-foldersID']],
       references: [payload_folders.id],
@@ -4546,6 +4708,11 @@ export const relations_payload_preferences_rels = relations(
       fields: [payload_preferences_rels.usersID],
       references: [users.id],
       relationName: 'users',
+    }),
+    'payload-mcp-api-keysID': one(payload_mcp_api_keys, {
+      fields: [payload_preferences_rels['payload-mcp-api-keysID']],
+      references: [payload_mcp_api_keys.id],
+      relationName: 'payload-mcp-api-keys',
     }),
   }),
 )
@@ -4808,6 +4975,7 @@ type DatabaseSchema = {
   search_categories: typeof search_categories
   search: typeof search
   search_rels: typeof search_rels
+  payload_mcp_api_keys: typeof payload_mcp_api_keys
   payload_kv: typeof payload_kv
   payload_jobs_log: typeof payload_jobs_log
   payload_jobs: typeof payload_jobs
@@ -4915,6 +5083,7 @@ type DatabaseSchema = {
   relations_search_categories: typeof relations_search_categories
   relations_search_rels: typeof relations_search_rels
   relations_search: typeof relations_search
+  relations_payload_mcp_api_keys: typeof relations_payload_mcp_api_keys
   relations_payload_kv: typeof relations_payload_kv
   relations_payload_jobs_log: typeof relations_payload_jobs_log
   relations_payload_jobs: typeof relations_payload_jobs
