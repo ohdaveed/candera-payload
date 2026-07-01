@@ -1,8 +1,6 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link'
-import { Search } from 'lucide-react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -17,14 +15,16 @@ export const HeaderNav: React.FC<{
 }> = ({ data, transparent, pathname }) => {
   const navItems = data?.navItems || []
 
+  // Fitts's Law: padding + a subtle background hover expand the interactive
+  // surface well beyond the glyphs, rather than confining clicks to the text.
   const linkClass = (isActive?: boolean) =>
     [
-      'text-xs uppercase tracking-[.3em] transition-[color,text-decoration-color] duration-200 px-4 py-2 min-h-[44px] inline-flex items-center underline-offset-[6px] decoration-2',
+      'text-xs uppercase tracking-[.3em] transition-[color,background-color,text-decoration-color] duration-200 px-4 py-2 min-h-[44px] inline-flex items-center rounded-md underline-offset-[6px] decoration-2',
       isActive
         ? 'text-candera-ember-strong font-bold underline decoration-candera-ember-strong'
         : transparent
-          ? 'text-candera-vellum/90 font-medium hover:text-candera-vellum hover:underline decoration-transparent hover:decoration-candera-vellum/50'
-          : 'text-candera-sage-text font-medium hover:text-candera-obsidian hover:underline decoration-transparent hover:decoration-candera-sage-text/50',
+          ? 'text-candera-vellum/90 font-medium hover:text-candera-vellum hover:bg-candera-vellum/10 hover:underline decoration-transparent hover:decoration-candera-vellum/50'
+          : 'text-candera-sage-text font-medium hover:text-candera-obsidian hover:bg-candera-obsidian/5 hover:underline decoration-transparent hover:decoration-candera-sage-text/50',
     ].join(' ')
 
   return (
@@ -32,7 +32,7 @@ export const HeaderNav: React.FC<{
       as="nav"
       padding="none"
       aria-label="Main Navigation"
-      className="hidden md:flex items-center gap-1"
+      className="flex items-center gap-1"
     >
       {navItems.map(({ link }, i) => {
         const href =
@@ -49,22 +49,6 @@ export const HeaderNav: React.FC<{
         )
         return <CMSLink key={i} {...link} appearance="link" className={linkClass(isActive)} />
       })}
-
-      {/* Persistent search affordance — Jakob's Law: users expect search in the header */}
-      <Link
-        href="/search"
-        aria-label="Search the collection"
-        className={[
-          'transition-[background-color,color] duration-200 hover:text-candera-ember-strong p-2.5 rounded-md hover:bg-candera-obsidian/5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
-          pathname?.startsWith('/search')
-            ? 'text-candera-ember-strong bg-candera-ember-strong/8'
-            : transparent
-              ? 'text-candera-vellum/90 hover:bg-candera-vellum/10'
-              : 'text-candera-sage-text',
-        ].join(' ')}
-      >
-        <Search className="w-4 h-4" aria-hidden="true" />
-      </Link>
     </Section>
   )
 }
