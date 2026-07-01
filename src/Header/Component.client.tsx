@@ -8,6 +8,7 @@ import type { Header } from '@/payload-types'
 
 import { HeaderNav } from './Nav'
 import { MobileNav } from './Nav/MobileNav'
+import { HeaderUtilities } from './Utilities'
 import { Container } from '@/components/ui/container'
 
 import { Section } from '@/components/ui/section'
@@ -56,24 +57,32 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       ].join(' ')}
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <Container className="py-4 flex items-center justify-between">
-        {/* Left-aligned logo with visual offset */}
-        <Link
-          aria-label="Candera Home"
-          className={[
-            'font-display font-bold text-xl tracking-[-0.04em] transition-colors pl-0.5',
-            isTransparent ? 'text-candera-vellum' : 'text-candera-obsidian',
-          ].join(' ')}
-          href="/"
-        >
-          CANDERA
-        </Link>
+      {/* Three-column layout (Jakob's Law): brand left, nav centered, utilities right */}
+      <Container className="py-4 flex items-center">
+        {/* Left — brand */}
+        <div className="flex-1 flex justify-start">
+          <Link
+            aria-label="Candera Home"
+            className={[
+              'font-display font-bold text-xl tracking-[-0.04em] transition-colors pl-0.5',
+              isTransparent ? 'text-candera-vellum' : 'text-candera-obsidian',
+            ].join(' ')}
+            href="/"
+          >
+            CANDERA
+          </Link>
+        </div>
 
-        {/* Right nav */}
-        <Section as="nav" padding="none" className="flex items-center">
+        {/* Center — primary navigation */}
+        <div className="hidden md:flex flex-1 justify-center">
           <HeaderNav data={data} transparent={isTransparent} pathname={pathname} />
+        </div>
+
+        {/* Right — utility icons */}
+        <div className="flex-1 flex justify-end items-center gap-1">
+          <HeaderUtilities transparent={isTransparent} pathname={pathname} />
           <MobileNav data={data} transparent={isTransparent} />
-        </Section>
+        </div>
       </Container>
     </Section>
   )
