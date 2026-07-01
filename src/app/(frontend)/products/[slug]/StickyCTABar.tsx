@@ -90,6 +90,7 @@ export function StickyCTABar({ title, price, currency, etsyListingId, sentinelRe
 
       <BoutiqueLink
         href={etsyListingUrl(etsyListingId)}
+        location="sticky-bar"
         className="shrink-0 inline-flex items-center gap-2 bg-candera-ember-strong hover:bg-candera-vellum hover:text-candera-obsidian text-candera-vellum text-xs font-bold uppercase tracking-[.2em] px-5 py-3 transition-colors duration-200"
       >
         Purchase via Etsy

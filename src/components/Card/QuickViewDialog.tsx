@@ -80,7 +80,9 @@ export function QuickViewDialog({
 
             <div className="flex flex-col gap-3 mt-auto pt-4">
               <Button asChild variant="cta" size="cta">
-                <BoutiqueLink href={etsyListingUrl(etsyListingId)}>Buy on Etsy</BoutiqueLink>
+                <BoutiqueLink href={etsyListingUrl(etsyListingId)} location="quick-view">
+                  Buy on Etsy
+                </BoutiqueLink>
               </Button>
               {slug && (
                 <Link

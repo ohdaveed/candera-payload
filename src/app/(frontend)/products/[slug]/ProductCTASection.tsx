@@ -31,6 +31,7 @@ export function ProductCTASection({ title, price, currency, vessel, etsyListingI
         >
           <BoutiqueLink
             href={etsyListingUrl(etsyListingId)}
+            location="product-cta"
             className="inline-flex items-center justify-center gap-2"
           >
             Purchase via Etsy
