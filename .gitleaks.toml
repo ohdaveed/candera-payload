@@ -1,0 +1,56 @@
+# Gitleaks configuration
+# https://github.com/gitleaks/gitleaks/blob/master/config/gitleaks.toml
+#
+# This file customises the default ruleset shipped with gitleaks.
+# The defaults already cover most credential patterns; the sections below add
+# project-specific allowlists and extend the .env file detection.
+
+title = "Gitleaks — Candera Payload"
+
+[extend]
+# Use the default ruleset bundled with the gitleaks binary as the base.
+useDefault = true
+
+# ---------------------------------------------------------------------------
+# Extra rules
+# ---------------------------------------------------------------------------
+
+[[rules]]
+# Detect any .env* file containing an assignment that looks like a real secret.
+# Complements the default Neon / Postgres / generic API-key rules.
+id          = "env-file-with-assignment"
+description = "Environment file with potential secret assignment"
+regex       = '''(?i)(password|secret|token|api[_-]?key|api[_-]?secret|credentials?)\s*=\s*['"]?[^\s'"]{6,}'''
+path        = '''(?i)\.env(\.[a-z0-9]+)?$'''
+tags        = ["env", "secret"]
+
+[[rules]]
+# Neon / Vercel Postgres connection strings that embed a password.
+id          = "neon-postgres-dsn"
+description = "Neon/Vercel Postgres DSN with embedded password"
+regex       = '''postgresql://[^:]+:[^@\s]{6,}@[^/\s]*\.neon\.tech[/\s]'''
+tags        = ["database", "postgres", "neon"]
+
+# ---------------------------------------------------------------------------
+# Allowlist — paths / patterns that are intentionally placeholder-only
+# ---------------------------------------------------------------------------
+
+[allowlist]
+description = "Project-specific safe values"
+paths = [
+  # Template file — contains only placeholder strings, never real credentials
+  '''^\.env\.example$''',
+  # Lock-files and generated code are never the source of truth for secrets
+  '''^pnpm-lock\.yaml$''',
+  '''^src/payload-types\.ts$''',
+]
+regexes = [
+  # Placeholder values used in CI dummy envs and the example file
+  '''YOUR_SECRET_HERE''',
+  '''YOUR_CRON_SECRET_HERE''',
+  '''ci-types-check-dummy-secret''',
+  # Standard local-dev placeholder DSN (no real password, no neon.tech host)
+  '''postgresql://127\.0\.0\.1:5432/''',
+  # CI placeholder DSN pattern (user:pass@localhost — not a real credential)
+  '''[a-z]+:[a-z]+@localhost:5432/''',
+]
