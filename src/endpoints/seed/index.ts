@@ -158,7 +158,7 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
-      data: image2,
+      data: { ...image2, alt: 'Deep red botanical candle with a warm flame' },
       file: image3Buffer,
     }),
     payload.create({

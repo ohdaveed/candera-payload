@@ -1,5 +1,4 @@
 import type { Metadata } from 'next/types'
-import Link from 'next/link'
 
 import { ArticleCard } from '@/components/ArticleCard'
 import { FeaturedPostCard } from '@/components/FeaturedPostCard'
@@ -32,11 +31,21 @@ export default async function Page() {
       meta: true,
       publishedAt: true,
       heroImage: true,
+      categories: true,
     },
   })
 
   const featuredPost = posts.docs.length > 0 ? posts.docs[0] : null
   const remainingPosts = posts.docs.slice(1)
+
+  // Match the column count to the number of cards so a short list never leaves an
+  // orphaned empty grid track (which reads as "unfinished" more than whitespace does).
+  const gridColsClass =
+    remainingPosts.length >= 3
+      ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+      : remainingPosts.length === 2
+        ? 'grid-cols-1 sm:grid-cols-2 max-w-3xl'
+        : 'grid-cols-1 max-w-md'
 
   return (
     <main className="bg-candera-vellum overflow-x-hidden" data-page="posts-listing">
@@ -50,7 +59,7 @@ export default async function Page() {
       />
 
       {featuredPost && (
-        <Section padding="none" className="mt-16 mb-28" data-section="featured-post">
+        <Section padding="none" className="mt-24 md:mt-16 mb-20" data-section="featured-post">
           <Container>
             <FeaturedPostCard post={featuredPost} />
           </Container>
@@ -58,52 +67,53 @@ export default async function Page() {
       )}
 
       <Section
-        padding="large"
-        className="bg-candera-vellum pt-8 md:pt-12"
+        padding="none"
+        className="bg-candera-vellum pb-24 md:pb-32"
         data-section="post-archive"
       >
         <Container>
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-24 pb-16 md:pb-24">
-            {/* Left sidebar — sticky */}
-            <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
+          <div>
+            {/* Section header — full width */}
+            <div className="flex flex-col gap-4 max-w-xl mb-12 md:mb-16">
               <p className="eyebrow text-candera-sage-text m-0">More from the Journal</p>
               <h2 className="text-[1.85rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
                 Reflections <span className="whitespace-nowrap">&amp; Rituals.</span>
               </h2>
-              <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
+              <p className="font-sans text-sm text-candera-sage-text leading-[1.85] m-0">
                 Deep dives into botanical history, studio notes, and the philosophy of slow living.
               </p>
-              <Link
-                href="/posts"
-                className="btn-text text-candera-obsidian no-underline border-b border-candera-ember-strong pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember-strong transition-colors mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-              >
-                View all stories →
-              </Link>
             </div>
 
-            {/* Right — article card grid */}
-            <div className="flex-1 min-w-0">
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-8 list-none p-0 m-0">
-                {remainingPosts.map((post) => {
-                  const { url: imageUrl, alt: imageAlt } = getMetaImage(
-                    post.meta?.image || post.heroImage,
-                  )
+            {/* Article card grid — 1/2/3 columns (Hick's Law: scannable, containerized) */}
+            <ul className={`grid ${gridColsClass} gap-x-8 gap-y-12 list-none p-0 m-0`}>
+              {remainingPosts.map((post) => {
+                const { url: imageUrl, alt: imageAlt } = getMetaImage(
+                  post.meta?.image || post.heroImage,
+                )
 
-                  return (
-                    <li key={post.slug}>
-                      <ArticleCard
-                        title={post.title}
-                        slug={post.slug}
-                        excerpt={post.meta?.description}
-                        date={post.publishedAt}
-                        imageUrl={imageUrl}
-                        imageAlt={imageAlt}
-                      />
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
+                const firstCategory = post.categories?.[0]
+                // Use the post's category when set; fall back to a static section
+                // label so every card shows a consistent label + date eyebrow.
+                const category =
+                  firstCategory && typeof firstCategory === 'object'
+                    ? firstCategory.title
+                    : 'Journal'
+
+                return (
+                  <li key={post.slug}>
+                    <ArticleCard
+                      title={post.title}
+                      slug={post.slug}
+                      excerpt={post.meta?.description}
+                      date={post.publishedAt}
+                      category={category}
+                      imageUrl={imageUrl}
+                      imageAlt={imageAlt}
+                    />
+                  </li>
+                )
+              })}
+            </ul>
           </div>
 
           {posts.totalPages > 1 && posts.page && (

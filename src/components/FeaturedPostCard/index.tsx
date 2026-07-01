@@ -2,10 +2,11 @@ import React from 'react'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
 import { Badge } from '@/components/ui/badge'
+import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post } from '@/payload-types'
 
 interface FeaturedPostCardProps {
-  post: Pick<Post, 'slug' | 'title' | 'meta' | 'heroImage'>
+  post: Pick<Post, 'slug' | 'title' | 'meta' | 'heroImage' | 'publishedAt'>
 }
 
 /**
@@ -15,7 +16,7 @@ interface FeaturedPostCardProps {
 export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
   return (
     <Link href={`/posts/${post.slug}`} className="block group">
-      <article className="relative w-full aspect-[16/7] overflow-hidden bg-candera-ash mb-4">
+      <article className="relative w-full aspect-[4/5] sm:aspect-[16/9] md:aspect-[16/7] overflow-hidden bg-candera-ash mb-4">
         {(post.meta?.image || post.heroImage) && (
           <Media
             fill
@@ -31,12 +32,22 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-candera-obsidian/75 via-candera-obsidian/20 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-          <Badge
-            variant="outline"
-            className="mb-4 text-candera-vellum border-candera-vellum/30 uppercase tracking-[.2em] px-3 py-1 bg-candera-vellum/5 backdrop-blur-sm"
-          >
-            Featured Story
-          </Badge>
+          <div className="flex items-center gap-3 mb-4">
+            <Badge
+              variant="outline"
+              className="text-candera-vellum border-candera-vellum/30 uppercase tracking-[.2em] px-3 py-1 bg-candera-vellum/5 backdrop-blur-sm"
+            >
+              Featured Story
+            </Badge>
+            {post.publishedAt && (
+              <time
+                className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-vellum/70"
+                dateTime={post.publishedAt}
+              >
+                {formatDateTime(post.publishedAt)}
+              </time>
+            )}
+          </div>
 
           {/* hero-heading at vellum = 18.75:1 on obsidian ✅ */}
           <h2 className="h2 text-candera-vellum mb-3 max-w-[640px]">{post.title}</h2>

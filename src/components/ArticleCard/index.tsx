@@ -7,6 +7,7 @@ interface ArticleCardProps {
   slug: string
   excerpt?: string | null
   date?: string | null
+  category?: string | null
   imageUrl?: string | null
   imageAlt?: string | null
   pathPrefix?: string
@@ -17,6 +18,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   slug,
   excerpt,
   date,
+  category,
   imageUrl,
   imageAlt,
   pathPrefix = '/posts',
@@ -42,13 +44,20 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       </div>
 
       <div className="pt-5 pb-3 flex-1 flex flex-col">
-        {date && (
-          <time
-            className="font-sans text-xs font-semibold uppercase tracking-[.14em] text-candera-stone/70 mb-2"
-            dateTime={date}
-          >
-            {formatDateTime(date)}
-          </time>
+        {(category || date) && (
+          <div className="flex items-center gap-2.5 mb-2 font-sans text-xs font-semibold uppercase tracking-[.14em]">
+            {category && <span className="text-candera-ember-strong">{category}</span>}
+            {category && date && (
+              <span className="text-candera-stone/40" aria-hidden="true">
+                ·
+              </span>
+            )}
+            {date && (
+              <time className="text-candera-stone/70" dateTime={date}>
+                {formatDateTime(date)}
+              </time>
+            )}
+          </div>
         )}
 
         <h3 className="font-display text-lg font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-0.5 group-hover:text-candera-ember-strong transition-colors">
