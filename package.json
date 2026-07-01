@@ -34,7 +34,7 @@
     "init-new-db": "pass-cli run --env-file .env -- tsx scripts/init-new-db.ts",
     "migrate-media-to-blob": "pass-cli run --env-file .env -- tsx scripts/migrate-media-to-blob.ts",
     "publish-all": "pass-cli run --env-file .env -- tsx scripts/publish-all.ts",
-    "reseed": "pass-cli run --env-file .env -- tsx scripts/reseed.ts",
+    "seed:reseed": "pass-cli run --env-file .env -- tsx scripts/reseed.ts",
     "seed:admin": "pass-cli run --env-file .env -- tsx scripts/seed-admin.ts",
     "seed:db": "pass-cli run --env-file .env -- tsx scripts/seed-db.ts",
     "seed:initial-users": "pass-cli run --env-file .env -- tsx scripts/seed-initial-users.ts",
