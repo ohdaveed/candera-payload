@@ -7,31 +7,26 @@ type Props = TestimonialsBlockType
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
- * The TestimonialsBlock is designed to be fully theme-adaptable.
- * It dynamically responds to the page's data-section-mood and data-skin settings by using
- * CSS variables (--mood-bg, --mood-fg, and --mood-accent).
- * Dark Obsidian remains the default/high-contrast fallback. Do not hardcode colors.
+ * The TestimonialsBlock was designed to respond to the page's data-section-mood
+ * setting via CSS variables (--mood-bg, --mood-fg, --mood-accent). In practice,
+ * the default 'light-editorial' mood declares those vars as the literal keyword
+ * `inherit` on the <html> root, which — having no parent to inherit from —
+ * resolves to the CSS guaranteed-invalid value. That silently defeats every
+ * var(--mood-*, fallback) below and falls through to the fallback colors
+ * instead, which were tuned for a dark treatment and are unreadable against
+ * this section's actual (light) background. Until the root theme.css mood
+ * tokens are fixed, this block hardcodes its own guaranteed-readable dark
+ * treatment rather than trusting the mood variables.
  */
 export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
 
   return (
-    <Section
-      padding="none"
-      style={{
-        backgroundColor: 'var(--mood-bg, #141412)',
-        color: 'var(--mood-fg, #fdfbf7)',
-      }}
-      className="transition-colors duration-300"
-    >
+    <Section padding="none" className="bg-candera-obsidian text-candera-vellum">
       <Container className="py-16 md:py-24">
         {eyebrow && (
           <div className="flex items-center gap-2 mb-12">
-            <span
-              className="block w-6 h-px"
-              style={{ backgroundColor: 'var(--mood-accent, #dd7d52)' }}
-              aria-hidden="true"
-            />
+            <span className="block w-6 h-px bg-candera-ember" aria-hidden="true" />
             <p className="eyebrow opacity-75">{eyebrow}</p>
           </div>
         )}
