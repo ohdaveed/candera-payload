@@ -40,7 +40,12 @@ import { BRAND } from './constants/brand'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL || ''
+// DATABASE_URI (set explicitly in prod) wins; POSTGRES_URL next; DATABASE_URL last
+// so the Vercel–Neon integration's canonical var is consumed natively (it provisions
+// DATABASE_URL, not DATABASE_URI) — this lets integration-managed preview branches
+// connect without a hand-added DATABASE_URI bridge that goes stale on rotation.
+const databaseConnectionString =
+  process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL || ''
 // The Vercel adapter speaks Neon's serverless protocol and only works against a
 // Neon-hosted database. Production uses Neon (a `*.neon.tech` host) and keeps the
 // Vercel adapter; plain Postgres (local dev / CI service container) falls back to
