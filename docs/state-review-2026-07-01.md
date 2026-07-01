@@ -58,4 +58,6 @@ cache-tag revalidation that a static build can't confirm.
 - CI health is good: `types-check`, `migration-drift`, and `security` workflows;
   ~3 tech-debt markers across `src`; solid integration suite + Playwright e2e.
 - To reproduce locally: `pass-cli run --env-file .env -- pnpm build` and
-  `pass-cli run --env-file .env -- pnpm test` with a real DB + Etsy/email vars.
+  `pass-cli run --env-file .env -- pnpm test:int` (the suite verified here) with a
+  real DB + Etsy/email vars. `pnpm test` additionally runs the Playwright e2e
+  suite, which was not exercised in this review.
