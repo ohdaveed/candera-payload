@@ -46,9 +46,9 @@
     "test:mcp-conn": "pass-cli run --env-file .env -- tsx scripts/test-mcp-conn.ts",
     "update-home-copy": "pass-cli run --env-file .env -- tsx scripts/update-home-copy.ts",
     "upload-blob-images": "pass-cli run --env-file .env -- tsx scripts/upload-blob-images.ts",
-    "build:local": "./scripts/local-build.sh",
-    "gh-set-secret": "./scripts/gh-set-secret.sh",
-    "generate-pass-env": "./scripts/generate-pass-env.sh",
+    "build:local": "bash ./scripts/local-build.sh",
+    "gh-set-secret": "bash ./scripts/gh-set-secret.sh",
+    "generate-pass-env": "zsh ./scripts/generate-pass-env.sh",
     "merge-pass-env": "uv run scripts/merge-pass-env.py"
   },
   "dependencies": {
