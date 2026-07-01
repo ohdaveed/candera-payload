@@ -58,7 +58,7 @@ export default async function InnerCirclePage() {
               <ul className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left list-none p-0 m-0">
                 {benefits.map((benefit, index) => (
                   <li key={`${benefit.label}-${index}`}>
-                    <p className="label mb-3">{benefit.label}</p>
+                    <p className="label text-candera-ember mb-3">{benefit.label}</p>
                     <p className="editorial">{benefit.description}</p>
                   </li>
                 ))}
