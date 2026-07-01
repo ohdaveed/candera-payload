@@ -7,7 +7,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { FORM_TITLES } from '@/constants/forms'
-import { DEFAULT_INNER_CIRCLE_BENEFITS, NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
+import { DEFAULT_INNER_CIRCLE_BENEFITS } from '@/constants/innerCircle'
 
 import { cacheLife } from 'next/cache'
 
@@ -46,9 +46,8 @@ export default async function InnerCirclePage() {
       <Section padding="large" data-section="inner-circle-signup">
         <Container>
           <div className="max-w-[600px] mx-auto text-center">
-            <div className="flex flex-col items-center gap-4">
+            <div className="bg-candera-obsidian p-8 md:p-10">
               <InnerCircleEmailForm formId={formId} />
-              <p className="caption text-candera-sage-text mt-2">{NEWSLETTER_MICROCOPY}</p>
             </div>
 
             <div
@@ -56,14 +55,14 @@ export default async function InnerCirclePage() {
               data-section="benefits-grid"
             >
               <h2 className="h3 mb-10">What you&apos;ll receive</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
+              <ul className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left list-none p-0 m-0">
                 {benefits.map((benefit, index) => (
-                  <div key={`${benefit.label}-${index}`}>
+                  <li key={`${benefit.label}-${index}`}>
                     <p className="label text-candera-ember mb-3">{benefit.label}</p>
                     <p className="editorial">{benefit.description}</p>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </Container>
