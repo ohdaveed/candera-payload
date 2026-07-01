@@ -24,6 +24,13 @@ const labels: Record<ThemeValue, string> = {
   dark: 'Theme: Dark — click to switch',
 }
 
+// Short visible label so sighted users can read the current mode without hovering.
+const stateText: Record<ThemeValue, string> = {
+  auto: 'Auto',
+  light: 'Light',
+  dark: 'Dark',
+}
+
 export const ThemeSelector: React.FC<{ className?: string }> = ({ className }) => {
   const { setTheme } = useTheme()
   const [value, setValue] = useState<ThemeValue>('auto')
@@ -53,7 +60,7 @@ export const ThemeSelector: React.FC<{ className?: string }> = ({ className }) =
       onClick={handleClick}
       aria-label={labels[value]}
       className={cn(
-        'inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-full',
+        'inline-flex items-center gap-2 pl-3 pr-4 min-h-[44px] rounded-full',
         'text-candera-sage-text transition-colors duration-200',
         'hover:text-candera-obsidian hover:bg-candera-ash/50',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
@@ -61,6 +68,9 @@ export const ThemeSelector: React.FC<{ className?: string }> = ({ className }) =
       )}
     >
       {icons[value]}
+      <span className="font-sans text-xs font-semibold uppercase tracking-wider">
+        {stateText[value]}
+      </span>
     </button>
   )
 }
