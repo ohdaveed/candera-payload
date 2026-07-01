@@ -85,7 +85,6 @@ scripts/pass_payloads/*.json
 
 # Generated pass output (contains resolved secrets)
 .env.pass
-scripts/merge-pass-env.py
 
 # Python bytecode from local checks
 scripts/__pycache__/

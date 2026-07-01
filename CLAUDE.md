@@ -16,6 +16,10 @@ Guidance for Claude / AI assistants working in this repository. This is the cano
 > [!IMPORTANT]
 > **Secrets Management:** This project uses **`pass-cli`** (Proton Pass) for secrets. `.env` holds `pass://` URIs, not raw values. Inject them at runtime — **never overwrite `.env` with plaintext secrets**. See `AGENTS.md` for the full secret-fetch flow.
 
+## Secret Handling
+
+Never echo, print, or paste secret keys, passwords, or credentials into chat output. When inspecting credentials use redacted checks (e.g., `[ -n "$VAR" ] && echo 'set'`) rather than printing values, and avoid `jq` filters that surface plaintext secrets.
+
 ## Quick start
 
 ```bash
@@ -107,6 +111,15 @@ Hexagonal (ports/adapters) design decoupling domain logic from client and storag
 > [!TIP]
 > **Neon quirks:** Compute suspends after ~5 min idle (cold-start penalty on first query). Use `-pooler` host for pooled connections. ILIKE search uses `pg_trgm` indexes.
 
+### Diagnosing Neon auth failures
+
+Work through in order and report which step fails before attempting any fix:
+
+1. Confirm whether it's a local or production connection.
+2. Verify prod env vars are non-empty via `vercel env pull`.
+3. Test the credential against the DB directly.
+4. Check the role/permissions.
+
 ## Testing
 
 - **Integration (`tests/int/`):** Vitest + jsdom. Needs a DB connection. Run with `vp test` (or `pnpm test:int`). Test helpers in `tests/helpers/`.
@@ -133,6 +146,16 @@ Hexagonal (ports/adapters) design decoupling domain logic from client and storag
 | `ETSY_API_KEY` / `_SHARED_SECRET` / `_SHOP_ID` | Etsy Open API v3 + OAuth (`ETSY_SHOP_ID` required).                   |
 | `AI_GATEWAY_API_KEY`                           | AI gateway key for product copy (local only).                         |
 | `FORMSUBMIT_EMAIL`                             | Inbox for form submissions (defaults to `studio@canderacandles.com`). |
+
+When setting Vercel env vars, always verify the value actually persisted with a follow-up `vercel env pull` or a read-back check before claiming success — prior attempts reported success while variables remained empty. Confirm production `DATABASE_URI`/`POSTGRES_URL` are non-empty before declaring DB connectivity restored.
+
+## Commit Hygiene
+
+Keep auto-generated files (e.g., `importMap.js`) out of commit scope; stage only intended files and check `git status` before committing. Never disable or bypass ggshield/security git hooks globally — scope `hooksPath` locally if needed.
+
+## Response Style
+
+Be concise. Avoid walls of text; summarize actions in a few lines. Do not kill the running dev server during cleanup unless explicitly asked.
 
 ## Working agreements (AI Checklist)
 
