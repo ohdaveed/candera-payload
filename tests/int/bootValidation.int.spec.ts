@@ -44,9 +44,24 @@ describe('validateBootConfig', () => {
       expect(() => validateBootConfig()).toThrow(/unresolved pass:\/\/ references/)
     })
 
-    it('uses POSTGRES_URL when DATABASE_URI is an unresolved pass:// reference', () => {
+    it('falls back to POSTGRES_URL when DATABASE_URI is an unresolved pass:// reference', () => {
       process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
       process.env.POSTGRES_URL = 'postgres://localhost:5432/test'
+      expect(() => validateBootConfig()).not.toThrow()
+    })
+
+    it('builds a connection string from PG* parts when URL env vars are pass:// references', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.DATABASE_URL = 'pass://vault/item/DATABASE_URL'
+      process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
+      delete process.env.DATABASE_URL_UNPOOLED
+      delete process.env.POSTGRES_URL_NON_POOLING
+      delete process.env.POSTGRES_PRISMA_URL
+      process.env.PGHOST = 'ep-example.neon.tech'
+      process.env.PGUSER = 'neondb_owner'
+      process.env.PGPASSWORD = 'secret'
+      process.env.PGDATABASE = 'neondb'
+
       expect(() => validateBootConfig()).not.toThrow()
     })
 

@@ -41,6 +41,7 @@ describe('resolveEnvValue', () => {
     it('falls back to POSTGRES_URL when DATABASE_URI is a pass:// reference', () => {
       process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
       process.env.POSTGRES_URL = 'postgres://neon.example/db'
+      delete process.env.DATABASE_URL
 
       expect(resolveDatabaseConnectionString()).toBe('postgres://neon.example/db')
       expect(payloadLogger.warn).toHaveBeenCalledWith(
@@ -52,8 +53,27 @@ describe('resolveEnvValue', () => {
       process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
       process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
       delete process.env.DATABASE_URL
+      delete process.env.PGHOST
+      delete process.env.PGUSER
+      delete process.env.PGPASSWORD
+      delete process.env.PGDATABASE
 
       expect(resolveDatabaseConnectionString()).toBeUndefined()
+    })
+
+    it('falls back to PG* parts when URL env vars are pass:// references', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.DATABASE_URL = 'pass://vault/item/DATABASE_URL'
+      process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
+      delete process.env.DATABASE_URL_UNPOOLED
+      process.env.PGHOST = 'ep-example.neon.tech'
+      process.env.PGUSER = 'neondb_owner'
+      process.env.PGPASSWORD = 'secret'
+      process.env.PGDATABASE = 'neondb'
+
+      expect(resolveDatabaseConnectionString()).toBe(
+        'postgresql://neondb_owner:secret@ep-example.neon.tech:5432/neondb',
+      )
     })
   })
 

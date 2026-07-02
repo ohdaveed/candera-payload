@@ -6,7 +6,7 @@ echo "=== Vercel build diagnostics ==="
 echo "VERCEL_ENV=${VERCEL_ENV:-unset}"
 echo "NODE_VERSION=$(node -v 2>/dev/null || echo unknown)"
 
-for key in DATABASE_URI POSTGRES_URL DATABASE_URL POSTGRES_URL_NON_POOLING POSTGRES_PRISMA_URL; do
+for key in DATABASE_URI POSTGRES_URL DATABASE_URL DATABASE_URL_UNPOOLED POSTGRES_URL_NON_POOLING POSTGRES_PRISMA_URL PGHOST PGUSER PGPASSWORD PGDATABASE; do
   value="${!key:-}"
   if [[ -z "$value" ]]; then
     echo "${key}=<unset>"
