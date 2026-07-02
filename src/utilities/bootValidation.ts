@@ -11,6 +11,11 @@ export function validateBootConfig(): void {
   if (!process.env.PAYLOAD_SECRET) {
     throw new Error('PAYLOAD_SECRET is not set. Set this environment variable before starting.')
   }
+  if (isUnresolvedPassReference(process.env.PAYLOAD_SECRET)) {
+    throw new Error(
+      'PAYLOAD_SECRET contains an unresolved pass:// reference. pass-cli URIs cannot be resolved on Vercel — set a real secret in environment variables.',
+    )
+  }
   payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 
   const databaseConnectionString = resolveDatabaseConnectionString()

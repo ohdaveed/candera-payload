@@ -23,12 +23,16 @@ export function isValidVercelBlobToken(token: string | undefined): boolean {
  * while POSTGRES_URL is injected resolved by the Neon integration. Prefer the
  * usable value so migrate/build can connect.
  */
+const DATABASE_ENV_KEYS = [
+  'DATABASE_URI',
+  'POSTGRES_URL',
+  'DATABASE_URL',
+  'POSTGRES_URL_NON_POOLING',
+  'POSTGRES_PRISMA_URL',
+] as const
+
 export function resolveDatabaseConnectionString(): string | undefined {
-  const entries = [
-    ['DATABASE_URI', process.env.DATABASE_URI],
-    ['POSTGRES_URL', process.env.POSTGRES_URL],
-    ['DATABASE_URL', process.env.DATABASE_URL],
-  ] as const
+  const entries = DATABASE_ENV_KEYS.map((key) => [key, process.env[key]] as const)
 
   const passReferenceKeys = entries
     .filter(([, value]) => isUnresolvedPassReference(value))
