@@ -46,6 +46,7 @@ Every push and pull request is scanned for leaked credentials by the
 full-history scan.
 
 Local protection is provided by:
+
 - A `ggshield` pre-commit hook (`.husky/pre-commit`) that blocks commits
   containing detected secrets.
 - The `.gitignore` rules that prevent `.env*` files (other than `.env.example`)
@@ -62,13 +63,13 @@ If a secret is found in the repository (current files **or** git history):
 
 ### 1 — Rotate the credential immediately
 
-| Service | Where to rotate |
-| ------- | --------------- |
-| Neon Postgres (database role) | Neon Console → Project → Settings → Roles → reset password for the affected role (`neondb_owner` or whichever role name is in use) |
-| Payload JWT (`PAYLOAD_SECRET`) | Generate a new random string; set in Vercel env vars |
-| Vercel Blob (`BLOB_READ_WRITE_TOKEN`) | Vercel Dashboard → Storage → token management |
-| Etsy API key | Etsy Developer Portal → App settings |
-| Any other secret | Respective service dashboard |
+| Service                               | Where to rotate                                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Neon Postgres (database role)         | Neon Console → Project → Settings → Roles → reset password for the affected role (`neondb_owner` or whichever role name is in use) |
+| Payload JWT (`PAYLOAD_SECRET`)        | Generate a new random string; set in Vercel env vars                                                                               |
+| Vercel Blob (`BLOB_READ_WRITE_TOKEN`) | Vercel Dashboard → Storage → token management                                                                                      |
+| Etsy API key                          | Etsy Developer Portal → App settings                                                                                               |
+| Any other secret                      | Respective service dashboard                                                                                                       |
 
 After rotating, update the secret in **Vercel environment variables** and in your
 local `.env` (via `pass-cli`).
