@@ -76,7 +76,8 @@ describe('validateBootConfig', () => {
       vi.clearAllMocks()
       validateBootConfig()
       expect(payloadLogger.info).not.toHaveBeenCalled()
-      expect(payloadLogger.warn).not.toHaveBeenCalled()
+      // Avoid coupling this Etsy-specific test to unrelated email-delivery validation warnings.
+      expect(payloadLogger.warn).not.toHaveBeenCalledWith(expect.stringContaining('ETSY_SHOP_ID'))
     })
 
     it('logs warning if Etsy credentials (API Key or Shared Secret) are missing', () => {
