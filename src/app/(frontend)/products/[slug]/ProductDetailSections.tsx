@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Eyebrow } from '@/components/ui/eyebrow'
 
 type Spec = { label: string; value: string }
@@ -57,6 +57,7 @@ export function ProductDetailSections({ vessel, productType = 'candle', specific
   // Drawer defaults closed — technical metadata stays tucked away while the
   // story and fragrance lead the page.
   const [specsOpen, setSpecsOpen] = useState(false)
+  const specsPanelId = useId()
 
   const isCandle = productType === 'candle' && vessel !== 'metal'
 
@@ -111,10 +112,10 @@ export function ProductDetailSections({ vessel, productType = 'candle', specific
             label="Specifications"
             open={specsOpen}
             onToggle={() => setSpecsOpen((v) => !v)}
-            controlsId="product-specifications-panel"
+            controlsId={specsPanelId}
           />
           <div
-            id="product-specifications-panel"
+            id={specsPanelId}
             className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${specsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
           >
             <div className="overflow-hidden">
