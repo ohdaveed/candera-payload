@@ -6,12 +6,15 @@ import {
 } from '@/endpoints/etsy'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const call = (endpoint: { handler: (req: any) => Promise<Response> }, req: any) =>
-  endpoint.handler(req)
+const callSync = (req: any) => syncEtsyEndpoint.handler(req)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const callInit = (req: any) => etsyOAuthInitEndpoint.handler(req)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const callVacation = (req: any) => setEtsyVacationEndpoint.handler(req)
 
 describe('Etsy endpoint access control', () => {
   it('sync-etsy rejects unauthenticated requests', async () => {
-    const res = await call(syncEtsyEndpoint, {
+    const res = await callSync({
       user: undefined,
       payload: { logger: { error: () => {} } },
     })
@@ -20,7 +23,7 @@ describe('Etsy endpoint access control', () => {
   })
 
   it('oauth init rejects unauthenticated requests', async () => {
-    const res = await call(etsyOAuthInitEndpoint, {
+    const res = await callInit({
       user: undefined,
       url: 'http://localhost:3000/api/etsy/oauth/init',
       headers: new Headers(),
@@ -30,7 +33,7 @@ describe('Etsy endpoint access control', () => {
   })
 
   it('set-vacation rejects unauthenticated requests', async () => {
-    const res = await call(setEtsyVacationEndpoint, {
+    const res = await callVacation({
       user: undefined,
       payload: { logger: { error: () => {} } },
     })
