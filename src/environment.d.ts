@@ -31,6 +31,10 @@ declare global {
       EMAIL_FROM_NAME?: string
       FORMSUBMIT_EMAIL?: string
 
+      // Bot protection (Cloudflare Turnstile)
+      TURNSTILE_SECRET_KEY?: string
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY?: string
+
       // Logging
       LOG_LEVEL?: string
 

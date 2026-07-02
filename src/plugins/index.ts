@@ -155,6 +155,10 @@ export const plugins: Plugin[] = [
       admin: {
         group: 'Inquiries',
       },
+      access: {
+        // Storefront submissions go through the server action with overrideAccess.
+        create: () => false,
+      },
       hooks: {
         beforeValidate: [validateSubmission],
         afterChange: [processFormSubmission],
