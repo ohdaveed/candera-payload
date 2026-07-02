@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vite-plus/test'
-import {
-  syncEtsyEndpoint,
-  etsyOAuthInitEndpoint,
-  setEtsyVacationEndpoint,
-} from '@/endpoints/etsy'
+import { syncEtsyEndpoint, etsyOAuthInitEndpoint, setEtsyVacationEndpoint } from '@/endpoints/etsy'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const callSync = (req: any) => syncEtsyEndpoint.handler(req)
