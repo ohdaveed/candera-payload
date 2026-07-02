@@ -60,7 +60,7 @@ describe('validateBootConfig', () => {
 
     it('succeeds if BLOB_READ_WRITE_TOKEN is valid in production VERCEL_ENV', () => {
       process.env.VERCEL_ENV = 'production'
-      process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_test'
+      process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_storeid_randomsecret'
       expect(() => validateBootConfig()).not.toThrow()
     })
   })

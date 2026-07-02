@@ -6,6 +6,15 @@ export function isUnresolvedPassReference(value: string | undefined): boolean {
   return value?.startsWith(PASS_URI_PREFIX) === true
 }
 
+/** Matches the format enforced by @vercel/blob: vercel_blob_rw_<store_id>_<random>. */
+export function isValidVercelBlobToken(token: string | undefined): boolean {
+  if (!token || isUnresolvedPassReference(token)) {
+    return false
+  }
+
+  return /^vercel_blob_rw_[^_]+_.+/.test(token)
+}
+
 /**
  * Returns the first configured Postgres connection string that is not an
  * unresolved pass:// reference.

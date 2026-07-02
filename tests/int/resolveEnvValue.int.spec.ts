@@ -2,6 +2,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { payloadLogger } from '@/utilities/logger'
 import {
   isUnresolvedPassReference,
+  isValidVercelBlobToken,
   resolveDatabaseConnectionString,
 } from '@/utilities/resolveEnvValue'
 
@@ -53,6 +54,17 @@ describe('resolveEnvValue', () => {
       delete process.env.DATABASE_URL
 
       expect(resolveDatabaseConnectionString()).toBeUndefined()
+    })
+  })
+
+  describe('isValidVercelBlobToken', () => {
+    it('accepts well-formed Vercel Blob tokens', () => {
+      expect(isValidVercelBlobToken('vercel_blob_rw_storeid_randomsecret')).toBe(true)
+    })
+
+    it('rejects pass:// references and malformed tokens', () => {
+      expect(isValidVercelBlobToken('pass://vault/item/BLOB_READ_WRITE_TOKEN')).toBe(false)
+      expect(isValidVercelBlobToken('vercel_blob_rw_onlyonepart')).toBe(false)
     })
   })
 })

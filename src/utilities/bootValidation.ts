@@ -1,5 +1,5 @@
 import { payloadLogger } from './logger'
-import { isUnresolvedPassReference, resolveDatabaseConnectionString } from './resolveEnvValue'
+import { isUnresolvedPassReference, resolveDatabaseConnectionString, isValidVercelBlobToken } from './resolveEnvValue'
 
 /**
  * Consolidates startup validation checks for environment variables.
@@ -32,7 +32,7 @@ export function validateBootConfig(): void {
   }
 
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-  const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
+  const hasValidBlobToken = isValidVercelBlobToken(blobToken)
 
   if (process.env.VERCEL_ENV === 'production' && !hasValidBlobToken) {
     throw new Error('BLOB_READ_WRITE_TOKEN must be set to a valid Vercel Blob token in production.')
