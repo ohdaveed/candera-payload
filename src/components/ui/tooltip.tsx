@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId } from 'react'
 
 type Props = {
   content: string
@@ -10,6 +10,7 @@ type Props = {
 export function Tooltip({ content, children }: Props) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const tooltipId = useId()
 
   useEffect(() => {
     const el = ref.current
@@ -25,14 +26,16 @@ export function Tooltip({ content, children }: Props) {
         onMouseEnter={() => setOpen(true)}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
+        aria-describedby={open ? tooltipId : undefined}
         className="inline-flex"
       >
         {children}
       </span>
       {open && (
         <span
+          id={tooltipId}
           role="tooltip"
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 text-[11px] leading-snug text-candera-vellum bg-candera-obsidian whitespace-nowrap z-50 pointer-events-none shadow-lg"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 text-[11px] leading-snug text-candera-vellum bg-candera-obsidian whitespace-nowrap z-50 pointer-events-none shadow-lg max-w-[min(100vw-2rem,20rem)] sm:whitespace-normal"
         >
           {content}
           <span className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-candera-obsidian" />

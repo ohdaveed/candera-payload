@@ -93,7 +93,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <RenderHero {...hero} />
 
-      <div id="main-content">
+      <div>
         <span
           className="block h-px max-w-[1280px] mx-auto bg-candera-stone/20"
           aria-hidden="true"

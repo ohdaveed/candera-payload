@@ -66,11 +66,17 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, filename, height: fullHeight, url, width: fullWidth } = resource
 
     width = fullWidth!
     height = fullHeight!
-    alt = altFromResource || ''
+    const filenameAlt = filename
+      ? filename
+          .replace(/\.[^.]+$/, '')
+          .replace(/[-_]+/g, ' ')
+          .trim()
+      : ''
+    alt = altFromResource || altFromProps || filenameAlt || ''
 
     src = getMediaUrl(url)
   }
