@@ -10,6 +10,7 @@ import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
 import { MetricCard } from './MetricCard'
 import { ThemePresetSwitcher } from './ThemePresetSwitcher'
+import { EtsyIntegrationPanel } from './EtsyIntegrationPanel'
 import { SectionTooltip } from './SectionTooltip'
 
 const BeforeDashboard: React.FC = async () => {
@@ -158,6 +159,8 @@ const BeforeDashboard: React.FC = async () => {
           <MetricCard label="Total Inquiries" value={formSubmissionsCount} />
         </div>
       </section>
+
+      <EtsyIntegrationPanel />
 
       <ThemePresetSwitcher />
 
