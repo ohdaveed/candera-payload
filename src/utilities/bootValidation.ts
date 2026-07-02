@@ -1,4 +1,5 @@
 import { payloadLogger } from './logger'
+import { isUnresolvedPassReference, resolveDatabaseConnectionString } from './resolveEnvValue'
 
 /**
  * Consolidates startup validation checks for environment variables.
@@ -12,8 +13,19 @@ export function validateBootConfig(): void {
   }
   payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 
-  const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
+  const databaseConnectionString = resolveDatabaseConnectionString()
   if (!databaseConnectionString) {
+    const hasPassReference =
+      isUnresolvedPassReference(process.env.DATABASE_URI) ||
+      isUnresolvedPassReference(process.env.POSTGRES_URL) ||
+      isUnresolvedPassReference(process.env.DATABASE_URL)
+
+    if (hasPassReference) {
+      throw new Error(
+        'DATABASE_URI/POSTGRES_URL contain unresolved pass:// references and no resolved Postgres connection string is available. Set a real connection string in Vercel environment variables or rely on the Neon integration POSTGRES_URL.',
+      )
+    }
+
     throw new Error(
       'DATABASE_URI (or POSTGRES_URL) is not set. Set a Postgres connection string before starting.',
     )

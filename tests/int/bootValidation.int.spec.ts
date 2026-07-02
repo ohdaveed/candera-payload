@@ -33,7 +33,21 @@ describe('validateBootConfig', () => {
     it('throws if DATABASE_URI and POSTGRES_URL are missing', () => {
       delete (process.env as Record<string, string | undefined>).DATABASE_URI
       delete (process.env as Record<string, string | undefined>).POSTGRES_URL
+      delete (process.env as Record<string, string | undefined>).DATABASE_URL
       expect(() => validateBootConfig()).toThrow(/DATABASE_URI \(or POSTGRES_URL\) is not set/)
+    })
+
+    it('throws if only unresolved pass:// database references are configured', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
+      delete (process.env as Record<string, string | undefined>).DATABASE_URL
+      expect(() => validateBootConfig()).toThrow(/unresolved pass:\/\/ references/)
+    })
+
+    it('uses POSTGRES_URL when DATABASE_URI is an unresolved pass:// reference', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.POSTGRES_URL = 'postgres://localhost:5432/test'
+      expect(() => validateBootConfig()).not.toThrow()
     })
 
     it('throws if BLOB_READ_WRITE_TOKEN is invalid/missing in production VERCEL_ENV', () => {
