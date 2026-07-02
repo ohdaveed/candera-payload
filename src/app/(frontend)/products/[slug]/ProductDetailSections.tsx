@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Eyebrow } from '@/components/ui/eyebrow'
 
 type Spec = { label: string; value: string }
@@ -19,17 +19,20 @@ function SectionToggle({
   label,
   open,
   onToggle,
+  controlsId,
 }: {
   label: string
   open: boolean
   onToggle: () => void
+  controlsId: string
 }) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className="flex items-center justify-between w-full group"
+      className="flex items-center justify-between w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
       aria-expanded={open}
+      aria-controls={controlsId}
     >
       <Eyebrow className="text-candera-sage-text tracking-[.28em]">{label}</Eyebrow>
       <svg
@@ -54,6 +57,7 @@ export function ProductDetailSections({ vessel, productType = 'candle', specific
   // Drawer defaults closed — technical metadata stays tucked away while the
   // story and fragrance lead the page.
   const [specsOpen, setSpecsOpen] = useState(false)
+  const specsPanelId = useId()
 
   const isCandle = productType === 'candle' && vessel !== 'metal'
 
@@ -108,8 +112,10 @@ export function ProductDetailSections({ vessel, productType = 'candle', specific
             label="Specifications"
             open={specsOpen}
             onToggle={() => setSpecsOpen((v) => !v)}
+            controlsId={specsPanelId}
           />
           <div
+            id={specsPanelId}
             className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${specsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
           >
             <div className="overflow-hidden">

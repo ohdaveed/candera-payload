@@ -64,7 +64,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <Link
             aria-label="Candera Home"
             className={[
-              'font-display font-bold text-xl tracking-[-0.04em] transition-colors pl-0.5',
+              'font-display font-bold text-xl tracking-[-0.04em] transition-colors pl-0.5 rounded-sm',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
               isTransparent ? 'text-candera-vellum' : 'text-candera-obsidian',
             ].join(' ')}
             href="/"

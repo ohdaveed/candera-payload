@@ -205,7 +205,7 @@ export const Card: React.FC<CardProps> = (props) => {
               <Link
                 href={href}
                 ref={linkRef}
-                className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
+                className="after:absolute after:inset-0 after:z-[1] after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
               >
                 {titleToUse}
               </Link>
@@ -328,7 +328,7 @@ export const Card: React.FC<CardProps> = (props) => {
             <Link
               href={href}
               ref={linkRef}
-              className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
+              className="after:absolute after:inset-0 after:z-[1] after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:text-candera-ember-strong transition-colors"
             >
               {titleToUse}
             </Link>

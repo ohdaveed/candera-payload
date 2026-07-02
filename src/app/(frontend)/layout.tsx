@@ -59,13 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(
-        GeistMono.variable,
-        fraunces.variable,
-        dmSans.variable,
-        ebGaramond.variable,
-        'scroll-smooth',
-      )}
+      className={cn(GeistMono.variable, fraunces.variable, dmSans.variable, ebGaramond.variable)}
       data-fontset={theme.fontSet}
       data-skin={theme.colorScheme}
       data-hero-layout={theme.heroLayout}
