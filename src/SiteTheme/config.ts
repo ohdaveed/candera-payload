@@ -1,12 +1,14 @@
 import type { GlobalConfig } from 'payload'
 
 import { revalidateSiteTheme } from './hooks/revalidateSiteTheme'
+import { isAdmin } from '../access/isAdmin'
 
 export const SiteTheme: GlobalConfig = {
   slug: 'site-theme',
   label: 'Site Theme',
   access: {
     read: () => true,
+    update: isAdmin,
   },
   admin: {
     description:
