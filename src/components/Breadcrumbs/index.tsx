@@ -21,7 +21,10 @@ export function Breadcrumbs({ items, className = '' }: Props) {
         return (
           <span key={i} className="flex items-center gap-2">
             {item.href ? (
-              <Link href={item.href} className="hover:opacity-60 transition-opacity">
+              <Link
+                href={item.href}
+                className="hover:opacity-60 transition-opacity rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2"
+              >
                 {item.label}
               </Link>
             ) : (

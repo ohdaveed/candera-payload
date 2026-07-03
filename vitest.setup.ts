@@ -31,6 +31,13 @@ for (const key of PASSCLI_GUARD_KEYS) {
   }
 }
 
+// Boot validation requires PAYLOAD_SECRET to be present at module import time.
+// In local/test environments where secrets are not injected via pass-cli,
+// provide a deterministic dummy value so integration tests can start.
+if (!process.env.PAYLOAD_SECRET) {
+  process.env.PAYLOAD_SECRET = 'vitest-integration-test-secret'
+}
+
 // DATABASE_URL is required by neon(), but the canonical connection string is
 // DATABASE_URI (vaulted). Fall back to DATABASE_URI, then POSTGRES_URL.
 if (!process.env.DATABASE_URL) {

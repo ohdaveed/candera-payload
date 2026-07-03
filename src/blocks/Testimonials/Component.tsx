@@ -7,10 +7,18 @@ type Props = TestimonialsBlockType
 
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
- * The TestimonialsBlock is designed to be fully theme-adaptable.
- * It dynamically responds to the page's data-section-mood and data-skin settings by using
- * CSS variables (--mood-bg, --mood-fg, and --mood-accent).
- * Dark Obsidian remains the default/high-contrast fallback. Do not hardcode colors.
+ * The TestimonialsBlock is designed to be theme-adaptable. It responds to the
+ * page's data-section-mood setting via CSS variables (--mood-bg, --mood-fg,
+ * and --mood-accent). The default 'light-editorial' mood declares --mood-fg
+ * as the literal keyword `inherit` on the <html> root, which — having no
+ * parent to inherit from — resolves to the CSS guaranteed-invalid value. That
+ * silently defeats `var(--mood-fg, ...)` and falls through to the fallback
+ * color below, so the fallback must itself be a legible dark tone (matching
+ * --foreground), not the old off-white value that was tuned for a dark card
+ * and left text invisible against this section's actual (light/transparent)
+ * background. --mood-bg validly resolves to `transparent` for this mood, so
+ * it is left as-is. Do not hardcode a dark section background here — other
+ * moods (rose-wash, noir-contrast) rely on these vars resolving correctly.
  */
 export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
   if (!items?.length) return null
@@ -20,7 +28,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
       padding="none"
       style={{
         backgroundColor: 'var(--mood-bg, #141412)',
-        color: 'var(--mood-fg, #fdfbf7)',
+        color: 'var(--mood-fg, #141412)',
       }}
       className="transition-colors duration-300"
     >
