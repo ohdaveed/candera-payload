@@ -1,10 +1,17 @@
 export const meta = {
   name: 'design-fix-storefront-pages',
-  description: 'Design-critique fix pass across storefront pages, one subagent per page, serialized visual verification, single PR',
+  description:
+    'Design-critique fix pass across storefront pages, one subagent per page, serialized visual verification, single PR',
   phases: [
     { title: 'Critique', detail: 'parallel, read-only draft critique per page' },
-    { title: 'Fix & Verify', detail: 'sequential per-page: screenshot, fix, reload, screenshot, pixel-diff, revert no-ops' },
-    { title: 'Coordinate', detail: 'package only confirmed-changed pages into one PR with gist screenshot evidence' },
+    {
+      title: 'Fix & Verify',
+      detail: 'sequential per-page: screenshot, fix, reload, screenshot, pixel-diff, revert no-ops',
+    },
+    {
+      title: 'Coordinate',
+      detail: 'package only confirmed-changed pages into one PR with gist screenshot evidence',
+    },
   ],
 }
 
@@ -167,7 +174,14 @@ Return via the schema: prUrl (created PR URL), accepted (page keys included), re
 
 phase('Critique')
 const drafts = await parallel(
-  PAGES.map((page) => () => agent(critiquePrompt(page), { label: `critique:${page.key}`, phase: 'Critique', schema: CRITIQUE_SCHEMA })),
+  PAGES.map(
+    (page) => () =>
+      agent(critiquePrompt(page), {
+        label: `critique:${page.key}`,
+        phase: 'Critique',
+        schema: CRITIQUE_SCHEMA,
+      }),
+  ),
 )
 const draftByKey = {}
 for (const d of drafts) {
@@ -202,7 +216,12 @@ const rejected = fixResults.filter((r) => r.rejected)
 
 if (accepted.length === 0) {
   log('No page produced a confirmed visual change — skipping PR entirely.')
-  return { prUrl: null, accepted: [], rejected: rejected.map((r) => r.key), summary: 'All pages audited; no confirmed visual changes, no PR opened.' }
+  return {
+    prUrl: null,
+    accepted: [],
+    rejected: rejected.map((r) => r.key),
+    summary: 'All pages audited; no confirmed visual changes, no PR opened.',
+  }
 }
 
 const coordinatorResult = await agent(coordinatorPrompt(accepted, rejected), {
