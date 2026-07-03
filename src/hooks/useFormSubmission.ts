@@ -17,6 +17,7 @@ type UseFormSubmission = {
     formId: string | number | null | undefined,
     submissionData: SubmissionField[],
     turnstileToken?: string,
+    honeypot?: string,
   ) => Promise<boolean>
 }
 
@@ -41,6 +42,7 @@ export function useFormSubmission(): UseFormSubmission {
       formId: string | number | null | undefined,
       submissionData: SubmissionField[],
       turnstileToken?: string,
+      honeypot?: string,
     ) => {
       setError(undefined)
 
@@ -59,6 +61,7 @@ export function useFormSubmission(): UseFormSubmission {
           formId: numericFormId,
           submissionData,
           turnstileToken,
+          honeypot,
         })
 
         if (!result || result.validationErrors) {

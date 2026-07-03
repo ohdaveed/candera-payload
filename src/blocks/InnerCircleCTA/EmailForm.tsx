@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { EMAIL_PATTERN } from '@/constants/validation'
+import { TurnstileWidget } from '@/components/TurnstileWidget'
 
-type FormValues = { email: string }
+type FormValues = { email: string; _gotcha?: string }
 
 type Props = {
   formId: string
@@ -14,6 +15,7 @@ type Props = {
 
 export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
+  const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
 
   const {
     register,
@@ -23,9 +25,9 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   const onSubmit = useCallback(
     (data: FormValues) => {
-      void submit(formId, [{ field: 'email', value: data.email }])
+      void submit(formId, [{ field: 'email', value: data.email }], turnstileToken, data._gotcha)
     },
-    [formId, submit],
+    [formId, submit, turnstileToken],
   )
 
   if (hasSubmitted) {
@@ -41,6 +43,15 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   return (
     <div className="flex flex-col gap-6 w-full">
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+          {...register('_gotcha')}
+        />
+
         <div className="flex flex-col sm:flex-row sm:items-center border border-candera-stone/50 bg-candera-obsidian/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
@@ -57,7 +68,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           />
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || !turnstileToken}
             aria-label={isLoading ? 'Submitting…' : 'Join the Circle'}
             aria-busy={isLoading}
             className={`w-full sm:w-auto text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
@@ -75,9 +86,14 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
             {error}
           </p>
         )}
+
+        <TurnstileWidget
+          className="mt-4 px-4"
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken(undefined)}
+        />
       </form>
 
-      {/* All microcopy consolidated directly below the input */}
       <p className="font-sans text-xs m-0 text-candera-stone/50 px-4">
         Early access · Studio notes · No spam · Unsubscribe any time ·{' '}
         <Link
