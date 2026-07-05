@@ -10,6 +10,7 @@ import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
 import { MetricCard } from './MetricCard'
 import { ThemePresetSwitcher } from './ThemePresetSwitcher'
+import { LoginThemeCycler } from './LoginThemeCycler'
 import { SectionTooltip } from './SectionTooltip'
 
 const BeforeDashboard: React.FC = async () => {
@@ -160,6 +161,8 @@ const BeforeDashboard: React.FC = async () => {
       </section>
 
       <ThemePresetSwitcher />
+
+      <LoginThemeCycler />
 
       <div
         style={{
