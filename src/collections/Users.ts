@@ -1,16 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../access/authenticated'
+import { isAdmin } from '../access/isAdmin'
 import { preventSuspendedLogin } from '../hooks/preventSuspendedLogin'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    admin: isAdmin,
+    create: isAdmin,
+    delete: isAdmin,
+    read: isAdmin,
+    update: isAdmin,
   },
   admin: {
     defaultColumns: ['name', 'email', 'roles', 'status', 'updatedAt'],

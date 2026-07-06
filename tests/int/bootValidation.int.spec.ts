@@ -33,7 +33,36 @@ describe('validateBootConfig', () => {
     it('throws if DATABASE_URI and POSTGRES_URL are missing', () => {
       delete (process.env as Record<string, string | undefined>).DATABASE_URI
       delete (process.env as Record<string, string | undefined>).POSTGRES_URL
+      delete (process.env as Record<string, string | undefined>).DATABASE_URL
       expect(() => validateBootConfig()).toThrow(/DATABASE_URI \(or POSTGRES_URL\) is not set/)
+    })
+
+    it('throws if only unresolved pass:// database references are configured', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
+      delete (process.env as Record<string, string | undefined>).DATABASE_URL
+      expect(() => validateBootConfig()).toThrow(/unresolved pass:\/\/ references/)
+    })
+
+    it('falls back to POSTGRES_URL when DATABASE_URI is an unresolved pass:// reference', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.POSTGRES_URL = 'postgres://localhost:5432/test'
+      expect(() => validateBootConfig()).not.toThrow()
+    })
+
+    it('builds a connection string from PG* parts when URL env vars are pass:// references', () => {
+      process.env.DATABASE_URI = 'pass://vault/item/DATABASE_URI'
+      process.env.DATABASE_URL = 'pass://vault/item/DATABASE_URL'
+      process.env.POSTGRES_URL = 'pass://vault/item/POSTGRES_URL'
+      delete process.env.DATABASE_URL_UNPOOLED
+      delete process.env.POSTGRES_URL_NON_POOLING
+      delete process.env.POSTGRES_PRISMA_URL
+      process.env.PGHOST = 'ep-example.neon.tech'
+      process.env.PGUSER = 'neondb_owner'
+      process.env.PGPASSWORD = 'secret'
+      process.env.PGDATABASE = 'neondb'
+
+      expect(() => validateBootConfig()).not.toThrow()
     })
 
     it('throws if BLOB_READ_WRITE_TOKEN is invalid/missing in production VERCEL_ENV', () => {
@@ -46,7 +75,7 @@ describe('validateBootConfig', () => {
 
     it('succeeds if BLOB_READ_WRITE_TOKEN is valid in production VERCEL_ENV', () => {
       process.env.VERCEL_ENV = 'production'
-      process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_test'
+      process.env.BLOB_READ_WRITE_TOKEN = 'vercel_blob_rw_storeid_randomsecret'
       expect(() => validateBootConfig()).not.toThrow()
     })
   })

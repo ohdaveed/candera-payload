@@ -15,12 +15,14 @@ import {
 } from '@/components/ui/form'
 import { submitForm } from '@/app/actions/submitForm'
 import { EMAIL_PATTERN } from '@/constants/validation'
+import { TurnstileWidget } from '@/components/TurnstileWidget'
 
 type FormValues = {
   'full-name': string
   email: string
   phone?: string
   message: string
+  _gotcha?: string
 }
 
 type Props = {
@@ -31,6 +33,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string | undefined>()
+  const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -38,10 +41,11 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
       email: '',
       phone: '',
       message: '',
+      _gotcha: '',
     },
   })
 
-  const { control, handleSubmit } = form
+  const { control, handleSubmit, register } = form
 
   const onSubmit = useCallback(
     (data: FormValues) => {
@@ -50,12 +54,16 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         setIsLoading(true)
 
         try {
-          const result = await submitForm(formId, [
-            { field: 'full-name', value: data['full-name'] },
-            { field: 'email', value: data.email },
-            { field: 'phone', value: data.phone || '' },
-            { field: 'message', value: data.message },
-          ])
+          const result = await submitForm(
+            formId,
+            [
+              { field: 'full-name', value: data['full-name'] },
+              { field: 'email', value: data.email },
+              { field: 'phone', value: data.phone || '' },
+              { field: 'message', value: data.message },
+            ],
+            { turnstileToken, honeypot: data._gotcha },
+          )
 
           setIsLoading(false)
 
@@ -74,7 +82,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
       void submit()
     },
-    [formId],
+    [formId, turnstileToken],
   )
 
   if (hasSubmitted) {
@@ -100,6 +108,15 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           </div>
         )}
 
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+          {...register('_gotcha')}
+        />
+
         <div className="flex flex-col gap-8">
           <FormField
             control={control}
@@ -116,7 +133,6 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
-                {/* ember-strong = 5.5:1 on vellum — passes AA */}
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
@@ -156,7 +172,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="label">
-                  Phone {/* sage-text = 5.2:1 on vellum — passes AA */}
+                  Phone
                   <span className="text-candera-sage-text text-xs normal-case tracking-normal font-normal ml-1">
                     (optional)
                   </span>
@@ -195,8 +211,14 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           />
         </div>
 
+        <TurnstileWidget
+          className="mt-6"
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken(undefined)}
+        />
+
         <div className="mt-8">
-          <SubmitButton disabled={isLoading}>
+          <SubmitButton disabled={isLoading || !turnstileToken}>
             {isLoading ? 'Sending…' : 'Send Correspondence'}
           </SubmitButton>
         </div>

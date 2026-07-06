@@ -25,6 +25,13 @@ test.describe('Admin Panel', () => {
     await expect(dashboardArtifact).toBeVisible()
   })
 
+  test('dashboard shows custom welcome sections', async () => {
+    await page.goto('http://localhost:3000/admin')
+    await expect(page.getByText('Quick Access')).toBeVisible()
+    await expect(page.getByText('Store Overview')).toBeVisible()
+    await expect(page.getByText('Site Theme')).toBeVisible()
+  })
+
   test('can navigate to list view', async () => {
     await page.goto('http://localhost:3000/admin/collections/users', { waitUntil: 'networkidle' })
     await expect(page).toHaveURL(/\/admin\/collections\/users/)

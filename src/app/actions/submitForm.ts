@@ -1,19 +1,20 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { z } from 'zod'
 import { actionClient } from '@/lib/safe-action'
 import { verifyTurnstileToken } from '@/utilities/turnstile'
+import { checkFormRateLimit, getClientIpFromHeaders } from '@/utilities/formRateLimit'
 import {
   MAX_FIELDS,
   MAX_VALUE_LENGTH,
   validateAndSanitizeSubmission,
 } from '@/utilities/formValidation'
 
-// Define Zod schema to mirror the validation rules.
-// NOT exported: a 'use server' file may only export async functions, so this
-// schema stays module-private (it's only consumed by submitFormAction below).
+const HONEYPOT_FIELD = '_gotcha'
+
 const submitFormSchema = z.object({
   formId: z.number().int().positive({ message: 'Invalid form.' }),
   submissionData: z
@@ -26,19 +27,29 @@ const submitFormSchema = z.object({
     .min(1, { message: 'No submission data.' })
     .max(MAX_FIELDS, { message: 'Too many fields.' }),
   turnstileToken: z.string().optional(),
+  honeypot: z.string().optional(),
 })
 
-// Safe Action (for modern/future components)
 export const submitFormAction = actionClient
   .inputSchema(submitFormSchema)
   .action(async ({ parsedInput }) => {
-    const { formId, submissionData, turnstileToken } = parsedInput
+    const { formId, submissionData, turnstileToken, honeypot } = parsedInput
+
+    if (honeypot) {
+      throw new Error('Submission rejected.')
+    }
+
+    const requestHeaders = await headers()
+    const clientIp = getClientIpFromHeaders(requestHeaders)
+    if (!checkFormRateLimit(clientIp)) {
+      throw new Error('Too many submissions. Please wait a moment and try again.')
+    }
 
     if (turnstileToken || process.env.TURNSTILE_SECRET_KEY) {
       if (!turnstileToken) {
         throw new Error('Security verification token is missing.')
       }
-      const isValid = await verifyTurnstileToken(turnstileToken)
+      const isValid = await verifyTurnstileToken(turnstileToken, clientIp)
       if (!isValid) {
         throw new Error('Security verification failed. Please try again.')
       }
@@ -49,19 +60,19 @@ export const submitFormAction = actionClient
       collection: 'form-submissions',
       data: {
         form: formId,
-        submissionData,
+        submissionData: submissionData.filter((row) => row.field !== HONEYPOT_FIELD),
       },
+      overrideAccess: true,
     })
 
     return { success: true, submissionId: submission.id }
   })
 
-// Classic wrapper (for backwards compatibility and existing spec tests)
 export async function submitForm(
   formId: number,
   submissionData: { field: string; value: string }[],
+  options?: { turnstileToken?: string; honeypot?: string },
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  // 1. Run local checks to mirror original error messages exactly
   if (!Number.isInteger(formId) || formId <= 0) {
     return { ok: false, error: 'Invalid form.' }
   }
@@ -73,9 +84,13 @@ export async function submitForm(
     return { ok: false, error: message }
   }
 
-  // 2. Call the safe action
   try {
-    const result = await submitFormAction({ formId, submissionData })
+    const result = await submitFormAction({
+      formId,
+      submissionData,
+      turnstileToken: options?.turnstileToken,
+      honeypot: options?.honeypot,
+    })
     if (result?.validationErrors) {
       return { ok: false, error: 'Validation failed.' }
     }
