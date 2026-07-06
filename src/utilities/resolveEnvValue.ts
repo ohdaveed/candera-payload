@@ -68,9 +68,7 @@ export function resolveDatabaseConnectionString(): string | undefined {
     .map(([key]) => key)
 
   const resolved =
-    entries
-      .map(([, value]) => value)
-      .find((value): value is string => isUsableEnvValue(value)) ??
+    entries.map(([, value]) => value).find((value): value is string => isUsableEnvValue(value)) ??
     buildConnectionStringFromPgParts()
 
   if (passReferenceKeys.length > 0 && resolved) {

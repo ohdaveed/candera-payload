@@ -17,7 +17,10 @@ export async function withPreviewSitemapFallback(
     return await loader()
   } catch (error) {
     if (process.env.VERCEL_ENV === 'preview') {
-      payloadLogger.warn({ err: error }, 'Preview sitemap generation failed; using fallback entries')
+      payloadLogger.warn(
+        { err: error },
+        'Preview sitemap generation failed; using fallback entries',
+      )
       return fallback
     }
 

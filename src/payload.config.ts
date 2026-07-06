@@ -2,7 +2,10 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 import { validateBootConfig } from './utilities/bootValidation'
-import { resolveDatabaseConnectionString, isValidVercelBlobToken } from './utilities/resolveEnvValue'
+import {
+  resolveDatabaseConnectionString,
+  isValidVercelBlobToken,
+} from './utilities/resolveEnvValue'
 
 // Run boot-time verification of configuration and environment variables
 validateBootConfig()
@@ -24,6 +27,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteTheme } from './SiteTheme/config'
 import { StudioInfo } from './StudioInfo/config'
+import { LoginTheme } from './LoginTheme/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -159,7 +163,7 @@ export default buildConfig({
         ]
       : []),
   ],
-  globals: [Header, Footer, SiteTheme, StudioInfo],
+  globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   // Prefer Resend when a key is present; otherwise fall back to nodemailer (SMTP if
