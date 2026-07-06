@@ -2,7 +2,10 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 import { validateBootConfig } from './utilities/bootValidation'
-import { resolveDatabaseConnectionString, isValidVercelBlobToken } from './utilities/resolveEnvValue'
+import {
+  resolveDatabaseConnectionString,
+  isValidVercelBlobToken,
+} from './utilities/resolveEnvValue'
 
 // Run boot-time verification of configuration and environment variables
 validateBootConfig()

@@ -1,5 +1,9 @@
 import { payloadLogger } from './logger'
-import { isUnresolvedPassReference, resolveDatabaseConnectionString, isValidVercelBlobToken } from './resolveEnvValue'
+import {
+  isUnresolvedPassReference,
+  resolveDatabaseConnectionString,
+  isValidVercelBlobToken,
+} from './resolveEnvValue'
 
 /**
  * Consolidates startup validation checks for environment variables.
