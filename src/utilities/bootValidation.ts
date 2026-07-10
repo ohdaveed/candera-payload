@@ -12,10 +12,11 @@ export function validateBootConfig(): void {
   }
   payloadLogger.success('PAYLOAD_SECRET is successfully loaded.')
 
-  const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL
+  const databaseConnectionString =
+    process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL
   if (!databaseConnectionString) {
     throw new Error(
-      'DATABASE_URI (or POSTGRES_URL) is not set. Set a Postgres connection string before starting.',
+      'DATABASE_URI (or POSTGRES_URL or DATABASE_URL) is not set. Set a Postgres connection string before starting.',
     )
   }
 

@@ -30,10 +30,21 @@ describe('validateBootConfig', () => {
       expect(() => validateBootConfig()).toThrow(/PAYLOAD_SECRET is not set/)
     })
 
-    it('throws if DATABASE_URI and POSTGRES_URL are missing', () => {
+    it('throws if DATABASE_URI, POSTGRES_URL, and DATABASE_URL are missing', () => {
       delete (process.env as Record<string, string | undefined>).DATABASE_URI
       delete (process.env as Record<string, string | undefined>).POSTGRES_URL
-      expect(() => validateBootConfig()).toThrow(/DATABASE_URI \(or POSTGRES_URL\) is not set/)
+      delete (process.env as Record<string, string | undefined>).DATABASE_URL
+      expect(() => validateBootConfig()).toThrow(
+        /DATABASE_URI \(or POSTGRES_URL or DATABASE_URL\) is not set/,
+      )
+    })
+
+    it('accepts DATABASE_URL when DATABASE_URI and POSTGRES_URL are missing', () => {
+      delete (process.env as Record<string, string | undefined>).DATABASE_URI
+      delete (process.env as Record<string, string | undefined>).POSTGRES_URL
+      process.env.DATABASE_URL = 'postgres://localhost:5432/test-from-database-url'
+
+      expect(() => validateBootConfig()).not.toThrow()
     })
 
     it('throws if BLOB_READ_WRITE_TOKEN is invalid/missing in production VERCEL_ENV', () => {
