@@ -10,9 +10,10 @@ import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Form } from '@/components/ui/form'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { submitFormAction } from '@/app/actions/submitForm'
+import { TurnstileWidget } from '@/components/TurnstileWidget'
 
 import { fields } from './fields'
-import { getClientSideURL } from '@/utilities/getURL'
 
 export type FormBlockType = {
   blockName?: string
@@ -47,6 +48,8 @@ export const FormBlock: React.FC<
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
+  const [honeypot, setHoneypot] = useState('')
   const router = useRouter()
 
   const onSubmit = useCallback(
@@ -54,35 +57,29 @@ export const FormBlock: React.FC<
       const submitForm = async () => {
         setError(undefined)
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+        const dataToSend = Object.entries(data as unknown as Record<string, string>).map(
+          ([name, value]) => ({
+            field: name,
+            value: String(value ?? ''),
+          }),
+        )
 
         setIsLoading(true)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
+          const result = await submitFormAction({
+            formId: Number(formID),
+            submissionData: dataToSend,
+            turnstileToken,
+            honeypot,
           })
 
-          const res = await req.json()
-
-          if (req.status >= 400) {
+          if (result?.validationErrors || result?.serverError) {
             setIsLoading(false)
-
             setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status,
+              message: result.serverError || 'Validation failed.',
+              status: '400',
             })
-
             return
           }
 
@@ -91,10 +88,7 @@ export const FormBlock: React.FC<
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
-
-            const redirectUrl = url
-
-            if (redirectUrl) router.push(redirectUrl)
+            if (url) router.push(url)
           }
         } catch (err) {
           console.warn('[FormBlock] submission error:', err)
@@ -107,7 +101,7 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [router, formID, redirect, confirmationType, turnstileToken, honeypot],
   )
 
   return (
@@ -145,7 +139,17 @@ export const FormBlock: React.FC<
             </Section>
           ) : null}
           {!hasSubmitted ? (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+            <form id={String(formID)} onSubmit={handleSubmit(onSubmit)}>
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+                value={honeypot}
+                onChange={(event) => setHoneypot(event.target.value)}
+              />
+
               <Section padding="none" className="mb-10 last:mb-0">
                 {formFromProps && formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
@@ -171,9 +175,15 @@ export const FormBlock: React.FC<
                   : null}
               </Section>
 
+              <TurnstileWidget
+                className="mb-6"
+                onSuccess={setTurnstileToken}
+                onExpire={() => setTurnstileToken(undefined)}
+              />
+
               <Button
-                disabled={isLoading}
-                form={formID}
+                disabled={isLoading || !turnstileToken}
+                form={String(formID)}
                 type="submit"
                 variant="cta-ember"
                 size="cta"

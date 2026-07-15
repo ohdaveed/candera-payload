@@ -10,6 +10,8 @@ import { DashboardHeader } from './DashboardHeader'
 import { QuickAccessCard } from './QuickAccessCard'
 import { MetricCard } from './MetricCard'
 import { ThemePresetSwitcher } from './ThemePresetSwitcher'
+import { EtsyIntegrationPanel } from './EtsyIntegrationPanel'
+import { LoginThemeCycler } from './LoginThemeCycler'
 import { SectionTooltip } from './SectionTooltip'
 
 const BeforeDashboard: React.FC = async () => {
@@ -159,7 +161,11 @@ const BeforeDashboard: React.FC = async () => {
         </div>
       </section>
 
+      <EtsyIntegrationPanel />
+
       <ThemePresetSwitcher />
+
+      <LoginThemeCycler />
 
       <div
         style={{

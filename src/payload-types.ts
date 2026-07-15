@@ -133,12 +133,14 @@ export interface Config {
     footer: Footer;
     'site-theme': SiteTheme;
     'studio-info': StudioInfo;
+    'login-theme': LoginTheme;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-theme': SiteThemeSelect<false> | SiteThemeSelect<true>;
     'studio-info': StudioInfoSelect<false> | StudioInfoSelect<true>;
+    'login-theme': LoginThemeSelect<false> | LoginThemeSelect<true>;
   };
   locale: null;
   widgets: {
@@ -3023,6 +3025,21 @@ export interface StudioInfo {
   createdAt?: string | null;
 }
 /**
+ * Tracks which background color the admin login page is currently cycled to. Change it from the "Login Page Color" widget on the dashboard.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "login-theme".
+ */
+export interface LoginTheme {
+  id: number;
+  /**
+   * Index into the fixed 9-color palette (0-8). Advanced via the dashboard "Next color" button — not meant to be edited here directly.
+   */
+  colorIndex: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3134,6 +3151,16 @@ export interface StudioInfoSelect<T extends boolean = true> {
         term?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "login-theme_select".
+ */
+export interface LoginThemeSelect<T extends boolean = true> {
+  colorIndex?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -107,22 +107,22 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
               <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm border border-border text-card-foreground shadow-card">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-candera-vellum/55 uppercase m-0">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-card-foreground/55 uppercase m-0">
                   {ethosCardEyebrow || 'The Slow Pour'}
                 </p>
 
-                <p className="font-editorial italic text-sm text-candera-vellum/90 mt-2 leading-relaxed m-0">
+                <p className="font-editorial italic text-sm text-card-foreground/90 mt-2 leading-relaxed m-0">
                   {ethosCardBody ||
                     'No factories. No white labeling. Just real pressed botanicals and slow light.'}
                 </p>
 
-                <div className="pt-4 mt-4 border-t border-candera-vellum/10 flex items-center justify-between gap-4">
-                  <span className="font-mono text-[10px] tracking-[0.12em] text-candera-vellum/45 uppercase">
+                <div className="pt-4 mt-4 border-t border-card-foreground/10 flex items-center justify-between gap-4">
+                  <span className="font-mono text-[10px] tracking-[0.12em] text-card-foreground/45 uppercase">
                     {ethosCardFooterLabel || 'Exclusively on Etsy'}
                   </span>
                   <SmoothScrollLink
                     targetId="journal"
-                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-candera-vellum hover:text-candera-vellum/60 transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-card-foreground hover:text-card-foreground/60 transition-colors cursor-pointer"
                   >
                     {ethosCardLinkLabel || 'Read Journal'}
                     <span aria-hidden="true">↓</span>

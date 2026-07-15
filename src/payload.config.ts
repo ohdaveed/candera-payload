@@ -2,6 +2,10 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { shouldUseVercelPostgresAdapter } from './utilities/databaseAdapter'
 import { validateBootConfig } from './utilities/bootValidation'
+import {
+  resolveDatabaseConnectionString,
+  isValidVercelBlobToken,
+} from './utilities/resolveEnvValue'
 
 // Run boot-time verification of configuration and environment variables
 validateBootConfig()
@@ -23,6 +27,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteTheme } from './SiteTheme/config'
 import { StudioInfo } from './StudioInfo/config'
+import { LoginTheme } from './LoginTheme/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -40,7 +45,7 @@ import { BRAND } from './constants/brand'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const databaseConnectionString = process.env.DATABASE_URI || process.env.POSTGRES_URL || ''
+const databaseConnectionString = resolveDatabaseConnectionString() || ''
 // The Vercel adapter speaks Neon's serverless protocol and only works against a
 // Neon-hosted database. Production uses Neon (a `*.neon.tech` host) and keeps the
 // Vercel adapter; plain Postgres (local dev / CI service container) falls back to
@@ -55,7 +60,7 @@ const databaseAdapter = shouldUseVercelPostgresAdapter(databaseConnectionString)
       pool: { connectionString: databaseConnectionString },
     })
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-const hasValidBlobToken = blobToken?.startsWith('vercel_blob_rw_') === true
+const hasValidBlobToken = isValidVercelBlobToken(blobToken)
 
 const corsOrigins: string[] = [
   getServerSideURL(),
@@ -158,7 +163,7 @@ export default buildConfig({
         ]
       : []),
   ],
-  globals: [Header, Footer, SiteTheme, StudioInfo],
+  globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   // Prefer Resend when a key is present; otherwise fall back to nodemailer (SMTP if

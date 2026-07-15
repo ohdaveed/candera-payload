@@ -14,10 +14,11 @@ import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { EMAIL_PATTERN } from '@/constants/validation'
+import { TurnstileWidget } from '@/components/TurnstileWidget'
 import type { ScentQuizBlock as ScentQuizBlockType, Quiz, Product } from '@/payload-types'
 import { ScentRecommendationEngine } from './recommendationEngine'
 
-type EmailFormValues = { email: string }
+type EmailFormValues = { email: string; _gotcha?: string }
 
 // Parse "1-0-2" from the URL into [1, 0, 2]
 function parseAnswers(raw: string | null): number[] {
@@ -62,6 +63,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   // Transient UI state only (not shareable / not needed after refresh)
   const [isRevealing, setIsRevealing] = useState(false)
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
   const {
     isLoading,
     hasSubmitted,
@@ -105,14 +107,19 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   const onEmailSubmit = useCallback(
     (data: EmailFormValues) => {
       const finalFormId = typeof formId === 'object' ? formId?.id : formId
-      void submit(finalFormId, [
-        { field: 'email', value: data.email },
-        { field: 'scent-result', value: result?.name ?? '' },
-      ]).then((ok) => {
+      void submit(
+        finalFormId,
+        [
+          { field: 'email', value: data.email },
+          { field: 'scent-result', value: result?.name ?? '' },
+        ],
+        turnstileToken,
+        data._gotcha,
+      ).then((ok) => {
         if (ok) setSubmittedEmail(data.email)
       })
     },
-    [formId, result, submit],
+    [formId, result, submit, turnstileToken],
   )
 
   const currentQuestion = questions[step]
@@ -366,6 +373,15 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   noValidate
                   className="flex flex-col items-center gap-8 w-full"
                 >
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                    {...register('_gotcha')}
+                  />
+
                   <div className="w-full">
                     <Input
                       id="quiz-email"
@@ -394,12 +410,16 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       </motion.p>
                     )}
                   </div>
+                  <TurnstileWidget
+                    onSuccess={setTurnstileToken}
+                    onExpire={() => setTurnstileToken(undefined)}
+                  />
                   <Button
                     type="submit"
                     variant="cta-ember"
                     size="cta"
                     className="w-full py-10 text-lg uppercase tracking-[0.3em]"
-                    disabled={isLoading}
+                    disabled={isLoading || !turnstileToken}
                   >
                     {isLoading
                       ? 'Sending Invitation…'

@@ -29,24 +29,31 @@ export const ImageGallery: React.FC<Props> = ({ images }) => {
           'mt-4 lg:mt-0',
         )}
       >
-        {allImages.map((photo, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={cn(
-              'w-14 h-14 relative overflow-hidden cursor-pointer bg-candera-ash shrink-0 transition-all duration-200',
-              activeIndex === index
-                ? 'ring-1 ring-candera-obsidian'
-                : 'ring-1 ring-transparent opacity-60 hover:opacity-100',
-            )}
-            aria-label={`View image ${index + 1}`}
-            aria-current={activeIndex === index ? 'true' : 'false'}
-          >
-            {photo && typeof photo === 'object' && (
-              <MediaComponent fill imgClassName="object-cover" resource={photo} />
-            )}
-          </button>
-        ))}
+        {allImages.map((photo, index) => {
+          const photoAlt =
+            photo && typeof photo === 'object' && photo.alt ? photo.alt : `Image ${index + 1}`
+
+          return (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className={cn(
+                'w-14 h-14 relative overflow-hidden cursor-pointer bg-candera-ash shrink-0 transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2',
+                activeIndex === index
+                  ? 'ring-1 ring-candera-obsidian'
+                  : 'ring-1 ring-transparent opacity-60 hover:opacity-100',
+              )}
+              aria-label={`View ${photoAlt}`}
+              aria-pressed={activeIndex === index}
+            >
+              {photo && typeof photo === 'object' && (
+                <MediaComponent fill imgClassName="object-cover" resource={photo} />
+              )}
+            </button>
+          )
+        })}
       </nav>
     ) : null
 

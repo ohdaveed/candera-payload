@@ -1,28 +1,52 @@
 import type { CollectionBeforeValidateHook } from 'payload'
 import { ValidationError } from 'payload'
 import { validateAndSanitizeSubmission } from '@/utilities/formValidation'
+import { checkFormRateLimit, getClientIpFromHeaders } from '@/utilities/formRateLimit'
+
+const HONEYPOT_FIELD = '_gotcha'
 
 /**
- * Hard server-side caps for public form submissions.
+ * Hard server-side caps for form submissions.
  *
- * `form-submissions` keeps the form-builder plugin's default of public `create`
- * so the storefront forms work, but every submission is persisted by Payload and
- * relayed to an external email service. These caps blunt the cost/abuse blast radius of bulk or
- * oversized payloads. They run for *all* write paths — the `submitForm` server
- * action and direct REST `POST /api/form-submissions` alike.
- *
- * Not a substitute for bot mitigation (honeypot / CAPTCHA / rate limiting),
- * which is tracked as a follow-up requiring provisioned infrastructure.
+ * Public REST `create` is disabled in the form-builder plugin override; this hook
+ * still guards any trusted server-side writes and legacy paths.
  */
-export const validateSubmission: CollectionBeforeValidateHook = ({ data }) => {
+export const validateSubmission: CollectionBeforeValidateHook = ({ data, req }) => {
   if (!data) return data
 
   const submissionData = data.submissionData
 
   if (submissionData == null) return data
 
+  const honeypot = submissionData.find(
+    (row: { field: string; value: string }) => row.field === HONEYPOT_FIELD,
+  )
+  if (honeypot?.value) {
+    throw new ValidationError({
+      errors: [{ path: 'submissionData', message: 'Submission rejected.' }],
+    })
+  }
+
+  if (req?.headers) {
+    const clientIp = getClientIpFromHeaders(req.headers as Headers)
+    if (!checkFormRateLimit(clientIp)) {
+      throw new ValidationError({
+        errors: [
+          {
+            path: 'submissionData',
+            message: 'Too many submissions. Please wait a moment and try again.',
+          },
+        ],
+      })
+    }
+  }
+
   try {
-    const sanitized = validateAndSanitizeSubmission(submissionData)
+    const sanitized = validateAndSanitizeSubmission(
+      submissionData.filter(
+        (row: { field: string; value: string }) => row.field !== HONEYPOT_FIELD,
+      ),
+    )
     data.submissionData = sanitized
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Validation failed.'

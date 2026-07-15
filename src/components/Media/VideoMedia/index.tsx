@@ -25,13 +25,15 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
 
   if (resource && typeof resource === 'object') {
     const { filename } = resource
+    const isDecorative = !resource.alt
 
     return (
       <video
-        aria-label={resource.alt || 'Video content'}
+        aria-hidden={isDecorative || undefined}
+        aria-label={isDecorative ? undefined : resource.alt}
         autoPlay
         className={cn(videoClassName)}
-        controls={false}
+        controls={!isDecorative}
         loop
         muted
         onClick={onClick}

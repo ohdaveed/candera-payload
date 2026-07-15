@@ -3,6 +3,7 @@ import type { Endpoint } from 'payload'
 import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClient'
 import { syncEtsyListings } from '@/utilities/syncEtsy'
 import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
+import { userIsAdmin } from '@/access/isAdmin'
 
 export const CANDERA_CANDLES_SHOP_ID = 25894791
 
@@ -68,8 +69,8 @@ export const syncEtsyEndpoint: Endpoint = {
   path: '/sync-etsy',
   method: 'get',
   handler: async (req) => {
-    if (!req.user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!userIsAdmin(req.user)) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     try {
@@ -86,8 +87,8 @@ export const etsyOAuthInitEndpoint: Endpoint = {
   path: '/etsy/oauth/init',
   method: 'get',
   handler: async (req) => {
-    if (!req.user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!userIsAdmin(req.user)) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 })
     }
     const state = crypto.randomUUID()
     const codeVerifier = generateCodeVerifier()
@@ -104,8 +105,8 @@ export const setEtsyVacationEndpoint: Endpoint = {
   path: '/etsy/set-vacation',
   method: 'get',
   handler: async (req) => {
-    if (!req.user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!userIsAdmin(req.user)) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     try {

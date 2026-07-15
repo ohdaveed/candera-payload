@@ -2,12 +2,14 @@ import type { GlobalConfig } from 'payload'
 
 import { revalidateStudioInfo } from './hooks/revalidateStudioInfo'
 import { BRAND } from '@/constants/brand'
+import { isAdmin } from '../access/isAdmin'
 
 export const StudioInfo: GlobalConfig = {
   slug: 'studio-info',
   label: 'Studio Info',
   access: {
     read: () => true,
+    update: isAdmin,
   },
   admin: {
     description:
