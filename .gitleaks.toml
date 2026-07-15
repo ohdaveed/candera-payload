@@ -53,4 +53,11 @@ regexes = [
   '''postgresql://127\.0\.0\.1:5432/''',
   # CI placeholder DSN pattern (user:pass@localhost — not a real credential)
   '''[a-z]+:[a-z]+@localhost:5432/''',
+  # .env.template's unresolved pass:// placeholders. A pass:// URI is a
+  # pointer (share id + item id + field) that still requires an
+  # authenticated pass-cli session to resolve — the share id alone grants
+  # no access. This only matches the literal ITEM_ID_HERE placeholder, not
+  # a fully resolved reference with a real item id (those belong only in
+  # the gitignored .env.pass, never committed).
+  '''pass://[A-Za-z0-9_=+/-]+/ITEM_ID_HERE/[a-z_]+''',
 ]
