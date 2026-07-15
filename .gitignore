@@ -90,4 +90,5 @@ scripts/pass_payloads/*.json
 scripts/__pycache__/
 .neon
 .env*
+!.env.template
 .vercel

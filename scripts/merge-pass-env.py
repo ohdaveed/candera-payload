@@ -17,7 +17,7 @@ if not template_path.exists():
     print('.env.template not found')
     raise SystemExit(2)
 
-pass_text = source_path.read_text()
+pass_text = source_path.read_text().replace('\r\n', '\n')
 # Build pass map
 pass_map = {}
 for m in re.finditer(r"^([A-Z0-9_]+)=(['\"])(.*)\2$", pass_text, flags=re.M):
@@ -61,7 +61,7 @@ def expected_kind(var: str):
         return 'secret'
     if var == 'SUPABASE_SERVICE_ROLE_KEY':
         return 'secret'
-    if var in {'DATABASE_URL', 'DATABASE_URL_UNPOOLED', 'POSTGRES_PRISMA_URL', 'POSTGRES_URL', 'POSTGRES_URL_NON_POOLING', 'POSTGRES_URL_NO_SSL'}:
+    if var in {'DATABASE_URI', 'DATABASE_URL', 'DATABASE_URL_UNPOOLED', 'POSTGRES_PRISMA_URL', 'POSTGRES_URL', 'POSTGRES_URL_NON_POOLING', 'POSTGRES_URL_NO_SSL'}:
         return 'connection_string'
     if var in {'PGPASSWORD', 'POSTGRES_PASSWORD'}:
         return 'password'
@@ -148,13 +148,14 @@ for line in template_lines:
         merged_lines.append(line)
         unmatched.append(var)
 
+# Back up the original .env.pass before overwriting it with the merged output
+if source_path == pass_path and not backup_path.exists():
+    pass_path.rename(backup_path)
+
 # Write merged to .env.pass
 merged_text = '\n'.join(merged_lines) + '\n'
 merged_path.write_text(merged_text)
 merged_path.chmod(0o600)
-
-if source_path == pass_path and not backup_path.exists():
-    pass_path.rename(backup_path)
 
 print(f'Merged .env.pass written from {source_path.name}. Backup preserved at .env.pass.bak')
 print('\nMappings:')
