@@ -23,6 +23,7 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "pass-cli run --env-file .env -- cross-env NODE_OPTIONS=\"--import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "pass-cli run --env-file .env -- vp test run --config ./vitest.config.mts",
+    "test:int:ci": "vp test run --config ./vitest.config.mts",
     "prepare": "husky",
     "create-mcp-key": "pass-cli run --env-file .env -- tsx scripts/create-mcp-key.ts",
     "init-new-db": "pass-cli run --env-file .env -- tsx scripts/init-new-db.ts",
