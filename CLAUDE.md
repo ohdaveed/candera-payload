@@ -130,7 +130,7 @@ Work through in order and report which step fails before attempting any fix:
 
 - **TypeScript:** Strict, ES2022.
 - **Prettier:** Single quotes, **no semicolons**, trailing commas, 100-width.
-- **Linting:** ESLint flat config (`eslint.config.mjs`). Unused vars prefixed `_`. Keep the `fixCircular` helper.
+- **Linting:** Oxlint via `vp lint` (see `vite.config.ts`). Unused vars prefixed `_`. There is no ESLint config — do not add one.
 - **Styling:** Tailwind v4 (`@tailwindcss/postcss`) + `tw-animate-css`. CSS-variable-driven theme in `globals.css`. shadcn/ui with `default` style, RSC.
 - **Architecture:** Follow Payload's deep module / port-adapter pattern — keep domain logic decoupled from DB/IO behind interfaces.
 
