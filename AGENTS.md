@@ -17,8 +17,8 @@ This project uses `pass-cli` (Proton Pass CLI) for secret management. The `.env`
 
 ```bash
 # Inject secrets and run commands
-pass-cli run --env-file .env -- vp dev     # Start dev server at http://localhost:3000
-pass-cli run --env-file .env -- vp build   # Production build
+pass-cli run --env-file .env -- pnpm dev   # Start dev server at http://localhost:3000
+pass-cli run --env-file .env -- pnpm build # Production build
 pass-cli run --env-file .env -- vp check   # Lint, format, and typecheck
 pass-cli run --env-file .env -- vp test    # Run integration + E2E tests
 ```

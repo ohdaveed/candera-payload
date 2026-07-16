@@ -1,7 +1,8 @@
 # Technical Debt Analysis & Remediation Roadmap — 2026-07-16
 
-Snapshot analysis of `main` (`e7457b3`). Read-only audit: this document is the only artifact;
-no source files were changed. Findings are cross-checked against the prior audits
+Snapshot analysis of `main` (`e7457b3`). The audit itself was read-only; the PR that ships this
+document also carries a `pnpm-lock.yaml` hotfix (broken lockfile blocking all CI) and the
+Phase 0 remediation commits below. Findings are cross-checked against the prior audits
 ([backend-review.md](./backend-review.md), [payload-audit-findings.md](./payload-audit-findings.md),
 [state-review-2026-07-01.md](./state-review-2026-07-01.md),
 [client-readiness.md](./client-readiness.md)) and open issues #86–#89 so nothing is

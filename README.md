@@ -48,7 +48,11 @@ To spin up the Candera studio locally, follow these steps:
 
 1. `git clone` this repo.
 2. `cp .env.example .env` and configure your `POSTGRES_URL` and `BLOB_READ_WRITE_TOKEN`.
-3. `pnpm install && pnpm dev`.
+   The committed `.env` convention uses `pass://` URIs (Proton Pass via `pass-cli`) instead of
+   raw values — see `AGENTS.md` for the secret-injection flow. Never overwrite `.env` with
+   plaintext secrets.
+3. `pnpm install`, then `pass-cli run --env-file .env -- pnpm dev` (or plain `pnpm dev` if your
+   `.env` contains resolved values).
 4. Open `http://localhost:3000` to view the storefront.
 
 ### Database Seeding
