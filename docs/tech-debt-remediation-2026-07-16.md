@@ -298,7 +298,7 @@ jobs:
       - name: Integration tests
         # NOT `pnpm test:int` — that script wraps the command in pass-cli, which
         # isn't installed/authenticated in CI; env vars come from the job instead.
-        run: pnpm exec vp test run --config ./vitest.config.mts
+        run: pnpm test:int:ci
       - name: Build
         run: pnpm build
 ```

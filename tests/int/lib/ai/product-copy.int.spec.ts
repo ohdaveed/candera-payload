@@ -53,6 +53,21 @@ describe('buildUserPrompt', () => {
     expect(prompt).toContain('max 60 characters')
     expect(prompt).toContain('max 155 characters')
   })
+
+  it('formats every field line exactly as the model prompt expects', () => {
+    const prompt = buildUserPrompt({
+      title: 'Amber Forest',
+      productType: 'candle',
+      scentProfile: { top: 'Pine', heart: 'Cedar', base: 'Amber' },
+      atmosphere: 'Quiet evening',
+      burnTime: '60 Hours',
+      tone: 'poetic',
+    })
+    expect(prompt).toContain('Product: Amber Forest (candle)')
+    expect(prompt).toContain('Scent profile: top — Pine, heart — Cedar, base — Amber')
+    expect(prompt).toContain('Atmosphere: Quiet evening')
+    expect(prompt).toContain('Intention: 60 Hours')
+  })
 })
 
 describe('SYSTEM_PROMPTS', () => {
@@ -76,6 +91,18 @@ describe('inputSchema', () => {
 
   it('accepts valid minimal input', () => {
     const result = inputSchema.safeParse({ title: 'Cedar', productType: 'candle', tone: 'bold' })
+    expect(result.success).toBe(true)
+  })
+
+  it('accepts a complete input with all optional fields', () => {
+    const result = inputSchema.safeParse({
+      title: 'Amber Forest',
+      productType: 'candle',
+      scentProfile: { top: 'Pine', heart: 'Cedar', base: 'Amber' },
+      atmosphere: 'Quiet evening',
+      burnTime: '60 Hours',
+      tone: 'poetic',
+    })
     expect(result.success).toBe(true)
   })
 })
