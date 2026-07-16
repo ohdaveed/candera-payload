@@ -51,6 +51,10 @@ export default async function Page({ params: paramsPromise }: Args) {
   // Page 1 duplicates the canonical /products route — redirect to avoid duplicate content.
   if (sanitizedPageNumber === 1) redirect('/products')
 
+  // Alternate integer spellings ('02', '2e0') parse to the same page but would
+  // serve duplicate content under non-canonical URLs — redirect to the canonical.
+  if (String(sanitizedPageNumber) !== pageNumber) redirect(`/products/page/${sanitizedPageNumber}`)
+
   const payload = await getPayload({ config: configPromise })
 
   const products = await payload.find({
@@ -108,13 +112,17 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
-  const title = `Collection — Page ${pageNumber} — Candera`
+  // Normalize alternate integer spellings so the canonical always matches the
+  // URL the page component redirects to (non-numeric segments 404 anyway).
+  const parsed = Number(pageNumber)
+  const canonicalPage = Number.isInteger(parsed) && parsed >= 1 ? String(parsed) : pageNumber
+  const title = `Collection — Page ${canonicalPage} — Candera`
   const description =
     'Browse the Candera collection — hand-poured botanical candles in numbered, micro-batch releases.'
   return {
     title,
     description,
     openGraph: { title, description, type: 'website' },
-    alternates: { canonical: `/products/page/${pageNumber}` },
+    alternates: { canonical: `/products/page/${canonicalPage}` },
   }
 }

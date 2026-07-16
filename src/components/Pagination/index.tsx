@@ -31,7 +31,10 @@ export const Pagination: React.FC<{
   )
 
   const pageHref = (target: number): string => {
-    if (queryEntries.length === 0) return `${basePath}/page/${target}`
+    if (queryEntries.length === 0) {
+      // Page 1 lives at the base path itself; /page/1 only redirects there.
+      return target === 1 ? basePath : `${basePath}/page/${target}`
+    }
     const params = new URLSearchParams(queryEntries)
     if (target > 1) params.set('page', String(target))
     return `${basePath}?${params.toString()}`

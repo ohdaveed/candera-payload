@@ -10,7 +10,9 @@ import {
   RawEtsyListing,
   ProductUpsertInput,
   SyncSource,
+  ProductionProductStoreAdapter,
 } from '@/utilities/syncEtsy'
+import type { Payload } from 'payload'
 
 class InMemoryEtsySourceAdapter implements EtsySourcePort {
   public mockListings: RawEtsyListing[] = []
@@ -531,9 +533,6 @@ describe('Etsy description → Lexical (official Payload converter)', () => {
 // Local API only joins it when each call carries req.transactionID. Without
 // threading, writes run on the default connection and rollback is a no-op.
 
-import { ProductionProductStoreAdapter } from '@/utilities/syncEtsy'
-import type { Payload } from 'payload'
-
 function makeFakePayload() {
   return {
     db: {
@@ -568,16 +567,23 @@ describe('ProductionProductStoreAdapter transactions', () => {
     expect(fake.db.rollbackTransaction).not.toHaveBeenCalled()
   })
 
-  it('rolls back the same transaction when the operation throws', async () => {
+  it('rolls back the same transaction that a preceding write ran on', async () => {
     const fake = makeFakePayload()
     const store = new ProductionProductStoreAdapter(fake as unknown as Payload)
 
     await expect(
-      store.transaction(async () => {
+      store.transaction(async (tx) => {
+        // A write happens first, then the sync fails mid-flight.
+        await tx.upsertProduct(123, { etsyListingId: 123 } as ProductUpsertInput)
         throw new Error('mid-sync failure')
       }),
     ).rejects.toThrow('mid-sync failure')
 
+    // The write ran on the transaction's connection, so the rollback of that
+    // same transaction covers it — this is exactly what the old code got wrong.
+    expect(fake.create).toHaveBeenCalledWith(
+      expect.objectContaining({ req: { transactionID: 'tx-1' } }),
+    )
     expect(fake.db.rollbackTransaction).toHaveBeenCalledWith('tx-1')
     expect(fake.db.commitTransaction).not.toHaveBeenCalled()
   })

@@ -52,7 +52,9 @@ export default async function ProductsPage({
   const pageNumber = page ? Number(page) : 1
   if (!Number.isInteger(pageNumber) || pageNumber < 1) notFound()
 
-  const activeTag = tag && tag !== 'All' ? tag : null
+  // Repeated query params arrive as arrays at runtime — only a plain string is
+  // a valid tag filter (an array passed to Payload's `equals` throws a 500).
+  const activeTag = typeof tag === 'string' && tag !== 'All' ? tag : null
   const activeSort = activeProductSort(sort)
 
   const payload = await getPayload({ config: configPromise })

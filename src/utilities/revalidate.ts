@@ -14,23 +14,25 @@ export interface CacheBusterPort {
  * Classifies failures from next/cache calls into the two benign cases we
  * deliberately swallow. Anything unclassified is rethrown by the caller.
  *
- * - 'module-unavailable': next/cache can't be imported (test environments,
- *   plain scripts). Detected via Node's typed resolution error codes, with
- *   the bundler message as a fallback for non-Node resolvers.
+ * - 'module-unavailable': next/cache itself can't be imported (test
+ *   environments, plain scripts). Requires the error to name next/cache —
+ *   a resolution failure elsewhere in the import graph must not be
+ *   misclassified as a harmless cache miss.
  * - 'outside-request-context': the API was called outside a Next.js request
  *   (Payload hooks fired from scripts/seeds). Next exposes NO typed error for
  *   this — the invariant message substring is the only available signal, so
  *   it is isolated here where a Next wording change breaks exactly one place.
  */
 function classifyNextCacheError(err: unknown): 'module-unavailable' | 'outside-request-context' | 'unknown' {
-  const code = (err as { code?: string } | null)?.code
-  if (code === 'ERR_MODULE_NOT_FOUND' || code === 'MODULE_NOT_FOUND') return 'module-unavailable'
-  if (err instanceof Error) {
-    if (err.message.includes('Cannot find module') || err.message.includes('Could not resolve')) {
-      return 'module-unavailable'
-    }
-    if (err.message.includes('static generation store missing')) return 'outside-request-context'
-  }
+  if (!(err instanceof Error)) return 'unknown'
+  const code = (err as Error & { code?: string }).code
+  const isResolutionError =
+    code === 'ERR_MODULE_NOT_FOUND' ||
+    code === 'MODULE_NOT_FOUND' ||
+    err.message.includes('Cannot find module') ||
+    err.message.includes('Could not resolve')
+  if (isResolutionError && err.message.includes('next/cache')) return 'module-unavailable'
+  if (err.message.includes('static generation store missing')) return 'outside-request-context'
   return 'unknown'
 }
 
@@ -50,7 +52,12 @@ export class NextCacheBusterAdapter implements CacheBusterPort {
           payloadLogger.warn(`Skipping ${label} — next/cache not available in this environment`)
           return
         default:
-          throw err
+          // Contain rather than rethrow: callers fire-and-forget these
+          // invalidations (e.g. `void nextCacheBuster.revalidateTag(...)` in
+          // revalidateForm), where a rethrow becomes an unhandled rejection.
+          // A failed cache invalidation must never take down a save.
+          payloadLogger.error(err, `Failed ${label}`)
+          return
       }
     }
   }

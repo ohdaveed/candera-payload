@@ -2,10 +2,10 @@ import React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 
-afterEach(cleanup)
-
 import { Pagination } from '@/components/Pagination'
 import { activeProductSort, resolveProductSort } from '@/lib/productSort'
+
+afterEach(cleanup)
 
 // Regression guard for FE-01 (tech-debt-remediation-2026-07-16): paginating a
 // filtered/sorted collection must preserve the active `tag`/`sort` params.
@@ -38,8 +38,9 @@ describe('Pagination hrefs', () => {
     expect(screen.getByRole('link', { name: 'Go to next page' }).getAttribute('href')).toBe(
       '/products/page/3',
     )
+    // Page 1 links straight to the base path — /page/1 would only redirect there.
     expect(screen.getByRole('link', { name: 'Go to previous page' }).getAttribute('href')).toBe(
-      '/products/page/1',
+      '/products',
     )
   })
 
