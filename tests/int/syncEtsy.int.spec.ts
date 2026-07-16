@@ -523,3 +523,84 @@ describe('Etsy description → Lexical (official Payload converter)', () => {
     expect(types).toContain('list')
   })
 })
+
+// -------------------------------------------------------------
+// ProductionProductStoreAdapter — transaction threading (BE-01)
+// -------------------------------------------------------------
+// Regression guard: payload.db.beginTransaction() opens a transaction, but the
+// Local API only joins it when each call carries req.transactionID. Without
+// threading, writes run on the default connection and rollback is a no-op.
+
+import { ProductionProductStoreAdapter } from '@/utilities/syncEtsy'
+import type { Payload } from 'payload'
+
+function makeFakePayload() {
+  return {
+    db: {
+      beginTransaction: vi.fn(async () => 'tx-1'),
+      commitTransaction: vi.fn(async () => {}),
+      rollbackTransaction: vi.fn(async () => {}),
+    },
+    find: vi.fn(async () => ({ docs: [] })),
+    create: vi.fn(async () => ({ id: 101 })),
+    update: vi.fn(async () => ({ id: 101 })),
+  }
+}
+
+describe('ProductionProductStoreAdapter transactions', () => {
+  it('threads the transactionID into finds and writes inside transaction()', async () => {
+    const fake = makeFakePayload()
+    const store = new ProductionProductStoreAdapter(fake as unknown as Payload)
+
+    await store.transaction(async (tx) => {
+      const existing = await tx.findProductByEtsyId(123)
+      await tx.upsertProduct(123, { etsyListingId: 123 } as ProductUpsertInput, existing)
+    })
+
+    expect(fake.db.beginTransaction).toHaveBeenCalledTimes(1)
+    expect(fake.find).toHaveBeenCalledWith(
+      expect.objectContaining({ req: { transactionID: 'tx-1' } }),
+    )
+    expect(fake.create).toHaveBeenCalledWith(
+      expect.objectContaining({ req: { transactionID: 'tx-1' } }),
+    )
+    expect(fake.db.commitTransaction).toHaveBeenCalledWith('tx-1')
+    expect(fake.db.rollbackTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rolls back the same transaction when the operation throws', async () => {
+    const fake = makeFakePayload()
+    const store = new ProductionProductStoreAdapter(fake as unknown as Payload)
+
+    await expect(
+      store.transaction(async () => {
+        throw new Error('mid-sync failure')
+      }),
+    ).rejects.toThrow('mid-sync failure')
+
+    expect(fake.db.rollbackTransaction).toHaveBeenCalledWith('tx-1')
+    expect(fake.db.commitTransaction).not.toHaveBeenCalled()
+  })
+
+  it('skips the duplicate existence query when the caller provides one (BE-03)', async () => {
+    const fake = makeFakePayload()
+    const store = new ProductionProductStoreAdapter(fake as unknown as Payload)
+
+    await store.upsertProduct(123, { etsyListingId: 123 } as ProductUpsertInput, { id: 7 })
+
+    expect(fake.find).not.toHaveBeenCalled()
+    expect(fake.update).toHaveBeenCalledWith(expect.objectContaining({ id: 7 }))
+  })
+
+  it('outside a transaction, calls carry no req and writes still work', async () => {
+    const fake = makeFakePayload()
+    const store = new ProductionProductStoreAdapter(fake as unknown as Payload)
+
+    await store.upsertProduct(123, { etsyListingId: 123 } as ProductUpsertInput)
+
+    expect(fake.find).toHaveBeenCalledWith(expect.not.objectContaining({ req: expect.anything() }))
+    expect(fake.create).toHaveBeenCalledWith(
+      expect.not.objectContaining({ req: expect.anything() }),
+    )
+  })
+})
