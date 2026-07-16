@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout (full history)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Fetch the full history so that the scheduled scan and history-aware
           # runs can detect secrets committed in the past (not just the diff).
