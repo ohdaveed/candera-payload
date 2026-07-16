@@ -110,7 +110,13 @@ export interface ProductStorePort {
   // so two new listings that derive the same clean slug would collide and the
   // second would be dropped. Returns the existing product with that slug, if any.
   findProductBySlug(slug: string): Promise<{ id: number | string } | null>
-  upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string>
+  // `existing` (when provided) is the result of a prior findProductByEtsyId in the
+  // same transaction, so the adapter can skip a duplicate existence query.
+  upsertProduct(
+    etsyListingId: number,
+    data: ProductUpsertInput,
+    existing?: { id: number | string } | null,
+  ): Promise<number | string>
   transaction<T>(operation: (txStore: ProductStorePort) => Promise<T>): Promise<T>
 }
 
@@ -307,13 +313,12 @@ export class EtsySyncEngine {
           ...parsed,
         }
 
-        // Decide create vs. update up front so we know which fields to write:
-        // new products get the full payload, existing ones receive only
-        // sync-owned fields so editor curation is never clobbered.
-        const existing = await ports.productStore.findProductByEtsyId(listing_id)
-
         // Perform the upsert inside a transaction boundary
         await ports.productStore.transaction(async (txStore) => {
+          // Decide create vs. update inside the transaction so we know which
+          // fields to write: new products get the full payload, existing ones
+          // receive only sync-owned fields so editor curation is never clobbered.
+          const existing = await txStore.findProductByEtsyId(listing_id)
           let productData: ProductUpsertInput
           if (existing) {
             productData = syncOwned
@@ -329,7 +334,7 @@ export class EtsySyncEngine {
             editorOwned.slug = slugTaken ? `${baseSlug}-${listing_id}` : baseSlug
             productData = { ...syncOwned, ...editorOwned }
           }
-          await txStore.upsertProduct(listing_id, productData)
+          await txStore.upsertProduct(listing_id, productData, existing)
         })
 
         syncedCount++
@@ -677,7 +682,18 @@ export class ProductionEtsySourceAdapter implements EtsySourcePort {
 }
 
 export class ProductionProductStoreAdapter implements ProductStorePort {
-  constructor(private payload: Payload) {}
+  constructor(
+    private payload: Payload,
+    // When set, every Local API call runs on this transaction's connection.
+    private transactionID?: number | string,
+  ) {}
+
+  // Payload's Local API joins an open transaction only when the call carries a
+  // req with its transactionID — without this, reads/writes run on the default
+  // connection and commit/rollback don't cover them.
+  private reqArg(): { req?: { transactionID: number | string } } {
+    return this.transactionID !== undefined ? { req: { transactionID: this.transactionID } } : {}
+  }
 
   async findProductByEtsyId(etsyListingId: number): Promise<{ id: number | string } | null> {
     const res = await this.payload.find({
@@ -691,6 +707,7 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
       depth: 0,
       limit: 1,
       pagination: false,
+      ...this.reqArg(),
     })
     return res.docs.length > 0 ? { id: res.docs[0].id } : null
   }
@@ -706,23 +723,32 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
       depth: 0,
       limit: 1,
       pagination: false,
+      ...this.reqArg(),
     })
     return res.docs.length > 0 ? { id: res.docs[0].id } : null
   }
 
-  async upsertProduct(etsyListingId: number, data: ProductUpsertInput): Promise<number | string> {
-    const existing = await this.findProductByEtsyId(etsyListingId)
-    if (existing) {
+  async upsertProduct(
+    etsyListingId: number,
+    data: ProductUpsertInput,
+    existing?: { id: number | string } | null,
+  ): Promise<number | string> {
+    // Trust a caller-provided existence check (from the same transaction);
+    // only query when the caller didn't already look the product up.
+    const target = existing !== undefined ? existing : await this.findProductByEtsyId(etsyListingId)
+    if (target) {
       const doc = await this.payload.update({
         collection: 'products',
-        id: existing.id,
+        id: target.id,
         data: data as unknown as Product,
+        ...this.reqArg(),
       })
       return doc.id
     } else {
       const doc = await this.payload.create({
         collection: 'products',
         data: data as unknown as Product,
+        ...this.reqArg(),
       })
       return doc.id
     }
@@ -732,7 +758,10 @@ export class ProductionProductStoreAdapter implements ProductStorePort {
     if (this.payload.db.beginTransaction) {
       const transactionID = await this.payload.db.beginTransaction()
       try {
-        const transactionalStore = new ProductionProductStoreAdapter(this.payload)
+        const transactionalStore = new ProductionProductStoreAdapter(
+          this.payload,
+          transactionID ?? undefined,
+        )
         const result = await operation(transactionalStore)
         if (
           this.payload.db.commitTransaction &&

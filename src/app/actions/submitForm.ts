@@ -41,7 +41,7 @@ export const submitFormAction = actionClient
 
     const requestHeaders = await headers()
     const clientIp = getClientIpFromHeaders(requestHeaders)
-    if (!checkFormRateLimit(clientIp)) {
+    if (!(await checkFormRateLimit(clientIp))) {
       throw new Error('Too many submissions. Please wait a moment and try again.')
     }
 
