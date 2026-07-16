@@ -114,6 +114,11 @@ else
   run_cmd pnpm build
 fi
 
+SKIPPED_STEPS=()
+[[ $SKIP_MIGRATE -eq 1 ]] && SKIPPED_STEPS+=("migrations")
+[[ $SKIP_LINT -eq 1 ]] && SKIPPED_STEPS+=("lint")
+[[ $SKIP_TESTS -eq 1 ]] && SKIPPED_STEPS+=("tests")
+
 if [[ $SKIP_LINT -eq 0 ]]; then
   echo "Running lint..."
   run_cmd pnpm lint
@@ -125,9 +130,14 @@ if [[ $SKIP_TESTS -eq 0 ]]; then
     run_cmd pnpm test:int
   else
     echo "Skipping integration tests: no env injection available or $ENV_FILE missing"
+    SKIPPED_STEPS+=("integration tests")
   fi
   echo "Running E2E tests (will spawn dev server)"
   run_cmd pnpm test:e2e
 fi
 
-echo "Local build script finished: all steps passed."
+if [[ ${#SKIPPED_STEPS[@]} -gt 0 ]]; then
+  echo "Local build script finished. All executed steps passed, but some were SKIPPED: ${SKIPPED_STEPS[*]}."
+else
+  echo "Local build script finished: all steps passed."
+fi
