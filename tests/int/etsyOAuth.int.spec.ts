@@ -36,7 +36,8 @@ describe('Etsy OAuth authorize + state/PKCE handling', () => {
 
   it('init redirects to the Etsy consent URL with state + S256 PKCE challenge', async () => {
     const res = await callInit({
-      user: { id: 1 },
+      // The endpoint is admin-gated (userIsAdmin checks the roles field).
+      user: { id: 1, roles: ['admin'] },
       url: 'http://localhost:3000/api/etsy/oauth/init',
       headers: new Headers(),
     })

@@ -1,5 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from 'payload'
 
+import { payloadLogger } from './logger'
+
 /**
  * Seam decoupling revalidation actions from Next.js caching libraries.
  */
@@ -9,46 +11,62 @@ export interface CacheBusterPort {
 }
 
 /**
+ * Classifies failures from next/cache calls into the two benign cases we
+ * deliberately swallow. Anything unclassified is rethrown by the caller.
+ *
+ * - 'module-unavailable': next/cache can't be imported (test environments,
+ *   plain scripts). Detected via Node's typed resolution error codes, with
+ *   the bundler message as a fallback for non-Node resolvers.
+ * - 'outside-request-context': the API was called outside a Next.js request
+ *   (Payload hooks fired from scripts/seeds). Next exposes NO typed error for
+ *   this — the invariant message substring is the only available signal, so
+ *   it is isolated here where a Next wording change breaks exactly one place.
+ */
+function classifyNextCacheError(err: unknown): 'module-unavailable' | 'outside-request-context' | 'unknown' {
+  const code = (err as { code?: string } | null)?.code
+  if (code === 'ERR_MODULE_NOT_FOUND' || code === 'MODULE_NOT_FOUND') return 'module-unavailable'
+  if (err instanceof Error) {
+    if (err.message.includes('Cannot find module') || err.message.includes('Could not resolve')) {
+      return 'module-unavailable'
+    }
+    if (err.message.includes('static generation store missing')) return 'outside-request-context'
+  }
+  return 'unknown'
+}
+
+/**
  * Production adapter wrapping Next.js native Cache APIs.
  */
 export class NextCacheBusterAdapter implements CacheBusterPort {
-  async revalidatePath(path: string): Promise<void> {
+  private async invalidate(action: () => Promise<void>, label: string): Promise<void> {
     try {
-      const { revalidatePath } = await import('next/cache')
-      revalidatePath(path)
+      await action()
     } catch (err) {
-      if (err instanceof Error && err.message.includes('static generation store missing')) {
-        return
+      switch (classifyNextCacheError(err)) {
+        case 'outside-request-context':
+          // Expected when Payload hooks run outside a Next.js request (scripts, seeds).
+          return
+        case 'module-unavailable':
+          payloadLogger.warn(`Skipping ${label} — next/cache not available in this environment`)
+          return
+        default:
+          throw err
       }
-      // If next/cache is not available (e.g. in some test environments), just log and skip
-      if (
-        err instanceof Error &&
-        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
-      ) {
-        console.warn(`Skipping revalidatePath for ${path} - next/cache not available`)
-        return
-      }
-      throw err
     }
   }
+
+  async revalidatePath(path: string): Promise<void> {
+    await this.invalidate(async () => {
+      const { revalidatePath } = await import('next/cache')
+      revalidatePath(path)
+    }, `revalidatePath(${path})`)
+  }
+
   async revalidateTag(tag: string): Promise<void> {
-    try {
+    await this.invalidate(async () => {
       const { revalidateTag } = await import('next/cache')
       revalidateTag(tag, 'max')
-    } catch (err) {
-      if (err instanceof Error && err.message.includes('static generation store missing')) {
-        // This error is expected when running Payload hooks outside of a Next.js request context (e.g. scripts)
-        return
-      }
-      if (
-        err instanceof Error &&
-        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
-      ) {
-        console.warn(`Skipping revalidateTag for ${tag} - next/cache not available`)
-        return
-      }
-      throw err
-    }
+    }, `revalidateTag(${tag})`)
   }
 }
 
