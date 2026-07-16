@@ -23,8 +23,9 @@ integration coverage are all in good shape — but it is **unguarded and duplica
 - **A long duplication tail:** 7 listing routes with no shared skeleton, 3 divergent form
   implementations (one bypassing sanitization), an 858-line `syncEtsy.ts` god-file, 6 dead
   components, ~26 stale one-off scripts, and doc drift in CLAUDE.md/AGENTS.md/README.
-- **Two prior-audit items are now resolved** (stale `fontSet` types; Etsy OAuth CSRF `state`
-  validation) and are closed in the inventory below; three remain open (RV-02/03/04).
+- **Three prior-audit items are now resolved** (stale `fontSet` types; Etsy OAuth CSRF `state`
+  validation; Etsy env boot validation) and are closed in the inventory below; three remain
+  open (RV-02/03/04).
 
 Recommended order: make the verifiers honest first (Phase 0), fix the two confirmed bugs
 (Phase 1), land the CI safety net (Phase 2), and only then run the consolidation refactors
@@ -231,7 +232,8 @@ single-source · fix template package name · close RV-02/03/04 (regen generated
 - **Phase 4:** `local-build.sh` + visual spot-check (fonts; FOUC with JS disabled) + Rich
   Results test for JSON-LD.
 
-Rough total: Phases 0–2 ≈ 10 small/medium PRs; Phase 3 ≈ 8 PRs (two L); Phase 4 ≈ 1–2 PRs.
+Rough total: Phases 0–2 = 14 small/medium PRs (6 + 4 + 4); Phase 3 = 8 PRs (two L);
+Phase 4 ≈ 1–2 PRs — ≈ 23–24 PRs overall.
 
 ## Appendix A — proposed `.github/workflows/ci.yml`
 
@@ -279,7 +281,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
