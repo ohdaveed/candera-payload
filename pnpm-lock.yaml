@@ -47,8 +47,8 @@ importers:
         specifier: 3.85.1
         version: 3.85.1(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(@types/pg@8.20.0)(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))
       '@payloadcms/email-nodemailer':
-        specifier: ^3.85.1
-        version: 3.85.1(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))
+        specifier: ^3.85.2
+        version: 3.85.2(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))
       '@payloadcms/email-resend':
         specifier: 3.85.1
         version: 3.85.1(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))
@@ -1849,11 +1849,11 @@ packages:
     peerDependencies:
       payload: 3.85.1
 
-  '@payloadcms/email-nodemailer@3.85.1':
-    resolution: {integrity: sha512-YC+9lMVrxC4rRocDDtooaLglFbI4Kd81QUa3wR4/ko4aVsd1CP1cZEKEbu1aJyB7XFeT+O7/eUPFDHin6+tslQ==}
+  '@payloadcms/email-nodemailer@3.85.2':
+    resolution: {integrity: sha512-Xw5qOgWeG8JjH8b6vARkkAZOnjKDBpDzn8C8JRZpNIRz4Bhctn/TtHQdKFUO9EOMkCwN7nK7egxqhORJFDBMSA==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
-      payload: 3.85.1
+      payload: 3.85.2
 
   '@payloadcms/email-resend@3.85.1':
     resolution: {integrity: sha512-yUXcCXb2tJ0ktAzfGlmgo7CLhUDgSwWoc6S+BAkmsDSW89TUYFWzByUT1M+eJpoxIDByQ8x/ghndOyqgVbWoEg==}
@@ -4690,6 +4690,10 @@ packages:
     resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
     engines: {node: '>=0.10.0'}
 
+  iconv-lite@0.7.3:
+    resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
+    engines: {node: '>=0.10.0'}
+
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
@@ -5398,8 +5402,8 @@ packages:
     resolution: {integrity: sha512-J6l92tKHX6w8Jy5nO1Vuc01NoIiRGi/d6qBKVxh+IQ8Cr3b6HbVNfKiF8ZpFKufTwpwxMmce2W3iQZ861ZRyTg==}
     engines: {node: '>=18'}
 
-  nodemailer@9.0.1:
-    resolution: {integrity: sha512-Gwv8SQewT616ZM/URn0H54b8PWo/Wum7md3EW2aWy1lO27+WZCX+Xyak3J+NlmHUjDh5ME+uesJUDRbR3Ye8Bw==}
+  nodemailer@9.0.3:
+    resolution: {integrity: sha512-n+YP+NKwR5zRWa60k3GiQ6Q3B4KXCoAw40dAKeCtYn020iNN74aWK2liXIC3ZEATeGql7we3tE3t8QwhY0eskw==}
     engines: {node: '>=6.0.0'}
 
   normalize-path@3.0.0:
@@ -8238,9 +8242,9 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@payloadcms/email-nodemailer@3.85.1(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))':
+  '@payloadcms/email-nodemailer@3.85.2(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))':
     dependencies:
-      nodemailer: 9.0.1
+      nodemailer: 9.0.3
       payload: 3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3)
 
   '@payloadcms/email-resend@3.85.1(payload@3.85.1(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))':
@@ -11076,6 +11080,10 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
+  iconv-lite@0.7.3:
+    dependencies:
+      safer-buffer: 2.1.2
+
   ieee754@1.2.1: {}
 
   image-size@2.0.2: {}
@@ -11897,7 +11905,7 @@ snapshots:
 
   node-releases@2.0.50: {}
 
-  nodemailer@9.0.1: {}
+  nodemailer@9.0.3: {}
 
   normalize-path@3.0.0: {}
 
