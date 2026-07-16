@@ -23,9 +23,9 @@ integration coverage are all in good shape — but it is **unguarded and duplica
 - **A long duplication tail:** 7 listing routes with no shared skeleton, 3 divergent form
   implementations (one bypassing sanitization), an 858-line `syncEtsy.ts` god-file, 6 dead
   components, ~26 stale one-off scripts, and doc drift in CLAUDE.md/AGENTS.md/README.
-- **Three prior-audit items are now resolved** (stale `fontSet` types; Etsy OAuth CSRF `state`
-  validation; Etsy env boot validation) and are closed in the inventory below; three remain
-  open (RV-02/03/04).
+- **Five prior-audit items are now resolved** (stale `fontSet` types; Etsy OAuth CSRF `state`
+  validation; Etsy env boot validation; generated-schema drift; the silent SMTP fallback now
+  warns at boot) and are closed in the inventory below; one remains open (RV-03).
 
 Recommended order: make the verifiers honest first (Phase 0), fix the two confirmed bugs
 (Phase 1), land the CI safety net (Phase 2), and only then run the consolidation refactors
@@ -98,7 +98,7 @@ search, scentQuiz, boot validation, DB adapter…) with no `.skip`/`.only` — g
 | FE-01 | HIGH | **Verified:** pagination drops active filters/sort. `Pagination` always links path-based `${basePath}/page/N`; `/products/page/[pageNumber]` hardcodes `sort: '-createdAt'` and ignores `?tag`/`?sort`, so filtering + "next page" loses the filter. The `?page=` branch in `products/page.tsx` is dead, and `/products?page=2` vs `/products/page/2` both resolve (duplicate content, no canonical). | `src/components/Pagination/index.tsx:35-96`, `src/app/(frontend)/products/page/[pageNumber]/page.tsx:62`, `src/app/(frontend)/products/page.tsx:44-54` | P1 |
 | FE-02 | MED | 7 listing routes (`posts`, `how-to`, `products` + their `page/[pageNumber]` siblings, detail pages) repeat the same fetch/render skeleton with no shared helper; paginated variants duplicate ~90% of their base route. | `src/app/(frontend)/{posts,how-to,products}/**` | P3 |
 | FE-03 | MED | `toGridProduct` mapper copied verbatim (15 lines) in two files. | `products/page.tsx:22-37`, `products/page/[pageNumber]/page.tsx:18-33` | P3 |
-| FE-04 | MED | Three divergent form implementations; only `InnerCircleCTA/EmailForm` uses the shared `useFormSubmission` hook; `blocks/Form/Component.tsx` calls `submitFormAction` directly, **bypassing `validateAndSanitizeSubmission`**. | `components/ContactForm/`, `blocks/InnerCircleCTA/EmailForm.tsx`, `blocks/Form/Component.tsx` | P3 |
+| FE-04 | MED | Four submission flows with divergent implementations; only `InnerCircleCTA/EmailForm` and `ScentQuiz` use the shared `useFormSubmission` hook, while `ContactForm` hand-rolls state and `blocks/Form/Component.tsx` calls `submitFormAction` directly, **bypassing `validateAndSanitizeSubmission`**. | `components/ContactForm/`, `blocks/InnerCircleCTA/EmailForm.tsx`, `blocks/Form/Component.tsx`, `blocks/ScentQuiz/Component.tsx` | P3 |
 | FE-05 | MED | Redundant double validation in the action layer: zod in `submitFormAction` + manual `validateAndSanitizeSubmission` in the `submitForm` wrapper — two public entry points with different guarantees. | `src/app/actions/submitForm.ts` | P3 (with FE-04) |
 | FE-06 | MED | Inner Circle CTA hand-rolled 4 ways: the reusable block plus three inline variants in `posts/[slug]`, `how-to/[slug]`, `products/[slug]`. | those pages + `blocks/InnerCircleCTA/` | P3 |
 | FE-07 | MED | Read-time calculation duplicated and inconsistent — posts use `JSON.stringify(content).split(/\s+/)` (counts JSON syntax; inaccurate), how-to walks the Lexical tree. | `posts/[slug]/page.tsx:37`, `how-to/[slug]/page.tsx:37-47` | P3 (with FE-02) |
@@ -114,7 +114,10 @@ search, scentQuiz, boot validation, DB adapter…) with no `.skip`/`.only` — g
 
 The `next/` route handlers (`seed`, `dev-auto-login`, `preview`, `generate-product-copy`,
 `vercel-deploy` webhook) were audited and are **well-guarded** — admin/auth checks, timing-safe
-HMAC verification, env-gated dev bypass. No security gaps found there.
+HMAC verification, env-gated dev bypass. One gap surfaced in PR review and was fixed in this
+PR: the preview route's relative-path check accepted scheme-relative values (`//host`),
+allowing an off-origin redirect for holders of the preview secret; it now requires a
+single-slash local path.
 
 ### Dependencies & docs (DD-xx)
 
@@ -122,7 +125,7 @@ HMAC verification, env-gated dev bypass. No security gaps found there.
 |----|-----|---------|-------|-------------|
 | DD-01 | MED | Likely-unused dependencies (no `src/`/`scripts/` imports found): `@inferencesh/sdk`, `@tanstack/react-query`, `match-sorter`, `@shefing/color-picker`, `remark-gfm`. Verify each, then remove. | `package.json` | P0 |
 | DD-02 | MED | Committed Neon infra metadata: real `project_id` + production Neon-auth hostname in `scripts/pass_payloads/candera-production-neon-auth.json` (API key is a placeholder — no secret leaked, but infra identifiers don't belong in git). | `scripts/pass_payloads/` | P0 |
-| DD-03 | MED | Broken `dump-public-schema` script family reads/writes `./schema/`, which doesn't exist. | `scripts/dump-public-schema.sh`, `package.json` | P0 |
+| DD-03 | — | ~~Broken `dump-public-schema` script family~~ **Invalid finding** — the script runs `mkdir -p` on the output dir before writing, so the missing `schema/` directory doesn't break it (caught in PR review). Retained. | `scripts/dump-public-schema.sh` | none |
 | DD-04 | MED | CLAUDE.md contradicts itself on linting: "ESLint flat config (`eslint.config.mjs`)… keep the `fixCircular` helper" vs the (correct) Oxlint/`vp` toolchain section. | `CLAUDE.md` | P0 (with CI-02) |
 | DD-05 | MED | AGENTS.md documents non-existent `vp dev` / `vp build` commands. | `AGENTS.md` | P0 |
 | DD-06 | LOW | README omits the mandatory `pass-cli`/`pass://` secret flow and has stale seed instructions — a new contributor following README alone fails startup. | `README.md` | P0 |
@@ -136,9 +139,9 @@ HMAC verification, env-gated dev bypass. No security gaps found there.
 | RV-01 | ✅ **Resolved** | Stale `payload-types.ts` (`fontSet` options) — committed types now match config (2 options). | payload-audit #6 |
 | RV-05 | ✅ **Resolved** | Etsy OAuth `state` CSRF validation — callback now validates against the `etsy_oauth_state` cookie (`src/endpoints/etsy.ts:145`). | client-readiness residual |
 | RV-06 | ✅ **Resolved** | Etsy env startup validation — `src/utilities/bootValidation.ts` exists and is wired into `payload.config.ts`. | payload-audit #8 |
-| RV-02 | ⚠ Open | `payload-generated-schema.ts` drift (`statusCardShips` default). Regenerate + commit. | state-review #1 |
+| RV-02 | ✅ **Resolved** | `payload-generated-schema.ts` drift (`statusCardShips` default) — regenerated in #160; both declarations are now plain `varchar` matching config and migration. | state-review #1 |
+| RV-04 | ✅ **Resolved** | SMTP silent `jsonTransport` fallback — `validateBootConfig()` now logs a startup warning when neither `RESEND_API_KEY` nor `SMTP_HOST` is set. | client-readiness residual |
 | RV-03 | ⚠ Open | Hidden legacy `statusCard*` fields with placeholder defaults in `StorefrontHero/config.ts` — prune + column-drop migration. | state-review #2 |
-| RV-04 | ⚠ Open | SMTP silently no-ops to `jsonTransport` when `SMTP_HOST` unset — password-reset emails vanish; add startup warning. | client-readiness residual |
 
 ## Phased roadmap
 
@@ -154,7 +157,7 @@ Phase 4 is polish. Each row is an independently-shippable PR.
 | 0.1 | Delete orphaned `eslint.config.mjs`; remove it from the `lint`/`lint:fix` script targets; fix CLAUDE.md lint contradiction, AGENTS.md `vp dev/build`, add pass-cli flow to README. | CI-02, DD-04/05/06 | S | low |
 | 0.2 | Delete `debug-admin.e2e.spec.ts`; centralize test creds into one env-driven helper; rotate creds if they ever matched a real environment. | TS-01, TS-04 | S | low |
 | 0.3 | Make `local-build.sh` fail honestly (drop `\|\| echo`); add `--frozen-lockfile` to the Vercel install. Do this **first** — every later phase gates on it. | CI-03, CI-04 | S | med* |
-| 0.4 | Remove `scripts/pass_payloads/` (+ `.gitignore`); delete broken `dump-public-schema` scripts + their `package.json` entries. | DD-02, DD-03 | S | low |
+| 0.4 | Remove `scripts/pass_payloads/` (+ `.gitignore`). (`dump-public-schema` was initially deleted here on a false "broken" premise and restored after PR review — see DD-03.) | DD-02 | S | low |
 | 0.5 | Prune dead code: 6 unused components + stale one-off scripts (`apply-homepage-lean`, `fix-media-alt`, `update-home-copy`, `test-*`, `fix-product-listings`, …) and their script entries. Delete, don't archive — git history is the archive. Grep-verify zero imports per deletion. | FE-11, BE-15, BE-10 (partial) | M | low |
 | 0.6 | Dependency alignment: verify-and-remove the 5 unused deps (one commit each, build between); align `@payloadcms/*` to a single 3.85.x patch. | DD-01, BE-05 | M | low-med |
 
@@ -188,7 +191,7 @@ scripts/local-build.sh` manually per Phase 3 PR — stated explicitly in each PR
 |----|------|----------|--------|------|-----------|
 | 3.1 | Split `syncEtsy.ts` → `sync/engine.ts`, `sync/adapters.ts`, `sync/descriptionParser.ts` (parser gets pure-function unit tests); single shop-ID constant; narrow OAuth scopes. | BE-04, BE-10, BE-11, BE-13 (partial) | L | med | 1.2 |
 | 3.2 | Shared listing-route skeleton for the 7 duplicated routes; fixes posts page-1 vs page-2+ layout drift; one correct read-time impl. | FE-02, FE-07, FE-10 | L | med | 1.1 |
-| 3.3 | Forms unification: all 3 forms through `useFormSubmission`; `Form/Component.tsx` goes through `validateAndSanitizeSubmission`; single validation boundary in the action layer. Highest-risk refactor (conversion paths) — hence gated on Phase 2. | FE-04, FE-05 | M | med-high | 2.3, 1.4 |
+| 3.3 | Forms unification: all 4 submission flows (ContactForm, Form block, Inner Circle email, Scent Quiz) through `useFormSubmission`; `Form/Component.tsx` goes through `validateAndSanitizeSubmission`; single validation boundary in the action layer. Highest-risk refactor (conversion paths) — hence gated on Phase 2. | FE-04, FE-05 | M | med-high | 2.3, 1.4 |
 | 3.4 | Product rendering dedupe: single `toGridProduct`; converge on one card system (recommend `ProductGrid` canonical; `CollectionArchive` delegates). | FE-03, FE-09 | M | med | 3.2 preferred |
 | 3.5 | One Inner Circle CTA component replacing the 4 variants. | FE-06 | S | low | — |
 | 3.6 | Seed consolidation: 7 entrypoints → one `scripts/seed.ts` CLI with subcommands; dedupe `seed-legal-pages.ts` logic. | BE-09, BE-15 | M | low | 0.5 |
@@ -199,9 +202,9 @@ scripts/local-build.sh` manually per Phase 3 PR — stated explicitly in each PR
 
 Fonts single-source (`--font-sans`, drop dead `--font-geist-sans`) · error-token consistency ·
 posts Article JSON-LD (mirror how-to) · `<noscript>` FOUC fallback · header-theme
-single-source · fix template package name · close RV-02/03/04 (regen generated schema; prune
-`statusCard*` fields + column-drop migration; SMTP startup warning).
-(FE-08, FE-12, FE-13, FE-14, FE-16, BE-14, RV-02/03/04)
+single-source · fix template package name · close RV-03 (prune hidden `statusCard*` fields +
+column-drop migration).
+(FE-08, FE-12, FE-13, FE-14, FE-16, BE-14, RV-03)
 
 ## Deferred / won't-fix
 
@@ -227,8 +230,9 @@ single-source · fix template package name · close RV-02/03/04 (regen generated
 - **Phase 2:** the CI workflow verifies itself — a deliberately broken commit on a scratch
   branch must go red. Playwright change verified locally *and* headless.
 - **Phase 3:** full suite per PR (`vp check` + `vp test` + e2e + `local-build.sh`) plus targeted
-  manual smoke: filter → paginate (3.2/3.4); submit all 3 forms incl. a validation-failure path
-  (3.3); full Etsy sync dry-run (3.1); MCP write attempt with a non-privileged key (3.8).
+  manual smoke: filter → paginate (3.2/3.4); submit all 4 forms — contact, Form block, Inner
+  Circle, Scent Quiz — incl. a validation-failure path (3.3); full Etsy sync dry-run (3.1);
+  MCP write attempt with a non-privileged key (3.8).
 - **Phase 4:** `local-build.sh` + visual spot-check (fonts; FOUC with JS disabled) + Rich
   Results test for JSON-LD.
 
@@ -292,7 +296,9 @@ jobs:
       - name: Run migrations
         run: pnpm payload migrate
       - name: Integration tests
-        run: pnpm test:int
+        # NOT `pnpm test:int` — that script wraps the command in pass-cli, which
+        # isn't installed/authenticated in CI; env vars come from the job instead.
+        run: pnpm exec vp test run --config ./vitest.config.mts
       - name: Build
         run: pnpm build
 ```
