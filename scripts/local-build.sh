@@ -119,15 +119,21 @@ if [[ $SKIP_LINT -eq 0 ]]; then
   run_cmd pnpm lint
 fi
 
+INT_TESTS_SKIPPED=0
 if [[ $SKIP_TESTS -eq 0 ]]; then
   echo "Running integration tests (may require DB)..."
   if [[ -f "$ENV_FILE" && ${#CMD_PREFIX[@]} -gt 0 ]]; then
     run_cmd pnpm test:int
   else
+    INT_TESTS_SKIPPED=1
     echo "Skipping integration tests: no env injection available or $ENV_FILE missing"
   fi
   echo "Running E2E tests (will spawn dev server)"
   run_cmd pnpm test:e2e
 fi
 
-echo "Local build script finished: all steps passed."
+if [[ $INT_TESTS_SKIPPED -eq 1 ]]; then
+  echo "Local build script finished: all executed steps passed, but integration tests were SKIPPED (no env injection available or $ENV_FILE missing). This was not a full CI-like run."
+else
+  echo "Local build script finished: all steps passed."
+fi
