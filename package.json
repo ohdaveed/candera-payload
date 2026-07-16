@@ -24,9 +24,6 @@
     "test:e2e": "pass-cli run --env-file .env -- cross-env NODE_OPTIONS=\"--import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "pass-cli run --env-file .env -- vp test run --config ./vitest.config.mts",
     "prepare": "husky",
-    "fix:product-listings": "tsx scripts/fix-product-listings.ts",
-    "test:resend": "pass-cli run --env-file .env -- tsx scripts/test-resend.ts",
-    "apply-homepage-lean": "pass-cli run --env-file .env -- tsx scripts/apply-homepage-lean.ts",
     "create-mcp-key": "pass-cli run --env-file .env -- tsx scripts/create-mcp-key.ts",
     "init-new-db": "pass-cli run --env-file .env -- tsx scripts/init-new-db.ts",
     "migrate-media-to-blob": "pass-cli run --env-file .env -- tsx scripts/migrate-media-to-blob.ts",
@@ -39,14 +36,10 @@
     "seed:legal-pages": "pass-cli run --env-file .env -- tsx scripts/seed-legal-pages.ts",
     "seed:owner-guide": "pass-cli run --env-file .env -- tsx scripts/seed-owner-guide.ts",
     "sync:etsy": "pass-cli run --env-file .env -- tsx scripts/sync-etsy.ts",
-    "test:create": "pass-cli run --env-file .env -- tsx scripts/test-create.ts",
-    "test:mcp-conn": "pass-cli run --env-file .env -- tsx scripts/test-mcp-conn.ts",
-    "update-home-copy": "pass-cli run --env-file .env -- tsx scripts/update-home-copy.ts",
     "upload-blob-images": "pass-cli run --env-file .env -- tsx scripts/upload-blob-images.ts",
     "build:local": "bash ./scripts/local-build.sh",
     "gh-set-secret": "bash ./scripts/gh-set-secret.sh",
-    "generate-pass-env": "zsh ./scripts/generate-pass-env.sh",
-    "merge-pass-env": "uv run scripts/merge-pass-env.py"
+    "generate-pass-env": "zsh ./scripts/generate-pass-env.sh"
   },
   "dependencies": {
     "@inferencesh/sdk": "^0.6.10",
