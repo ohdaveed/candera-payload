@@ -181,8 +181,9 @@ export const plugins: Plugin[] = [
   // search, and all payload-* internals) are intentionally omitted, so no MCP tool
   // exists for them regardless of any key's permissions.
   // NOTE: collection ops run with overrideAccess:false (enforced under the key's
-  // linked user); global updates bypass access control, so they are gated only by
-  // the per-key checkbox — keep global write keys tightly scoped.
+  // linked user). Global updates, however, bypass Payload access control in the
+  // plugin — so globals are exposed READ-ONLY here (find only). Edit globals via
+  // the admin panel, which enforces access control properly.
   mcpPlugin({
     collections: {
       folders: { enabled: true },
@@ -200,10 +201,10 @@ export const plugins: Plugin[] = [
       forms: { enabled: true },
     },
     globals: {
-      header: { enabled: true },
-      footer: { enabled: true },
-      'site-theme': { enabled: true },
-      'studio-info': { enabled: true },
+      header: { enabled: { find: true, update: false } },
+      footer: { enabled: { find: true, update: false } },
+      'site-theme': { enabled: { find: true, update: false } },
+      'studio-info': { enabled: { find: true, update: false } },
     },
   }),
   sentryPlugin({

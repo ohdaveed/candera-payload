@@ -1,11 +1,9 @@
-import 'dotenv/config'
-import { getPayload } from 'payload'
-import config from '@payload-config'
-import { seedLogger } from '@/utilities/logger'
+/** `seed.ts instructional` — tutorial products, posts, folders, and media for admin training. */
 import type { File } from 'payload'
 import type { Product, Post } from '@/payload-types'
+import { findFirstUser, initPayload, seedLogger } from './shared'
 
-async function fetchFileByURL(url: string): Promise<File> {
+const fetchFileByURL = async (url: string): Promise<File> => {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to fetch file from ${url}`)
   const data = await res.arrayBuffer()
@@ -17,13 +15,13 @@ async function fetchFileByURL(url: string): Promise<File> {
   }
 }
 
-async function seedInstructional() {
-  const payload = await getPayload({ config })
+export const run = async (): Promise<void> => {
+  const payload = await initPayload()
   seedLogger.info('Seeding instructional candle content...')
 
   // 0. Get Author
-  const { docs: users } = await payload.find({ collection: 'users', limit: 1 })
-  const authorId = users[0]?.id || 1
+  const author = await findFirstUser(payload)
+  const authorId = author?.id || 1
 
   // 1. Create Folders
   seedLogger.info('Creating folders...')
@@ -218,10 +216,3 @@ async function seedInstructional() {
 
   seedLogger.success('Instructional content seeded successfully!')
 }
-
-seedInstructional()
-  .then(() => process.exit(0))
-  .catch((err) => {
-    seedLogger.error('Failed to seed instructional content:', err)
-    process.exit(1)
-  })

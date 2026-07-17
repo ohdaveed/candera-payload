@@ -13,6 +13,7 @@ import RichText from '@/components/RichText'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -31,8 +32,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
-  const wordCount = post.content ? JSON.stringify(post.content).split(/\s+/).length : 0
-  const readTime = Math.max(1, Math.round(wordCount / 200))
+  const readTime = calculateReadTime(post.content)
 
   return (
     <article className="bg-candera-vellum min-h-screen" data-page="post-detail">

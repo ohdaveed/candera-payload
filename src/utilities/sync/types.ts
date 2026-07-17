@@ -9,6 +9,9 @@ export const CandleListingSchema = z.object({
   }),
   description: z.string(),
   images: z.array(z.any()).optional(),
+  // NOTE: price is deliberately NOT validated here — a malformed price must
+  // only skip the price update (engine guards the amount/divisor arithmetic),
+  // never fail the whole listing the way a non-candle title does.
 })
 
 // Raw schemas matching platform fields
