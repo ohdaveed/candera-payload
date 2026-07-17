@@ -75,7 +75,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         ref={successRef}
         aria-live="polite"
         tabIndex={-1}
-        className="block py-12 text-center outline-none"
+        className="block py-12 text-center outline-none focus-visible:ring-4 focus-visible:ring-candera-ember/50 focus-visible:ring-offset-2 rounded-sm"
       >
         <p className="h3 mb-3 m-0">Your note has been received.</p>
         <p className="body text-candera-sage-text m-0 mt-2">
