@@ -34,10 +34,16 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
 
   const readTime = calculateReadTime(guide.content)
 
-  const heroImageUrl =
+  // Schema.org requires an absolute image URL; local uploads store relative paths.
+  const rawHeroImageUrl =
     guide.heroImage && typeof guide.heroImage === 'object' && 'url' in guide.heroImage
       ? guide.heroImage.url
       : null
+  const heroImageUrl = rawHeroImageUrl
+    ? rawHeroImageUrl.startsWith('http')
+      ? rawHeroImageUrl
+      : getServerSideURL() + rawHeroImageUrl
+    : null
 
   const jsonLd = {
     '@context': 'https://schema.org',

@@ -35,10 +35,16 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   const readTime = calculateReadTime(post.content)
 
-  const heroImageUrl =
+  // Schema.org requires an absolute image URL; local uploads store relative paths.
+  const rawHeroImageUrl =
     post.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
       ? post.heroImage.url
       : null
+  const heroImageUrl = rawHeroImageUrl
+    ? rawHeroImageUrl.startsWith('http')
+      ? rawHeroImageUrl
+      : getServerSideURL() + rawHeroImageUrl
+    : null
 
   const authors = (post.populatedAuthors ?? [])
     .map((author) => author?.name)
