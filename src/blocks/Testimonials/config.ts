@@ -18,8 +18,10 @@ export const Testimonials: Block = {
       name: 'items',
       type: 'array',
       label: 'Testimonials',
+      admin: {
+        description: 'Only the first 3 render on the live page.',
+      },
       minRows: 1,
-      maxRows: 3,
       fields: [
         { name: 'quote', type: 'textarea', required: true },
         { name: 'author', type: 'text', required: true },
