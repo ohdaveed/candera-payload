@@ -55,6 +55,12 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   const productCards = results.filter((r) => r.doc.relationTo === 'products').map(toCard)
   const postCards = results.filter((r) => r.doc.relationTo === 'posts').map(toCard)
   const hasResults = productCards.length > 0 || postCards.length > 0
+  const resultCount = productCards.length + postCards.length
+  const resultsAnnouncement = !query
+    ? ''
+    : hasResults
+      ? `${resultCount} result${resultCount === 1 ? '' : 's'} for "${query}"`
+      : `Nothing found for "${query}"`
 
   return (
     <main className="min-h-screen bg-candera-vellum" data-page="search">
@@ -74,6 +80,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           </div>
         </Container>
       </Section>
+
+      <p aria-live="polite" aria-atomic="true" className="sr-only">
+        {resultsAnnouncement}
+      </p>
 
       {hasResults ? (
         <Section padding="large" data-section="search-results">
@@ -95,52 +105,58 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           </Container>
         </Section>
       ) : query ? (
-        <div className="container pb-32 text-center">
-          <p className="h3 text-candera-sage-text mb-4">Nothing found for &ldquo;{query}&rdquo;</p>
-          <p className="text-sm text-candera-sage-text mb-6">
-            Try exploring one of our signature profiles:
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {suggestions.map((s) => (
-              <Link
-                key={s}
-                href={`/search?q=${encodeURIComponent(s)}`}
-                className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
-              >
-                {s}
-              </Link>
-            ))}
-          </div>
-          <Link
-            href="/products"
-            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
-          >
-            ← Return to the Collection
-          </Link>
-        </div>
+        <Section padding="large" data-section="search-empty">
+          <Container className="text-center">
+            <p className="h3 text-candera-sage-text mb-4">
+              Nothing found for &ldquo;{query}&rdquo;
+            </p>
+            <p className="text-sm text-candera-sage-text mb-6">
+              Try exploring one of our signature profiles:
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
+              {suggestions.map((s) => (
+                <Link
+                  key={s}
+                  href={`/search?q=${encodeURIComponent(s)}`}
+                  className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+                >
+                  {s}
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/products"
+              className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
+            >
+              ← Return to the Collection
+            </Link>
+          </Container>
+        </Section>
       ) : (
-        <div className="container pb-32 text-center">
-          <p className="h3 text-candera-sage-text mx-auto mb-6 max-w-[280px] sm:max-w-[440px]">
-            Try a note, atmosphere, or ritual mood.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
-            {suggestions.map((s) => (
-              <Link
-                key={s}
-                href={`/search?q=${encodeURIComponent(s)}`}
-                className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
-              >
-                {s}
-              </Link>
-            ))}
-          </div>
-          <Link
-            href="/products"
-            className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
-          >
-            Explore the full collection →
-          </Link>
-        </div>
+        <Section padding="large" data-section="search-empty">
+          <Container className="text-center">
+            <p className="h3 text-candera-sage-text mx-auto mb-6 max-w-[280px] sm:max-w-[440px]">
+              Try a note, atmosphere, or ritual mood.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 max-w-[500px] mx-auto mb-12">
+              {suggestions.map((s) => (
+                <Link
+                  key={s}
+                  href={`/search?q=${encodeURIComponent(s)}`}
+                  className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+                >
+                  {s}
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/products"
+              className="btn-text text-candera-obsidian hover:text-candera-ember-strong"
+            >
+              Explore the full collection →
+            </Link>
+          </Container>
+        </Section>
       )}
     </main>
   )
