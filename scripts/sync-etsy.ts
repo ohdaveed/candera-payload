@@ -5,12 +5,13 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { syncEtsyListings } from '../src/utilities/syncEtsy'
 import { etsyLogger, syncLogger } from '@/utilities/logger'
+import { ETSY_SHOP_ID_FALLBACK } from '@/constants/etsy'
 
 // Load .env.local
 dotenvConfig({ path: path.resolve(process.cwd(), '.env.local'), override: true })
 
 async function runSync(): Promise<void> {
-  const shopId = Number(process.env.ETSY_SHOP_ID) || 25894791
+  const shopId = Number(process.env.ETSY_SHOP_ID) || ETSY_SHOP_ID_FALLBACK
 
   // These are verified listing IDs for CanderaCandles that work via the batch API
   const manualListingIds = [1717226844, 1731408433, 1731418441]

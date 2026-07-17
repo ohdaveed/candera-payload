@@ -4,17 +4,16 @@ import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClien
 import { syncEtsyListings } from '@/utilities/syncEtsy'
 import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
 import { userIsAdmin } from '@/access/isAdmin'
-
-export const CANDERA_CANDLES_SHOP_ID = 25894791
+import { ETSY_SHOP_ID_FALLBACK } from '@/constants/etsy'
 
 const getEtsyShopId = (): number => {
   const shopIdRaw = process.env.ETSY_SHOP_ID
   if (!shopIdRaw) {
-    return CANDERA_CANDLES_SHOP_ID
+    return ETSY_SHOP_ID_FALLBACK
   }
   const shopId = Number(shopIdRaw)
   if (!Number.isInteger(shopId) || shopId <= 0) {
-    return CANDERA_CANDLES_SHOP_ID
+    return ETSY_SHOP_ID_FALLBACK
   }
   return shopId
 }
