@@ -29,12 +29,12 @@ async function initNewDb() {
 
     // 2. Seed Admin User
     consola.start('Seeding admin user...')
-    execSync('npx tsx scripts/seed-admin.ts', { stdio: 'inherit' })
+    execSync('npx tsx scripts/seed.ts admin', { stdio: 'inherit' })
     consola.success('Admin user created.')
 
     // 3. Seed Core Content
     consola.start('Seeding core database content...')
-    execSync('npx tsx scripts/seed-db.ts', { stdio: 'inherit' })
+    execSync('npx tsx scripts/seed.ts db', { stdio: 'inherit' })
     consola.success('Core content seeded.')
 
     // 4. Initial Etsy Sync
