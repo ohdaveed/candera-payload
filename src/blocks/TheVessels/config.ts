@@ -11,7 +11,6 @@ export const TheVessels: Block = {
     {
       name: 'eyebrow',
       type: 'text',
-      defaultValue: 'The Vessels',
       label: 'Eyebrow Label',
     },
     {
