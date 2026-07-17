@@ -1,6 +1,7 @@
-export const MAX_FIELDS = 50
-export const MAX_VALUE_LENGTH = 5000
-export const MAX_FIELD_NAME_LENGTH = 200
+import { MAX_FIELDS, MAX_VALUE_LENGTH, MAX_FIELD_NAME_LENGTH } from '@/constants/validation'
+
+// Re-exported for existing importers; the canonical home is @/constants/validation.
+export { MAX_FIELDS, MAX_VALUE_LENGTH, MAX_FIELD_NAME_LENGTH }
 
 export interface ValidationField {
   field?: unknown
