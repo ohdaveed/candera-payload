@@ -1,7 +1,7 @@
 'use client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useTransition } from 'react'
 import { useDebounce } from '@/app/(frontend)/hooks/useDebounce'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
@@ -11,6 +11,7 @@ export const Search: React.FC = () => {
   const searchParams = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const [value, setValue] = useState(query)
+  const [isPending, startTransition] = useTransition()
 
   const debouncedValue = useDebounce(value, 300)
 
@@ -23,7 +24,9 @@ export const Search: React.FC = () => {
     const params = new URLSearchParams(searchParams.toString())
     params.delete('q')
     const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
-    router.replace(nextUrl)
+    startTransition(() => {
+      router.replace(nextUrl)
+    })
   }
 
   useEffect(() => {
@@ -42,7 +45,9 @@ export const Search: React.FC = () => {
     }
 
     const nextUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
-    router.replace(nextUrl)
+    startTransition(() => {
+      router.replace(nextUrl)
+    })
   }, [debouncedValue, pathname, query, router, searchParams])
 
   return (
@@ -65,7 +70,8 @@ export const Search: React.FC = () => {
             autoComplete="off"
             name="q"
             value={value}
-            aria-describedby="search-help"
+            aria-describedby="search-help search-status"
+            aria-busy={isPending}
             onChange={(event) => {
               setValue(event.target.value)
             }}
@@ -83,6 +89,13 @@ export const Search: React.FC = () => {
             </button>
           )}
         </div>
+        <output
+          id="search-status"
+          aria-live="polite"
+          className="caption text-candera-sage-text text-center mt-3 block h-4"
+        >
+          {isPending ? 'Searching…' : ''}
+        </output>
         <button type="submit" className="sr-only">
           submit
         </button>

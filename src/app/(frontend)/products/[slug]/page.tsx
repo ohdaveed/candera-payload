@@ -205,7 +205,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Fragrance Profile — featured prominently, not hidden in an accordion */}
             {showFragrance && (
               <Section padding="none" className="flex flex-col" data-section="fragrance">
-                <Eyebrow className="text-candera-sage-text tracking-[.28em]">
+                <Eyebrow as="h2" className="text-candera-sage-text tracking-[.28em]">
                   Fragrance Profile
                 </Eyebrow>
                 <FragranceProfile
@@ -219,7 +219,9 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Editorial story — given prime space with generous line height */}
             {product.description && (
               <Section padding="none" className="flex flex-col gap-4" data-section="editorial">
-                <Eyebrow className="text-candera-sage-text tracking-[.28em]">The Story</Eyebrow>
+                <Eyebrow as="h2" className="text-candera-sage-text tracking-[.28em]">
+                  The Story
+                </Eyebrow>
                 <RichText
                   data={product.description}
                   enableGutter={false}

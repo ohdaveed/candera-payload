@@ -28,7 +28,6 @@ export const PostsArchiveGrid: React.FC<{ posts: ArchivePost[] }> = ({ posts }) 
     <div>
       {/* Section header — full width */}
       <div className="flex flex-col gap-4 max-w-xl mb-12 md:mb-16">
-        <p className="eyebrow text-candera-sage-text m-0">More from the Journal</p>
         <h2 className="text-[1.953rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
           Reflections <span className="whitespace-nowrap">&amp; Rituals.</span>
         </h2>

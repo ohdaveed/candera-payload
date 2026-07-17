@@ -243,6 +243,7 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Ember CTA (conversion):** Ember-strong (#a8502b) background, vellum text. Same typography and sizing as primary CTA. On hover, shifts to obsidian background.
 - **Inverse CTA:** Linen (#fdfbf7) background, obsidian text. For placement on dark or tinted sections.
 - **Ghost CTA (dark):** Transparent with a 40%-opacity vellum border, vellum text. For overlays on hero imagery.
+- **Ghost CTA (light):** Transparent with a 40%-opacity obsidian border, obsidian text; hover fills obsidian with vellum text. For secondary CTAs on vellum/linen sections — `cta-ghost-dark`'s vellum-on-vellum text is invisible on light backgrounds, so light-section secondary CTAs use this variant instead.
 - **Standard buttons:** shadcn/ui variants (default, destructive, outline, secondary, ghost, link) at 44px default height with 4px radius. These follow the semantic CSS variables and are used in admin-adjacent contexts.
 - **Button Wrapping Rule:** All specialized button components (e.g., `SubmitButton`, `PrimaryButton`) must wrap the canonical `Button` component from `src/components/ui/button.tsx` to inherit standard focus-visible rings and tap-scale animations.
 - **Hover/Focus:** Hover applies `hover:shadow-xl hover:-translate-y-0.5` for CTA variants; standard variants apply `hover:bg-primary/90`. Focus-visible shows a `ring-4 ring-ring/50` outline with 1px visible outline. `active:scale-[0.98]` press effect on all variants.

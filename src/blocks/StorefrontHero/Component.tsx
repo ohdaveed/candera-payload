@@ -120,7 +120,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                   </span>
                   <SmoothScrollLink
                     targetId="journal"
-                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-card-foreground hover:text-card-foreground/60 transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-card-foreground hover:text-card-foreground/60 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
                   >
                     {ethosCardLinkLabel || 'Read Journal'}
                     <span aria-hidden="true">↓</span>

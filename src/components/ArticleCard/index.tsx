@@ -29,7 +29,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={imageAlt || ''}
+            alt={imageAlt || title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none"

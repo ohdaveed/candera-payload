@@ -122,9 +122,11 @@ export const ArchiveBlock: React.FC<
             {empty.cta && (
               <Link
                 href={empty.cta.href}
-                className="mt-1 text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian/40 pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+                className="group mt-1 inline-flex min-h-11 w-fit items-center text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian transition-colors hover:text-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
               >
-                {empty.cta.label} →
+                <span className="border-b border-candera-obsidian/40 pb-px transition-colors group-hover:border-candera-ember-strong">
+                  {empty.cta.label} →
+                </span>
               </Link>
             )}
           </div>

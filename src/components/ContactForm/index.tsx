@@ -78,7 +78,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {error && (
           <div
-            className="mb-6 p-4 border border-candera-rose/30 bg-candera-rose/10 text-candera-rose text-sm font-medium"
+            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-vellum text-candera-ember-strong text-sm font-medium"
             role="alert"
           >
             {error}
@@ -110,7 +110,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-sm text-candera-rose" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -138,7 +138,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-sm text-candera-rose" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -162,7 +162,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-sm text-candera-rose" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
@@ -182,7 +182,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                 <FormControl>
                   <MinimalTextarea placeholder="How can we help?" rows={5} {...field} />
                 </FormControl>
-                <FormMessage className="mt-1.5 text-sm text-candera-rose" />
+                <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
             )}
           />
