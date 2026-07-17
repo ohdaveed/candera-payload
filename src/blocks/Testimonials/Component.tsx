@@ -40,7 +40,9 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
               style={{ backgroundColor: 'var(--mood-accent, #dd7d52)' }}
               aria-hidden="true"
             />
-            <p className="eyebrow opacity-75">{eyebrow}</p>
+            <p className="eyebrow" style={{ color: 'var(--mood-fg, #141412)' }}>
+              {eyebrow}
+            </p>
           </div>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
