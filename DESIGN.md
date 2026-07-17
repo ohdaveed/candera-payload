@@ -173,11 +173,21 @@ The palette is drawn from a botanical studio's materials: paper, ink, clay, drie
 - **Stone** (#dacbb8): Warm tan. Input borders, card borders, subtle outline elements.
 - **Field** (#d8d5cc): Light beige. Muted background elements, secondary surface tint.
 
+### Section Moods
+
+Testimonials and the storefront hero can shift their local color context via a `data-section-mood` attribute on an ancestor element, which sets three CSS custom properties — `--mood-bg`, `--mood-fg`, `--mood-accent` — that the block reads instead of the static palette. This is a contextual theming mechanic, not a static token: it exists so a single block (`Testimonials/Component.tsx`, `StorefrontHero/Component.tsx`) can render correctly against three different backgrounds without prop-drilling color choices.
+
+- **rose-wash** (`--mood-bg: #f5edea`, `--mood-fg: #141412`, `--mood-accent: #b28c9c`): a soft rose-tinted wash. Ink stays obsidian; the rose accent carries the mood.
+- **noir-contrast** (`--mood-bg: #141412`, `--mood-fg: #f5f2ed`, `--mood-accent: #b28c9c`): full-inversion dark mode for a single section — vellum text on obsidian, rose accent unchanged.
+- **light-editorial** (`--mood-bg: transparent`, `--mood-fg: inherit`, `--mood-accent: inherit`): the default — the block takes on whatever ink-on-paper context it's placed in.
+
 ### Named Rules
 
 **The One-Voice Rule.** The ember and rose accents are used on ≤10% of any given screen. Their rarity is the point — when they appear, they mean something.
 
 **The Ink-on-Paper Rule.** The foreground-to-background relationship is ink on paper, not figure on ground. Obsidian text on vellum background. No dark-mode-as-default, no light-on-dark text blocks except as deliberate section mood shifts.
+
+**The Mood-Fallback Rule.** Any component consuming `--mood-fg` (or `-bg` / `-accent`) must pair it with a literal color fallback — `var(--mood-fg, #141412)`, never a bare `var(--mood-fg)`. `light-editorial`'s `--mood-fg: inherit` can resolve to an invalid value depending on ancestor context; the #167/#168 testimonials regression was exactly this failure mode.
 
 ## 3. Typography
 
@@ -315,3 +325,4 @@ The only tonal layering is the grain texture overlay (film grain at 4% opacity, 
 - **Don't** use the slop pattern: "vessels" where you mean "products," "Studio Boutique" where you mean "Etsy," or qualitative claims posed as quantitative metrics.
 - **Don't** hardcode visual shadows (such as `shadow-[0_1px_3px...]`) or visual border radii inline within component variants; use standard `shadow-card` and `rounded-card` (2px) tokens instead.
 - **Don't** use glassmorphic aside styles or backdrop blurs (like `backdrop-blur-md bg-candera-obsidian/40 rounded-2xl`) on cards or hero callouts; all layouts must remain flat, solid, and aligned to the 2px radius rule.
+- **Don't** use arbitrary font sizes that fall between documented type-ramp steps, e.g. `text-[1.85rem]`. Normalize to the nearest ramp step instead — `title` (1.953rem) covers this range.

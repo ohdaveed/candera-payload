@@ -4,6 +4,10 @@
 
 brand
 
+## Platform
+
+web
+
 ## Users
 
 Design-conscious candle and fragrance shoppers — people who appreciate intentional living, slow rituals, and botanical clarity. They browse on mobile and desktop, discover new scents visually, and decide to purchase on Etsy. Their context is self-care: evening browsing, gift hunting, or reframing a space with intentional scent.
@@ -11,6 +15,18 @@ Design-conscious candle and fragrance shoppers — people who appreciate intenti
 ## Product Purpose
 
 Candera is a digital storefront and micro-batch artisan platform for hand-poured botanical candles in numbered batches. It merges traditional craft with a modern web experience — an invitation to slow down, buy intentionally, and connect with the ritual of scent. Success means the visitor leaves feeling they've discovered something made with care, not just another product.
+
+## Positioning
+
+Hand-poured botanical candles in numbered batches — craft you can trace, sold without the hype. Where category competitors lean on rustic staging or inflated scent-marketing language, Candera's claim is traceability and restraint: every batch is numbered, every description is precise, and nothing is oversold.
+
+## Conversion & proof
+
+- Primary CTA: take the Scent Quiz — an interactive, low-commitment entry point that matches a visitor to a scent before asking for a purchase decision.
+- Secondary CTA: Shop on Etsy — a direct outbound link to the listing, for visitors who already know what they want.
+- The line a visitor remembers after 10 seconds: this candle was poured in a numbered batch, by someone who could tell you exactly what's in it.
+- Belief ladder: (1) this is genuine small-batch craft, not mass-market staging — established by numbered batches and precise material copy; (2) the Scent Quiz result is a real match, not a generic upsell — established by specific, non-generic scent language; (3) buying through Etsy is a safe, normal next step — established by consistent, honest labeling between the site and the listing.
+- Proof on hand: none formal yet (no testimonials, press, or case studies collected at this stage). Treat this as an open gap — Candera's Testimonials block currently displays copy, not sourced customer quotes; do not present it as verified social proof until real testimonials are collected.
 
 ## Brand Personality
 
