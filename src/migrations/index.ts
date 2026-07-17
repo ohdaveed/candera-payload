@@ -3,6 +3,7 @@ import * as migration_20260706_140359_login_theme from './20260706_140359_login_
 import * as migration_20260717_012226 from './20260717_012226'
 import * as migration_20260717_021249 from './20260717_021249'
 import * as migration_20260717_190146_remove_vessels_eyebrow_default from './20260717_190146_remove_vessels_eyebrow_default'
+import * as migration_20260717_194701_remove_testimonials_badge_default from './20260717_194701_remove_testimonials_badge_default'
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20260717_190146_remove_vessels_eyebrow_default.up,
     down: migration_20260717_190146_remove_vessels_eyebrow_default.down,
     name: '20260717_190146_remove_vessels_eyebrow_default',
+  },
+  {
+    up: migration_20260717_194701_remove_testimonials_badge_default.up,
+    down: migration_20260717_194701_remove_testimonials_badge_default.down,
+    name: '20260717_194701_remove_testimonials_badge_default',
   },
 ]
