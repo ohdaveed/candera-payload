@@ -10,6 +10,7 @@ import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
 import { toGridProduct } from '@/components/Card/toGridProduct'
+import { assertPageInRange } from '@/utilities/listing'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
@@ -50,8 +51,7 @@ export default async function ProductsPage({
     ...(activeTag ? { where: { productTag: { equals: activeTag } } } : {}),
   })
 
-  // Out-of-range page numbers should 404 rather than render an empty grid.
-  if (pageNumber > (products.totalPages || 1)) notFound()
+  assertPageInRange(pageNumber, products.totalPages)
   const resultLabel = activeTag
     ? `${products.totalDocs} results for '${activeTag}'`
     : `${products.totalDocs} pieces in the collection`

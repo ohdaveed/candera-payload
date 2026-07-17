@@ -14,6 +14,7 @@ import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
 import type { PostHeroDoc } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -31,17 +32,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
 
   if (!guide) return <PayloadRedirects url={url} />
 
-  const extractText = (node: unknown): string => {
-    if (!node || typeof node !== 'object') return ''
-    const n = node as Record<string, unknown>
-    if (typeof n.text === 'string') return n.text
-    if (Array.isArray(n.children)) return n.children.map(extractText).join(' ')
-    if (n.root) return extractText(n.root)
-    return ''
-  }
-  const plainText = guide.content ? extractText(guide.content) : ''
-  const wordCount = plainText ? plainText.trim().split(/\s+/).length : 0
-  const readTime = Math.max(1, Math.round(wordCount / 200))
+  const readTime = calculateReadTime(guide.content)
 
   const heroImageUrl =
     guide.heroImage && typeof guide.heroImage === 'object' && 'url' in guide.heroImage

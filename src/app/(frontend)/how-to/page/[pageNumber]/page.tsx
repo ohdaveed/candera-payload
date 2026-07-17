@@ -1,5 +1,4 @@
 import type { Metadata } from 'next/types'
-import { notFound, redirect } from 'next/navigation'
 
 import { ArticleCard } from '@/components/ArticleCard'
 import { Container } from '@/components/ui/container'
@@ -7,10 +6,10 @@ import { Section } from '@/components/ui/section'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Pagination } from '@/components/Pagination'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { getMetaImage } from '@/utilities/getMetaImage'
+import { assertPageInRange, pagedListingMetadata, sanitizePageParam } from '@/utilities/listing'
+import { queryListingPage } from '@/utilities/listingQuery'
 
 import { cacheLife } from 'next/cache'
 
@@ -25,21 +24,12 @@ export default async function Page({ params: paramsPromise }: Args) {
   cacheLife({ expire: 600 })
 
   const { pageNumber } = await paramsPromise
-  const payload = await getPayload({ config: configPromise })
 
-  const sanitizedPageNumber = Number(pageNumber)
+  const sanitizedPageNumber = sanitizePageParam(pageNumber, '/how-to')
 
-  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) notFound()
-
-  // Page 1 duplicates the canonical /how-to route — redirect to avoid duplicate content.
-  if (sanitizedPageNumber === 1) redirect('/how-to')
-
-  const guides = await payload.find({
+  const guides = await queryListingPage({
     collection: 'how-to-guides',
-    depth: 1,
-    limit: 12,
     page: sanitizedPageNumber,
-    overrideAccess: false,
     sort: '-publishedAt',
     select: {
       title: true,
@@ -50,7 +40,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     },
   })
 
-  if (guides.docs.length === 0) notFound()
+  assertPageInRange(sanitizedPageNumber, guides.totalPages)
 
   return (
     <main className="bg-candera-vellum overflow-x-hidden" data-page="how-to-listing">
@@ -111,7 +101,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
-  return {
-    title: `How-To Guides — Page ${pageNumber} — Candera`,
-  }
+
+  return pagedListingMetadata({
+    titlePrefix: 'How-To Guides',
+    description:
+      'Practical guides for getting the most from your Candera candles — burning, curing, and caring for botanical scent.',
+    basePath: '/how-to',
+    pageNumber,
+  })
 }

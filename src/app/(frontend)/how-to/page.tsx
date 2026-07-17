@@ -6,10 +6,10 @@ import { Section } from '@/components/ui/section'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { Pagination } from '@/components/Pagination'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { getMetaImage } from '@/utilities/getMetaImage'
+import { listingMetadata } from '@/utilities/listing'
+import { queryListingPage } from '@/utilities/listingQuery'
 
 import { cacheLife } from 'next/cache'
 
@@ -17,13 +17,8 @@ export default async function Page() {
   'use cache'
   cacheLife({ expire: 600 })
 
-  const payload = await getPayload({ config: configPromise })
-
-  const guides = await payload.find({
+  const guides = await queryListingPage({
     collection: 'how-to-guides',
-    depth: 1,
-    limit: 12,
-    overrideAccess: false,
     sort: '-publishedAt',
     select: {
       title: true,
@@ -107,12 +102,10 @@ export default async function Page() {
 }
 
 export function generateMetadata(): Metadata {
-  const title = 'How-To Guides — Candera'
-  const description =
-    'Practical guides for getting the most from your Candera candles — burning, curing, and caring for botanical scent.'
-  return {
-    title,
-    description,
-    openGraph: { title, description, type: 'website' },
-  }
+  return listingMetadata({
+    titlePrefix: 'How-To Guides',
+    description:
+      'Practical guides for getting the most from your Candera candles — burning, curing, and caring for botanical scent.',
+    basePath: '/how-to',
+  })
 }
