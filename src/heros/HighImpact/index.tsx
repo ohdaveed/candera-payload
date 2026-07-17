@@ -12,6 +12,11 @@ import { FilmGrain } from '@/components/FilmGrain'
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
 
+  // Pages render <SetHeaderTheme theme="light" /> before the hero (e.g. [slug]/page.tsx),
+  // so two effects set the header theme. React runs sibling effects in tree order: the
+  // page's effect fires first, then this one — so 'dark' deliberately wins whenever this
+  // hero is present (the header sits over the dark hero image). Do not remove this call:
+  // pages using HighImpact rely on it to override their default 'light' theme.
   useEffect(() => {
     setHeaderTheme('dark')
     return () => setHeaderTheme(null)

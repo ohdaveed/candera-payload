@@ -1,7 +1,7 @@
 {
-  "name": "with-vercel-website",
+  "name": "candera-payload",
   "version": "1.0.0",
-  "description": "Website template for Payload",
+  "description": "Candera botanical candle storefront — Next.js + Payload CMS",
   "license": "MIT",
   "type": "module",
   "scripts": {

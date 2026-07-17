@@ -16,6 +16,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { getServerSideURL } from '@/utilities/getURL'
 
 type Args = {
   params: Promise<{
@@ -34,11 +35,53 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   const readTime = calculateReadTime(post.content)
 
+  // Schema.org requires an absolute image URL; local uploads store relative paths.
+  const rawHeroImageUrl =
+    post.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
+      ? post.heroImage.url
+      : null
+  const heroImageUrl = rawHeroImageUrl
+    ? rawHeroImageUrl.startsWith('http')
+      ? rawHeroImageUrl
+      : getServerSideURL() + rawHeroImageUrl
+    : null
+
+  const authors = (post.populatedAuthors ?? [])
+    .map((author) => author?.name)
+    .filter((name): name is string => Boolean(name))
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.meta?.description ?? '',
+    datePublished: post.publishedAt ?? post.createdAt,
+    dateModified: post.updatedAt,
+    ...(authors.length > 0
+      ? { author: authors.map((name) => ({ '@type': 'Person', name })) }
+      : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: 'Candera Candles',
+      url: getServerSideURL(),
+    },
+    ...(heroImageUrl ? { image: [heroImageUrl] } : {}),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${getServerSideURL()}/posts/${decodedSlug}`,
+    },
+  }
+
   return (
     <article className="bg-candera-vellum min-h-screen" data-page="post-detail">
       <SetHeaderTheme theme="dark" />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+      />
 
       {/* Hero — back link + title + byline integrated */}
       <PostHero post={post} readTime={readTime} />

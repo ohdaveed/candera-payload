@@ -305,12 +305,6 @@ export const pages_blocks_storefront_hero = pgTable(
     ),
     ethosCardFooterLabel: varchar('ethos_card_footer_label').default('Exclusively on Etsy'),
     ethosCardLinkLabel: varchar('ethos_card_link_label').default('Read Journal'),
-    statusCardTitle: varchar('status_card_title').default('Featured Candle'),
-    statusCardPrice: varchar('status_card_price').default('$38'),
-    statusCardSubtitle: varchar('status_card_subtitle').default('Wild Lilac (8 oz)'),
-    statusCardStatus: varchar('status_card_status').default('Limited Batch'),
-    statusCardShips: varchar('status_card_ships'),
-    statusCardLinkUrl: varchar('status_card_link_url').default('/products/wild-lilac'),
     blockName: varchar('block_name'),
   },
   (columns) => [
@@ -776,12 +770,6 @@ export const _pages_v_blocks_storefront_hero = pgTable(
     ),
     ethosCardFooterLabel: varchar('ethos_card_footer_label').default('Exclusively on Etsy'),
     ethosCardLinkLabel: varchar('ethos_card_link_label').default('Read Journal'),
-    statusCardTitle: varchar('status_card_title').default('Featured Candle'),
-    statusCardPrice: varchar('status_card_price').default('$38'),
-    statusCardSubtitle: varchar('status_card_subtitle').default('Wild Lilac (8 oz)'),
-    statusCardStatus: varchar('status_card_status').default('Limited Batch'),
-    statusCardShips: varchar('status_card_ships'),
-    statusCardLinkUrl: varchar('status_card_link_url').default('/products/wild-lilac'),
     _uuid: varchar('_uuid'),
     blockName: varchar('block_name'),
   },
@@ -2821,13 +2809,9 @@ export const payload_mcp_api_keys = pgTable(
     forms_update: boolean('forms_update').default(false),
     forms_delete: boolean('forms_delete').default(false),
     header_find: boolean('header_find').default(false),
-    header_update: boolean('header_update').default(false),
     footer_find: boolean('footer_find').default(false),
-    footer_update: boolean('footer_update').default(false),
     siteTheme_find: boolean('site_theme_find').default(false),
-    siteTheme_update: boolean('site_theme_update').default(false),
     studioInfo_find: boolean('studio_info_find').default(false),
-    studioInfo_update: boolean('studio_info_update').default(false),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -3442,6 +3426,13 @@ export const studio_info = pgTable('studio_info', {
   instagramUrl: varchar('instagram_url').notNull().default('https://instagram.com/canderacandles'),
   studioHours: varchar('studio_hours').notNull().default('By appointment — slow by design.'),
   locationTagline: varchar('location_tagline').notNull().default('Handcrafted in California'),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
+  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
+})
+
+export const login_theme = pgTable('login_theme', {
+  id: serial('id').primaryKey(),
+  colorIndex: numeric('color_index', { mode: 'number' }).notNull().default(0),
   updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
   createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
 })
@@ -4835,6 +4826,7 @@ export const relations_studio_info = relations(studio_info, ({ many }) => ({
     relationName: 'searchSuggestions',
   }),
 }))
+export const relations_login_theme = relations(login_theme, () => ({}))
 
 type DatabaseSchema = {
   enum_pages_hero_links_link_type: typeof enum_pages_hero_links_link_type
@@ -4998,6 +4990,7 @@ type DatabaseSchema = {
   studio_info_inner_circle_benefits: typeof studio_info_inner_circle_benefits
   studio_info_search_suggestions: typeof studio_info_search_suggestions
   studio_info: typeof studio_info
+  login_theme: typeof login_theme
   relations_folders: typeof relations_folders
   relations_pages_hero_links: typeof relations_pages_hero_links
   relations_pages_blocks_storefront_hero: typeof relations_pages_blocks_storefront_hero
@@ -5106,6 +5099,7 @@ type DatabaseSchema = {
   relations_studio_info_inner_circle_benefits: typeof relations_studio_info_inner_circle_benefits
   relations_studio_info_search_suggestions: typeof relations_studio_info_search_suggestions
   relations_studio_info: typeof relations_studio_info
+  relations_login_theme: typeof relations_login_theme
 }
 
 declare module '@payloadcms/db-postgres' {

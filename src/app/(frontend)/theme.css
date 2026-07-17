@@ -331,7 +331,7 @@ html[data-skin='porcelain-pop'] {
 html[data-fontset='dm-sans'] {
   --font-display: var(--font-dm-sans), system-ui, sans-serif;
   --font-editorial: var(--font-dm-sans), system-ui, sans-serif;
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  /* --font-sans already resolves to DM Sans via typography.css — no override needed. */
 }
 
 /* ============================================================
