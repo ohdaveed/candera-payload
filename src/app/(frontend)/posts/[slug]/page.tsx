@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { Button } from '@/components/ui/button'
-import { Eyebrow } from '@/components/ui/eyebrow'
+import { InnerCircleStrip } from '@/components/InnerCircleStrip'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import configPromise from '@payload-config'
@@ -11,13 +10,11 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { cache } from 'react'
 import RichText from '@/components/RichText'
-import Link from 'next/link'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
 type Args = {
   params: Promise<{
@@ -66,28 +63,7 @@ export default async function Post({ params: paramsPromise }: Args) {
         </Container>
       </Section>
 
-      {/* Inner Circle CTA — full-bleed editorial dark strip */}
-      <aside className="bg-candera-obsidian grain" data-section="inner-circle-cta">
-        <Container className="py-20 md:py-28 flex flex-col items-center text-center gap-8">
-          {/* Eyebrow with flanking rules */}
-          <div className="flex items-center gap-4">
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-            <Eyebrow className="text-candera-ember">The Inner Circle</Eyebrow>
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-          </div>
-
-          {/* Headline */}
-          <h2 className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
-            Be the first to know about new batches, scent notes, and studio moments.
-          </h2>
-
-          <Button asChild variant="cta-ember" size="cta" className="mt-2">
-            <Link href="/contact">Join the Circle</Link>
-          </Button>
-
-          <p className="caption text-candera-vellum/50 m-0">{NEWSLETTER_MICROCOPY}</p>
-        </Container>
-      </aside>
+      <InnerCircleStrip />
 
       {/* Related posts */}
       {post.relatedPosts && post.relatedPosts.length > 0 && (

@@ -9,8 +9,7 @@ import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
 import { ProductGrid } from './ProductGrid'
-import type { Product } from '@/payload-types'
-import type { CardPostData } from '@/components/Card'
+import { toGridProduct } from '@/components/Card/toGridProduct'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
@@ -23,23 +22,6 @@ export const metadata: Metadata = {
   description:
     'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
   alternates: { canonical: '/products' },
-}
-
-function toGridProduct(product: Product): CardPostData {
-  return {
-    id: product.id,
-    slug: product.slug,
-    title: product.title,
-    tagline: product.tagline,
-    extraPhotos: product.extraPhotos,
-    etsyPrimaryImage: product.etsyPrimaryImage,
-    scentProfile: product.scentProfile,
-    price: product.price,
-    currency: product.currency,
-    categories: product.categories?.map((cat) =>
-      typeof cat === 'object' && cat !== null ? { title: cat.title } : cat,
-    ),
-  }
 }
 
 export default async function ProductsPage({

@@ -1,4 +1,5 @@
 import { payloadLogger } from './logger'
+import { ETSY_SHOP_ID_FALLBACK } from '@/constants/etsy'
 import {
   isUnresolvedPassReference,
   resolveDatabaseConnectionString,
@@ -55,10 +56,12 @@ export function validateBootConfig(): void {
 
   const missingEtsy: string[] = []
   if (!shopIdRaw) {
-    payloadLogger.info('ETSY_SHOP_ID is not set. Defaulting to Candera Candles shop (25894791).')
+    payloadLogger.info(
+      `ETSY_SHOP_ID is not set. Defaulting to Candera Candles shop (${ETSY_SHOP_ID_FALLBACK}).`,
+    )
   } else if (!hasValidShopId) {
     payloadLogger.warn(
-      `ETSY_SHOP_ID (${shopIdRaw}) is invalid (must be a positive integer). Defaulting to Candera Candles shop (25894791).`,
+      `ETSY_SHOP_ID (${shopIdRaw}) is invalid (must be a positive integer). Defaulting to Candera Candles shop (${ETSY_SHOP_ID_FALLBACK}).`,
     )
   }
   if (!hasApiKey) {

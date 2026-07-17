@@ -1,35 +1,26 @@
-// oxlint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
-/**
- * Simple object check.
- * @param item
- * @returns {boolean}
- */
-export function isObject(item: unknown): item is object {
-  return typeof item === 'object' && !Array.isArray(item)
+/** True for plain-object-like values (not arrays, not null). */
+export function isObject(item: unknown): item is Record<string, unknown> {
+  return typeof item === 'object' && item !== null && !Array.isArray(item)
 }
 
 /**
- * Deep merge two objects.
- * @param target
- * @param ...sources
+ * Deep merge two plain objects: `source` keys win; when a key holds a plain
+ * object on BOTH sides it merges recursively, otherwise (arrays, scalars,
+ * mixed types) the source value replaces the target's wholesale. If either
+ * argument is not a plain object, `target` is returned unchanged.
  */
 export default function deepMerge<T, R>(target: T, source: R): T {
-  const output = { ...target }
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
-        if (!(key in target)) {
-          Object.assign(output, { [key]: source[key] })
-        } else {
-          output[key] = deepMerge(target[key], source[key])
-        }
-      } else {
-        Object.assign(output, { [key]: source[key] })
-      }
-    })
-  }
+  if (!isObject(target) || !isObject(source)) return target
+  const output = { ...target } as Record<string, unknown>
+  Object.keys(source).forEach((key) => {
+    const sourceValue = source[key]
+    const targetValue = (target as Record<string, unknown>)[key]
+    if (isObject(sourceValue) && key in target && isObject(targetValue)) {
+      output[key] = deepMerge(targetValue, sourceValue)
+    } else {
+      output[key] = sourceValue
+    }
+  })
 
-  return output
+  return output as T
 }
