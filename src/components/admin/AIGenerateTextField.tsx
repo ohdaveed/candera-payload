@@ -116,7 +116,17 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
         body: JSON.stringify(input),
       })
 
-      if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+      if (!res.ok) {
+        // Surface the server's human-readable error when it sends one.
+        let message = `Request failed: ${res.status}`
+        try {
+          const errorBody = (await res.json()) as { error?: unknown }
+          if (typeof errorBody?.error === 'string') message = errorBody.error
+        } catch {
+          // Non-JSON error body — keep the status-code message.
+        }
+        throw new Error(message)
+      }
       const result = (await res.json()) as FieldCopyOutput
       setSuggestion(result.suggestion)
     } catch (err) {

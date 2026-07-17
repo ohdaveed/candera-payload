@@ -20,7 +20,12 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const body: unknown = await req.json()
+  let body: unknown
+  try {
+    body = await req.json()
+  } catch {
+    return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
+  }
   const parsed = fieldCopyInputSchema.safeParse(body)
 
   if (!parsed.success) {

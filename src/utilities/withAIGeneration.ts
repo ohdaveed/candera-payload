@@ -15,7 +15,11 @@ const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextField'
 const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaField'
 
 // Field names where AI-generated prose is nonsensical or dangerous.
-const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename|id$/i
+const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename/i
+// ID endings only (`id`, `ID`, `foo_id`, `fooId`) — deliberately case-sensitive on
+// the second alternative so words that merely end in "id" (orchid, liquid,
+// hybrid) stay eligible.
+const ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
 
 function isEligible(field: Extract<Field, { type: 'text' | 'textarea' }>): boolean {
   if (field.hidden || field.virtual) return false
@@ -26,7 +30,7 @@ function isEligible(field: Extract<Field, { type: 'text' | 'textarea' }>): boole
   // `hasMany` text fields hold string arrays — the single-value generator
   // doesn't apply.
   if (field.type === 'text' && field.hasMany) return false
-  return !SKIP_NAME_PATTERN.test(field.name)
+  return !SKIP_NAME_PATTERN.test(field.name) && !ID_SUFFIX_PATTERN.test(field.name)
 }
 
 function mapFields(fields: Field[]): Field[] {

@@ -91,12 +91,29 @@ describe('withAIGeneration', () => {
         { name: 'canonicalUrl', type: 'text' },
         { name: 'apiToken', type: 'text' },
         { name: 'keywords', type: 'text', hasMany: true },
+        { name: 'etsyImageId', type: 'text' },
+        { name: 'listing_id', type: 'text' },
+        { name: 'id', type: 'text' },
       ]),
     )
 
     for (const field of result.fields) {
       expect(fieldComponent(field)).toBeUndefined()
     }
+  })
+
+  it('does not skip words that merely end in "id" (orchid, liquid, hybrid)', () => {
+    const result = withAIGeneration(
+      makeCollection([
+        { name: 'orchid', type: 'text' },
+        { name: 'liquid', type: 'text' },
+        { name: 'hybrid', type: 'textarea' },
+      ]),
+    )
+
+    expect(fieldComponent(result.fields[0])).toBe(AI_TEXT)
+    expect(fieldComponent(result.fields[1])).toBe(AI_TEXT)
+    expect(fieldComponent(result.fields[2])).toBe(AI_TEXTAREA)
   })
 
   it('does not clobber fields that already have a custom Field component', () => {
