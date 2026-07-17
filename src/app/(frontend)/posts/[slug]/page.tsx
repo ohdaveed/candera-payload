@@ -57,9 +57,7 @@ export default async function Post({ params: paramsPromise }: Args) {
     description: post.meta?.description ?? '',
     datePublished: post.publishedAt ?? post.createdAt,
     dateModified: post.updatedAt,
-    ...(authors.length > 0
-      ? { author: authors.map((name) => ({ '@type': 'Person', name })) }
-      : {}),
+    ...(authors.length > 0 ? { author: authors.map((name) => ({ '@type': 'Person', name })) } : {}),
     publisher: {
       '@type': 'Organization',
       name: 'Candera Candles',

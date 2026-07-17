@@ -23,7 +23,9 @@ export interface CacheBusterPort {
  *   this — the invariant message substring is the only available signal, so
  *   it is isolated here where a Next wording change breaks exactly one place.
  */
-function classifyNextCacheError(err: unknown): 'module-unavailable' | 'outside-request-context' | 'unknown' {
+function classifyNextCacheError(
+  err: unknown,
+): 'module-unavailable' | 'outside-request-context' | 'unknown' {
   if (!(err instanceof Error)) return 'unknown'
   const code = (err as Error & { code?: string }).code
   const isResolutionError =

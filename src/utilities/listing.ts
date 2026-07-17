@@ -12,7 +12,9 @@ import { notFound, redirect } from 'next/navigation'
 export const LISTING_PAGE_SIZE = 12
 
 export type PageParamResolution =
-  { kind: 'not-found' } | { kind: 'redirect'; to: string } | { kind: 'page'; page: number }
+  | { kind: 'not-found' }
+  | { kind: 'redirect'; to: string }
+  | { kind: 'page'; page: number }
 
 /**
  * Pure decision function for `{basePath}/page/[pageNumber]` params, copying the

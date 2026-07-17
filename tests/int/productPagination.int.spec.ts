@@ -1,5 +1,5 @@
 import React from 'react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vite-plus/test'
 import { cleanup, render, screen } from '@testing-library/react'
 
 import { Pagination } from '@/components/Pagination'

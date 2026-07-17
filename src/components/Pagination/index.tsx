@@ -75,10 +75,7 @@ export const Pagination: React.FC<{
 
           {hasPrevPage && (
             <PaginationItem>
-              <PaginationLink
-                aria-label={`Go to page ${page - 1}`}
-                href={pageHref(page - 1)}
-              >
+              <PaginationLink aria-label={`Go to page ${page - 1}`} href={pageHref(page - 1)}>
                 {page - 1}
               </PaginationLink>
             </PaginationItem>
@@ -96,10 +93,7 @@ export const Pagination: React.FC<{
 
           {hasNextPage && (
             <PaginationItem>
-              <PaginationLink
-                aria-label={`Go to page ${page + 1}`}
-                href={pageHref(page + 1)}
-              >
+              <PaginationLink aria-label={`Go to page ${page + 1}`} href={pageHref(page + 1)}>
                 {page + 1}
               </PaginationLink>
             </PaginationItem>

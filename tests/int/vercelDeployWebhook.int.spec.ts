@@ -14,8 +14,7 @@ import { POST } from '@/app/api/webhooks/vercel-deploy/route'
 const SECRET = 'test-webhook-secret'
 
 function signedRequest(body: string, opts: { signature?: string } = {}): Request {
-  const signature =
-    opts.signature ?? crypto.createHmac('sha1', SECRET).update(body).digest('hex')
+  const signature = opts.signature ?? crypto.createHmac('sha1', SECRET).update(body).digest('hex')
   return new Request('http://localhost:3000/api/webhooks/vercel-deploy', {
     method: 'POST',
     headers: { 'x-vercel-signature': signature },
