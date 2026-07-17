@@ -78,7 +78,9 @@ export interface ProductUpsertInput {
 }
 
 export interface ParsedEtsyDescription {
-  specifications: Array<{ label: string; value: string }>
+  // Optional so the engine can omit it entirely when empty — an empty array
+  // written to Payload would wipe manually curated specification rows.
+  specifications?: Array<{ label: string; value: string }>
   scentProfile?: {
     top?: string
     heart?: string

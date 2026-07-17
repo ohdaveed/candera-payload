@@ -137,17 +137,19 @@ export class EtsySyncEngine {
         // Add materials from API if present and not already in specifications
         if (listing.materials && listing.materials.length > 0) {
           const materialsStr = listing.materials.join(', ')
-          if (!parsed.specifications.some((s) => s.label.toLowerCase().includes('material'))) {
+          const specs = parsed.specifications ?? []
+          if (!specs.some((s) => s.label.toLowerCase().includes('material'))) {
             const val = materialsStr.charAt(0).toUpperCase() + materialsStr.slice(1)
-            parsed.specifications.push({
+            specs.push({
               label: 'Materials',
               value: val,
             })
+            parsed.specifications = specs
           }
         }
 
-        if (parsed.specifications.length === 0) {
-          // @ts-expect-error Omit empty specifications so we don't wipe out manual entries in Payload
+        // Omit empty specifications so we don't wipe out manual entries in Payload.
+        if (parsed.specifications?.length === 0) {
           delete parsed.specifications
         }
 
