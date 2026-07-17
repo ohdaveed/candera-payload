@@ -139,27 +139,21 @@ export const ArchiveBlock: React.FC<
     <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
       {isPosts ? (
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-12">
-            {/* Left — sticky editorial sidebar */}
-            <div className="md:col-span-1">
-              <div className="sticky top-24 flex flex-col gap-4">
-                {serializedIntroContent && (
-                  <RichText
-                    className="ms-0
-                      [&_h3]:h2 [&_h3]:mb-4
-                      [&_p]:editorial [&_p]:text-candera-sage-text"
-                    data={serializedIntroContent}
-                    enableGutter={false}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Right — 3-column card grid */}
-            <div className="md:col-span-3">
-              <CollectionArchive posts={data as CardPostData[]} relationTo="posts" hideSidebar />
-            </div>
-          </div>
+          <CollectionArchive
+            posts={data as CardPostData[]}
+            relationTo="posts"
+            sidebarContent={
+              serializedIntroContent ? (
+                <RichText
+                  className="ms-0
+                    [&_h3]:h2 [&_h3]:mb-4
+                    [&_p]:editorial [&_p]:text-candera-sage-text"
+                  data={serializedIntroContent}
+                  enableGutter={false}
+                />
+              ) : undefined
+            }
+          />
         </Container>
       ) : (
         <Container>
