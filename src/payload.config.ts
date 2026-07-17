@@ -29,6 +29,7 @@ import { SiteTheme } from './SiteTheme/config'
 import { StudioInfo } from './StudioInfo/config'
 import { LoginTheme } from './LoginTheme/config'
 import { plugins } from './plugins'
+import { aiTextFieldsPlugin } from './plugins/aiTextFields'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
@@ -162,6 +163,8 @@ export default buildConfig({
           }),
         ]
       : []),
+    // Must run last so it also reaches text fields added by the plugins above.
+    aiTextFieldsPlugin,
   ],
   globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,
