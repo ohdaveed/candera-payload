@@ -95,7 +95,7 @@ export class EtsySyncEngine {
           // If this is a manual list sync, we allow non-candle titles for testing/forced sync
           if (source.type === 'listings') {
             ports.logger.info(
-              `Manual sync for ${listing_id} ("${title}"): allowing through as vintage product.`,
+              `Manual sync for ${listing_id} ("${title}"): ${validation.error.issues[0].message} — allowing through as vintage product.`,
             )
             productType = 'vintage'
           } else {

@@ -167,6 +167,10 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
           equals: etsyImageId,
         },
       },
+      // Existence check only: skip relationship population and pagination count.
+      depth: 0,
+      limit: 1,
+      pagination: false,
     })
     return res.docs.length > 0 ? res.docs[0].id : null
   }
