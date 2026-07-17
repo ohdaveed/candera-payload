@@ -10,7 +10,12 @@ import {
   type SyncResult,
   type SyncSource,
 } from './types'
-import { cleanEtsyDescription, deriveCleanTitle, parseEtsyDescription, slugify } from './descriptionParser'
+import {
+  cleanEtsyDescription,
+  deriveCleanTitle,
+  parseEtsyDescription,
+  slugify,
+} from './descriptionParser'
 
 // Currencies the storefront's `currency` select supports. Keep in sync with the
 // options in `src/collections/Products.ts`.

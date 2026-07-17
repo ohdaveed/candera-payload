@@ -32,8 +32,7 @@ export interface RawEtsyListing {
 }
 
 export type SyncSource =
-  | { type: 'shop'; shopId: number; limit?: number }
-  | { type: 'listings'; listingIds: number[] }
+  { type: 'shop'; shopId: number; limit?: number } | { type: 'listings'; listingIds: number[] }
 
 export interface SyncResult {
   success: boolean
