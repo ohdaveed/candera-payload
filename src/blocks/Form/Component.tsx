@@ -151,6 +151,7 @@ export const FormBlock: React.FC<
               />
 
               <Button
+                aria-describedby={!turnstileToken ? `${formID}-verifying` : undefined}
                 disabled={isLoading || !turnstileToken}
                 form={String(formID)}
                 type="submit"
@@ -159,6 +160,11 @@ export const FormBlock: React.FC<
               >
                 {isLoading ? 'Sending…' : submitButtonLabel || 'Send Correspondence'}
               </Button>
+              {!turnstileToken ? (
+                <p id={`${formID}-verifying`} className="caption mt-3" aria-live="polite">
+                  Verifying you&rsquo;re human…
+                </p>
+              ) : null}
             </form>
           ) : null}
         </Form>
