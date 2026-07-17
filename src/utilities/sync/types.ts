@@ -9,6 +9,15 @@ export const CandleListingSchema = z.object({
   }),
   description: z.string(),
   images: z.array(z.any()).optional(),
+  // Guard the arithmetic the engine performs (amount / divisor): a malformed or
+  // zero divisor from the API would otherwise write NaN/Infinity to price.
+  price: z
+    .object({
+      amount: z.number(),
+      divisor: z.number().positive(),
+      currency_code: z.string(),
+    })
+    .optional(),
 })
 
 // Raw schemas matching platform fields
