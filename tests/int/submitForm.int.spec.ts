@@ -1,54 +1,72 @@
 import { describe, it, expect, beforeAll } from 'vite-plus/test'
-import { submitForm } from '@/app/actions/submitForm'
+import { submitFormAction } from '@/app/actions/submitForm'
 import { getPayload, type Payload } from 'payload'
 import config from '@/payload.config'
 import { InMemoryFormRelayAdapter } from '@/services/formRelay'
 
 let payload: Payload
 
-describe('submitForm action validation', () => {
-  it('returns error for invalid formId (0)', async () => {
-    const result = await submitForm(0, [{ field: 'email', value: 'test@test.com' }])
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.error).toBe('Invalid form.')
-    }
+describe('submitFormAction validation', () => {
+  it('rejects invalid formId (0) via the input schema', async () => {
+    const result = await submitFormAction({
+      formId: 0,
+      submissionData: [{ field: 'email', value: 'test@test.com' }],
+    })
+    expect(result?.validationErrors).toBeDefined()
+    expect(result?.data).toBeUndefined()
   })
 
-  it('returns error for negative formId', async () => {
-    const result = await submitForm(-1, [{ field: 'email', value: 'test@test.com' }])
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.error).toBe('Invalid form.')
-    }
+  it('rejects negative formId via the input schema', async () => {
+    const result = await submitFormAction({
+      formId: -1,
+      submissionData: [{ field: 'email', value: 'test@test.com' }],
+    })
+    expect(result?.validationErrors).toBeDefined()
+    expect(result?.data).toBeUndefined()
   })
 
-  it('returns error for empty submissionData', async () => {
-    const result = await submitForm(1, [])
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.error).toBe('No submission data.')
-    }
+  it('rejects empty submissionData', async () => {
+    const result = await submitFormAction({ formId: 1, submissionData: [] })
+    expect(result?.serverError).toBe('No submission data.')
+    expect(result?.data).toBeUndefined()
   })
 
-  it('returns error when there are too many fields', async () => {
+  it('rejects too many fields', async () => {
     const tooManyFields = Array.from({ length: 51 }, (_, i) => ({
       field: `field-${i}`,
       value: 'x',
     }))
-    const result = await submitForm(1, tooManyFields)
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.error).toBe('Too many fields.')
-    }
+    const result = await submitFormAction({ formId: 1, submissionData: tooManyFields })
+    expect(result?.serverError).toBe('Too many fields.')
+    expect(result?.data).toBeUndefined()
   })
 
-  it('returns error when a field value is too long', async () => {
-    const result = await submitForm(1, [{ field: 'message', value: 'x'.repeat(5001) }])
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.error).toBe('A field is too long.')
-    }
+  it('rejects a field value that is too long', async () => {
+    const result = await submitFormAction({
+      formId: 1,
+      submissionData: [{ field: 'message', value: 'x'.repeat(5001) }],
+    })
+    expect(result?.serverError).toBe('A field is too long.')
+    expect(result?.data).toBeUndefined()
+  })
+
+  it('rejects submissions with a filled honeypot', async () => {
+    const result = await submitFormAction({
+      formId: 1,
+      submissionData: [{ field: 'email', value: 'test@test.com' }],
+      honeypot: 'bot-filled-this',
+    })
+    expect(result?.serverError).toBe('Submission rejected.')
+    expect(result?.data).toBeUndefined()
+  })
+
+  it('rejects submissions whose only rows are honeypot fields', async () => {
+    const result = await submitFormAction({
+      formId: 1,
+      submissionData: [{ field: '_gotcha', value: '' }],
+    })
+    expect(result?.serverError).toBe('No submission data.')
+    expect(result?.data).toBeUndefined()
   })
 })
 

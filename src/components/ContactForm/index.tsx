@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { submitForm } from '@/app/actions/submitForm'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { EMAIL_PATTERN } from '@/constants/validation'
 import { TurnstileWidget } from '@/components/TurnstileWidget'
 
@@ -30,9 +30,7 @@ type Props = {
 }
 
 export const ContactForm: React.FC<Props> = ({ formId }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<string | undefined>()
+  const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
 
   const form = useForm<FormValues>({
@@ -49,40 +47,19 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
   const onSubmit = useCallback(
     (data: FormValues) => {
-      const submit = async () => {
-        setError(undefined)
-        setIsLoading(true)
-
-        try {
-          const result = await submitForm(
-            formId,
-            [
-              { field: 'full-name', value: data['full-name'] },
-              { field: 'email', value: data.email },
-              { field: 'phone', value: data.phone || '' },
-              { field: 'message', value: data.message },
-            ],
-            { turnstileToken, honeypot: data._gotcha },
-          )
-
-          setIsLoading(false)
-
-          if (!result.ok) {
-            setError(result.error)
-            return
-          }
-
-          setHasSubmitted(true)
-        } catch (err) {
-          console.error('[ContactForm] Server Action failed:', err)
-          setIsLoading(false)
-          setError('Something went wrong. Please try again.')
-        }
-      }
-
-      void submit()
+      void submit(
+        formId,
+        [
+          { field: 'full-name', value: data['full-name'] },
+          { field: 'email', value: data.email },
+          { field: 'phone', value: data.phone || '' },
+          { field: 'message', value: data.message },
+        ],
+        turnstileToken,
+        data._gotcha,
+      )
     },
-    [formId, turnstileToken],
+    [formId, submit, turnstileToken],
   )
 
   if (hasSubmitted) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Card, CardPostData } from '@/components/Card'
+import { ProductGrid } from '@/components/ProductGrid'
 
 export type Props = {
   posts: CardPostData[]
@@ -12,69 +13,63 @@ export type Props = {
   sidebarLinkText?: string
 }
 
-const CardList: React.FC<{
+/**
+ * Strips a doc down to the fields the Card actually renders, so full Payload
+ * docs never get serialized across the client-component boundary.
+ */
+const minimizeDoc = (result: CardPostData): CardPostData => {
+  const {
+    slug,
+    categories,
+    meta,
+    title,
+    tagline,
+    extraPhotos,
+    etsyPrimaryImage,
+    scentProfile,
+    burnTime,
+    atmosphere,
+    productTag,
+    vessel,
+    price,
+    currency,
+    populatedAuthors,
+    publishedAt,
+    heroImage,
+  } = result
+
+  return {
+    slug,
+    categories: categories?.map((cat) => (typeof cat === 'object' ? { title: cat.title } : cat)),
+    meta: { description: meta?.description, image: meta?.image },
+    title,
+    tagline,
+    extraPhotos,
+    etsyPrimaryImage,
+    scentProfile,
+    burnTime,
+    atmosphere,
+    productTag,
+    vessel,
+    price,
+    currency,
+    populatedAuthors,
+    publishedAt,
+    heroImage,
+  } as CardPostData
+}
+
+const PostCardList: React.FC<{
   posts: CardPostData[]
-  relationTo: 'posts' | 'products'
   className?: string
-}> = ({
-  posts,
-  relationTo,
-  className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3',
-}) => (
+}> = ({ posts, className = 'grid grid-cols-1 lg:grid-cols-2 gap-8' }) => (
   <ul className={`${className} list-none p-0 m-0`}>
     {posts?.map((result, index) => {
       if (typeof result !== 'object' || result === null) return null
 
-      const {
-        slug,
-        categories,
-        meta,
-        title,
-        tagline,
-        extraPhotos,
-        etsyPrimaryImage,
-        scentProfile,
-        burnTime,
-        atmosphere,
-        productTag,
-        vessel,
-        price,
-        currency,
-        populatedAuthors,
-        publishedAt,
-        heroImage,
-      } = result
-
-      const minimizedDoc = {
-        slug,
-        categories: categories?.map((cat) =>
-          typeof cat === 'object' ? { title: cat.title } : cat,
-        ),
-        meta: { description: meta?.description, image: meta?.image },
-        title,
-        tagline,
-        extraPhotos,
-        etsyPrimaryImage,
-        scentProfile,
-        burnTime,
-        atmosphere,
-        productTag,
-        vessel,
-        price,
-        currency,
-        populatedAuthors,
-        publishedAt,
-        heroImage,
-      }
-
       return (
         <li key={index}>
-          <Card
-            className="h-full"
-            doc={minimizedDoc as CardPostData}
-            relationTo={relationTo}
-            showCategories
-          />
+          <Card className="h-full" doc={minimizeDoc(result)} relationTo="posts" showCategories />
         </li>
       )
     })}
@@ -110,14 +105,20 @@ export const CollectionArchive: React.FC<Props> = ({
     : 'Deep dives into botanical history, studio notes, and the philosophy of slow living.'
   const defaultLinkText = isProducts ? 'View all →' : 'View all stories →'
 
+  // FE-09 convergence: product cards always render through the canonical
+  // ProductGrid (same grid, motion, and Card variants as /products listings).
+  const grid = isProducts ? (
+    <ProductGrid
+      products={posts
+        .filter((result) => typeof result === 'object' && result !== null)
+        .map(minimizeDoc)}
+    />
+  ) : (
+    <PostCardList posts={posts} />
+  )
+
   if (hideSidebar) {
-    return (
-      <CardList
-        posts={posts}
-        relationTo={relationTo}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-      />
-    )
+    return grid
   }
 
   return (
@@ -140,13 +141,7 @@ export const CollectionArchive: React.FC<Props> = ({
       </div>
 
       {/* Right — card grid */}
-      <div className="flex-1 min-w-0">
-        <CardList
-          posts={posts}
-          relationTo={relationTo}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-        />
-      </div>
+      <div className="flex-1 min-w-0">{grid}</div>
     </div>
   )
 }

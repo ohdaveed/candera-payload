@@ -9,6 +9,11 @@ interface ProductGridProps {
   products: CardPostData[]
 }
 
+/**
+ * Canonical product-card grid (FE-09). Every surface that lists product cards
+ * (/products listings, search results, ArchiveBlock) renders through this
+ * component — do not build parallel product grids.
+ */
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   const shouldReduceMotion = useReducedMotion()
   const { ref, isIntersecting } = useIntersectionObserver<HTMLUListElement>({

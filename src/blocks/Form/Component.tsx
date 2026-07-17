@@ -10,7 +10,7 @@ import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Form } from '@/components/ui/form'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import { submitFormAction } from '@/app/actions/submitForm'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { TurnstileWidget } from '@/components/TurnstileWidget'
 
 import { fields } from './fields'
@@ -45,9 +45,7 @@ export const FormBlock: React.FC<
     register,
   } = formMethods
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>()
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
   const [honeypot, setHoneypot] = useState('')
   const router = useRouter()
@@ -55,8 +53,6 @@ export const FormBlock: React.FC<
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
       const submitForm = async () => {
-        setError(undefined)
-
         const dataToSend = Object.entries(data as unknown as Record<string, string>).map(
           ([name, value]) => ({
             field: name,
@@ -64,44 +60,17 @@ export const FormBlock: React.FC<
           }),
         )
 
-        setIsLoading(true)
+        const ok = await submit(formID, dataToSend, turnstileToken, honeypot)
 
-        try {
-          const result = await submitFormAction({
-            formId: Number(formID),
-            submissionData: dataToSend,
-            turnstileToken,
-            honeypot,
-          })
-
-          if (result?.validationErrors || result?.serverError) {
-            setIsLoading(false)
-            setError({
-              message: result.serverError || 'Validation failed.',
-              status: '400',
-            })
-            return
-          }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          if (confirmationType === 'redirect' && redirect) {
-            const { url } = redirect
-            if (url) router.push(url)
-          }
-        } catch (err) {
-          console.warn('[FormBlock] submission error:', err)
-          setIsLoading(false)
-          setError({
-            message: 'Something went wrong.',
-          })
+        if (ok && confirmationType === 'redirect' && redirect) {
+          const { url } = redirect
+          if (url) router.push(url)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, turnstileToken, honeypot],
+    [router, formID, redirect, confirmationType, submit, turnstileToken, honeypot],
   )
 
   return (
@@ -135,7 +104,7 @@ export const FormBlock: React.FC<
               aria-live="polite"
               role="alert"
             >
-              {`${error.status || '500'}: ${error.message || ''}`}
+              {error}
             </Section>
           ) : null}
           {!hasSubmitted ? (

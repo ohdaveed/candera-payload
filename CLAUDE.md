@@ -58,7 +58,7 @@ We use a mix of `pnpm` for Next.js/Payload scripts and **Vite+ (`vp`)** for unif
 - **`(frontend)/`** — Public storefront, mostly React Server Components.
   - `[slug]` → CMS pages (`home` slug statically generated via `generateStaticParams`), block-driven layout.
   - `posts`, `products`, `how-to` and their slug variations.
-  - `contact` (→ `submitForm` server action), `inner-circle`, `search`, `(sitemaps)`.
+  - `contact` (→ `submitFormAction` server action), `inner-circle`, `search`, `(sitemaps)`.
   - `next/` utility routes (preview, seed). Incl. `next/ai/generate-product-copy/route.ts` — JWT-auth AI copy endpoint via `gateway('anthropic/claude-haiku-4-5')`.
 - **`(payload)/`** — Admin panel at `/admin`, REST + GraphQL at `/api`.
 - **`actions/`** — Server actions (e.g., `submitForm.ts`).
@@ -98,7 +98,7 @@ Hexagonal (ports/adapters) design decoupling domain logic from client and storag
 ### Revalidation & forms
 
 - **Revalidation:** `src/utilities/revalidate.ts` uses `afterChange`/`afterDelete` hooks to call `revalidatePath`/`revalidateTag` for on-demand ISR.
-- **Forms:** `submitForm` server action writes through Payload Local API → `processFormSubmission` hook forwards to **FormSubmit.co** (target inbox is `FORMSUBMIT_EMAIL`).
+- **Forms:** All client forms submit via the `useFormSubmission` hook → `submitFormAction` server action (single validation boundary: `validateAndSanitizeSubmission`) → Payload Local API → `processFormSubmission` hook forwards to **FormSubmit.co** (target inbox is `FORMSUBMIT_EMAIL`).
 - **Search:** `beforeSyncWithSearch` indexes published posts into a `search` collection; queried via Local API, not raw SQL.
 
 ## Database & migrations
