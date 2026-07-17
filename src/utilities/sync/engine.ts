@@ -170,11 +170,23 @@ export class EtsySyncEngine {
         syncOwned.etsyPrimaryImage = mainImageId || null
 
         if (etsyPrice) {
-          // Only persist a price the storefront can render correctly. Writing the
-          // price while dropping an unsupported currency would pair a fresh
-          // foreign amount with the row's stale/default currency (a misleading
-          // price), so skip both and log instead.
-          if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+          // Guard the arithmetic: a malformed amount or non-positive divisor
+          // from the API would write NaN/Infinity to price. Like the
+          // unsupported-currency case below, this skips ONLY the price update —
+          // never the listing.
+          const priceIsWellFormed =
+            typeof etsyPrice.amount === 'number' &&
+            typeof etsyPrice.divisor === 'number' &&
+            etsyPrice.divisor > 0
+          if (!priceIsWellFormed) {
+            ports.logger.warn(
+              `Listing ${listing_id}: malformed price payload; skipping price update.`,
+            )
+          } else if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+            // Only persist a price the storefront can render correctly. Writing
+            // the price while dropping an unsupported currency would pair a fresh
+            // foreign amount with the row's stale/default currency (a misleading
+            // price), so skip both and log instead.
             syncOwned.price = etsyPrice.amount / etsyPrice.divisor
             syncOwned.currency = etsyPrice.currency_code as Product['currency']
             syncOwned.priceSyncedAt = new Date().toISOString()

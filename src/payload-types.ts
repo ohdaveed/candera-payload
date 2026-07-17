@@ -1581,40 +1581,24 @@ export interface PayloadMcpApiKey {
      * Allow clients to find header global.
      */
     find?: boolean | null;
-    /**
-     * Allow clients to update header global.
-     */
-    update?: boolean | null;
   };
   footer?: {
     /**
      * Allow clients to find footer global.
      */
     find?: boolean | null;
-    /**
-     * Allow clients to update footer global.
-     */
-    update?: boolean | null;
   };
   siteTheme?: {
     /**
      * Allow clients to find site-theme global.
      */
     find?: boolean | null;
-    /**
-     * Allow clients to update site-theme global.
-     */
-    update?: boolean | null;
   };
   studioInfo?: {
     /**
      * Allow clients to find studio-info global.
      */
     find?: boolean | null;
-    /**
-     * Allow clients to update studio-info global.
-     */
-    update?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -2740,25 +2724,21 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
     | T
     | {
         find?: T;
-        update?: T;
       };
   footer?:
     | T
     | {
         find?: T;
-        update?: T;
       };
   siteTheme?:
     | T
     | {
         find?: T;
-        update?: T;
       };
   studioInfo?:
     | T
     | {
         find?: T;
-        update?: T;
       };
   updatedAt?: T;
   createdAt?: T;
