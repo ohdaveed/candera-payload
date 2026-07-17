@@ -87,6 +87,13 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* Article body */}
       <Section padding="medium" data-section="article-body">
         <Container>
+          {/*
+            Heading order: PostHero renders the page's single h1. CMS-authored body content
+            must stay within h2/h3 — the styles below promote h2/h3 tags directly to .h2/.h3
+            visual classes with no structural guard against editors inserting h1 or skipping
+            to h4+. Editors should not add h1 in body copy, and h2 should precede h3 in
+            document order.
+          */}
           <RichText
             className="
               !max-w-[860px] mx-auto
