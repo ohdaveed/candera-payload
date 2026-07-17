@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { TextField, TextareaField, useDocumentInfo, useField, useFormFields } from '@payloadcms/ui'
 import type { TextFieldClientProps, TextareaFieldClientProps } from 'payload'
 import type { FieldGenerationOutput } from '@/lib/ai/field-copy'
@@ -17,6 +17,13 @@ function toPlainString(value: unknown): string {
   return typeof value === 'string' ? value : ''
 }
 
+// Mirrors the plugin's eligibility rules at render time: no generate control on
+// read-only or admin-disabled fields.
+function isEditable(props: SharedProps): boolean {
+  if (props.readOnly) return false
+  return !(props.field.admin?.readOnly || props.field.admin?.disabled)
+}
+
 function AIGenerateLoop({
   props,
   fieldType,
@@ -27,6 +34,9 @@ function AIGenerateLoop({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [suggestion, setSuggestion] = useState<string | null>(null)
+  // Monotonic id so responses from superseded requests (an older overlapping
+  // generate, or one in flight when the user accepts/discards) are ignored.
+  const requestIdRef = useRef(0)
 
   const { path, field } = props
   const { collectionSlug, globalSlug } = useDocumentInfo()
@@ -37,6 +47,7 @@ function AIGenerateLoop({
   const description = typeof field.admin?.description === 'string' ? field.admin.description : ''
 
   const handleGenerate = useCallback(async () => {
+    const requestId = ++requestIdRef.current
     setLoading(true)
     setError(null)
 
@@ -62,17 +73,26 @@ function AIGenerateLoop({
       }
 
       const data = (await res.json()) as FieldGenerationOutput
+      if (requestId !== requestIdRef.current) return
       setSuggestion(data.suggestion)
     } catch (err) {
+      if (requestId !== requestIdRef.current) return
       setError(err instanceof Error ? err.message : 'Generation failed')
     } finally {
-      setLoading(false)
+      if (requestId === requestIdRef.current) setLoading(false)
     }
   }, [collectionSlug, globalSlug, fieldLabel, path, fieldType, description, documentTitle, value])
 
+  function clearSuggestion() {
+    requestIdRef.current += 1
+    setLoading(false)
+    setError(null)
+    setSuggestion(null)
+  }
+
   function acceptSuggestion() {
     if (suggestion) setValue(suggestion)
-    setSuggestion(null)
+    clearSuggestion()
   }
 
   const smallButtonStyle: React.CSSProperties = {
@@ -107,6 +127,7 @@ function AIGenerateLoop({
               <button
                 type="button"
                 onClick={handleGenerate}
+                disabled={loading}
                 style={{
                   textDecoration: 'underline',
                   background: 'none',
@@ -136,6 +157,7 @@ function AIGenerateLoop({
           }}
         >
           <div style={{ color: 'var(--theme-text)' }}>{suggestion}</div>
+          {error && <div style={{ color: 'var(--theme-error-500)' }}>{error}</div>}
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             <button
               type="button"
@@ -156,7 +178,7 @@ function AIGenerateLoop({
             >
               {loading ? 'Regenerating…' : 'Regenerate'}
             </button>
-            <button type="button" onClick={() => setSuggestion(null)} style={smallButtonStyle}>
+            <button type="button" onClick={clearSuggestion} style={smallButtonStyle}>
               Discard
             </button>
           </div>
@@ -170,7 +192,7 @@ export function AITextField(props: TextFieldClientProps) {
   return (
     <div>
       <TextField {...props} />
-      {!props.readOnly && <AIGenerateLoop props={props} fieldType="text" />}
+      {isEditable(props) && <AIGenerateLoop props={props} fieldType="text" />}
     </div>
   )
 }
@@ -179,7 +201,7 @@ export function AITextareaField(props: TextareaFieldClientProps) {
   return (
     <div>
       <TextareaField {...props} />
-      {!props.readOnly && <AIGenerateLoop props={props} fieldType="textarea" />}
+      {isEditable(props) && <AIGenerateLoop props={props} fieldType="textarea" />}
     </div>
   )
 }

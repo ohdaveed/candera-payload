@@ -36,6 +36,15 @@ function isEligibleTextField(field: Field): field is Extract<Field, { type: 'tex
   return true
 }
 
+// Containers that are hidden, read-only, or disabled in the admin (e.g. Posts'
+// `populatedAuthors` array) must not expose the AI control on nested fields.
+function isNonEditableParent(field: Field): boolean {
+  if ('hidden' in field && field.hidden) return true
+  const admin = field.admin as
+    { disabled?: boolean; hidden?: unknown; readOnly?: boolean } | undefined
+  return Boolean(admin?.disabled || admin?.hidden || admin?.readOnly)
+}
+
 function withAIComponent(field: Extract<Field, { type: 'text' | 'textarea' }>): Field {
   if (field.type === 'text') {
     return {
@@ -69,6 +78,10 @@ export function injectAIGenerateOption(fields: Field[]): Field[] {
   return fields.map((field): Field => {
     if (isEligibleTextField(field)) {
       return withAIComponent(field)
+    }
+
+    if (isNonEditableParent(field)) {
+      return field
     }
 
     if (field.type === 'tabs') {

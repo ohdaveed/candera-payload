@@ -1,6 +1,7 @@
-import { generateObject, gateway } from 'ai'
+import { generateObject } from 'ai'
 import { headers } from 'next/headers'
 import { SYSTEM_PROMPTS, buildUserPrompt, inputSchema, outputSchema } from '@/lib/ai/product-copy'
+import { copyModel } from '@/lib/ai/model'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -26,7 +27,7 @@ export async function POST(req: Request): Promise<Response> {
 
   try {
     const { object } = await generateObject({
-      model: gateway('anthropic/claude-haiku-4-5'),
+      model: copyModel(),
       system: SYSTEM_PROMPTS[input.tone],
       prompt: buildUserPrompt(input),
       schema: outputSchema,

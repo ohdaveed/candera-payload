@@ -15,6 +15,15 @@ type FoundField = {
   component: unknown
 }
 
+// Non-editable containers (hidden/disabled/read-only) are not traversed by the
+// plugin — nested fields must not get the AI control.
+function isNonEditableParent(field: Field): boolean {
+  if ('hidden' in field && field.hidden) return true
+  const admin = field.admin as
+    { disabled?: boolean; hidden?: unknown; readOnly?: boolean } | undefined
+  return Boolean(admin?.disabled || admin?.hidden || admin?.readOnly)
+}
+
 // Recursively collects every text/textarea field, mirroring the plugin's traversal.
 function collectTextFields(fields: Field[], found: FoundField[] = []): FoundField[] {
   for (const field of fields) {
@@ -24,6 +33,8 @@ function collectTextFields(fields: Field[], found: FoundField[] = []): FoundFiel
         name: 'name' in field ? field.name : '(unnamed)',
         component: field.admin?.components?.Field,
       })
+    } else if (isNonEditableParent(field)) {
+      continue
     } else if (field.type === 'tabs') {
       for (const tab of field.tabs) collectTextFields(tab.fields, found)
     } else if (field.type === 'blocks' && Array.isArray(field.blocks)) {
