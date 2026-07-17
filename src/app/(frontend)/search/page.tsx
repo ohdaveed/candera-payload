@@ -7,7 +7,6 @@ import type { CardPostData } from '@/components/Card'
 import type { Media, Search as SearchDoc } from '@/payload-types'
 import Link from 'next/link'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
-import { Eyebrow } from '@/components/ui/eyebrow'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { searchContent } from '@/lib/queries/search'
@@ -82,13 +81,13 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
             <div className="flex flex-col gap-20">
               {productCards.length > 0 && (
                 <div className="flex flex-col gap-8">
-                  <Eyebrow className="text-candera-sage-text">Candles</Eyebrow>
+                  <h2 className="h3">Candles</h2>
                   <CollectionArchive posts={productCards} relationTo="products" hideSidebar />
                 </div>
               )}
               {postCards.length > 0 && (
                 <div className="flex flex-col gap-8">
-                  <Eyebrow className="text-candera-sage-text">Journal</Eyebrow>
+                  <h2 className="h3">Journal</h2>
                   <CollectionArchive posts={postCards} relationTo="posts" hideSidebar />
                 </div>
               )}
