@@ -48,7 +48,7 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
             <span className="font-sans text-sm font-bold uppercase tracking-wide">
               {status.label}
             </span>
-            <div className="editorial text-foreground">
+            <div className="font-sans font-light text-foreground [&_p]:m-0">
               <RichText data={content} enableGutter={false} enableProse={false} />
             </div>
           </div>

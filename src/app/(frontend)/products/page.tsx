@@ -74,7 +74,7 @@ export default async function ProductsPage({
           <ProductFilters />
 
           {/* Result count — sage-text on vellum = 5.2:1 ✅ */}
-          <p className="eyebrow text-candera-sage-text mb-8">{resultLabel}</p>
+          <p className="caption text-candera-sage-text mb-8">{resultLabel}</p>
 
           {products.docs.length > 0 ? (
             <ProductGrid products={products.docs.map(toGridProduct)} />

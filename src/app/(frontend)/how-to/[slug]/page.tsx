@@ -89,7 +89,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
               [&_p]:body [&_p]:mb-7
               [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
               [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4
-              [&_blockquote]:editorial [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
+              [&_blockquote]:editorial [&_blockquote]:border-l [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
               [&_blockquote_p]:h3 [&_blockquote_p]:mb-0
               [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:body
               [&_a]:text-candera-ember-strong [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-candera-obsidian [&_a]:transition-colors

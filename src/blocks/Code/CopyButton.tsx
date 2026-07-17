@@ -21,11 +21,21 @@ export function CopyButton({ code }: { code: string }) {
       size="sm"
       variant="cta-ghost-dark"
       onClick={async () => {
-        await navigator.clipboard.writeText(code)
-        updateCopyStatus()
+        try {
+          await navigator.clipboard.writeText(code)
+          updateCopyStatus()
+        } catch {
+          setText('Copy failed')
+          setTimeout(() => {
+            setText('Copy')
+          }, 1500)
+        }
       }}
     >
-      <p>{text}</p>
+      <output aria-live="polite" className="sr-only">
+        {text}
+      </output>
+      <p aria-hidden="true">{text}</p>
       <CopyIcon />
     </Button>
   )

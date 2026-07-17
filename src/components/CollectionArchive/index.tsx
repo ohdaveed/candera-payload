@@ -11,6 +11,8 @@ export type Props = {
   sidebarTitle?: string
   sidebarDescription?: string
   sidebarLinkText?: string
+  /** Overrides the default eyebrow/title/description/link sidebar with custom content (e.g. CMS-authored RichText intro). */
+  sidebarContent?: React.ReactNode
 }
 
 /**
@@ -84,6 +86,7 @@ export const CollectionArchive: React.FC<Props> = ({
   sidebarTitle,
   sidebarDescription,
   sidebarLinkText,
+  sidebarContent,
 }) => {
   const isProducts = relationTo === 'products'
   const collectionPath = isProducts ? '/products' : '/posts'
@@ -124,18 +127,22 @@ export const CollectionArchive: React.FC<Props> = ({
   return (
     <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-24 bg-candera-vellum pb-16 md:pb-24">
       {/* Left sidebar — sticky */}
-      <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
-        <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
-        <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
-        <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
-          {sidebarDescription || defaultDescription}
-        </p>
-        <Link
-          href={collectionPath}
-          className="btn-text text-candera-obsidian no-underline border-b border-candera-ember-strong pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember-strong transition-colors mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-        >
-          {sidebarLinkText || defaultLinkText}
-        </Link>
+      <div className="lg:w-80 lg:flex-shrink-0 lg:sticky lg:top-28 lg:self-start flex flex-col gap-4">
+        {sidebarContent ?? (
+          <>
+            <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
+            <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
+            <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
+              {sidebarDescription || defaultDescription}
+            </p>
+            <Link
+              href={collectionPath}
+              className="btn-text text-candera-obsidian no-underline border-b border-candera-ember-strong pb-px w-fit inline-flex items-center gap-1.5 hover:text-candera-ember-strong transition-colors mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            >
+              {sidebarLinkText || defaultLinkText}
+            </Link>
+          </>
+        )}
       </div>
 
       {/* Right — card grid */}

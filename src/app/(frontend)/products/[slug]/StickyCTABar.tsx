@@ -74,7 +74,7 @@ export function StickyCTABar({ title, price, currency, etsyListingId, sentinelRe
         bg-candera-obsidian text-candera-vellum
         flex items-center justify-between
         px-6 py-4 gap-4
-        shadow-[0_-4px_24px_rgba(0,0,0,0.18)]
+        shadow-[0_-18px_40px_-12px_rgba(20,20,18,0.25)]
         transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
         ${visible ? 'translate-y-0' : 'translate-y-full'}
       `}

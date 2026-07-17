@@ -301,7 +301,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     }
                     router.push(`${pathname}?${params.toString()}`, { scroll: false })
                   }}
-                  className="font-sans text-xs text-inherit opacity-40 hover:opacity-70 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
+                  className="font-sans text-xs text-inherit opacity-70 hover:opacity-100 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
                 >
                   ← Back
                 </button>
@@ -417,7 +417,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     </span>
                   </Tooltip>
                 </p>
-                <p className="font-sans text-base text-inherit opacity-50 tracking-[0.2em] font-light">
+                <p className="font-sans text-base text-inherit opacity-70 tracking-[0.2em] font-light">
                   {result.notes}
                 </p>
               </motion.div>
@@ -426,7 +426,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                 className="w-full max-w-xl"
               >
-                <p className="font-sans text-sm text-inherit opacity-50 leading-relaxed mb-10 tracking-wide text-center">
+                <p className="font-sans text-sm text-inherit opacity-70 leading-relaxed mb-10 tracking-wide text-center">
                   Enter your email to receive your full scent profile and discover the candle that
                   matches your atmosphere.
                 </p>
@@ -453,7 +453,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       autoComplete="email"
                       aria-label="Email address"
                       spellCheck={false}
-                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-inherit placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)] transition-all duration-700 rounded-none px-0"
+                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-inherit placeholder:text-candera-linen/70 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)] transition-all duration-700 rounded-none px-0"
                       {...register('email', {
                         required: 'Email is required',
                         pattern: {
@@ -524,11 +524,11 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   )}
                 </form>
 
-                <p className="mt-6 text-[11px] text-candera-stone/40 text-center tracking-wide">
+                <p className="mt-6 text-[11px] text-candera-stone/70 text-center tracking-wide">
                   No spam &middot; Unsubscribe any time &middot;{' '}
                   <Link
                     href="/privacy-policy"
-                    className="underline underline-offset-2 hover:text-candera-vellum/60 transition-colors"
+                    className="underline underline-offset-2 hover:text-candera-vellum transition-colors"
                   >
                     Privacy Policy
                   </Link>
@@ -568,7 +568,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="font-sans text-sm text-candera-vellum/40 tracking-[0.2em] font-light mb-10"
+                className="font-sans text-sm text-candera-vellum/70 tracking-[0.2em] font-light mb-10"
               >
                 Your profile has been sent to{' '}
                 {submittedEmail ? submittedEmail.replace(/(?<=.).(?=[^@]*@)/g, '*') : ''}
@@ -606,7 +606,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   router.push(`${pathname}?${params.toString()}`, { scroll: false })
                 }}
                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                className="font-sans text-xs text-candera-vellum/30 hover:text-candera-vellum/60 uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
+                className="font-sans text-xs text-candera-vellum/70 hover:text-candera-vellum uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
               >
                 Retake the Quiz
               </motion.button>

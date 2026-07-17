@@ -117,7 +117,7 @@ export default async function ContactPage() {
               {/* Footer note */}
               <div className="flex items-center gap-4 mt-auto pt-4">
                 <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-                <span className="eyebrow">{locationTagline}</span>
+                <span className="caption uppercase tracking-wide">{locationTagline}</span>
               </div>
             </div>
 

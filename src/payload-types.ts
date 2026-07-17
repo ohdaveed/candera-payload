@@ -928,6 +928,9 @@ export interface Form {
  */
 export interface TestimonialsBlock {
   eyebrow?: string | null;
+  /**
+   * Only the first 3 render on the live page.
+   */
   items?:
     | {
         quote: string;

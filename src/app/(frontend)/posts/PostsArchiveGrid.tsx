@@ -37,31 +37,39 @@ export const PostsArchiveGrid: React.FC<{ posts: ArchivePost[] }> = ({ posts }) 
       </div>
 
       {/* Article card grid — 1/2/3 columns (Hick's Law: scannable, containerized) */}
-      <ul className={`grid ${gridColsClass} gap-x-8 gap-y-12 list-none p-0 m-0`}>
-        {posts.map((post) => {
-          const { url: imageUrl, alt: imageAlt } = getMetaImage(post.meta?.image || post.heroImage)
+      {posts.length === 0 ? (
+        <p className="font-sans text-sm text-candera-sage-text leading-[1.85] m-0 max-w-md">
+          New entries are still being poured. Check back soon for the next batch of stories.
+        </p>
+      ) : (
+        <ul className={`grid ${gridColsClass} gap-x-8 gap-y-12 list-none p-0 m-0`}>
+          {posts.map((post) => {
+            const { url: imageUrl, alt: imageAlt } = getMetaImage(
+              post.meta?.image || post.heroImage,
+            )
 
-          const firstCategory = post.categories?.[0]
-          // Use the post's category when set; fall back to a static section
-          // label so every card shows a consistent label + date eyebrow.
-          const category =
-            firstCategory && typeof firstCategory === 'object' ? firstCategory.title : 'Journal'
+            const firstCategory = post.categories?.[0]
+            // Use the post's category when set; fall back to a static section
+            // label so every card shows a consistent label + date eyebrow.
+            const category =
+              firstCategory && typeof firstCategory === 'object' ? firstCategory.title : 'Journal'
 
-          return (
-            <li key={post.slug}>
-              <ArticleCard
-                title={post.title}
-                slug={post.slug}
-                excerpt={post.meta?.description}
-                date={post.publishedAt}
-                category={category}
-                imageUrl={imageUrl}
-                imageAlt={imageAlt}
-              />
-            </li>
-          )
-        })}
-      </ul>
+            return (
+              <li key={post.slug}>
+                <ArticleCard
+                  title={post.title}
+                  slug={post.slug}
+                  excerpt={post.meta?.description}
+                  date={post.publishedAt}
+                  category={category}
+                  imageUrl={imageUrl}
+                  imageAlt={imageAlt}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }

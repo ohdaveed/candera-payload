@@ -1,4 +1,5 @@
 import type { Metadata } from 'next/types'
+import Link from 'next/link'
 
 import { ArticleCard } from '@/components/ArticleCard'
 import { Container } from '@/components/ui/container'
@@ -50,7 +51,14 @@ export default async function Page() {
             <output aria-live="polite" className="block py-24 text-center">
               <p className="text-lg text-candera-obsidian">New guides are being written.</p>
               <p className="text-sm text-candera-sage-text mt-2">
-                Check back soon for studio notes on scent and care.
+                Check back soon for studio notes on scent and care. In the meantime, explore the{' '}
+                <Link
+                  href="/products"
+                  className="text-candera-ember-strong underline underline-offset-2 hover:text-candera-obsidian transition-colors"
+                >
+                  Collection
+                </Link>
+                .
               </p>
             </output>
           ) : (

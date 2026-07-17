@@ -63,7 +63,7 @@ export const Code: React.FC<Props> = ({ code, language = '' }) => {
     <Highlight code={code} language={language} theme={canderaCodeTheme}>
       {({ getLineProps, getTokenProps, tokens }) => (
         <div className="relative">
-          <pre className="bg-candera-obsidian text-candera-stone p-4 border text-xs border-border rounded overflow-x-auto">
+          <pre className="bg-candera-obsidian text-candera-stone p-4 border text-xs border-border rounded-card overflow-x-auto">
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ className: 'table-row', line })}>
                 <span className="table-cell select-none text-right text-candera-vellum/25">
