@@ -101,7 +101,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           </header>
 
           {/* Right — Maker Ethos card: brand authority anchor that foreshadows
-              the Journal. Glassmorphic over the dark hero imagery. */}
+              the Journal. Opaque flat card over the dark hero imagery. */}
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
               <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm border border-border text-card-foreground shadow-card">

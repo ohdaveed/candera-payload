@@ -32,7 +32,8 @@ export const SmoothScrollLink = React.forwardRef<HTMLAnchorElement, Props>(
       const target = document.getElementById(targetId)
       if (target) {
         event.preventDefault()
-        target.scrollIntoView({ behavior: 'smooth' })
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
         // Keep the URL hash in sync as a real anchor would, so the location is
         // shareable and back/forward navigation works.
         history.pushState(null, '', `#${targetId}`)
