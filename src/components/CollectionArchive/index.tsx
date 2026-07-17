@@ -127,7 +127,7 @@ export const CollectionArchive: React.FC<Props> = ({
   return (
     <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-24 bg-candera-vellum pb-16 md:pb-24">
       {/* Left sidebar — sticky */}
-      <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
+      <div className="lg:w-80 lg:flex-shrink-0 lg:sticky lg:top-28 lg:self-start flex flex-col gap-4">
         {sidebarContent ?? (
           <>
             <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
