@@ -52,7 +52,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           {...register('_gotcha')}
         />
 
-        <div className="flex flex-col sm:flex-row sm:items-center border border-candera-stone/50 bg-candera-obsidian/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
+        <div className="flex flex-col sm:flex-row sm:items-center border border-candera-stone/50 bg-candera-vellum/5 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
             type="email"
@@ -73,7 +73,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
               isLoading ? 'Submitting…' : !turnstileToken ? 'Verifying…' : 'Join the Circle'
             }
             aria-busy={isLoading}
-            className={`w-full sm:w-auto text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all focus-visible:outline-1 focus-visible:outline-candera-ember focus-visible:ring-4 focus-visible:ring-candera-ember/50 ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
+            className={`w-full sm:w-auto text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all focus-visible:outline-1 focus-visible:outline-candera-ember focus-visible:ring-4 focus-visible:ring-candera-ember/50 ${isLoading || !turnstileToken ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
             {isLoading ? '…' : !turnstileToken ? 'Verifying…' : 'Join the Circle'}
           </button>
@@ -96,7 +96,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
         />
       </form>
 
-      <p className="font-sans text-xs m-0 text-candera-stone/50 px-4">
+      <p className="font-sans text-xs m-0 text-candera-stone/80 px-4">
         Early access · Studio notes · No spam · Unsubscribe any time ·{' '}
         <Link
           href="/privacy-policy"
