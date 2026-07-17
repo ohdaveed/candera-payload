@@ -126,9 +126,7 @@ export const CollectionArchive: React.FC<Props> = ({
       {/* Left sidebar — sticky */}
       <div className="lg:w-80 lg:flex-shrink-0 md:sticky md:top-28 md:self-start flex flex-col gap-4">
         <p className="eyebrow text-candera-sage-text m-0">{sidebarEyebrow || defaultEyebrow}</p>
-        <h2 className="text-[1.85rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
-          {sidebarTitle || defaultTitle}
-        </h2>
+        <h2 className="h3 text-candera-obsidian m-0">{sidebarTitle || defaultTitle}</h2>
         <p className="font-sans text-sm text-candera-sage-text leading-[1.85] mt-[1.75rem] m-0">
           {sidebarDescription || defaultDescription}
         </p>
