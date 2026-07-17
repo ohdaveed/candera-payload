@@ -176,6 +176,7 @@ export class EtsySyncEngine {
           // never the listing.
           const priceIsWellFormed =
             typeof etsyPrice.amount === 'number' &&
+            etsyPrice.amount >= 0 &&
             typeof etsyPrice.divisor === 'number' &&
             etsyPrice.divisor > 0
           if (!priceIsWellFormed) {
