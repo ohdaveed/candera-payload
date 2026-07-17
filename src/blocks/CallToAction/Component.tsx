@@ -45,12 +45,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
               }`}
             >
               {links.map(({ link }, i) => (
-                <CMSLink
-                  key={i}
-                  {...link}
-                  appearance={i === 0 ? 'cta' : 'cta-ghost-dark'}
-                  size="cta"
-                />
+                <CMSLink key={i} {...link} appearance={i === 0 ? 'cta' : 'cta-ghost'} size="cta" />
               ))}
             </div>
           )}

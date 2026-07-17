@@ -22,6 +22,8 @@ const buttonVariants = cva(
           'bg-candera-linen text-candera-obsidian hover:bg-candera-vellum text-xs font-bold uppercase tracking-[.3em] rounded-button shadow-lg hover:shadow-xl hover:-translate-y-0.5',
         'cta-ghost-dark':
           'border border-candera-vellum/40 text-candera-vellum hover:bg-candera-linen hover:text-candera-obsidian text-xs font-bold uppercase tracking-[.3em] rounded-button hover:shadow-md hover:-translate-y-0.5',
+        'cta-ghost':
+          'border border-candera-obsidian/40 text-candera-obsidian hover:bg-candera-obsidian hover:text-candera-vellum text-xs font-bold uppercase tracking-[.3em] rounded-button hover:shadow-md hover:-translate-y-0.5',
       },
       size: {
         clear: '',
