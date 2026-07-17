@@ -26,6 +26,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
             columns.length > 0 &&
             columns.map((col, index) => {
               const { enableLink, link, richText, size } = col
+              const columnSize = size ?? 'full'
 
               return (
                 <Section
@@ -33,10 +34,10 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   padding="none"
                   className={cn(
                     'col-span-4',
-                    colsSpanClasses[size ?? 'full'],
+                    colsSpanClasses[columnSize],
                     {
-                      'md:col-span-2': size !== 'full',
-                      'lg:sticky lg:top-32': size !== 'full' && columns.length > 1,
+                      'md:col-span-2': columnSize !== 'full',
+                      'lg:sticky lg:top-32': columnSize !== 'full' && columns.length > 1,
                     },
                     'flex flex-col gap-10',
                   )}
