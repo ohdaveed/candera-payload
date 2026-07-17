@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { MinimalInput } from '@/components/ui/MinimalInput'
 import { MinimalTextarea } from '@/components/ui/MinimalTextarea'
@@ -32,6 +32,7 @@ type Props = {
 export const ContactForm: React.FC<Props> = ({ formId }) => {
   const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
+  const successRef = useRef<HTMLOutputElement>(null)
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -62,14 +63,25 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
     [formId, submit, turnstileToken],
   )
 
+  useEffect(() => {
+    if (hasSubmitted) {
+      successRef.current?.focus()
+    }
+  }, [hasSubmitted])
+
   if (hasSubmitted) {
     return (
-      <div className="py-12 text-center">
+      <output
+        ref={successRef}
+        aria-live="polite"
+        tabIndex={-1}
+        className="block py-12 text-center outline-none"
+      >
         <p className="h3 mb-3 m-0">Your note has been received.</p>
         <p className="body text-candera-sage-text m-0 mt-2">
           We respond with intention — expect a reply within 48 hours.
         </p>
-      </div>
+      </output>
     )
   }
 
@@ -108,7 +120,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
+                  <MinimalInput
+                    placeholder="Your name"
+                    autoComplete="name"
+                    aria-required="true"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
@@ -135,6 +152,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     placeholder="email@example.com"
                     autoComplete="email"
                     spellCheck={false}
+                    aria-required="true"
                     {...field}
                   />
                 </FormControl>
@@ -180,7 +198,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <MinimalTextarea placeholder="How can we help?" rows={5} {...field} />
+                  <MinimalTextarea
+                    placeholder="How can we help?"
+                    rows={5}
+                    aria-required="true"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
