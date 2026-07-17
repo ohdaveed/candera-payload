@@ -545,12 +545,6 @@ export interface StorefrontHeroBlock {
    * Scrolls to the Journal section. The ↓ glyph is added automatically.
    */
   ethosCardLinkLabel?: string | null;
-  statusCardTitle?: string | null;
-  statusCardPrice?: string | null;
-  statusCardSubtitle?: string | null;
-  statusCardStatus?: string | null;
-  statusCardShips?: string | null;
-  statusCardLinkUrl?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'storefrontHero';
@@ -1935,12 +1929,6 @@ export interface StorefrontHeroBlockSelect<T extends boolean = true> {
   ethosCardBody?: T;
   ethosCardFooterLabel?: T;
   ethosCardLinkLabel?: T;
-  statusCardTitle?: T;
-  statusCardPrice?: T;
-  statusCardSubtitle?: T;
-  statusCardStatus?: T;
-  statusCardShips?: T;
-  statusCardLinkUrl?: T;
   id?: T;
   blockName?: T;
 }
