@@ -39,10 +39,10 @@ export const MediaBlock: React.FC<Props> = (props) => {
         <figure className="m-0 group flex flex-col items-center">
           {(media || staticImage) && (
             <Media
-              className="w-full"
+              className="w-full overflow-hidden block"
               htmlElement="span"
               imgClassName={cn(
-                'border border-candera-stone/30 rounded-none transition-all duration-1000 ease-candera-enter',
+                'border border-candera-stone/30 rounded-none transition-transform duration-1000 ease-candera-enter group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
                 imgClassName,
               )}
               resource={media}
