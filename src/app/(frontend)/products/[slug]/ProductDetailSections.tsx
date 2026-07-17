@@ -27,29 +27,31 @@ function SectionToggle({
   controlsId: string
 }) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="flex items-center justify-between w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
-      aria-expanded={open}
-      aria-controls={controlsId}
-    >
-      <Eyebrow className="text-candera-sage-text tracking-[.28em]">{label}</Eyebrow>
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`text-candera-sage-text transition-transform duration-300 group-hover:text-candera-obsidian ${open ? 'rotate-180' : 'rotate-0'}`}
-        aria-hidden="true"
+    <h3 className="m-0">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex items-center justify-between w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+        aria-expanded={open}
+        aria-controls={controlsId}
       >
-        <path d="M18 15l-6-6-6 6" />
-      </svg>
-    </button>
+        <Eyebrow className="text-candera-sage-text tracking-[.28em]">{label}</Eyebrow>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`text-candera-sage-text transition-transform duration-300 group-hover:text-candera-obsidian ${open ? 'rotate-180' : 'rotate-0'}`}
+          aria-hidden="true"
+        >
+          <path d="M18 15l-6-6-6 6" />
+        </svg>
+      </button>
+    </h3>
   )
 }
 
@@ -96,7 +98,7 @@ export function ProductDetailSections({ vessel, productType = 'candle', specific
       {/* Measurements — always visible, consolidated inline */}
       {measurementLine && (
         <div className="flex items-baseline justify-between gap-6 py-5 border-b border-candera-stone/20">
-          <Eyebrow className="text-candera-sage-text tracking-[.28em] shrink-0">
+          <Eyebrow as="h2" className="text-candera-sage-text tracking-[.28em] shrink-0">
             Measurements
           </Eyebrow>
           <span className="text-sm text-candera-obsidian text-right tabular-nums">
