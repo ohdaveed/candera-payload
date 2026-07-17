@@ -1,6 +1,7 @@
 import type { Product } from '@/payload-types'
 import {
   CandleListingSchema,
+  EtsyPriceSchema,
   type EtsySourcePort,
   type LoggerPort,
   type MediaStoragePort,
@@ -170,11 +171,18 @@ export class EtsySyncEngine {
         syncOwned.etsyPrimaryImage = mainImageId || null
 
         if (etsyPrice) {
-          // Only persist a price the storefront can render correctly. Writing the
-          // price while dropping an unsupported currency would pair a fresh
-          // foreign amount with the row's stale/default currency (a misleading
-          // price), so skip both and log instead.
-          if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+          // A malformed price (e.g. zero divisor) must only skip the price
+          // update — like an unsupported currency — not fail the whole listing,
+          // so it is validated here rather than in CandleListingSchema.
+          if (!EtsyPriceSchema.safeParse(etsyPrice).success) {
+            ports.logger.warn(
+              `Listing ${listing_id}: malformed price payload; skipping price update.`,
+            )
+          } else if (SUPPORTED_CURRENCIES.includes(etsyPrice.currency_code)) {
+            // Only persist a price the storefront can render correctly. Writing
+            // the price while dropping an unsupported currency would pair a fresh
+            // foreign amount with the row's stale/default currency (a misleading
+            // price), so skip both and log instead.
             syncOwned.price = etsyPrice.amount / etsyPrice.divisor
             syncOwned.currency = etsyPrice.currency_code as Product['currency']
             syncOwned.priceSyncedAt = new Date().toISOString()
