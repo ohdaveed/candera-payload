@@ -1,7 +1,6 @@
 'use client'
 
 import { useId, useState } from 'react'
-import { Eyebrow } from '@/components/ui/eyebrow'
 
 type Spec = { label: string; value: string }
 
@@ -31,11 +30,11 @@ function SectionToggle({
       <button
         type="button"
         onClick={onToggle}
-        className="flex items-center justify-between w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+        className="flex items-center justify-between w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-card"
         aria-expanded={open}
         aria-controls={controlsId}
       >
-        <Eyebrow className="text-candera-sage-text tracking-[.28em]">{label}</Eyebrow>
+        <span className="text-sm font-semibold text-candera-obsidian">{label}</span>
         <svg
           width="14"
           height="14"
@@ -55,52 +54,32 @@ function SectionToggle({
   )
 }
 
-export function ProductDetailSections({ vessel, productType = 'candle', specifications }: Props) {
+export function ProductDetailSections({
+  vessel: _vessel,
+  productType: _productType = 'candle',
+  specifications,
+}: Props) {
   // Drawer defaults closed — technical metadata stays tucked away while the
   // story and fragrance lead the page.
   const [specsOpen, setSpecsOpen] = useState(false)
   const specsPanelId = useId()
 
-  const isCandle = productType === 'candle' && vessel !== 'metal'
-
-  const displaySpecs: Spec[] =
-    specifications && specifications.length > 0
-      ? specifications
-      : isCandle
-        ? [
-            { label: 'Size & Wax', value: '15 oz · Soy & beeswax blend' },
-            { label: 'Craftsmanship', value: 'Hand-labeled · Micro-batch cured' },
-            { label: 'Origin', value: 'Ships from California' },
-          ]
-        : vessel === 'metal' || productType === 'custom'
-          ? [
-              { label: 'Material', value: 'Artisan hand-cut metal' },
-              { label: 'Finish', value: 'Industrial matte black' },
-              { label: 'Origin', value: 'Ships from California' },
-            ]
-          : productType === 'vintage'
-            ? [
-                { label: 'Provenance', value: 'Vintage find' },
-                { label: 'Condition', value: 'Excellent vintage condition' },
-                { label: 'Origin', value: 'Ships from California' },
-              ]
-            : [
-                { label: 'Craftsmanship', value: 'Artisan crafted' },
-                { label: 'Origin', value: 'Ships from California' },
-              ]
+  // Payload has no data — omit the section rather than render fabricated,
+  // product-specific-looking specs (e.g. a fixed "15 oz" that may not be true).
+  const displaySpecs: Spec[] = specifications && specifications.length > 0 ? specifications : []
 
   const measurements = displaySpecs.filter((s) => MEASUREMENT_RE.test(s.label))
   const otherSpecs = displaySpecs.filter((s) => !MEASUREMENT_RE.test(s.label))
   const measurementLine = measurements.map((m) => m.value).join(' · ')
+
+  if (!measurementLine && otherSpecs.length === 0) return null
 
   return (
     <div className="flex flex-col border-t border-candera-stone/20 mt-2">
       {/* Measurements — always visible, consolidated inline */}
       {measurementLine && (
         <div className="flex items-baseline justify-between gap-6 py-5 border-b border-candera-stone/20">
-          <Eyebrow as="h2" className="text-candera-sage-text tracking-[.28em] shrink-0">
-            Measurements
-          </Eyebrow>
+          <h2 className="text-sm font-semibold text-candera-obsidian shrink-0">Measurements</h2>
           <span className="text-sm text-candera-obsidian text-right tabular-nums">
             {measurementLine}
           </span>
