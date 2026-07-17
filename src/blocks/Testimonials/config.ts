@@ -19,11 +19,12 @@ export const Testimonials: Block = {
       type: 'array',
       label: 'Testimonials',
       minRows: 1,
+      maxRows: 3,
       fields: [
         { name: 'quote', type: 'textarea', required: true },
         { name: 'author', type: 'text', required: true },
         { name: 'location', type: 'text' },
-        { name: 'badge', type: 'text', defaultValue: 'Verified Ritualist' },
+        { name: 'badge', type: 'text' },
       ],
     },
   ],
