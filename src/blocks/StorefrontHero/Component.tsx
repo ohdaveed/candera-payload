@@ -88,9 +88,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                   size="cta"
                   className="w-full justify-center px-4 tracking-[0.1em] sm:w-auto sm:px-10 sm:tracking-[.3em]"
                 >
-                  <SmoothScrollLink targetId="collection">
-                    {stripTrailingArrow(primaryCtaLabel)}
-                  </SmoothScrollLink>
+                  <Link href="/products">{stripTrailingArrow(primaryCtaLabel)}</Link>
                 </Button>
                 <Link
                   href="/posts"
