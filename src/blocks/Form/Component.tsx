@@ -85,10 +85,10 @@ export const FormBlock: React.FC<
         />
       ) : null}
       <span className="block h-px bg-candera-stone/20 mb-16" aria-hidden="true" />
-      <Section padding="none" className="p-0">
+      <Section as="div" padding="none" className="p-0">
         <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <Section padding="none" className="py-12 text-center">
+            <Section as="div" padding="none" className="py-12 text-center">
               <RichText className="editorial" data={confirmationMessage} />
             </Section>
           ) : null}
@@ -99,6 +99,7 @@ export const FormBlock: React.FC<
           ) : null}
           {error ? (
             <Section
+              as="div"
               padding="none"
               className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-sm font-medium"
               aria-live="polite"
@@ -119,7 +120,7 @@ export const FormBlock: React.FC<
                 onChange={(event) => setHoneypot(event.target.value)}
               />
 
-              <Section padding="none" className="mb-10 last:mb-0">
+              <Section as="div" padding="none" className="mb-10 last:mb-0">
                 {formFromProps && formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
                       const Field = fields?.[
@@ -127,7 +128,7 @@ export const FormBlock: React.FC<
                       ] as React.ElementType
                       if (Field) {
                         return (
-                          <Section padding="none" className="mb-8 last:mb-0" key={index}>
+                          <Section as="div" padding="none" className="mb-8 last:mb-0" key={index}>
                             <Field
                               form={formFromProps}
                               {...field}
