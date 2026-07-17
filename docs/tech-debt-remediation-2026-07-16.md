@@ -1,5 +1,24 @@
 # Technical Debt Analysis & Remediation Roadmap — 2026-07-16
 
+> [!NOTE]
+> **Status (2026-07-17): remediation complete.** All phases have merged to `main`:
+>
+> | Phase | Merged in |
+> |-------|-----------|
+> | Analysis doc + Phase 0 (hygiene, honest verifiers) | #191 |
+> | Phase 1 (pagination filters, sync transactions, error handling, rate-limiter seam) | #192 |
+> | Phase 2 (Playwright portability, webhook coverage, guard dedupe) | #193 |
+> | Phase 2.1 CI workflow (lint + int tests + build) | #194 |
+> | Phase 3a (syncEtsy decomposition, CTA/mapper dedupe, type hygiene) | #195 |
+> | Phase 3b (listing-route skeleton, seed consolidation, MCP read-only globals) | #196 |
+> | Phase 3 final (forms unification, product-card convergence) | #197 |
+> | Phase 4 (fonts, error tokens, JSON-LD, noscript, theme race, identity, RV-03) | #199 |
+>
+> Only the intentionally **deferred** items remain open (see [§Deferred / won't-fix](#deferred--wont-fix)):
+> legal content (#86), durable rate limiting (#87), major dependency upgrades (#88), and the
+> low-value watch items (vite-plus pin, AI-doc sprawl, committed design artifacts). The rest of
+> this document is preserved as the historical analysis and remediation record.
+
 Snapshot analysis of `main` (`e7457b3`). The audit itself was read-only; the PR that ships this
 document also carries a `pnpm-lock.yaml` hotfix (broken lockfile blocking all CI) and the
 Phase 0 remediation commits below. Findings are cross-checked against the prior audits
