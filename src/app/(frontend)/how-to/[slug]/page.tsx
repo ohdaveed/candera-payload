@@ -12,7 +12,6 @@ import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
-import type { PostHeroDoc } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
@@ -76,7 +75,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
       />
 
       <PostHero
-        post={guide as PostHeroDoc}
+        post={guide}
         readTime={readTime}
         breadcrumbLabel="How-To Guides"
         breadcrumbHref="/how-to"
