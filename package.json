@@ -141,7 +141,7 @@
     "node": "24.x"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "!(payload-types|payload-generated-schema).{js,jsx,ts,tsx}": [
       "vp lint --fix"
     ]
   }
