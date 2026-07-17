@@ -126,6 +126,39 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
   const progress = (step / Math.max(questions.length, 1)) * 100
   const questionHeadingId = 'scent-quiz-question-heading'
 
+  // Roving tabIndex for the options radiogroup: only one option is Tab-focusable
+  // at a time, per the WAI-ARIA radio pattern. Arrow keys move focus only —
+  // selecting an option immediately advances to the next question (via
+  // handleOptionSelect), so activation stays on Enter/Space (native button
+  // click) rather than on arrow-key movement.
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([])
+  const [focusedOptionIndex, setFocusedOptionIndex] = useState(0)
+  useEffect(() => {
+    const selectedIdx = answers[step]
+    setFocusedOptionIndex(selectedIdx !== undefined ? selectedIdx : 0)
+  }, [step, answers])
+
+  const handleOptionKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>, optionCount: number) => {
+      let nextIndex: number | null = null
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        nextIndex = (focusedOptionIndex + 1) % optionCount
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        nextIndex = (focusedOptionIndex - 1 + optionCount) % optionCount
+      } else if (event.key === 'Home') {
+        nextIndex = 0
+      } else if (event.key === 'End') {
+        nextIndex = optionCount - 1
+      }
+      if (nextIndex !== null) {
+        event.preventDefault()
+        setFocusedOptionIndex(nextIndex)
+        optionRefs.current[nextIndex]?.focus()
+      }
+    },
+    [focusedOptionIndex],
+  )
+
   if (!quiz) return null
 
   return (
@@ -284,10 +317,15 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   return (
                     <button
                       key={i}
+                      ref={(el) => {
+                        optionRefs.current[i] = el
+                      }}
                       type="button"
                       onClick={() => handleOptionSelect(i)}
+                      onKeyDown={(e) => handleOptionKeyDown(e, currentQuestion.options.length)}
                       role="radio"
                       aria-checked={isSelected}
+                      tabIndex={i === focusedOptionIndex ? 0 : -1}
                       className={[
                         'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-input overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]',
                         isSelected
