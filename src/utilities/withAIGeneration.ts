@@ -17,8 +17,10 @@ import type { CollectionConfig, CustomComponent, Field, GlobalConfig, Plugin, Ta
 const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
 const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
 
-// Field names where AI-generated prose is nonsensical or dangerous.
-const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename/i
+// Field names where AI-generated prose is nonsensical or dangerous. `vessel`
+// is exact-match: Products uses it as the SKU in structured data and as the
+// candle/decor guard value.
+const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename|sku|^vessel$/i
 // ID endings only (`id`, `ID`, `foo_id`, `fooId`) — deliberately case-sensitive on
 // the second alternative so words that merely end in "id" (orchid, liquid,
 // hybrid) stay eligible.
@@ -56,13 +58,21 @@ function isEligible(
 
 /**
  * Dot paths (by field name, without array indices) of fields the admin never
- * shows — their values must not be sent to the model as prompt context.
+ * shows or the editor cannot author — hidden, disabled, read-only, or virtual.
+ * Their values must not be sent to the model as prompt context.
  */
 function collectHiddenPaths(fields: Field[], prefix: string, out: string[]): void {
   for (const field of fields) {
     const name = 'name' in field && typeof field.name === 'string' ? field.name : undefined
 
-    if (name && (('hidden' in field && field.hidden) || adminFlags(field).hidden)) {
+    if (
+      name &&
+      (('hidden' in field && field.hidden) ||
+        ('virtual' in field && field.virtual) ||
+        adminFlags(field).hidden ||
+        adminFlags(field).disabled ||
+        adminFlags(field).readOnly)
+    ) {
       out.push(`${prefix}${name}`)
       continue // everything beneath is covered by the prefix
     }
@@ -202,9 +212,11 @@ const AI_EXCLUDED_COLLECTIONS = new Set([
 
 // In the form builder's Forms collection, each field block's `name` (and
 // option `value`) is the machine key that submissions are stored and
-// forwarded under — prose there breaks existing submissions/notifications.
-// Labels and messages stay eligible.
-const FORM_SCHEMA_KEY_PATTERN = /^(name|value)$/
+// forwarded under; a select's `defaultValue` must exactly match an option
+// value; and `cc`/`bcc`/`replyTo` are email routing (emailTo/emailFrom are
+// already caught by the `email` substring). Prose in any of these breaks
+// submissions or notifications. Labels, subjects, and messages stay eligible.
+const FORM_SCHEMA_KEY_PATTERN = /^(name|value|defaultValue|cc|bcc|replyTo)$/
 
 /**
  * Registered LAST in the plugin chain so it also sees collections added by

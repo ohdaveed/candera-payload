@@ -96,6 +96,8 @@ describe('withAIGeneration', () => {
         { name: 'etsyImageId', type: 'text' },
         { name: 'listing_id', type: 'text' },
         { name: 'id', type: 'text' },
+        { name: 'vessel', type: 'text' },
+        { name: 'skuCode', type: 'text' },
       ]),
     )
 
@@ -195,6 +197,12 @@ describe('withAIGeneration', () => {
           type: 'group',
           fields: [{ name: 'syncNotes', type: 'textarea', admin: { hidden: true } }],
         },
+        {
+          name: 'populatedAuthors',
+          type: 'array',
+          admin: { disabled: true, readOnly: true },
+          fields: [{ name: 'authorName', type: 'text' }],
+        },
       ]),
     )
 
@@ -207,6 +215,7 @@ describe('withAIGeneration', () => {
       'etsyTitle',
       'rawEtsyDescription',
       'internal.syncNotes',
+      'populatedAuthors',
     ])
   })
 
@@ -230,6 +239,8 @@ describe('withAIGeneration', () => {
                     // Machine key react-hook-form registers and submissions store under.
                     { name: 'name', type: 'text' },
                     { name: 'label', type: 'text' },
+                    // Must exactly match an option value on selects — not prose.
+                    { name: 'defaultValue', type: 'text' },
                   ],
                 },
               ],
@@ -257,6 +268,7 @@ describe('withAIGeneration', () => {
     const textBlockFields = formFieldBlocks.blocks?.[0]?.fields ?? []
     expect(fieldComponent(textBlockFields[0])).toBeUndefined()
     expect(fieldComponent(textBlockFields[1])).toBe(AI_TEXT)
+    expect(fieldComponent(textBlockFields[2])).toBeUndefined()
     expect(fieldComponent(bySlug['redirects']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['search']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['form-submissions']?.fields[0])).toBeUndefined()
