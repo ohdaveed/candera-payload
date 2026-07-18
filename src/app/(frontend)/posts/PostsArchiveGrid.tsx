@@ -30,7 +30,7 @@ export const PostsArchiveGrid: React.FC<{ posts: ArchivePost[] }> = ({ posts }) 
       <div className="flex flex-col gap-4 max-w-xl mb-12 md:mb-16">
         <h2 className="h3 text-candera-obsidian m-0">Reflections &amp; Rituals.</h2>
         <p className="font-sans text-sm text-candera-sage-text leading-[1.85] m-0">
-          Deep dives into botanical history, studio notes, and the philosophy of slow living.
+          Deep dives into botanical history, studio notes, and why we don&apos;t rush a pour.
         </p>
       </div>
 
