@@ -7,13 +7,16 @@ import type {
   TextareaFieldClientComponent,
   TextareaFieldClientProps,
 } from 'payload'
-import { TextField, TextareaField, useDocumentInfo, useField, useForm } from '@payloadcms/ui'
+import { useDocumentInfo, useField, useForm } from '@payloadcms/ui'
 import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
 
 /**
- * Drop-in replacements for the default text/textarea fields that add a small
- * "Generate with AI" control underneath. Injected across the config by
+ * `afterInput` controls that add a small "Generate with AI" button beneath the
+ * default text/textarea inputs. Injected across the config by
  * `src/utilities/withAIGeneration.ts` — no field opts in individually.
+ * Rendered via `admin.components.afterInput` (not a `Field` replacement) so the
+ * default field keeps its own root element — labels, `admin.width`, and row
+ * layouts are untouched.
  */
 
 const MAX_CONTEXT_ENTRIES = 30
@@ -233,24 +236,14 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   )
 }
 
-export const AITextField: TextFieldClientComponent = (props: TextFieldClientProps) => {
-  return (
-    <div>
-      <TextField {...props} />
-      {!props.readOnly && (
-        <AIGenerateControls path={props.path} field={props.field} variant="text" />
-      )}
-    </div>
-  )
+export const AITextAfterInput: TextFieldClientComponent = (props: TextFieldClientProps) => {
+  if (!props?.path || props.readOnly) return null
+  return <AIGenerateControls path={props.path} field={props.field} variant="text" />
 }
 
-export const AITextareaField: TextareaFieldClientComponent = (props: TextareaFieldClientProps) => {
-  return (
-    <div>
-      <TextareaField {...props} />
-      {!props.readOnly && (
-        <AIGenerateControls path={props.path} field={props.field} variant="textarea" />
-      )}
-    </div>
-  )
+export const AITextareaAfterInput: TextareaFieldClientComponent = (
+  props: TextareaFieldClientProps,
+) => {
+  if (!props?.path || props.readOnly) return null
+  return <AIGenerateControls path={props.path} field={props.field} variant="textarea" />
 }

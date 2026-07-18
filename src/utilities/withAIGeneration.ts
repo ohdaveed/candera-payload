@@ -1,9 +1,10 @@
-import type { CollectionConfig, Field, GlobalConfig, Tab } from 'payload'
+import type { CollectionConfig, Field, GlobalConfig, Plugin, Tab } from 'payload'
 
 /**
- * Config transform that swaps every eligible `text`/`textarea` field's admin
- * component for the AI-enabled variant (`AIGenerateTextField.tsx`), which
- * renders the default field plus a "Generate with AI" control.
+ * Config transform that appends a "Generate with AI" `afterInput` control
+ * (`AIGenerateTextField.tsx`) to every eligible `text`/`textarea` field. The
+ * default field component stays in place, so labels, `admin.width`, and row
+ * layouts are unaffected.
  *
  * Applied in `payload.config.ts` to all content collections and globals.
  * Machine-managed or credential-ish fields (slugs, URLs, tokens, IDs…),
@@ -11,8 +12,8 @@ import type { CollectionConfig, Field, GlobalConfig, Tab } from 'payload'
  * component are left untouched.
  */
 
-const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextField'
-const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaField'
+const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
+const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
 
 // Field names where AI-generated prose is nonsensical or dangerous.
 const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename/i
@@ -42,7 +43,10 @@ function mapFields(fields: Field[]): Field[] {
           ...field,
           admin: {
             ...field.admin,
-            components: { ...field.admin?.components, Field: AI_TEXT_COMPONENT },
+            components: {
+              ...field.admin?.components,
+              afterInput: [...(field.admin?.components?.afterInput ?? []), AI_TEXT_COMPONENT],
+            },
           },
         }
       case 'textarea':
@@ -51,7 +55,10 @@ function mapFields(fields: Field[]): Field[] {
           ...field,
           admin: {
             ...field.admin,
-            components: { ...field.admin?.components, Field: AI_TEXTAREA_COMPONENT },
+            components: {
+              ...field.admin?.components,
+              afterInput: [...(field.admin?.components?.afterInput ?? []), AI_TEXTAREA_COMPONENT],
+            },
           },
         }
       case 'group':
@@ -83,3 +90,26 @@ function mapFields(fields: Field[]): Field[] {
 export function withAIGeneration<T extends CollectionConfig | GlobalConfig>(config: T): T {
   return { ...config, fields: mapFields(config.fields) }
 }
+
+// Collections whose text fields must never get the AI control: account data,
+// credentials, and machine-managed collections added by plugins.
+const AI_EXCLUDED_COLLECTIONS = new Set([
+  'users', // account data
+  'etsy-tokens', // OAuth credentials
+  'redirects', // machine-managed paths (redirects plugin)
+  'search', // machine-managed index (search plugin)
+  'form-submissions', // visitor-submitted data (form builder plugin)
+])
+
+/**
+ * Registered LAST in the plugin chain so it also sees collections added by
+ * earlier plugins (e.g. the form builder's Forms) — a plain `.map` over the
+ * `collections` array would run before plugins and miss them.
+ */
+export const aiGenerationPlugin: Plugin = (config) => ({
+  ...config,
+  collections: (config.collections ?? []).map((collection) =>
+    AI_EXCLUDED_COLLECTIONS.has(collection.slug) ? collection : withAIGeneration(collection),
+  ),
+  globals: (config.globals ?? []).map(withAIGeneration),
+})
