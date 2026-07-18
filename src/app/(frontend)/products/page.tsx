@@ -21,7 +21,7 @@ import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
-    'Hand-poured botanical candles in small, numbered batches — each piece hand-labeled by the maker.',
+    'Hand-poured botanical candles, each one embedded with real pressed flowers — no two pieces alike.',
   alternates: { canonical: '/products' },
 }
 
