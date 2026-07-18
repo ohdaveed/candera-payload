@@ -29,7 +29,9 @@ test.describe('Admin Panel', () => {
     await page.goto('http://localhost:3000/admin')
     await expect(page.getByText('Quick Access')).toBeVisible()
     await expect(page.getByText('Store Overview')).toBeVisible()
-    await expect(page.getByText('Site Theme')).toBeVisible()
+    // 'Site Theme' also appears in the nav and the globals card list, so scope
+    // the assertion to the welcome section's heading to satisfy strict mode.
+    await expect(page.getByRole('heading', { name: 'Site Theme', level: 2 })).toBeVisible()
   })
 
   test('can navigate to list view', async () => {

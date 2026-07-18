@@ -52,7 +52,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
           {caption && (
             <figcaption
               className={cn(
-                'mt-12 max-w-[700px] mx-auto text-center editorial italic text-candera-sage-text leading-relaxed',
+                'mt-12 max-w-[700px] mx-auto text-center editorial text-candera-sage-text leading-relaxed',
                 {
                   container: !disableInnerContainer,
                 },

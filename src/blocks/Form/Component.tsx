@@ -2,7 +2,7 @@
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -49,6 +49,11 @@ export const FormBlock: React.FC<
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
   const [honeypot, setHoneypot] = useState('')
   const router = useRouter()
+  const successRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (hasSubmitted) successRef.current?.focus()
+  }, [hasSubmitted])
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
@@ -88,7 +93,14 @@ export const FormBlock: React.FC<
       <Section as="div" padding="none" className="p-0">
         <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <Section as="div" padding="none" className="py-12 text-center">
+            <Section
+              as="output"
+              ref={successRef}
+              padding="none"
+              className="block py-12 text-center outline-none focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-2 rounded-sm"
+              aria-live="polite"
+              tabIndex={-1}
+            >
               <RichText className="editorial" data={confirmationMessage} />
             </Section>
           ) : null}
@@ -101,7 +113,7 @@ export const FormBlock: React.FC<
             <Section
               as="div"
               padding="none"
-              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-sm font-medium"
+              className="mb-8 p-4 border border-candera-ember-strong/30 bg-candera-vellum text-candera-ember-strong text-sm font-medium"
               aria-live="polite"
               role="alert"
             >

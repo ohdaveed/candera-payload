@@ -21,7 +21,7 @@ import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
-    'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
+    'Hand-poured botanical candles, each one embedded with real pressed flowers — no two pieces alike.',
   alternates: { canonical: '/products' },
 }
 
@@ -53,7 +53,7 @@ export default async function ProductsPage({
 
   assertPageInRange(pageNumber, products.totalPages)
   const resultLabel = activeTag
-    ? `${products.totalDocs} results for '${activeTag}'`
+    ? `${products.totalDocs} pieces tagged ‘${activeTag}’`
     : `${products.totalDocs} pieces in the collection`
 
   return (
@@ -82,7 +82,7 @@ export default async function ProductsPage({
             <output aria-live="polite" className="col-span-full py-24 text-center block">
               {activeTag ? (
                 <>
-                  <p className="text-lg text-candera-obsidian mb-2">
+                  <p className="h3 text-candera-obsidian mb-2">
                     No products found for &quot;{activeTag}&quot;.
                   </p>
                   <p className="text-sm text-candera-sage-text">
@@ -96,9 +96,7 @@ export default async function ProductsPage({
                 </>
               ) : (
                 <>
-                  <p className="text-lg text-candera-obsidian mb-2">
-                    The next batch is still curing.
-                  </p>
+                  <p className="h3 text-candera-obsidian mb-2">The next batch is still curing.</p>
                   <p className="text-sm text-candera-sage-text">
                     Join the Inner Circle below and we&apos;ll tell you the moment it&apos;s ready.
                   </p>

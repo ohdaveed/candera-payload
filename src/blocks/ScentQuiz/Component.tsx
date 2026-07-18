@@ -269,7 +269,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 />
               </div>
               <p className="font-display text-3xl text-inherit italic tracking-wide">
-                Synthesizing your ritual…
+                Composing your ritual…
               </p>
             </motion.div>
           ) : !isEmailStep && currentQuestion ? (
@@ -345,7 +345,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       )}
                       <div
                         className={[
-                          'absolute top-0 left-0 w-[1px] bg-candera-ember/60 transition-all duration-700 shadow-[0_0_15px_rgba(191,155,103,0.5)]',
+                          'absolute top-0 left-0 w-[1px] bg-candera-ember/60 transition-all duration-700',
                           isSelected ? 'h-full' : 'h-0 group-hover:h-full',
                         ].join(' ')}
                       />
@@ -488,7 +488,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       ? 'Sending Invitation…'
                       : submitError
                         ? 'Try Again'
-                        : 'Unlock My Profile'}
+                        : 'Reveal My Profile'}
                   </Button>
                   {submitError && (
                     <div className="flex flex-col items-center gap-4">

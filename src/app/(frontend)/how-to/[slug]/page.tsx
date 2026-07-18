@@ -86,7 +86,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
           <RichText
             className="
               !max-w-[860px] mx-auto
-              [&_p]:body [&_p]:mb-7
+              [&_p]:body [&_p]:mb-7 [&_p]:max-w-[70ch]
               [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
               [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4
               [&_blockquote]:editorial [&_blockquote]:border-l [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0

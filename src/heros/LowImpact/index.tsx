@@ -24,7 +24,7 @@ export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText 
     >
       <Container className="max-w-[800px] text-center">
         {/* We use a specialized rich text styling wrapper for the low impact hero to enforce editorial scale */}
-        <div className="[&_h1]:text-[clamp(2.5rem,5.5vw,4.25rem)] [&_h1]:leading-[1.1] [&_h1]:mb-8 [&_p]:font-editorial [&_p]:italic [&_p]:text-candera-sage-text [&_p]:leading-relaxed [&_p]:max-w-[620px] [&_p]:mx-auto">
+        <div className="[&_h1]:hero-heading [&_h1]:mb-8 [&_p]:font-editorial [&_p]:italic [&_p]:text-candera-sage-text [&_p]:leading-relaxed [&_p]:max-w-[620px] [&_p]:mx-auto">
           {children || (richText && <RichText data={richText} enableGutter={false} />)}
         </div>
       </Container>

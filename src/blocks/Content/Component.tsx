@@ -60,7 +60,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                     <Section padding="none" className="mt-2">
                       <CMSLink
                         {...link}
-                        className="hover:translate-x-1 transition-transform duration-300"
+                        className="hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-transform duration-300"
                       />
                     </Section>
                   )}

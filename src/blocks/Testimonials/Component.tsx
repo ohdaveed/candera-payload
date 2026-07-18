@@ -39,7 +39,7 @@ export const TestimonialsBlock: React.FC<Props> = ({ eyebrow, items }) => {
     <Section
       padding="none"
       style={{
-        backgroundColor: 'var(--mood-bg, #141412)',
+        backgroundColor: 'var(--mood-bg, transparent)',
         color: 'var(--mood-fg, #141412)',
       }}
       className="transition-colors duration-300"

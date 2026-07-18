@@ -11,9 +11,9 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
       <Container>
         {/* Decorative horizontal rule with ember accent */}
         <div className="flex items-center gap-4 mb-12">
-          <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
-          <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-          <span className="flex-1 h-[1px] bg-candera-stone/25" aria-hidden="true" />
+          <span className="flex-1 h-px bg-candera-stone/25" aria-hidden="true" />
+          <span className="w-6 h-px bg-candera-ember-strong" aria-hidden="true" />
+          <span className="flex-1 h-px bg-candera-stone/25" aria-hidden="true" />
         </div>
 
         <div

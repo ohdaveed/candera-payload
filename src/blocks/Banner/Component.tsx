@@ -25,15 +25,12 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
     <Section padding="medium" className={cn(className)}>
       <Container>
         <aside
-          className={cn(
-            'border py-10 px-12 flex items-start gap-4 shadow-card transition-colors duration-500',
-            {
-              'border-border bg-card': style === 'info',
-              'border-error/20 bg-error/5': style === 'error',
-              'border-success/20 bg-success/5': style === 'success',
-              'border-warning/20 bg-warning/5': style === 'warning',
-            },
-          )}
+          className={cn('border py-10 px-12 flex items-start gap-4 shadow-card', {
+            'border-border bg-card': style === 'info',
+            'border-error/20 bg-error/5': style === 'error',
+            'border-success/20 bg-success/5': style === 'success',
+            'border-warning/20 bg-warning/5': style === 'warning',
+          })}
         >
           <status.Icon
             aria-hidden="true"
@@ -45,7 +42,7 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
             })}
           />
           <div className="w-full text-foreground">
-            <span className="font-sans text-sm font-bold uppercase tracking-wide">
+            <span className="font-sans text-xs font-bold uppercase tracking-[0.2em]">
               {status.label}
             </span>
             <div className="font-sans font-light text-foreground [&_p]:m-0">
