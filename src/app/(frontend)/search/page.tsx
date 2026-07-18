@@ -118,7 +118,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
                 <Link
                   key={s}
                   href={`/search?q=${encodeURIComponent(s)}`}
-                  className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+                  className="inline-flex items-center min-h-[44px] px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[0.2em] text-candera-obsidian transition-colors duration-200"
                 >
                   {s}
                 </Link>
@@ -143,7 +143,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
                 <Link
                   key={s}
                   href={`/search?q=${encodeURIComponent(s)}`}
-                  className="px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[.15em] text-candera-obsidian transition-colors duration-200"
+                  className="inline-flex items-center min-h-[44px] px-3.5 py-1.5 bg-candera-stone/25 hover:bg-candera-stone/40 text-xs font-bold uppercase tracking-[0.2em] text-candera-obsidian transition-colors duration-200"
                 >
                   {s}
                 </Link>

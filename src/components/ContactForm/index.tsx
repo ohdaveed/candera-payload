@@ -106,6 +106,14 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           {...register('_gotcha')}
         />
 
+        <p className="caption text-candera-sage-text mb-6">
+          Fields marked{' '}
+          <span className="text-candera-ember" aria-hidden="true">
+            *
+          </span>{' '}
+          are required.
+        </p>
+
         <div className="flex flex-col gap-8">
           <FormField
             control={control}
@@ -218,9 +226,21 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         />
 
         <div className="mt-8">
-          <SubmitButton disabled={isLoading || !turnstileToken}>
+          <SubmitButton
+            disabled={isLoading || !turnstileToken}
+            aria-describedby={!turnstileToken ? 'contact-turnstile-pending' : undefined}
+          >
             {isLoading ? 'Sending…' : 'Send Correspondence'}
           </SubmitButton>
+          {!turnstileToken && (
+            <p
+              id="contact-turnstile-pending"
+              className="caption text-candera-sage-text mt-3"
+              aria-live="polite"
+            >
+              Verifying you&rsquo;re human…
+            </p>
+          )}
         </div>
       </form>
     </Form>

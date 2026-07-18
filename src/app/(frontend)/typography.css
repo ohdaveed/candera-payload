@@ -47,7 +47,7 @@
   }
 
   .hero-heading {
-    @apply font-display font-normal italic text-candera-obsidian text-pretty;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: var(--font-size-hero);
     line-height: var(--leading-hero);

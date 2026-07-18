@@ -28,9 +28,7 @@ export const PostsArchiveGrid: React.FC<{ posts: ArchivePost[] }> = ({ posts }) 
     <div>
       {/* Section header — full width */}
       <div className="flex flex-col gap-4 max-w-xl mb-12 md:mb-16">
-        <h2 className="text-[1.953rem] leading-none font-display font-normal italic text-candera-obsidian m-0">
-          Reflections <span className="whitespace-nowrap">&amp; Rituals.</span>
-        </h2>
+        <h2 className="h3 text-candera-obsidian m-0">Reflections &amp; Rituals.</h2>
         <p className="font-sans text-sm text-candera-sage-text leading-[1.85] m-0">
           Deep dives into botanical history, studio notes, and the philosophy of slow living.
         </p>

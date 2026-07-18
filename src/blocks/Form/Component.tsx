@@ -88,7 +88,12 @@ export const FormBlock: React.FC<
       <Section as="div" padding="none" className="p-0">
         <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <Section as="div" padding="none" className="py-12 text-center">
+            <Section
+              as="output"
+              padding="none"
+              className="block py-12 text-center"
+              aria-live="polite"
+            >
               <RichText className="editorial" data={confirmationMessage} />
             </Section>
           ) : null}
@@ -101,7 +106,7 @@ export const FormBlock: React.FC<
             <Section
               as="div"
               padding="none"
-              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-sm font-medium"
+              className="mb-8 p-4 border border-candera-ember-strong/30 bg-candera-vellum text-candera-ember-strong text-sm font-medium"
               aria-live="polite"
               role="alert"
             >

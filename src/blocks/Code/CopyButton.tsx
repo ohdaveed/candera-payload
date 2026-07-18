@@ -17,7 +17,7 @@ export function CopyButton({ code }: { code: string }) {
 
   return (
     <Button
-      className="absolute top-2 right-2 flex gap-1"
+      className="absolute top-2 right-2 flex gap-1 rounded-none"
       size="sm"
       variant="cta-ghost-dark"
       onClick={async () => {

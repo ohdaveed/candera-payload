@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useFormSubmission } from '@/hooks/useFormSubmission'
@@ -16,6 +16,11 @@ type Props = {
 export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
+  const successRef = useRef<HTMLOutputElement>(null)
+
+  useEffect(() => {
+    if (hasSubmitted) successRef.current?.focus()
+  }, [hasSubmitted])
 
   const {
     register,
@@ -32,11 +37,16 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <div className="flex flex-col gap-8">
+      <output
+        ref={successRef}
+        aria-live="polite"
+        tabIndex={-1}
+        className="flex flex-col gap-8 outline-none rounded-sm focus-visible:ring-4 focus-visible:ring-candera-ember/50 focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+      >
         <p className="font-sans text-sm text-candera-vellum m-0">
           You&apos;re in. We&apos;ll be in touch before the next batch.
         </p>
-      </div>
+      </output>
     )
   }
 

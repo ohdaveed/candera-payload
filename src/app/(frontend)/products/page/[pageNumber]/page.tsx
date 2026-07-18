@@ -54,7 +54,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <Section padding="large" data-section="collection-grid">
         <Container>
-          <p className="eyebrow text-candera-sage-text mb-8">
+          <p className="caption text-candera-sage-text mb-8">
             {products.totalDocs} pieces in the collection
           </p>
 

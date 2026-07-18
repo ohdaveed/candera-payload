@@ -35,7 +35,7 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           <div className="flex items-center gap-3 mb-4">
             <Badge
               variant="outline"
-              className="text-candera-vellum border-candera-vellum/30 uppercase tracking-[.2em] px-3 py-1 bg-candera-vellum/5 backdrop-blur-sm"
+              className="text-candera-vellum border-candera-vellum/30 uppercase tracking-[.2em] px-3 py-1"
             >
               Featured Story
             </Badge>
@@ -53,7 +53,9 @@ export const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
           <h2 className="h2 text-candera-vellum mb-3 max-w-[640px]">{post.title}</h2>
 
           {/* vellum/75 on obsidian/75 base = ~14:1 — passes AA for large/bold text ✅ */}
-          <span className="btn-text text-candera-vellum/75">Read the story →</span>
+          <span className="btn-text text-candera-vellum/75">
+            Read the story <span aria-hidden="true">→</span>
+          </span>
         </div>
       </article>
     </Link>
