@@ -1,18 +1,21 @@
 import { describe, expect, it } from 'vite-plus/test'
-import type { CollectionConfig, Field } from 'payload'
+import type { CollectionConfig, Config, Field } from 'payload'
 
-import { withAIGeneration } from '@/utilities/withAIGeneration'
+import { aiGenerationPlugin, withAIGeneration } from '@/utilities/withAIGeneration'
 import { buildFieldCopyPrompt, fieldCopyInputSchema } from '@/lib/ai/field-copy'
 
-const AI_TEXT = '@/components/admin/AIGenerateTextField#AITextField'
-const AI_TEXTAREA = '@/components/admin/AIGenerateTextField#AITextareaField'
+const AI_TEXT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
+const AI_TEXTAREA = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
 
 function makeCollection(fields: Field[]): CollectionConfig {
   return { slug: 'test', fields }
 }
 
+/** The last afterInput entry on the field, i.e. the injected AI control (if any). */
 function fieldComponent(field: Field | undefined): unknown {
-  return field && 'admin' in field ? field.admin?.components?.Field : undefined
+  if (!field || (field.type !== 'text' && field.type !== 'textarea')) return undefined
+  const afterInput = field.admin?.components?.afterInput
+  return Array.isArray(afterInput) ? afterInput[afterInput.length - 1] : undefined
 }
 
 describe('withAIGeneration', () => {
@@ -116,7 +119,7 @@ describe('withAIGeneration', () => {
     expect(fieldComponent(result.fields[2])).toBe(AI_TEXTAREA)
   })
 
-  it('does not clobber fields that already have a custom Field component', () => {
+  it('leaves fields with a custom Field component alone', () => {
     const custom = '@/components/Custom#Custom'
     const result = withAIGeneration(
       makeCollection([
@@ -124,7 +127,50 @@ describe('withAIGeneration', () => {
       ]),
     )
 
-    expect(fieldComponent(result.fields[0])).toBe(custom)
+    const field = result.fields[0] as Extract<Field, { type: 'text' }>
+    expect(field.admin?.components?.Field).toBe(custom)
+    expect(fieldComponent(field)).toBeUndefined()
+  })
+
+  it('appends to existing afterInput components instead of replacing them', () => {
+    const existing = '@/components/CharCount#CharCount'
+    const result = withAIGeneration(
+      makeCollection([
+        { name: 'tagline', type: 'text', admin: { components: { afterInput: [existing] } } },
+      ]),
+    )
+
+    const field = result.fields[0] as Extract<Field, { type: 'text' }>
+    expect(field.admin?.components?.afterInput).toEqual([existing, AI_TEXT])
+  })
+
+  it('as a plugin, covers plugin-added collections but not excluded ones', async () => {
+    // Runs last in the plugin chain, so collections added by earlier plugins
+    // (like the form builder's `forms`) are present by the time it executes.
+    const config = {
+      collections: [
+        makeCollection([{ name: 'title', type: 'text' }]),
+        { slug: 'forms', fields: [{ name: 'submitButtonLabel', type: 'text' }] },
+        { slug: 'redirects', fields: [{ name: 'from', type: 'text' }] },
+        { slug: 'search', fields: [{ name: 'title', type: 'text' }] },
+        { slug: 'form-submissions', fields: [{ name: 'value', type: 'text' }] },
+        { slug: 'users', fields: [{ name: 'name', type: 'text' }] },
+        { slug: 'etsy-tokens', fields: [{ name: 'label', type: 'text' }] },
+      ],
+      globals: [{ slug: 'header', fields: [{ name: 'tagline', type: 'text' }] }],
+    } as unknown as Config
+
+    const result = await aiGenerationPlugin(config)
+
+    const bySlug = Object.fromEntries((result.collections ?? []).map((c) => [c.slug, c]))
+    expect(fieldComponent(bySlug['test']?.fields[0])).toBe(AI_TEXT)
+    expect(fieldComponent(bySlug['forms']?.fields[0])).toBe(AI_TEXT)
+    expect(fieldComponent(bySlug['redirects']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['search']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['form-submissions']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['users']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['etsy-tokens']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(result.globals?.[0]?.fields[0])).toBe(AI_TEXT)
   })
 
   it('leaves non-text fields untouched', () => {

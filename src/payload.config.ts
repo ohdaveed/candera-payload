@@ -42,7 +42,7 @@ import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
 import { BRAND } from './constants/brand'
-import { withAIGeneration } from './utilities/withAIGeneration'
+import { aiGenerationPlugin } from './utilities/withAIGeneration'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -127,9 +127,6 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: databaseAdapter,
-  // Every eligible text/textarea field gets a "Generate with AI" control via
-  // withAIGeneration. Users and EtsyTokens are excluded — account data and
-  // OAuth credentials are nothing the copy generator should touch.
   collections: [
     Folders,
     Pages,
@@ -144,9 +141,7 @@ export default buildConfig({
     ScentProfiles,
     Documentation,
     HowToGuides,
-  ].map((collection) =>
-    ['users', 'etsy-tokens'].includes(collection.slug) ? collection : withAIGeneration(collection),
-  ),
+  ],
   cors: corsOrigins,
   plugins: [
     ...plugins,
@@ -168,8 +163,12 @@ export default buildConfig({
           }),
         ]
       : []),
+    // Last so it sees collections added by earlier plugins (e.g. the form
+    // builder's Forms). Adds the "Generate with AI" control to every eligible
+    // text/textarea field; see withAIGeneration.ts for the exclusions.
+    aiGenerationPlugin,
   ],
-  globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme].map(withAIGeneration),
+  globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   // Prefer Resend when a key is present; otherwise fall back to nodemailer (SMTP if
