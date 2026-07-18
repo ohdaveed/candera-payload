@@ -1,12 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type {
-  TextFieldClientComponent,
-  TextFieldClientProps,
-  TextareaFieldClientComponent,
-  TextareaFieldClientProps,
-} from 'payload'
+import type { TextFieldClientProps, TextareaFieldClientProps } from 'payload'
 import { useDocumentInfo, useField, useForm } from '@payloadcms/ui'
 import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
 
@@ -22,7 +17,10 @@ import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
 const MAX_CONTEXT_ENTRIES = 30
 const MAX_CONTEXT_VALUE_LENGTH = 400
 // Never feed credential-ish or machine-managed values to the model.
-const SENSITIVE_KEY_PATTERN = /token|secret|password|key|email|url|href|slug|id$/i
+const SENSITIVE_KEY_PATTERN = /token|secret|password|key|email|url|href|slug/i
+// ID endings only — matches `id`/`foo_id`/`fooId`, not words like `orchid`.
+// Mirrors the eligibility pattern in `withAIGeneration.ts`.
+const ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
 
 function labelToString(label: unknown, fallback: string): string {
   if (typeof label === 'string' && label.length > 0) return label
@@ -33,8 +31,30 @@ function labelToString(label: unknown, fallback: string): string {
   return fallback
 }
 
+/** The path with array indices removed: `specs.0.label` → `specs.label`. */
+function normalizePath(path: string): string {
+  return path
+    .split('.')
+    .filter((segment) => !/^\d+$/.test(segment))
+    .join('.')
+}
+
+function isSensitivePath(path: string, hiddenPaths: string[]): boolean {
+  if (SENSITIVE_KEY_PATTERN.test(path)) return true
+  const segments = path.split('.')
+  if (ID_SUFFIX_PATTERN.test(segments[segments.length - 1] ?? '')) return true
+  const normalized = normalizePath(path)
+  return hiddenPaths.some(
+    (hidden) => normalized === hidden || normalized.startsWith(`${hidden}.`),
+  )
+}
+
 /** Flatten form data into `dot.path: value` string entries usable as prompt context. */
-function collectContext(data: unknown, excludePath: string): Record<string, string> {
+function collectContext(
+  data: unknown,
+  excludePath: string,
+  hiddenPaths: string[],
+): Record<string, string> {
   const context: Record<string, string> = {}
 
   function walk(value: unknown, path: string): void {
@@ -42,7 +62,7 @@ function collectContext(data: unknown, excludePath: string): Record<string, stri
 
     if (typeof value === 'string' || typeof value === 'number') {
       const text = String(value).trim()
-      if (text.length > 0 && path !== excludePath && !SENSITIVE_KEY_PATTERN.test(path)) {
+      if (text.length > 0 && path !== excludePath && !isSensitivePath(path, hiddenPaths)) {
         context[path.slice(0, 200)] = text.slice(0, MAX_CONTEXT_VALUE_LENGTH)
       }
       return
@@ -78,9 +98,11 @@ type AIControlsProps = {
   path: string
   field: AIControlsField
   variant: 'text' | 'textarea'
+  /** Hidden-field paths for this document, injected at config time — never sent as context. */
+  contextExcludePaths?: string[]
 }
 
-function AIGenerateControls({ path, field, variant }: AIControlsProps) {
+function AIGenerateControls({ path, field, variant, contextExcludePaths }: AIControlsProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [suggestion, setSuggestion] = useState<string | null>(null)
@@ -96,6 +118,9 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   const maxLength = typeof field.maxLength === 'number' ? field.maxLength : undefined
 
   async function handleGenerate() {
+    // One request at a time — a second click while in flight could let a
+    // slower, older response overwrite a newer suggestion.
+    if (loading) return
     setLoading(true)
     setError(null)
     setSuggestion(null)
@@ -110,7 +135,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
         variant,
         maxLength,
         currentValue: typeof value === 'string' && value ? value.slice(0, 5_000) : undefined,
-        context: collectContext(data, path),
+        context: collectContext(data, path, contextExcludePaths ?? []),
       }
 
       const res = await fetch('/next/ai/generate-field', {
@@ -236,14 +261,30 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   )
 }
 
-export const AITextAfterInput: TextFieldClientComponent = (props: TextFieldClientProps) => {
-  if (!props?.path || props.readOnly) return null
-  return <AIGenerateControls path={props.path} field={props.field} variant="text" />
-}
-
-export const AITextareaAfterInput: TextareaFieldClientComponent = (
-  props: TextareaFieldClientProps,
+export const AITextAfterInput = (
+  props: TextFieldClientProps & { contextExcludePaths?: string[] },
 ) => {
   if (!props?.path || props.readOnly) return null
-  return <AIGenerateControls path={props.path} field={props.field} variant="textarea" />
+  return (
+    <AIGenerateControls
+      path={props.path}
+      field={props.field}
+      variant="text"
+      contextExcludePaths={props.contextExcludePaths}
+    />
+  )
+}
+
+export const AITextareaAfterInput = (
+  props: TextareaFieldClientProps & { contextExcludePaths?: string[] },
+) => {
+  if (!props?.path || props.readOnly) return null
+  return (
+    <AIGenerateControls
+      path={props.path}
+      field={props.field}
+      variant="textarea"
+      contextExcludePaths={props.contextExcludePaths}
+    />
+  )
 }

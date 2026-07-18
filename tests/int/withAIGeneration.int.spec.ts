@@ -17,7 +17,6 @@ function fieldComponent(field: Field | undefined): unknown {
   const afterInput = field.admin?.components?.afterInput
   return Array.isArray(afterInput) ? afterInput[afterInput.length - 1] : undefined
 }
-
 describe('withAIGeneration', () => {
   it('injects the AI component into plain text and textarea fields', () => {
     const result = withAIGeneration(
@@ -144,18 +143,105 @@ describe('withAIGeneration', () => {
     expect(field.admin?.components?.afterInput).toEqual([existing, AI_TEXT])
   })
 
+  it('normalizes a scalar afterInput value instead of spreading it into characters', () => {
+    const existing = '@/components/CharCount#CharCount'
+    const result = withAIGeneration(
+      makeCollection([
+        {
+          name: 'tagline',
+          type: 'text',
+          // Untyped configs can slip a bare string through — must not be spread char-by-char.
+          admin: { components: { afterInput: existing as unknown as string[] } },
+        },
+      ]),
+    )
+
+    const field = result.fields[0] as Extract<Field, { type: 'text' }>
+    expect(field.admin?.components?.afterInput).toEqual([existing, AI_TEXT])
+  })
+
+  it('does not inject under hidden, read-only, or disabled containers', () => {
+    const result = withAIGeneration(
+      makeCollection([
+        {
+          name: 'populatedAuthors',
+          type: 'array',
+          admin: { disabled: true, readOnly: true },
+          fields: [{ name: 'authorName', type: 'text' }],
+        },
+        {
+          name: 'archive',
+          type: 'group',
+          hidden: true,
+          fields: [{ name: 'note', type: 'text' }],
+        },
+      ]),
+    )
+
+    const authors = result.fields[0] as Extract<Field, { type: 'array' }>
+    const archive = result.fields[1] as Extract<Field, { type: 'group' }>
+    expect(fieldComponent(authors.fields[0])).toBeUndefined()
+    expect(fieldComponent(archive.fields[0])).toBeUndefined()
+  })
+
+  it('passes the entity hidden-field paths to the control as contextExcludePaths', () => {
+    const result = withAIGeneration(
+      makeCollection([
+        { name: 'title', type: 'text' },
+        { name: 'etsyTitle', type: 'text', hidden: true },
+        { name: 'rawEtsyDescription', type: 'textarea', hidden: true },
+        {
+          name: 'internal',
+          type: 'group',
+          fields: [{ name: 'syncNotes', type: 'textarea', admin: { hidden: true } }],
+        },
+      ]),
+    )
+
+    const entry = fieldComponent(result.fields[0]) as {
+      path: string
+      clientProps: { contextExcludePaths: string[] }
+    }
+    expect(entry.path).toBe(AI_TEXT)
+    expect(entry.clientProps.contextExcludePaths).toEqual([
+      'etsyTitle',
+      'rawEtsyDescription',
+      'internal.syncNotes',
+    ])
+  })
+
   it('as a plugin, covers plugin-added collections but not excluded ones', async () => {
     // Runs last in the plugin chain, so collections added by earlier plugins
     // (like the form builder's `forms`) are present by the time it executes.
     const config = {
       collections: [
         makeCollection([{ name: 'title', type: 'text' }]),
-        { slug: 'forms', fields: [{ name: 'submitButtonLabel', type: 'text' }] },
+        {
+          slug: 'forms',
+          fields: [
+            { name: 'submitButtonLabel', type: 'text' },
+            {
+              name: 'fields',
+              type: 'blocks',
+              blocks: [
+                {
+                  slug: 'text',
+                  fields: [
+                    // Machine key react-hook-form registers and submissions store under.
+                    { name: 'name', type: 'text' },
+                    { name: 'label', type: 'text' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
         { slug: 'redirects', fields: [{ name: 'from', type: 'text' }] },
         { slug: 'search', fields: [{ name: 'title', type: 'text' }] },
         { slug: 'form-submissions', fields: [{ name: 'value', type: 'text' }] },
         { slug: 'users', fields: [{ name: 'name', type: 'text' }] },
         { slug: 'etsy-tokens', fields: [{ name: 'label', type: 'text' }] },
+        { slug: 'payload-mcp-api-keys', fields: [{ name: 'label', type: 'text' }] },
       ],
       globals: [{ slug: 'header', fields: [{ name: 'tagline', type: 'text' }] }],
     } as unknown as Config
@@ -165,11 +251,18 @@ describe('withAIGeneration', () => {
     const bySlug = Object.fromEntries((result.collections ?? []).map((c) => [c.slug, c]))
     expect(fieldComponent(bySlug['test']?.fields[0])).toBe(AI_TEXT)
     expect(fieldComponent(bySlug['forms']?.fields[0])).toBe(AI_TEXT)
+
+    // Copy fields in form-builder blocks get the control; schema keys don't.
+    const formFieldBlocks = bySlug['forms']?.fields[1] as Extract<Field, { type: 'blocks' }>
+    const textBlockFields = formFieldBlocks.blocks?.[0]?.fields ?? []
+    expect(fieldComponent(textBlockFields[0])).toBeUndefined()
+    expect(fieldComponent(textBlockFields[1])).toBe(AI_TEXT)
     expect(fieldComponent(bySlug['redirects']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['search']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['form-submissions']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['users']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['etsy-tokens']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['payload-mcp-api-keys']?.fields[0])).toBeUndefined()
     expect(fieldComponent(result.globals?.[0]?.fields[0])).toBe(AI_TEXT)
   })
 
