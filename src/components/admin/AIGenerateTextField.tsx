@@ -145,14 +145,14 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   }
 
   return (
-    <div style={{ marginTop: '0.25rem', fontSize: 'var(--text-xs)' }}>
+    <div style={{ marginTop: '0.25rem', fontSize: 'var(--text-xs, 0.75rem)' }}>
       <button
         type="button"
         onClick={handleGenerate}
         disabled={loading}
         style={{
           padding: '0.15rem 0.5rem',
-          fontSize: 'var(--text-xs)',
+          fontSize: 'var(--text-xs, 0.75rem)',
           borderRadius: '4px',
           border: '1px solid var(--theme-elevation-150)',
           background: 'var(--theme-elevation-50)',
@@ -175,7 +175,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontSize: 'var(--text-xs)',
+              fontSize: 'var(--text-xs, 0.75rem)',
               color: 'inherit',
               padding: 0,
             }}
@@ -206,7 +206,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               onClick={applySuggestion}
               style={{
                 padding: '0.15rem 0.5rem',
-                fontSize: 'var(--text-xs)',
+                fontSize: 'var(--text-xs, 0.75rem)',
                 borderRadius: '4px',
                 border: '1px solid var(--theme-elevation-150)',
                 background: 'var(--theme-elevation-100)',
@@ -220,7 +220,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               onClick={() => setSuggestion(null)}
               style={{
                 padding: '0.15rem 0.5rem',
-                fontSize: 'var(--text-xs)',
+                fontSize: 'var(--text-xs, 0.75rem)',
                 borderRadius: '4px',
                 border: '1px solid var(--theme-elevation-150)',
                 background: 'transparent',
