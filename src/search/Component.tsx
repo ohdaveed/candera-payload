@@ -83,7 +83,7 @@ export const Search: React.FC = () => {
               type="button"
               onClick={clearSearch}
               aria-label="Clear search"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center text-lg leading-none text-candera-sage-text hover:text-candera-obsidian transition-all outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2 rounded-sm cursor-pointer"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center text-lg leading-none text-candera-sage-text hover:text-candera-obsidian transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm cursor-pointer"
             >
               <span aria-hidden="true">×</span>
             </button>
