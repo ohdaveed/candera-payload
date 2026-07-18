@@ -41,7 +41,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
         ref={successRef}
         aria-live="polite"
         tabIndex={-1}
-        className="flex flex-col gap-8 outline-none rounded-sm focus-visible:ring-4 focus-visible:ring-candera-ember/50 focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+        className="flex flex-col gap-8 outline-none rounded-sm focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
       >
         <p className="font-sans text-sm text-candera-vellum m-0">
           You&apos;re in. We&apos;ll be in touch before the next batch.

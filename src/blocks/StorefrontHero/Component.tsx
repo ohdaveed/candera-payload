@@ -105,7 +105,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
               <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm text-card-foreground shadow-card">
-                <p className="font-mono text-[0.64rem] tracking-[0.2em] text-card-foreground/55 uppercase m-0">
+                <p className="font-mono text-xs tracking-[0.2em] text-card-foreground/55 uppercase m-0">
                   {ethosCardEyebrow || 'The Slow Pour'}
                 </p>
 
@@ -115,7 +115,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                 </p>
 
                 <div className="pt-4 mt-4 border-t border-card-foreground/10 flex items-center justify-between gap-4">
-                  <span className="font-mono text-[0.64rem] tracking-[0.12em] text-card-foreground/45 uppercase">
+                  <span className="font-mono text-xs tracking-[0.12em] text-card-foreground/45 uppercase">
                     {ethosCardFooterLabel || 'Exclusively on Etsy'}
                   </span>
                   <SmoothScrollLink
