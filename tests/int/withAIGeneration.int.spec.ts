@@ -3,6 +3,7 @@ import type { CollectionConfig, Config, Field } from 'payload'
 
 import { aiGenerationPlugin, withAIGeneration } from '@/utilities/withAIGeneration'
 import { buildFieldCopyPrompt, fieldCopyInputSchema } from '@/lib/ai/field-copy'
+import { createRateLimiter } from '@/lib/ai/rate-limit'
 
 const AI_TEXT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
 const AI_TEXTAREA = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
@@ -228,6 +229,8 @@ describe('withAIGeneration', () => {
         {
           slug: 'forms',
           fields: [
+            // Lookup key used by getCachedFormByTitle — never AI-generated.
+            { name: 'title', type: 'text' },
             { name: 'submitButtonLabel', type: 'text' },
             {
               name: 'fields',
@@ -261,10 +264,12 @@ describe('withAIGeneration', () => {
 
     const bySlug = Object.fromEntries((result.collections ?? []).map((c) => [c.slug, c]))
     expect(fieldComponent(bySlug['test']?.fields[0])).toBe(AI_TEXT)
-    expect(fieldComponent(bySlug['forms']?.fields[0])).toBe(AI_TEXT)
+    // The form title is a lookup key; the submit button label is copy.
+    expect(fieldComponent(bySlug['forms']?.fields[0])).toBeUndefined()
+    expect(fieldComponent(bySlug['forms']?.fields[1])).toBe(AI_TEXT)
 
     // Copy fields in form-builder blocks get the control; schema keys don't.
-    const formFieldBlocks = bySlug['forms']?.fields[1] as Extract<Field, { type: 'blocks' }>
+    const formFieldBlocks = bySlug['forms']?.fields[2] as Extract<Field, { type: 'blocks' }>
     const textBlockFields = formFieldBlocks.blocks?.[0]?.fields ?? []
     expect(fieldComponent(textBlockFields[0])).toBeUndefined()
     expect(fieldComponent(textBlockFields[1])).toBe(AI_TEXT)
@@ -285,6 +290,24 @@ describe('withAIGeneration', () => {
     ])
     const result = withAIGeneration(original)
     expect(result.fields).toEqual(original.fields)
+  })
+})
+
+describe('rate limiter', () => {
+  it('allows up to the limit within the window, then blocks and recovers', () => {
+    const isAllowed = createRateLimiter({ limit: 3, windowMs: 60_000 })
+    const t0 = 1_000_000
+
+    expect(isAllowed('user-1', t0)).toBe(true)
+    expect(isAllowed('user-1', t0 + 1_000)).toBe(true)
+    expect(isAllowed('user-1', t0 + 2_000)).toBe(true)
+    expect(isAllowed('user-1', t0 + 3_000)).toBe(false)
+
+    // Other keys are unaffected.
+    expect(isAllowed('user-2', t0 + 3_000)).toBe(true)
+
+    // Once the window slides past the first hits, requests flow again.
+    expect(isAllowed('user-1', t0 + 61_500)).toBe(true)
   })
 })
 

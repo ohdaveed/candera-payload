@@ -210,13 +210,15 @@ const AI_EXCLUDED_COLLECTIONS = new Set([
   'form-submissions', // visitor-submitted data (form builder plugin)
 ])
 
-// In the form builder's Forms collection, each field block's `name` (and
-// option `value`) is the machine key that submissions are stored and
-// forwarded under; a select's `defaultValue` must exactly match an option
+// In the form builder's Forms collection, the form `title` is a lookup key
+// (`getCachedFormByTitle` queries it via `FORM_TITLES`); each field block's
+// `name` (and option `value`) is the machine key that submissions are stored
+// and forwarded under; a select's `defaultValue` must exactly match an option
 // value; and `cc`/`bcc`/`replyTo` are email routing (emailTo/emailFrom are
 // already caught by the `email` substring). Prose in any of these breaks
-// submissions or notifications. Labels, subjects, and messages stay eligible.
-const FORM_SCHEMA_KEY_PATTERN = /^(name|value|defaultValue|cc|bcc|replyTo)$/
+// form lookup, submissions, or notifications. Labels, subjects, and messages
+// stay eligible.
+const FORM_SCHEMA_KEY_PATTERN = /^(title|name|value|defaultValue|cc|bcc|replyTo)$/
 
 /**
  * Registered LAST in the plugin chain so it also sees collections added by

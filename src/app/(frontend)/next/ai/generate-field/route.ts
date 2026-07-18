@@ -6,18 +6,35 @@ import {
   fieldCopyInputSchema,
   fieldCopyOutputSchema,
 } from '@/lib/ai/field-copy'
+import { createRateLimiter } from '@/lib/ai/rate-limit'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
 export const maxDuration = 30
+
+// Cheap per-instance guard so a runaway loop or stale session can't burn
+// AI Gateway quota — generation is a human-clicks-a-button flow.
+const isAllowed = createRateLimiter({ limit: 10, windowMs: 60_000 })
 
 export async function POST(req: Request): Promise<Response> {
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
   const { user } = await payload.auth({ headers: requestHeaders })
 
-  if (!user) {
+  // Admin users only. `payload.auth` also accepts MCP API keys (plugin-mcp
+  // stamps `_strategy: 'mcp-api-key'` on a `users`-collection user; the
+  // property is runtime-only, hence the structural read) — those must stay
+  // confined to the MCP endpoint's own allowlist.
+  const strategy = (user as null | { _strategy?: string })?._strategy
+  if (!user || user.collection !== 'users' || strategy === 'mcp-api-key') {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!isAllowed(String(user.id))) {
+    return Response.json(
+      { error: 'Too many generation requests — wait a minute and try again.' },
+      { status: 429 },
+    )
   }
 
   let body: unknown
