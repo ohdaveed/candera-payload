@@ -1,12 +1,14 @@
-import { generateObject, gateway } from 'ai'
+import { generateObject } from 'ai'
 import { headers } from 'next/headers'
 import {
-  FIELD_COPY_SYSTEM_PROMPT,
   buildFieldCopyPrompt,
   fieldCopyInputSchema,
   fieldCopyOutputSchema,
+  fieldSystemPrompt,
 } from '@/lib/ai/field-copy'
+import { copyModel } from '@/lib/ai/model'
 import { createRateLimiter } from '@/lib/ai/rate-limit'
+import { userIsAdmin } from '@/access/isAdmin'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -21,12 +23,18 @@ export async function POST(req: Request): Promise<Response> {
   const requestHeaders = await headers()
   const { user } = await payload.auth({ headers: requestHeaders })
 
-  // Admin users only. `payload.auth` also accepts MCP API keys (plugin-mcp
-  // stamps `_strategy: 'mcp-api-key'` on a `users`-collection user; the
-  // property is runtime-only, hence the structural read) — those must stay
-  // confined to the MCP endpoint's own allowlist.
+  // Admin-role users only (matching the admin panel's own access gate).
+  // `payload.auth` also accepts MCP API keys (plugin-mcp stamps
+  // `_strategy: 'mcp-api-key'` on a `users`-collection user; the property is
+  // runtime-only, hence the structural read) — those must stay confined to
+  // the MCP endpoint's own allowlist.
   const strategy = (user as null | { _strategy?: string })?._strategy
-  if (!user || user.collection !== 'users' || strategy === 'mcp-api-key') {
+  if (
+    !user ||
+    user.collection !== 'users' ||
+    strategy === 'mcp-api-key' ||
+    !userIsAdmin(user)
+  ) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -53,8 +61,8 @@ export async function POST(req: Request): Promise<Response> {
 
   try {
     const { object } = await generateObject({
-      model: gateway('anthropic/claude-haiku-4-5'),
-      system: FIELD_COPY_SYSTEM_PROMPT,
+      model: copyModel(),
+      system: fieldSystemPrompt(input.tone),
       prompt: buildFieldCopyPrompt(input),
       schema: fieldCopyOutputSchema,
     })

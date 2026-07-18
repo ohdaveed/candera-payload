@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vite-plus/test'
 import type { CollectionConfig, Config, Field } from 'payload'
 
 import { aiGenerationPlugin, withAIGeneration } from '@/utilities/withAIGeneration'
-import { buildFieldCopyPrompt, fieldCopyInputSchema } from '@/lib/ai/field-copy'
+import { buildFieldCopyPrompt, fieldCopyInputSchema, fieldSystemPrompt } from '@/lib/ai/field-copy'
 import { createRateLimiter } from '@/lib/ai/rate-limit'
 
 const AI_TEXT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
@@ -187,7 +187,7 @@ describe('withAIGeneration', () => {
     expect(fieldComponent(archive.fields[0])).toBeUndefined()
   })
 
-  it('passes the entity hidden-field paths to the control as contextExcludePaths', () => {
+  it('passes hidden, locked, and relationship paths to the control as contextExcludePaths', () => {
     const result = withAIGeneration(
       makeCollection([
         { name: 'title', type: 'text' },
@@ -204,6 +204,9 @@ describe('withAIGeneration', () => {
           admin: { disabled: true, readOnly: true },
           fields: [{ name: 'authorName', type: 'text' }],
         },
+        // Relationship/upload values are machine IDs — never prompt context.
+        { name: 'authors', type: 'relationship', relationTo: 'users', hasMany: true },
+        { name: 'heroImage', type: 'upload', relationTo: 'media' },
       ]),
     )
 
@@ -217,6 +220,8 @@ describe('withAIGeneration', () => {
       'rawEtsyDescription',
       'internal.syncNotes',
       'populatedAuthors',
+      'authors',
+      'heroImage',
     ])
   })
 
@@ -250,6 +255,21 @@ describe('withAIGeneration', () => {
             },
           ],
         },
+        {
+          slug: 'products',
+          fields: [
+            { name: 'tagline', type: 'text' },
+            {
+              name: 'specifications',
+              type: 'array',
+              fields: [
+                { name: 'label', type: 'text' },
+                // Factual measurements rendered verbatim on the product page.
+                { name: 'value', type: 'text' },
+              ],
+            },
+          ],
+        },
         { slug: 'redirects', fields: [{ name: 'from', type: 'text' }] },
         { slug: 'search', fields: [{ name: 'title', type: 'text' }] },
         { slug: 'form-submissions', fields: [{ name: 'value', type: 'text' }] },
@@ -274,6 +294,12 @@ describe('withAIGeneration', () => {
     expect(fieldComponent(textBlockFields[0])).toBeUndefined()
     expect(fieldComponent(textBlockFields[1])).toBe(AI_TEXT)
     expect(fieldComponent(textBlockFields[2])).toBeUndefined()
+    // Product copy stays eligible; factual spec values don't.
+    expect(fieldComponent(bySlug['products']?.fields[0])).toBe(AI_TEXT)
+    const specs = bySlug['products']?.fields[1] as Extract<Field, { type: 'array' }>
+    expect(fieldComponent(specs.fields[0])).toBe(AI_TEXT)
+    expect(fieldComponent(specs.fields[1])).toBeUndefined()
+
     expect(fieldComponent(bySlug['redirects']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['search']?.fields[0])).toBeUndefined()
     expect(fieldComponent(bySlug['form-submissions']?.fields[0])).toBeUndefined()
@@ -331,6 +357,17 @@ describe('field-copy prompt', () => {
     expect(prompt).toContain('- title: Amber Noir')
     expect(prompt).toContain('- scentProfile.top: Bergamot')
     expect(prompt).toContain('improve on it')
+  })
+
+  it('defaults tone to poetic and folds the tone voice into the system prompt', () => {
+    const parsed = fieldCopyInputSchema.parse({
+      fieldLabel: 'Tagline',
+      fieldName: 'tagline',
+      variant: 'text',
+    })
+    expect(parsed.tone).toBe('poetic')
+    expect(fieldSystemPrompt('minimal')).toContain('clean and direct')
+    expect(fieldSystemPrompt('poetic')).toContain('single CMS field')
   })
 
   it('rejects oversized context payloads', () => {

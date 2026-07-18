@@ -57,11 +57,12 @@ function isEligible(
 }
 
 /**
- * Dot paths (by field name, without array indices) of fields the admin never
- * shows or the editor cannot author — hidden, disabled, read-only, or virtual.
- * Their values must not be sent to the model as prompt context.
+ * Dot paths (by field name, without array indices) whose values must not be
+ * sent to the model as prompt context: fields the admin never shows or the
+ * editor cannot author (hidden, disabled, read-only, virtual), and
+ * relationship/upload/join fields, whose stored values are machine IDs.
  */
-function collectHiddenPaths(fields: Field[], prefix: string, out: string[]): void {
+function collectContextExcludedPaths(fields: Field[], prefix: string, out: string[]): void {
   for (const field of fields) {
     const name = 'name' in field && typeof field.name === 'string' ? field.name : undefined
 
@@ -77,25 +78,30 @@ function collectHiddenPaths(fields: Field[], prefix: string, out: string[]): voi
       continue // everything beneath is covered by the prefix
     }
 
+    if (name && (field.type === 'relationship' || field.type === 'upload' || field.type === 'join')) {
+      out.push(`${prefix}${name}`)
+      continue
+    }
+
     switch (field.type) {
       case 'group':
       case 'array':
-        collectHiddenPaths(field.fields, name ? `${prefix}${name}.` : prefix, out)
+        collectContextExcludedPaths(field.fields, name ? `${prefix}${name}.` : prefix, out)
         break
       case 'row':
       case 'collapsible':
-        collectHiddenPaths(field.fields, prefix, out)
+        collectContextExcludedPaths(field.fields, prefix, out)
         break
       case 'tabs':
         for (const tab of field.tabs) {
           const tabName = 'name' in tab && typeof tab.name === 'string' ? tab.name : undefined
-          collectHiddenPaths(tab.fields, tabName ? `${prefix}${tabName}.` : prefix, out)
+          collectContextExcludedPaths(tab.fields, tabName ? `${prefix}${tabName}.` : prefix, out)
         }
         break
       case 'blocks':
         if (name && field.blocks) {
           for (const block of field.blocks) {
-            collectHiddenPaths(block.fields, `${prefix}${name}.`, out)
+            collectContextExcludedPaths(block.fields, `${prefix}${name}.`, out)
           }
         }
         break
@@ -194,9 +200,9 @@ export function withAIGeneration<T extends CollectionConfig | GlobalConfig>(
   config: T,
   extraSkip?: RegExp,
 ): T {
-  const hiddenPaths: string[] = []
-  collectHiddenPaths(config.fields, '', hiddenPaths)
-  return { ...config, fields: mapFields(config.fields, hiddenPaths, extraSkip) }
+  const excludedPaths: string[] = []
+  collectContextExcludedPaths(config.fields, '', excludedPaths)
+  return { ...config, fields: mapFields(config.fields, excludedPaths, extraSkip) }
 }
 
 // Collections whose text fields must never get the AI control: account data,
@@ -220,6 +226,10 @@ const AI_EXCLUDED_COLLECTIONS = new Set([
 // stay eligible.
 const FORM_SCHEMA_KEY_PATTERN = /^(title|name|value|defaultValue|cc|bcc|replyTo)$/
 
+// Products `specifications[].value` holds factual measurements/specs rendered
+// verbatim on the product page — prose there publishes wrong product facts.
+const PRODUCT_FACT_PATTERN = /^value$/
+
 /**
  * Registered LAST in the plugin chain so it also sees collections added by
  * earlier plugins (e.g. the form builder's Forms) — a plain `.map` over the
@@ -230,6 +240,7 @@ export const aiGenerationPlugin: Plugin = (config) => ({
   collections: (config.collections ?? []).map((collection) => {
     if (AI_EXCLUDED_COLLECTIONS.has(collection.slug)) return collection
     if (collection.slug === 'forms') return withAIGeneration(collection, FORM_SCHEMA_KEY_PATTERN)
+    if (collection.slug === 'products') return withAIGeneration(collection, PRODUCT_FACT_PATTERN)
     return withAIGeneration(collection)
   }),
   globals: (config.globals ?? []).map((global) => withAIGeneration(global)),

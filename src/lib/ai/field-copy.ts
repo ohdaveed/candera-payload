@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { SYSTEM_PROMPTS } from './product-copy'
 
 /**
  * Single-field AI copy generation, shared by the generic
@@ -8,8 +9,13 @@ import { z } from 'zod'
  * whatever document context the admin form can provide.
  */
 
-export const FIELD_COPY_SYSTEM_PROMPT =
-  'You write copy for Candera, a luxury botanical candle boutique. Your voice is evocative, sensory, and intimate — words like "ritual," "warmth," "atmosphere." Equate "burn time" with "intention" (e.g., "60 hours of intention"). Avoid generic adjectives. You are asked to write the value of a single CMS field. Respond with the field value only — plain text, no surrounding quotes, no markdown, no explanation.'
+const FIELD_TASK_PROMPT =
+  'You are asked to write the value of a single CMS field. Respond with the field value only — plain text, no surrounding quotes, no markdown, no explanation.'
+
+/** Brand voice (per tone, from product-copy) plus the single-field task framing. */
+export function fieldSystemPrompt(tone: FieldCopyData['tone']): string {
+  return `${SYSTEM_PROMPTS[tone]} ${FIELD_TASK_PROMPT}`
+}
 
 const MAX_CONTEXT_ENTRIES = 40
 
@@ -19,6 +25,7 @@ export const fieldCopyInputSchema = z.object({
   fieldDescription: z.string().max(500).optional(),
   entityLabel: z.string().max(200).optional(),
   variant: z.enum(['text', 'textarea']),
+  tone: z.enum(['poetic', 'minimal', 'bold']).default('poetic'),
   maxLength: z.number().int().positive().max(100_000).optional(),
   currentValue: z.string().max(5_000).optional(),
   context: z
@@ -33,10 +40,13 @@ export const fieldCopyOutputSchema = z.object({
   suggestion: z.string(),
 })
 
-export type FieldCopyInput = z.infer<typeof fieldCopyInputSchema>
+/** Request-body shape (pre-parse: `tone` optional, defaults to poetic). */
+export type FieldCopyInput = z.input<typeof fieldCopyInputSchema>
+/** Parsed shape the server works with (defaults applied). */
+export type FieldCopyData = z.output<typeof fieldCopyInputSchema>
 export type FieldCopyOutput = z.infer<typeof fieldCopyOutputSchema>
 
-export function buildFieldCopyPrompt(input: FieldCopyInput): string {
+export function buildFieldCopyPrompt(input: FieldCopyData): string {
   const parts: string[] = []
 
   parts.push(

@@ -175,6 +175,7 @@ function AIGenerateControls({ path, field, variant, contextExcludePaths }: AICon
         type="button"
         onClick={handleGenerate}
         disabled={loading}
+        aria-label={`Generate ${fieldLabel} with AI`}
         style={{
           padding: '0.15rem 0.5rem',
           fontSize: 'var(--text-xs, 0.75rem)',
@@ -195,6 +196,7 @@ function AIGenerateControls({ path, field, variant, contextExcludePaths }: AICon
           <button
             type="button"
             onClick={handleGenerate}
+            aria-label={`Retry generating ${fieldLabel}`}
             style={{
               textDecoration: 'underline',
               background: 'none',
@@ -229,6 +231,7 @@ function AIGenerateControls({ path, field, variant, contextExcludePaths }: AICon
             <button
               type="button"
               onClick={applySuggestion}
+              aria-label={`Apply suggestion to ${fieldLabel}`}
               style={{
                 padding: '0.15rem 0.5rem',
                 fontSize: 'var(--text-xs, 0.75rem)',
@@ -243,6 +246,7 @@ function AIGenerateControls({ path, field, variant, contextExcludePaths }: AICon
             <button
               type="button"
               onClick={() => setSuggestion(null)}
+              aria-label="Dismiss suggestion"
               style={{
                 padding: '0.15rem 0.5rem',
                 fontSize: 'var(--text-xs, 0.75rem)',
