@@ -1,60 +1,82 @@
 import { z } from 'zod'
+import { SYSTEM_PROMPTS } from './product-copy'
 
 /**
- * Single-field AI copy generation, powering the "Generate with AI" loop that
- * every text/textarea field in the admin panel exposes (see
- * `src/plugins/aiTextFields.ts` and `src/components/admin/AITextField.tsx`).
+ * Single-field AI copy generation, shared by the generic
+ * `/next/ai/generate-field` endpoint and the admin field components.
+ * Complements `product-copy.ts`, which generates a fixed trio of product
+ * fields — this generates a value for any one text/textarea field from
+ * whatever document context the admin form can provide.
  */
 
-export const fieldGenerationInputSchema = z.object({
-  /** Collection or global slug the field belongs to, e.g. "products". */
-  entity: z.string().min(1),
-  /** Human-readable field label shown in the admin, e.g. "Tagline". */
-  fieldLabel: z.string().min(1),
-  /** Form-state path of the field, e.g. "scentProfile.top". */
-  fieldPath: z.string().min(1),
-  fieldType: z.enum(['text', 'textarea']),
-  /** Editor-facing field description, used as guidance for the model. */
-  description: z.string().optional(),
-  /** Title of the document being edited, for context. */
-  documentTitle: z.string().optional(),
-  /** Current field value — the model refines or replaces it. */
-  currentValue: z.string().optional(),
+const FIELD_TASK_PROMPT =
+  'You are asked to write the value of a single CMS field. Respond with the field value only — plain text, no surrounding quotes, no markdown, no explanation.'
+
+/** Brand voice (per tone, from product-copy) plus the single-field task framing. */
+export function fieldSystemPrompt(tone: FieldCopyData['tone']): string {
+  return `${SYSTEM_PROMPTS[tone]} ${FIELD_TASK_PROMPT}`
+}
+
+const MAX_CONTEXT_ENTRIES = 40
+
+export const fieldCopyInputSchema = z.object({
+  fieldLabel: z.string().min(1).max(200),
+  fieldName: z.string().min(1).max(200),
+  fieldDescription: z.string().max(500).optional(),
+  entityLabel: z.string().max(200).optional(),
+  variant: z.enum(['text', 'textarea']),
   tone: z.enum(['poetic', 'minimal', 'bold']).default('poetic'),
+  maxLength: z.number().int().positive().max(100_000).optional(),
+  currentValue: z.string().max(5_000).optional(),
+  context: z
+    .record(z.string().max(200), z.string().max(500))
+    .refine((ctx) => Object.keys(ctx).length <= MAX_CONTEXT_ENTRIES, {
+      message: `Context must have at most ${MAX_CONTEXT_ENTRIES} entries`,
+    })
+    .optional(),
 })
 
-export const fieldGenerationOutputSchema = z.object({
-  suggestion: z.string().min(1),
+export const fieldCopyOutputSchema = z.object({
+  suggestion: z.string(),
 })
 
-export type FieldGenerationInput = z.infer<typeof fieldGenerationInputSchema>
-export type FieldGenerationOutput = z.infer<typeof fieldGenerationOutputSchema>
+/** Request-body shape (pre-parse: `tone` optional, defaults to poetic). */
+export type FieldCopyInput = z.input<typeof fieldCopyInputSchema>
+/** Parsed shape the server works with (defaults applied). */
+export type FieldCopyData = z.output<typeof fieldCopyInputSchema>
+export type FieldCopyOutput = z.infer<typeof fieldCopyOutputSchema>
 
-export function buildFieldGenerationPrompt(input: FieldGenerationInput): string {
-  const parts: string[] = [
-    `You are writing the value for a single CMS field on the Candera Candles website.`,
-    `Content type: ${input.entity}`,
-  ]
+export function buildFieldCopyPrompt(input: FieldCopyData): string {
+  const parts: string[] = []
 
-  if (input.documentTitle) parts.push(`Document: ${input.documentTitle}`)
+  parts.push(
+    `Write the value for the "${input.fieldLabel}" field` +
+      (input.entityLabel ? ` of a "${input.entityLabel}" document` : '') +
+      ' in the Candera CMS.',
+  )
 
-  parts.push(`Field: ${input.fieldLabel} (${input.fieldPath})`)
+  if (input.fieldDescription) parts.push(`Field hint: ${input.fieldDescription}`)
 
-  if (input.description) parts.push(`Field guidance: ${input.description}`)
+  if (input.variant === 'textarea') {
+    parts.push('The field holds a short paragraph of copy (1–3 sentences).')
+  } else {
+    parts.push('The field holds a single short line of copy — no line breaks.')
+  }
 
-  if (input.currentValue) {
+  if (input.maxLength) parts.push(`Hard limit: at most ${input.maxLength} characters.`)
+
+  const contextEntries = Object.entries(input.context ?? {})
+  if (contextEntries.length > 0) {
     parts.push(
-      `Current value: ${input.currentValue}`,
-      'Write an improved alternative to the current value.',
+      '',
+      'Current document content for context:',
+      ...contextEntries.map(([key, value]) => `- ${key}: ${value}`),
     )
   }
 
-  parts.push(
-    '',
-    input.fieldType === 'textarea'
-      ? 'Respond with only the new field value: 1-3 sentences of plain text, no markdown.'
-      : 'Respond with only the new field value: a single short line (max 12 words), no markdown, no surrounding quotes.',
-  )
+  if (input.currentValue) {
+    parts.push('', `The field currently contains: "${input.currentValue}" — improve on it.`)
+  }
 
   return parts.join('\n')
 }

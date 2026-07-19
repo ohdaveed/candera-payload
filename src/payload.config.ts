@@ -29,7 +29,6 @@ import { SiteTheme } from './SiteTheme/config'
 import { StudioInfo } from './StudioInfo/config'
 import { LoginTheme } from './LoginTheme/config'
 import { plugins } from './plugins'
-import { aiTextFieldsPlugin } from './plugins/aiTextFields'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
@@ -43,6 +42,7 @@ import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
 import { BRAND } from './constants/brand'
+import { aiGenerationPlugin } from './utilities/withAIGeneration'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -163,8 +163,10 @@ export default buildConfig({
           }),
         ]
       : []),
-    // Must run last so it also reaches text fields added by the plugins above.
-    aiTextFieldsPlugin,
+    // Last so it sees collections added by earlier plugins (e.g. the form
+    // builder's Forms). Adds the "Generate with AI" control to every eligible
+    // text/textarea field; see withAIGeneration.ts for the exclusions.
+    aiGenerationPlugin,
   ],
   globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,
