@@ -12,10 +12,10 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
 
   const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
+    full: 'lg:col-span-12',
+    half: 'lg:col-span-6',
+    oneThird: 'lg:col-span-4',
+    twoThirds: 'lg:col-span-8',
   }
 
   return (
@@ -26,16 +26,18 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
             columns.length > 0 &&
             columns.map((col, index) => {
               const { enableLink, link, richText, size } = col
+              const columnSize = size ?? 'full'
 
               return (
                 <Section
                   as="aside"
                   padding="none"
                   className={cn(
-                    `col-span-4 lg:col-span-${colsSpanClasses[size!]}`,
+                    'col-span-4',
+                    colsSpanClasses[columnSize],
                     {
-                      'md:col-span-2': size !== 'full',
-                      'lg:sticky lg:top-32': size !== 'full' && columns.length > 1,
+                      'md:col-span-2': columnSize !== 'full',
+                      'lg:sticky lg:top-32': columnSize !== 'full' && columns.length > 1,
                     },
                     'flex flex-col gap-10',
                   )}
@@ -44,13 +46,13 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   {richText && (
                     <Section
                       padding="none"
-                      className="editorial-prose [&_h2]:mb-8 [&_p]:mb-6 [&_p:last-child]:mb-0"
+                      className="[&_h2]:mb-8 [&_p]:mb-6 [&_p:last-child]:mb-0"
                     >
                       <span
                         className="block h-px w-16 mb-8 bg-candera-stone/20"
                         aria-hidden="true"
                       />
-                      <RichText data={richText} enableGutter={false} />
+                      <RichText data={richText} enableGutter={false} enableProse={false} />
                     </Section>
                   )}
 
@@ -58,7 +60,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                     <Section padding="none" className="mt-2">
                       <CMSLink
                         {...link}
-                        className="hover:translate-x-1 transition-transform duration-300"
+                        className="hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-transform duration-300"
                       />
                     </Section>
                   )}

@@ -1,6 +1,14 @@
+// Single source of truth for test credentials, overridable via env so no
+// suite needs to hardcode logins. adminCredentials must match an existing
+// admin in the target dev DB; testUserCredentials is created fresh per run.
+export const adminCredentials = {
+  email: process.env.TEST_ADMIN_EMAIL ?? 'dev@candera.com',
+  password: process.env.TEST_ADMIN_PASSWORD ?? 'test1234',
+}
+
 export const testUserCredentials = {
-  email: 'dev@payloadcms.com',
-  password: 'test',
+  email: process.env.TEST_USER_EMAIL ?? 'e2e@candera.test',
+  password: process.env.TEST_USER_PASSWORD ?? 'test',
 }
 
 const SERVER_URL = 'http://localhost:3000'
@@ -9,7 +17,7 @@ async function getAdminToken(): Promise<string> {
   const res = await fetch(`${SERVER_URL}/api/users/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: 'dev@candera.com', password: 'test1234' }),
+    body: JSON.stringify(adminCredentials),
   })
   if (!res.ok) throw new Error(`Admin login failed: ${res.status}`)
   const data = (await res.json()) as { token: string }

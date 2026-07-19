@@ -1,5 +1,6 @@
 @layer base {
-  /* Font CSS custom properties for use in prose styles */
+  /* Font CSS custom properties for use in prose styles.
+     Single source of truth for --font-sans (this @layer base :root wins the cascade). */
   :root {
     --font-sans: var(--font-dm-sans), system-ui, sans-serif;
     --font-display: var(--font-fraunces), Georgia, serif;
@@ -46,7 +47,7 @@
   }
 
   .hero-heading {
-    @apply font-display font-normal italic text-candera-obsidian text-pretty;
+    @apply font-display font-normal italic text-candera-obsidian text-balance;
     font-optical-sizing: auto;
     font-size: var(--font-size-hero);
     line-height: var(--leading-hero);

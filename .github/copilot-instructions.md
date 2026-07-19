@@ -111,7 +111,7 @@ Follow this pattern when adding new integrations.
 
 ### Form submissions
 
-`submitForm` server action → Payload Local API → `processFormSubmission` `afterChange` hook → `sendToFormSubmit` (`src/services/formsubmit.ts`) → FormSubmit.co. Target inbox: `FORMSUBMIT_EMAIL` (defaults to `studio@canderacandles.com`).
+`submitFormAction` server action → Payload Local API → `processFormSubmission` `afterChange` hook → `sendToFormSubmit` (`src/services/formsubmit.ts`) → FormSubmit.co. Target inbox: `FORMSUBMIT_EMAIL` (defaults to `studio@canderacandles.com`).
 
 ### Search
 

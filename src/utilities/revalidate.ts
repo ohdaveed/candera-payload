@@ -1,5 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from 'payload'
 
+import { payloadLogger } from './logger'
+
 /**
  * Seam decoupling revalidation actions from Next.js caching libraries.
  */
@@ -9,46 +11,71 @@ export interface CacheBusterPort {
 }
 
 /**
+ * Classifies failures from next/cache calls into the two benign cases we
+ * deliberately swallow. Anything unclassified is rethrown by the caller.
+ *
+ * - 'module-unavailable': next/cache itself can't be imported (test
+ *   environments, plain scripts). Requires the error to name next/cache —
+ *   a resolution failure elsewhere in the import graph must not be
+ *   misclassified as a harmless cache miss.
+ * - 'outside-request-context': the API was called outside a Next.js request
+ *   (Payload hooks fired from scripts/seeds). Next exposes NO typed error for
+ *   this — the invariant message substring is the only available signal, so
+ *   it is isolated here where a Next wording change breaks exactly one place.
+ */
+function classifyNextCacheError(
+  err: unknown,
+): 'module-unavailable' | 'outside-request-context' | 'unknown' {
+  if (!(err instanceof Error)) return 'unknown'
+  const code = (err as Error & { code?: string }).code
+  const isResolutionError =
+    code === 'ERR_MODULE_NOT_FOUND' ||
+    code === 'MODULE_NOT_FOUND' ||
+    err.message.includes('Cannot find module') ||
+    err.message.includes('Could not resolve')
+  if (isResolutionError && err.message.includes('next/cache')) return 'module-unavailable'
+  if (err.message.includes('static generation store missing')) return 'outside-request-context'
+  return 'unknown'
+}
+
+/**
  * Production adapter wrapping Next.js native Cache APIs.
  */
 export class NextCacheBusterAdapter implements CacheBusterPort {
-  async revalidatePath(path: string): Promise<void> {
+  private async invalidate(action: () => Promise<void>, label: string): Promise<void> {
     try {
-      const { revalidatePath } = await import('next/cache')
-      revalidatePath(path)
+      await action()
     } catch (err) {
-      if (err instanceof Error && err.message.includes('static generation store missing')) {
-        return
+      switch (classifyNextCacheError(err)) {
+        case 'outside-request-context':
+          // Expected when Payload hooks run outside a Next.js request (scripts, seeds).
+          return
+        case 'module-unavailable':
+          payloadLogger.warn(`Skipping ${label} — next/cache not available in this environment`)
+          return
+        default:
+          // Contain rather than rethrow: callers fire-and-forget these
+          // invalidations (e.g. `void nextCacheBuster.revalidateTag(...)` in
+          // revalidateForm), where a rethrow becomes an unhandled rejection.
+          // A failed cache invalidation must never take down a save.
+          payloadLogger.error(err, `Failed ${label}`)
+          return
       }
-      // If next/cache is not available (e.g. in some test environments), just log and skip
-      if (
-        err instanceof Error &&
-        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
-      ) {
-        console.warn(`Skipping revalidatePath for ${path} - next/cache not available`)
-        return
-      }
-      throw err
     }
   }
+
+  async revalidatePath(path: string): Promise<void> {
+    await this.invalidate(async () => {
+      const { revalidatePath } = await import('next/cache')
+      revalidatePath(path)
+    }, `revalidatePath(${path})`)
+  }
+
   async revalidateTag(tag: string): Promise<void> {
-    try {
+    await this.invalidate(async () => {
       const { revalidateTag } = await import('next/cache')
       revalidateTag(tag, 'max')
-    } catch (err) {
-      if (err instanceof Error && err.message.includes('static generation store missing')) {
-        // This error is expected when running Payload hooks outside of a Next.js request context (e.g. scripts)
-        return
-      }
-      if (
-        err instanceof Error &&
-        (err.message.includes('Cannot find module') || err.message.includes('Could not resolve'))
-      ) {
-        console.warn(`Skipping revalidateTag for ${tag} - next/cache not available`)
-        return
-      }
-      throw err
-    }
+    }, `revalidateTag(${tag})`)
   }
 }
 

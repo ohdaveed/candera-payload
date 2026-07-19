@@ -11,7 +11,25 @@ test.describe('Frontend', () => {
 
     await expect(page.locator('main li').first()).toBeVisible()
 
-    await page.waitForLoadState('networkidle')
+    // Wait for the product imagery itself rather than `networkidle`: third-party
+    // widgets (Cloudflare Turnstile) hold requests open indefinitely, so the
+    // network never goes idle and the test would time out. Scroll through the
+    // page first so lazy-loaded images actually start fetching.
+    await page.evaluate(async () => {
+      for (let y = 0; y <= document.body.scrollHeight; y += window.innerHeight) {
+        window.scrollTo(0, y)
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      }
+      window.scrollTo(0, 0)
+    })
+    await page.waitForFunction(
+      () =>
+        Array.from(document.querySelectorAll('main li img')).every(
+          (img) => (img as HTMLImageElement).complete,
+        ),
+      undefined,
+      { timeout: 30000 },
+    )
 
     const brokenProductImages = await page.locator('main li img').evaluateAll((images) => {
       return images

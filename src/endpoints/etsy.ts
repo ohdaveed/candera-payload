@@ -4,17 +4,16 @@ import { DefaultPayloadTokenRepository, EtsyClient } from '@/utilities/etsyClien
 import { syncEtsyListings } from '@/utilities/syncEtsy'
 import { deriveCodeChallenge, generateCodeVerifier } from '@/utilities/pkce'
 import { userIsAdmin } from '@/access/isAdmin'
-
-export const CANDERA_CANDLES_SHOP_ID = 25894791
+import { ETSY_SHOP_ID_FALLBACK } from '@/constants/etsy'
 
 const getEtsyShopId = (): number => {
   const shopIdRaw = process.env.ETSY_SHOP_ID
   if (!shopIdRaw) {
-    return CANDERA_CANDLES_SHOP_ID
+    return ETSY_SHOP_ID_FALLBACK
   }
   const shopId = Number(shopIdRaw)
   if (!Number.isInteger(shopId) || shopId <= 0) {
-    return CANDERA_CANDLES_SHOP_ID
+    return ETSY_SHOP_ID_FALLBACK
   }
   return shopId
 }
@@ -90,14 +89,21 @@ export const etsyOAuthInitEndpoint: Endpoint = {
     if (!userIsAdmin(req.user)) {
       return Response.json({ error: 'Forbidden' }, { status: 403 })
     }
-    const state = crypto.randomUUID()
-    const codeVerifier = generateCodeVerifier()
-    const codeChallenge = deriveCodeChallenge(codeVerifier)
-    const authUrl = createEtsyClient(req).generateAuthUrl(state, codeChallenge)
-    const headers = new Headers({ Location: authUrl })
-    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, state, 600))
-    headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, codeVerifier, 600))
-    return new Response(null, { status: 302, headers })
+    try {
+      const state = crypto.randomUUID()
+      const codeVerifier = generateCodeVerifier()
+      const codeChallenge = deriveCodeChallenge(codeVerifier)
+      const authUrl = createEtsyClient(req).generateAuthUrl(state, codeChallenge)
+      const headers = new Headers({ Location: authUrl })
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_STATE_COOKIE, state, 600))
+      headers.append('Set-Cookie', buildOAuthCookie(OAUTH_VERIFIER_COOKIE, codeVerifier, 600))
+      return new Response(null, { status: 302, headers })
+    } catch (error) {
+      // Mirrors the sibling endpoints: a missing ETSY_API_KEY/ETSY_SHARED_SECRET
+      // throws in the client constructor; surface a clean 500 instead of a crash.
+      req.payload.logger.error({ err: error, msg: 'Error in /etsy/oauth/init endpoint' })
+      return Response.json({ error: 'Error initiating Etsy OAuth' }, { status: 500 })
+    }
   },
 }
 

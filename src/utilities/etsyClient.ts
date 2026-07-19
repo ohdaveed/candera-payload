@@ -5,14 +5,11 @@ const ETSY_BASE_URL = 'https://openapi.etsy.com/v3/application'
 const ETSY_OAUTH_URL = 'https://api.etsy.com/v3/public/oauth'
 // User-facing consent page (distinct from the token-exchange endpoint above).
 const ETSY_CONNECT_URL = 'https://www.etsy.com/oauth/connect'
-const SCOPES = [
-  'listings_r',
-  'listings_w',
-  'shops_r',
-  'shops_w',
-  'transactions_r',
-  'transactions_w',
-]
+// Least privilege: the integration only reads listings (sync) and writes shop
+// vacation mode (PUT /shops/{id}), so it needs exactly listings_r, shops_r,
+// shops_w. Existing tokens keep their previously granted scopes; a re-run of
+// the OAuth flow picks up this narrowed set.
+const SCOPES = ['listings_r', 'shops_r', 'shops_w']
 
 export interface EtsyConfig {
   apiKey: string

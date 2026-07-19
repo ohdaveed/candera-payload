@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { Button } from '@/components/ui/button'
-import { Eyebrow } from '@/components/ui/eyebrow'
+import { InnerCircleStrip } from '@/components/InnerCircleStrip'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import configPromise from '@payload-config'
@@ -10,16 +9,14 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { cache } from 'react'
 import RichText from '@/components/RichText'
-import Link from 'next/link'
 
 import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
-import type { PostHeroDoc } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getServerSideURL } from '@/utilities/getURL'
-import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
 
 type Args = {
   params: Promise<{ slug?: string }>
@@ -34,22 +31,18 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
 
   if (!guide) return <PayloadRedirects url={url} />
 
-  const extractText = (node: unknown): string => {
-    if (!node || typeof node !== 'object') return ''
-    const n = node as Record<string, unknown>
-    if (typeof n.text === 'string') return n.text
-    if (Array.isArray(n.children)) return n.children.map(extractText).join(' ')
-    if (n.root) return extractText(n.root)
-    return ''
-  }
-  const plainText = guide.content ? extractText(guide.content) : ''
-  const wordCount = plainText ? plainText.trim().split(/\s+/).length : 0
-  const readTime = Math.max(1, Math.round(wordCount / 200))
+  const readTime = calculateReadTime(guide.content)
 
-  const heroImageUrl =
+  // Schema.org requires an absolute image URL; local uploads store relative paths.
+  const rawHeroImageUrl =
     guide.heroImage && typeof guide.heroImage === 'object' && 'url' in guide.heroImage
       ? guide.heroImage.url
       : null
+  const heroImageUrl = rawHeroImageUrl
+    ? rawHeroImageUrl.startsWith('http')
+      ? rawHeroImageUrl
+      : getServerSideURL() + rawHeroImageUrl
+    : null
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -82,7 +75,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
       />
 
       <PostHero
-        post={guide as PostHeroDoc}
+        post={guide}
         readTime={readTime}
         breadcrumbLabel="How-To Guides"
         breadcrumbHref="/how-to"
@@ -93,10 +86,10 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
           <RichText
             className="
               !max-w-[860px] mx-auto
-              [&_p]:body [&_p]:mb-7
+              [&_p]:body [&_p]:mb-7 [&_p]:max-w-[70ch]
               [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
               [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4
-              [&_blockquote]:editorial [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
+              [&_blockquote]:editorial [&_blockquote]:border-l [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
               [&_blockquote_p]:h3 [&_blockquote_p]:mb-0
               [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:body
               [&_a]:text-candera-ember-strong [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-candera-obsidian [&_a]:transition-colors
@@ -107,22 +100,7 @@ export default async function HowToPage({ params: paramsPromise }: Args) {
         </Container>
       </Section>
 
-      <aside className="bg-candera-obsidian grain" data-section="inner-circle-cta">
-        <Container className="py-20 md:py-28 flex flex-col items-center text-center gap-8">
-          <div className="flex items-center gap-4">
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-            <Eyebrow className="text-candera-ember">The Inner Circle</Eyebrow>
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-          </div>
-          <h2 className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
-            Be the first to know about new batches, scent notes, and studio moments.
-          </h2>
-          <Button asChild variant="cta-ember" size="cta" className="mt-2">
-            <Link href="/contact">Join the Circle</Link>
-          </Button>
-          <p className="caption text-candera-vellum/50 m-0">{NEWSLETTER_MICROCOPY}</p>
-        </Container>
-      </aside>
+      <InnerCircleStrip />
     </article>
   )
 }

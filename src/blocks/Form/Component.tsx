@@ -2,7 +2,7 @@
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,7 @@ import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Form } from '@/components/ui/form'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import { submitFormAction } from '@/app/actions/submitForm'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { TurnstileWidget } from '@/components/TurnstileWidget'
 
 import { fields } from './fields'
@@ -45,18 +45,19 @@ export const FormBlock: React.FC<
     register,
   } = formMethods
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>()
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
   const [honeypot, setHoneypot] = useState('')
   const router = useRouter()
+  const successRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (hasSubmitted) successRef.current?.focus()
+  }, [hasSubmitted])
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
       const submitForm = async () => {
-        setError(undefined)
-
         const dataToSend = Object.entries(data as unknown as Record<string, string>).map(
           ([name, value]) => ({
             field: name,
@@ -64,44 +65,17 @@ export const FormBlock: React.FC<
           }),
         )
 
-        setIsLoading(true)
+        const ok = await submit(formID, dataToSend, turnstileToken, honeypot)
 
-        try {
-          const result = await submitFormAction({
-            formId: Number(formID),
-            submissionData: dataToSend,
-            turnstileToken,
-            honeypot,
-          })
-
-          if (result?.validationErrors || result?.serverError) {
-            setIsLoading(false)
-            setError({
-              message: result.serverError || 'Validation failed.',
-              status: '400',
-            })
-            return
-          }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          if (confirmationType === 'redirect' && redirect) {
-            const { url } = redirect
-            if (url) router.push(url)
-          }
-        } catch (err) {
-          console.warn('[FormBlock] submission error:', err)
-          setIsLoading(false)
-          setError({
-            message: 'Something went wrong.',
-          })
+        if (ok && confirmationType === 'redirect' && redirect) {
+          const { url } = redirect
+          if (url) router.push(url)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, turnstileToken, honeypot],
+    [router, formID, redirect, confirmationType, submit, turnstileToken, honeypot],
   )
 
   return (
@@ -116,10 +90,17 @@ export const FormBlock: React.FC<
         />
       ) : null}
       <span className="block h-px bg-candera-stone/20 mb-16" aria-hidden="true" />
-      <Section padding="none" className="p-0">
+      <Section as="div" padding="none" className="p-0">
         <Form {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' ? (
-            <Section padding="none" className="py-12 text-center">
+            <Section
+              as="output"
+              ref={successRef}
+              padding="none"
+              className="block py-12 text-center outline-none focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-2 rounded-sm"
+              aria-live="polite"
+              tabIndex={-1}
+            >
               <RichText className="editorial" data={confirmationMessage} />
             </Section>
           ) : null}
@@ -130,12 +111,13 @@ export const FormBlock: React.FC<
           ) : null}
           {error ? (
             <Section
+              as="div"
               padding="none"
-              className="mb-8 p-4 bg-candera-rose/10 text-candera-rose text-sm font-medium"
+              className="mb-8 p-4 border border-candera-ember-strong/30 bg-candera-vellum text-candera-ember-strong text-sm font-medium"
               aria-live="polite"
               role="alert"
             >
-              {`${error.status || '500'}: ${error.message || ''}`}
+              {error}
             </Section>
           ) : null}
           {!hasSubmitted ? (
@@ -150,7 +132,7 @@ export const FormBlock: React.FC<
                 onChange={(event) => setHoneypot(event.target.value)}
               />
 
-              <Section padding="none" className="mb-10 last:mb-0">
+              <Section as="div" padding="none" className="mb-10 last:mb-0">
                 {formFromProps && formFromProps.fields
                   ? formFromProps.fields?.map((field, index) => {
                       const Field = fields?.[
@@ -158,7 +140,7 @@ export const FormBlock: React.FC<
                       ] as React.ElementType
                       if (Field) {
                         return (
-                          <Section padding="none" className="mb-8 last:mb-0" key={index}>
+                          <Section as="div" padding="none" className="mb-8 last:mb-0" key={index}>
                             <Field
                               form={formFromProps}
                               {...field}
@@ -182,6 +164,7 @@ export const FormBlock: React.FC<
               />
 
               <Button
+                aria-describedby={!turnstileToken ? `${formID}-verifying` : undefined}
                 disabled={isLoading || !turnstileToken}
                 form={String(formID)}
                 type="submit"
@@ -190,6 +173,11 @@ export const FormBlock: React.FC<
               >
                 {isLoading ? 'Sending…' : submitButtonLabel || 'Send Correspondence'}
               </Button>
+              {!turnstileToken ? (
+                <p id={`${formID}-verifying`} className="caption mt-3" aria-live="polite">
+                  Verifying you&rsquo;re human…
+                </p>
+              ) : null}
             </form>
           ) : null}
         </Form>

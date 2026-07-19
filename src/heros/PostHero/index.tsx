@@ -123,10 +123,12 @@ export const PostHero: React.FC<{
 
             {readTime && (
               <>
-                <span
-                  className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
-                  aria-hidden="true"
-                />
+                {(hasAuthors || publishedAt) && (
+                  <span
+                    className="w-[1px] h-3 bg-candera-vellum/20 hidden md:block"
+                    aria-hidden="true"
+                  />
+                )}
                 <span className="label text-candera-vellum/75">{readTime} min read</span>
               </>
             )}

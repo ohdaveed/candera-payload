@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { MinimalInput } from '@/components/ui/MinimalInput'
 import { MinimalTextarea } from '@/components/ui/MinimalTextarea'
@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { submitForm } from '@/app/actions/submitForm'
+import { useFormSubmission } from '@/hooks/useFormSubmission'
 import { EMAIL_PATTERN } from '@/constants/validation'
 import { TurnstileWidget } from '@/components/TurnstileWidget'
 
@@ -30,10 +30,9 @@ type Props = {
 }
 
 export const ContactForm: React.FC<Props> = ({ formId }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<string | undefined>()
+  const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
+  const successRef = useRef<HTMLOutputElement>(null)
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -49,50 +48,40 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
   const onSubmit = useCallback(
     (data: FormValues) => {
-      const submit = async () => {
-        setError(undefined)
-        setIsLoading(true)
-
-        try {
-          const result = await submitForm(
-            formId,
-            [
-              { field: 'full-name', value: data['full-name'] },
-              { field: 'email', value: data.email },
-              { field: 'phone', value: data.phone || '' },
-              { field: 'message', value: data.message },
-            ],
-            { turnstileToken, honeypot: data._gotcha },
-          )
-
-          setIsLoading(false)
-
-          if (!result.ok) {
-            setError(result.error)
-            return
-          }
-
-          setHasSubmitted(true)
-        } catch (err) {
-          console.error('[ContactForm] Server Action failed:', err)
-          setIsLoading(false)
-          setError('Something went wrong. Please try again.')
-        }
-      }
-
-      void submit()
+      void submit(
+        formId,
+        [
+          { field: 'full-name', value: data['full-name'] },
+          { field: 'email', value: data.email },
+          { field: 'phone', value: data.phone || '' },
+          { field: 'message', value: data.message },
+        ],
+        turnstileToken,
+        data._gotcha,
+      )
     },
-    [formId, turnstileToken],
+    [formId, submit, turnstileToken],
   )
+
+  useEffect(() => {
+    if (hasSubmitted) {
+      successRef.current?.focus()
+    }
+  }, [hasSubmitted])
 
   if (hasSubmitted) {
     return (
-      <div className="py-12 text-center">
+      <output
+        ref={successRef}
+        aria-live="polite"
+        tabIndex={-1}
+        className="block py-12 text-center outline-none focus-visible:ring-4 focus-visible:ring-candera-ember/50 focus-visible:ring-offset-2 rounded-sm"
+      >
         <p className="h3 mb-3 m-0">Your note has been received.</p>
         <p className="body text-candera-sage-text m-0 mt-2">
           We respond with intention — expect a reply within 48 hours.
         </p>
-      </div>
+      </output>
     )
   }
 
@@ -101,7 +90,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {error && (
           <div
-            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-ember-strong/5 text-candera-ember-strong text-sm font-medium"
+            className="mb-6 p-4 border border-candera-ember-strong/30 bg-candera-vellum text-candera-ember-strong text-sm font-medium"
             role="alert"
           >
             {error}
@@ -117,6 +106,14 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
           {...register('_gotcha')}
         />
 
+        <p className="caption text-candera-sage-text mb-6">
+          Fields marked{' '}
+          <span className="text-candera-ember" aria-hidden="true">
+            *
+          </span>{' '}
+          are required.
+        </p>
+
         <div className="flex flex-col gap-8">
           <FormField
             control={control}
@@ -131,7 +128,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <MinimalInput placeholder="Your name" autoComplete="name" {...field} />
+                  <MinimalInput
+                    placeholder="Your name"
+                    autoComplete="name"
+                    aria-required="true"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
@@ -158,6 +160,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                     placeholder="email@example.com"
                     autoComplete="email"
                     spellCheck={false}
+                    aria-required="true"
                     {...field}
                   />
                 </FormControl>
@@ -203,7 +206,12 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
                   </span>
                 </FormLabel>
                 <FormControl>
-                  <MinimalTextarea placeholder="How can we help?" rows={5} {...field} />
+                  <MinimalTextarea
+                    placeholder="How can we help?"
+                    rows={5}
+                    aria-required="true"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="mt-1.5 text-sm text-candera-ember-strong" />
               </FormItem>
@@ -218,9 +226,21 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
         />
 
         <div className="mt-8">
-          <SubmitButton disabled={isLoading || !turnstileToken}>
+          <SubmitButton
+            disabled={isLoading || !turnstileToken}
+            aria-describedby={!turnstileToken ? 'contact-turnstile-pending' : undefined}
+          >
             {isLoading ? 'Sending…' : 'Send Correspondence'}
           </SubmitButton>
+          {!turnstileToken && (
+            <p
+              id="contact-turnstile-pending"
+              className="caption text-candera-sage-text mt-3"
+              aria-live="polite"
+            >
+              Verifying you&rsquo;re human…
+            </p>
+          )}
         </div>
       </form>
     </Form>

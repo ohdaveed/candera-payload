@@ -18,8 +18,28 @@ export const Pagination: React.FC<{
   page: number
   totalPages: number
   basePath?: string
+  /**
+   * Extra query params (e.g. active filters/sort) to preserve across page links.
+   * When any value is set, links use `?{query}&page=N` on basePath instead of the
+   * path-based `{basePath}/page/N` routes, so filters survive pagination.
+   */
+  query?: Record<string, string | undefined>
 }> = (props) => {
-  const { className, page, totalPages, basePath = '/posts' } = props
+  const { className, page, totalPages, basePath = '/posts', query } = props
+  const queryEntries = Object.entries(query ?? {}).filter(
+    (entry): entry is [string, string] => typeof entry[1] === 'string' && entry[1] !== '',
+  )
+
+  const pageHref = (target: number): string => {
+    if (queryEntries.length === 0) {
+      // Page 1 lives at the base path itself; /page/1 only redirects there.
+      return target === 1 ? basePath : `${basePath}/page/${target}`
+    }
+    const params = new URLSearchParams(queryEntries)
+    if (target > 1) params.set('page', String(target))
+    return `${basePath}?${params.toString()}`
+  }
+
   const hasNextPage = page < totalPages
   const hasPrevPage = page > 1
 
@@ -32,7 +52,7 @@ export const Pagination: React.FC<{
         <PaginationContent>
           <PaginationItem>
             {hasPrevPage ? (
-              <PaginationPrevious href={`${basePath}/page/${page - 1}`} />
+              <PaginationPrevious href={pageHref(page - 1)} />
             ) : (
               <span
                 aria-disabled="true"
@@ -55,10 +75,7 @@ export const Pagination: React.FC<{
 
           {hasPrevPage && (
             <PaginationItem>
-              <PaginationLink
-                aria-label={`Go to page ${page - 1}`}
-                href={`${basePath}/page/${page - 1}`}
-              >
+              <PaginationLink aria-label={`Go to page ${page - 1}`} href={pageHref(page - 1)}>
                 {page - 1}
               </PaginationLink>
             </PaginationItem>
@@ -67,7 +84,7 @@ export const Pagination: React.FC<{
           <PaginationItem>
             <PaginationLink
               aria-label={`Current page, page ${page}`}
-              href={`${basePath}/page/${page}`}
+              href={pageHref(page)}
               isActive
             >
               {page}
@@ -76,10 +93,7 @@ export const Pagination: React.FC<{
 
           {hasNextPage && (
             <PaginationItem>
-              <PaginationLink
-                aria-label={`Go to page ${page + 1}`}
-                href={`${basePath}/page/${page + 1}`}
-              >
+              <PaginationLink aria-label={`Go to page ${page + 1}`} href={pageHref(page + 1)}>
                 {page + 1}
               </PaginationLink>
             </PaginationItem>
@@ -93,7 +107,7 @@ export const Pagination: React.FC<{
 
           <PaginationItem>
             {hasNextPage ? (
-              <PaginationNext href={`${basePath}/page/${page + 1}`} />
+              <PaginationNext href={pageHref(page + 1)} />
             ) : (
               <span
                 aria-disabled="true"

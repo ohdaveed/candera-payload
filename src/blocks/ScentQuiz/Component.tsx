@@ -124,13 +124,62 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
   const currentQuestion = questions[step]
   const progress = (step / Math.max(questions.length, 1)) * 100
+  const questionHeadingId = 'scent-quiz-question-heading'
+
+  // Roving tabIndex for the options radiogroup: only one option is Tab-focusable
+  // at a time, per the WAI-ARIA radio pattern. Arrow keys move focus only —
+  // selecting an option immediately advances to the next question (via
+  // handleOptionSelect), so activation stays on Enter/Space (native button
+  // click) rather than on arrow-key movement.
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([])
+  const [focusedOptionIndex, setFocusedOptionIndex] = useState(0)
+  useEffect(() => {
+    const selectedIdx = answers[step]
+    setFocusedOptionIndex(selectedIdx !== undefined ? selectedIdx : 0)
+  }, [step, answers])
+
+  const handleOptionKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>, optionCount: number) => {
+      let nextIndex: number | null = null
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        nextIndex = (focusedOptionIndex + 1) % optionCount
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        nextIndex = (focusedOptionIndex - 1 + optionCount) % optionCount
+      } else if (event.key === 'Home') {
+        nextIndex = 0
+      } else if (event.key === 'End') {
+        nextIndex = optionCount - 1
+      }
+      if (nextIndex !== null) {
+        event.preventDefault()
+        setFocusedOptionIndex(nextIndex)
+        optionRefs.current[nextIndex]?.focus()
+      }
+    },
+    [focusedOptionIndex],
+  )
 
   if (!quiz) return null
 
   return (
+    // Pinned (not ambient) mood: theme.css only defines --mood-* under
+    // html[data-section-mood=...], and this block's light-on-dark UI can't
+    // passively adapt to the light-editorial default the way Testimonials
+    // does. Setting the custom properties inline here guarantees a noir
+    // surface regardless of the page's ambient mood.
     <Section
+      data-section-mood="noir-contrast"
       padding="large"
-      className="relative w-full overflow-hidden min-h-[800px] flex items-center justify-center bg-candera-obsidian"
+      style={
+        {
+          '--mood-bg': '#141412',
+          '--mood-fg': '#f5f2ed',
+          '--mood-accent': '#b28c9c',
+          backgroundColor: 'var(--mood-bg, #141412)',
+          color: 'var(--mood-fg, #f5f2ed)',
+        } as React.CSSProperties
+      }
+      className="relative w-full overflow-y-auto md:overflow-hidden min-h-fit md:min-h-[800px] flex items-center justify-center"
     >
       {/* Ambient background when result is known */}
       <AnimatePresence>
@@ -159,8 +208,11 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
             className="text-center mb-16"
           >
             <Eyebrow className="text-candera-ember/80 mb-4">{quiz.title}</Eyebrow>
-            <output
-              aria-live="polite"
+            <div
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
               aria-label={`Question ${step + 1} of ${questions.length}`}
               className="relative w-full h-[1px] bg-candera-stone/20 mt-8 max-w-[300px] mx-auto overflow-hidden"
             >
@@ -174,7 +226,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     : { type: 'spring', stiffness: 50, damping: 20 }
                 }
               />
-            </output>
+            </div>
           </motion.div>
         )}
 
@@ -216,8 +268,8 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   }}
                 />
               </div>
-              <p className="font-display text-3xl text-candera-linen italic tracking-wide">
-                Synthesizing your ritual…
+              <p className="font-display text-3xl text-inherit italic tracking-wide">
+                Composing your ritual…
               </p>
             </motion.div>
           ) : !isEmailStep && currentQuestion ? (
@@ -229,7 +281,10 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center"
             >
-              <h2 className="font-display text-3xl md:text-5xl text-candera-linen italic text-center mb-8 leading-tight max-w-3xl">
+              <h2
+                id={questionHeadingId}
+                className="font-display text-3xl md:text-5xl text-inherit italic text-center mb-8 leading-tight max-w-3xl"
+              >
                 {currentQuestion.prompt}
               </h2>
               {step > 0 && (
@@ -246,23 +301,33 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     }
                     router.push(`${pathname}?${params.toString()}`, { scroll: false })
                   }}
-                  className="font-sans text-xs text-candera-linen/40 hover:text-candera-linen/70 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+                  className="font-sans text-xs text-inherit opacity-70 hover:opacity-100 uppercase tracking-[0.2em] transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
                 >
                   ← Back
                 </button>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+              <div
+                role="radiogroup"
+                aria-labelledby={questionHeadingId}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl"
+              >
                 {currentQuestion.options.map((option, i) => {
                   // Highlight the previously-selected answer when navigating back
                   const isSelected = answers[step] === i
                   return (
                     <button
                       key={i}
+                      ref={(el) => {
+                        optionRefs.current[i] = el
+                      }}
                       type="button"
                       onClick={() => handleOptionSelect(i)}
-                      aria-pressed={isSelected}
+                      onKeyDown={(e) => handleOptionKeyDown(e, currentQuestion.options.length)}
+                      role="radio"
+                      aria-checked={isSelected}
+                      tabIndex={i === focusedOptionIndex ? 0 : -1}
                       className={[
-                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-input overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian',
+                        'group relative flex flex-col items-start p-10 border text-left transition-all duration-500 rounded-input overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]',
                         isSelected
                           ? 'border-candera-ember/60 bg-white/[0.05]'
                           : 'border-candera-stone/10 bg-white/[0.01] hover:border-candera-ember-strong/50 hover:bg-white/[0.03]',
@@ -280,16 +345,14 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       )}
                       <div
                         className={[
-                          'absolute top-0 left-0 w-[1px] bg-candera-ember/60 transition-all duration-700 shadow-[0_0_15px_rgba(191,155,103,0.5)]',
+                          'absolute top-0 left-0 w-[1px] bg-candera-ember/60 transition-all duration-700',
                           isSelected ? 'h-full' : 'h-0 group-hover:h-full',
                         ].join(' ')}
                       />
                       <span
                         className={[
-                          'font-sans text-base leading-relaxed transition-colors duration-500 tracking-wide',
-                          isSelected
-                            ? 'text-candera-linen'
-                            : 'text-candera-linen/60 group-hover:text-candera-linen',
+                          'font-sans text-base leading-relaxed transition-colors duration-500 tracking-wide text-inherit',
+                          isSelected ? 'opacity-100' : 'opacity-60 group-hover:opacity-100',
                         ].join(' ')}
                       >
                         {option.label}
@@ -325,7 +388,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   visible: { opacity: 1, scale: 1 },
                 }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-6xl md:text-8xl text-candera-linen italic mb-10 leading-[0.9]"
+                className="font-display text-6xl md:text-8xl text-inherit italic mb-10 leading-[0.9]"
               >
                 {result.name}
               </motion.h3>
@@ -337,7 +400,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="editorial text-candera-linen/90 text-lg md:text-xl leading-relaxed mb-12 italic max-w-2xl mx-auto"
+                className="editorial text-candera-vellum/90 text-lg md:text-xl leading-relaxed mb-12 italic max-w-2xl mx-auto"
               >
                 &ldquo;{result.editorial}&rdquo;
               </motion.p>
@@ -354,7 +417,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                     </span>
                   </Tooltip>
                 </p>
-                <p className="font-sans text-base text-candera-linen/50 tracking-[0.2em] font-light">
+                <p className="font-sans text-base text-inherit opacity-70 tracking-[0.2em] font-light">
                   {result.notes}
                 </p>
               </motion.div>
@@ -363,7 +426,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
                 className="w-full max-w-xl"
               >
-                <p className="font-sans text-sm text-candera-linen/50 leading-relaxed mb-10 tracking-wide text-center">
+                <p className="font-sans text-sm text-inherit opacity-70 leading-relaxed mb-10 tracking-wide text-center">
                   Enter your email to receive your full scent profile and discover the candle that
                   matches your atmosphere.
                 </p>
@@ -390,7 +453,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       autoComplete="email"
                       aria-label="Email address"
                       spellCheck={false}
-                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-candera-linen placeholder:text-candera-linen/40 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian transition-all duration-700 rounded-none px-0"
+                      className="h-16 bg-transparent border-0 border-b border-candera-stone/50 text-inherit placeholder:text-candera-linen/70 text-center text-xl focus:border-candera-ember-strong focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)] transition-all duration-700 rounded-none px-0"
                       {...register('email', {
                         required: 'Email is required',
                         pattern: {
@@ -425,7 +488,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                       ? 'Sending Invitation…'
                       : submitError
                         ? 'Try Again'
-                        : 'Unlock My Profile'}
+                        : 'Reveal My Profile'}
                   </Button>
                   {submitError && (
                     <div className="flex flex-col items-center gap-4">
@@ -461,11 +524,11 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   )}
                 </form>
 
-                <p className="mt-6 text-[11px] text-candera-stone/40 text-center tracking-wide">
+                <p className="mt-6 text-[11px] text-candera-stone/70 text-center tracking-wide">
                   No spam &middot; Unsubscribe any time &middot;{' '}
                   <Link
                     href="/privacy-policy"
-                    className="underline underline-offset-2 hover:text-candera-vellum/60 transition-colors"
+                    className="underline underline-offset-2 hover:text-candera-vellum transition-colors"
                   >
                     Privacy Policy
                   </Link>
@@ -498,14 +561,14 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   visible: { opacity: 1, scale: 1 },
                 }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-5xl md:text-7xl text-candera-linen italic mb-6 leading-[0.9]"
+                className="font-display text-5xl md:text-7xl text-inherit italic mb-6 leading-[0.9]"
               >
                 {result.name}
               </motion.h3>
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                className="font-sans text-sm text-candera-linen/40 tracking-[0.2em] font-light mb-10"
+                className="font-sans text-sm text-candera-vellum/70 tracking-[0.2em] font-light mb-10"
               >
                 Your profile has been sent to{' '}
                 {submittedEmail ? submittedEmail.replace(/(?<=.).(?=[^@]*@)/g, '*') : ''}
@@ -520,7 +583,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   className="flex flex-col items-center gap-8 mt-4"
                 >
                   <div className="w-40 h-[1px] bg-candera-stone/20" />
-                  <p className="font-sans text-xs text-candera-linen/60 uppercase tracking-[0.3em] font-semibold">
+                  <p className="font-sans text-xs text-inherit opacity-60 uppercase tracking-[0.3em] font-semibold">
                     Your matched candle
                   </p>
                   <Button
@@ -543,7 +606,7 @@ const ScentQuizInner: React.FC<InnerProps> = ({ quiz: quizData, formId }) => {
                   router.push(`${pathname}?${params.toString()}`, { scroll: false })
                 }}
                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                className="font-sans text-xs text-candera-linen/30 hover:text-candera-linen/60 uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+                className="font-sans text-xs text-candera-vellum/70 hover:text-candera-vellum uppercase tracking-[0.2em] mt-12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mood-bg,_#141412)]"
               >
                 Retake the Quiz
               </motion.button>
@@ -560,8 +623,15 @@ export const ScentQuizBlock: React.FC<ScentQuizBlockType> = (props) => (
   <Suspense
     fallback={
       <Section
+        data-section-mood="noir-contrast"
         padding="large"
-        className="relative w-full min-h-[800px] flex items-center justify-center bg-candera-obsidian"
+        style={
+          {
+            '--mood-bg': '#141412',
+            backgroundColor: 'var(--mood-bg, #141412)',
+          } as React.CSSProperties
+        }
+        className="relative w-full overflow-y-auto md:overflow-hidden min-h-fit md:min-h-[800px] flex items-center justify-center"
       />
     }
   >

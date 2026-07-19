@@ -22,9 +22,10 @@ type UseFormSubmission = {
 }
 
 /**
- * Shared submit flow for the storefront's direct-fetch forms (Inner Circle
- * email capture, Scent Quiz email step). Encapsulates the isLoading/hasSubmitted/
- * error state, invoking the submitFormAction server action, and handling errors.
+ * Shared submit flow for every storefront form (Contact form, form-builder
+ * block, Inner Circle email capture, Scent Quiz email step). Encapsulates the
+ * isLoading/hasSubmitted/error state, invoking the submitFormAction server
+ * action, and handling errors.
  */
 export function useFormSubmission(): UseFormSubmission {
   const [isLoading, setIsLoading] = useState(false)

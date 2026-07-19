@@ -42,6 +42,7 @@ import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
 import { BRAND } from './constants/brand'
+import { aiGenerationPlugin } from './utilities/withAIGeneration'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -162,6 +163,10 @@ export default buildConfig({
           }),
         ]
       : []),
+    // Last so it sees collections added by earlier plugins (e.g. the form
+    // builder's Forms). Adds the "Generate with AI" control to every eligible
+    // text/textarea field; see withAIGeneration.ts for the exclusions.
+    aiGenerationPlugin,
   ],
   globals: [Header, Footer, SiteTheme, StudioInfo, LoginTheme],
   secret: process.env.PAYLOAD_SECRET,

@@ -88,9 +88,7 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                   size="cta"
                   className="w-full justify-center px-4 tracking-[0.1em] sm:w-auto sm:px-10 sm:tracking-[.3em]"
                 >
-                  <SmoothScrollLink targetId="collection">
-                    {stripTrailingArrow(primaryCtaLabel)}
-                  </SmoothScrollLink>
+                  <Link href="/products">{stripTrailingArrow(primaryCtaLabel)}</Link>
                 </Button>
                 <Link
                   href="/posts"
@@ -103,11 +101,11 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
           </header>
 
           {/* Right — Maker Ethos card: brand authority anchor that foreshadows
-              the Journal. Glassmorphic over the dark hero imagery. */}
+              the Journal. Opaque flat card over the dark hero imagery. */}
           {showStatusCard && (
             <div className="md:col-span-4 w-full flex justify-end">
-              <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm border border-border text-card-foreground shadow-card">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-card-foreground/55 uppercase m-0">
+              <aside className="bg-card p-6 rounded-card w-full sm:max-w-sm text-card-foreground shadow-card">
+                <p className="font-mono text-xs tracking-[0.2em] text-card-foreground/55 uppercase m-0">
                   {ethosCardEyebrow || 'The Slow Pour'}
                 </p>
 
@@ -117,12 +115,12 @@ export const StorefrontHeroBlock: React.FC<Props> = ({
                 </p>
 
                 <div className="pt-4 mt-4 border-t border-card-foreground/10 flex items-center justify-between gap-4">
-                  <span className="font-mono text-[10px] tracking-[0.12em] text-card-foreground/45 uppercase">
+                  <span className="font-mono text-xs tracking-[0.12em] text-card-foreground/45 uppercase">
                     {ethosCardFooterLabel || 'Exclusively on Etsy'}
                   </span>
                   <SmoothScrollLink
                     targetId="journal"
-                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-card-foreground hover:text-card-foreground/60 transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1 text-xs tracking-[0.18em] uppercase text-card-foreground hover:text-card-foreground/60 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
                   >
                     {ethosCardLinkLabel || 'Read Journal'}
                     <span aria-hidden="true">↓</span>

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-06-14T00:00:00.000Z",
+  "generatedAt": "2026-07-17T00:00:00.000Z",
   "title": "Design System: Candera — Botanical Scent Studio",
   "extensions": {
     "colorMeta": {
@@ -294,6 +294,11 @@
         "name": "The Grounded-by-Default Rule",
         "body": "Surfaces are at rest. Shadows appear as responses to state. No floating elements at rest.",
         "section": "elevation"
+      },
+      {
+        "name": "The Mood-Fallback Rule",
+        "body": "Any component consuming --mood-fg (or -bg / -accent) must pair it with a literal color fallback — var(--mood-fg, #141412), never a bare var(--mood-fg). light-editorial's --mood-fg: inherit can resolve to an invalid value depending on ancestor context.",
+        "section": "colors"
       }
     ],
     "dos": [
@@ -317,7 +322,8 @@
       "Don't use numbered section markers (01 / 02 / 03) as default scaffolding.",
       "Don't use border-radius greater than 2px on cards, inputs, or sections.",
       "Don't pair border + box-shadow with blur ≥ 16px on the same element.",
-      "Don't use repeating-linear-gradient stripe backgrounds or sketchy SVG illustrations."
+      "Don't use repeating-linear-gradient stripe backgrounds or sketchy SVG illustrations.",
+      "Don't use arbitrary font sizes that fall between documented type-ramp steps, e.g. text-[1.85rem]. Normalize to the nearest ramp step instead — title (1.953rem) covers this range."
     ]
   }
 }

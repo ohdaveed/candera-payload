@@ -7,25 +7,27 @@ import { z } from 'zod'
 import { actionClient } from '@/lib/safe-action'
 import { verifyTurnstileToken } from '@/utilities/turnstile'
 import { checkFormRateLimit, getClientIpFromHeaders } from '@/utilities/formRateLimit'
-import {
-  MAX_FIELDS,
-  MAX_VALUE_LENGTH,
-  validateAndSanitizeSubmission,
-} from '@/utilities/formValidation'
+import { validateAndSanitizeSubmission } from '@/utilities/formValidation'
 
 const HONEYPOT_FIELD = '_gotcha'
 
+/**
+ * Shape-only input schema. Field-level limits (row count, name/value length)
+ * are enforced by validateAndSanitizeSubmission inside the action — the single
+ * validation boundary for every storefront submission path (all client forms
+ * go through the useFormSubmission hook, which invokes this action).
+ *
+ * Defense-in-depth for non-action writes (e.g. trusted server-side creates)
+ * remains in the form-submissions beforeValidate hook (validateSubmission).
+ */
 const submitFormSchema = z.object({
   formId: z.number().int().positive({ message: 'Invalid form.' }),
-  submissionData: z
-    .array(
-      z.object({
-        field: z.string(),
-        value: z.string().max(MAX_VALUE_LENGTH, { message: 'A field is too long.' }),
-      }),
-    )
-    .min(1, { message: 'No submission data.' })
-    .max(MAX_FIELDS, { message: 'Too many fields.' }),
+  submissionData: z.array(
+    z.object({
+      field: z.string(),
+      value: z.string(),
+    }),
+  ),
   turnstileToken: z.string().optional(),
   honeypot: z.string().optional(),
 })
@@ -39,9 +41,16 @@ export const submitFormAction = actionClient
       throw new Error('Submission rejected.')
     }
 
+    // Single validation boundary: throws user-facing messages (surfaced to
+    // clients via serverError) and returns the sanitized rows to persist.
+    // Runs before the rate-limit check so invalid payloads don't consume quota.
+    const sanitizedData = validateAndSanitizeSubmission(
+      submissionData.filter((row) => row.field !== HONEYPOT_FIELD),
+    )
+
     const requestHeaders = await headers()
     const clientIp = getClientIpFromHeaders(requestHeaders)
-    if (!checkFormRateLimit(clientIp)) {
+    if (!(await checkFormRateLimit(clientIp))) {
       throw new Error('Too many submissions. Please wait a moment and try again.')
     }
 
@@ -60,46 +69,10 @@ export const submitFormAction = actionClient
       collection: 'form-submissions',
       data: {
         form: formId,
-        submissionData: submissionData.filter((row) => row.field !== HONEYPOT_FIELD),
+        submissionData: sanitizedData,
       },
       overrideAccess: true,
     })
 
     return { success: true, submissionId: submission.id }
   })
-
-export async function submitForm(
-  formId: number,
-  submissionData: { field: string; value: string }[],
-  options?: { turnstileToken?: string; honeypot?: string },
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!Number.isInteger(formId) || formId <= 0) {
-    return { ok: false, error: 'Invalid form.' }
-  }
-
-  try {
-    validateAndSanitizeSubmission(submissionData)
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Validation failed.'
-    return { ok: false, error: message }
-  }
-
-  try {
-    const result = await submitFormAction({
-      formId,
-      submissionData,
-      turnstileToken: options?.turnstileToken,
-      honeypot: options?.honeypot,
-    })
-    if (result?.validationErrors) {
-      return { ok: false, error: 'Validation failed.' }
-    }
-    if (result?.serverError) {
-      return { ok: false, error: result.serverError }
-    }
-    return { ok: true }
-  } catch (err) {
-    console.error('[submitForm] submission failed:', err)
-    return { ok: false, error: 'Something went wrong.' }
-  }
-}

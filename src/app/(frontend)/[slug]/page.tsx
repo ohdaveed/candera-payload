@@ -15,6 +15,8 @@ import { ETSY_SHOP_URL } from '@/lib/etsy'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { BRAND } from '@/constants/brand'
+import { Container } from '@/components/ui/container'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 type Args = {
   params: Promise<{
@@ -47,6 +49,8 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const isHome = decodedSlug === 'home'
   const serverUrl = getServerSideURL()
+  const studioInfo = isHome ? await getCachedGlobal('studio-info')() : null
+  const locationTagline = studioInfo?.locationTagline || BRAND.locationTagline
   const siteSchema = isHome
     ? [
         {
@@ -55,8 +59,7 @@ export default async function Page({ params: paramsPromise }: Args) {
           name: 'Candera',
           url: serverUrl,
           logo: `${serverUrl}/favicon.svg`,
-          description:
-            'Hand-poured botanical candles, artisan-crafted in California for intentional living.',
+          description: `Hand-poured botanical candles — ${locationTagline}, for intentional living.`,
           sameAs: [ETSY_SHOP_URL, BRAND.instagramUrl],
         },
         {
@@ -94,10 +97,9 @@ export default async function Page({ params: paramsPromise }: Args) {
       <RenderHero {...hero} />
 
       <div>
-        <span
-          className="block h-px max-w-[1280px] mx-auto bg-candera-stone/20"
-          aria-hidden="true"
-        />
+        <Container>
+          <span className="block h-px w-full bg-candera-stone/20" aria-hidden="true" />
+        </Container>
         <RenderBlocks blocks={layout} />
       </div>
     </div>

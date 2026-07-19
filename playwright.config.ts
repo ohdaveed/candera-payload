@@ -6,30 +6,9 @@ import { defineConfig, devices } from '@playwright/test'
  */
 import 'dotenv/config'
 
-// Guard: fail fast if E2E tests would start with unresolved pass:// refs.
-const PASSCLI_GUARD_KEYS = [
-  'DATABASE_URI',
-  'PAYLOAD_SECRET',
-  'DATABASE_URL',
-  'CRON_SECRET',
-  'PREVIEW_SECRET',
-  'BLOB_READ_WRITE_TOKEN',
-  'VERCEL_OIDC_TOKEN',
-  'ETSY_API_KEY',
-  'ETSY_SHARED_SECRET',
-]
+import { assertNoUnresolvedPassRefs } from './tests/helpers/passGuard'
 
-for (const key of PASSCLI_GUARD_KEYS) {
-  if (process.env[key]?.startsWith('pass://')) {
-    throw new Error(
-      'Unresolved pass:// URI detected in ' +
-        key +
-        '.\n' +
-        'E2E tests require pass-cli to resolve secrets.\n' +
-        'Run: pass-cli run --env-file .env -- pnpm test:e2e',
-    )
-  }
-}
+assertNoUnresolvedPassRefs('E2E tests', 'pass-cli run --env-file .env -- pnpm test:e2e')
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -56,12 +35,16 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+      // Locally, prefer the system Chrome channel; on CI runners (no system
+      // Chrome installed) fall back to Playwright's bundled Chromium.
+      use: { ...devices['Desktop Chrome'], ...(process.env.CI ? {} : { channel: 'chrome' }) },
     },
   ],
   webServer: {
     command: 'pnpm next dev',
-    reuseExistingServer: true,
+    // Reusing a server is a dev convenience; on CI it risks testing a stale
+    // process, so always start fresh there.
+    reuseExistingServer: !process.env.CI,
     url: 'http://localhost:3000',
   },
 })

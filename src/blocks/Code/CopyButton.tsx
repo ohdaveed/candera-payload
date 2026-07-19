@@ -16,18 +16,27 @@ export function CopyButton({ code }: { code: string }) {
   }
 
   return (
-    <div className="flex justify-end align-middle">
-      <Button
-        className="flex gap-1"
-        variant={'secondary'}
-        onClick={async () => {
+    <Button
+      className="absolute top-2 right-2 flex gap-1 rounded-none"
+      size="sm"
+      variant="cta-ghost-dark"
+      onClick={async () => {
+        try {
           await navigator.clipboard.writeText(code)
           updateCopyStatus()
-        }}
-      >
-        <p>{text}</p>
-        <CopyIcon />
-      </Button>
-    </div>
+        } catch {
+          setText('Copy failed')
+          setTimeout(() => {
+            setText('Copy')
+          }, 1500)
+        }
+      }}
+    >
+      <output aria-live="polite" className="sr-only">
+        {text}
+      </output>
+      <p aria-hidden="true">{text}</p>
+      <CopyIcon />
+    </Button>
   )
 }

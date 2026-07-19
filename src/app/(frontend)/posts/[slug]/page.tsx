@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { Button } from '@/components/ui/button'
-import { Eyebrow } from '@/components/ui/eyebrow'
+import { InnerCircleStrip } from '@/components/InnerCircleStrip'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import configPromise from '@payload-config'
@@ -11,13 +10,13 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { cache } from 'react'
 import RichText from '@/components/RichText'
-import Link from 'next/link'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { calculateReadTime } from '@/utilities/readTime'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { NEWSLETTER_MICROCOPY } from '@/constants/innerCircle'
+import { getServerSideURL } from '@/utilities/getURL'
 
 type Args = {
   params: Promise<{
@@ -34,8 +33,42 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
-  const wordCount = post.content ? JSON.stringify(post.content).split(/\s+/).length : 0
-  const readTime = Math.max(1, Math.round(wordCount / 200))
+  const readTime = calculateReadTime(post.content)
+
+  // Schema.org requires an absolute image URL; local uploads store relative paths.
+  const rawHeroImageUrl =
+    post.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
+      ? post.heroImage.url
+      : null
+  const heroImageUrl = rawHeroImageUrl
+    ? rawHeroImageUrl.startsWith('http')
+      ? rawHeroImageUrl
+      : getServerSideURL() + rawHeroImageUrl
+    : null
+
+  const authors = (post.populatedAuthors ?? [])
+    .map((author) => author?.name)
+    .filter((name): name is string => Boolean(name))
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.meta?.description ?? '',
+    datePublished: post.publishedAt ?? post.createdAt,
+    dateModified: post.updatedAt,
+    ...(authors.length > 0 ? { author: authors.map((name) => ({ '@type': 'Person', name })) } : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: 'Candera Candles',
+      url: getServerSideURL(),
+    },
+    ...(heroImageUrl ? { image: [heroImageUrl] } : {}),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${getServerSideURL()}/posts/${decodedSlug}`,
+    },
+  }
 
   return (
     <article className="bg-candera-vellum min-h-screen" data-page="post-detail">
@@ -43,19 +76,31 @@ export default async function Post({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+      />
+
       {/* Hero — back link + title + byline integrated */}
       <PostHero post={post} readTime={readTime} />
 
       {/* Article body */}
       <Section padding="medium" data-section="article-body">
         <Container>
+          {/*
+            Heading order: PostHero renders the page's single h1. CMS-authored body content
+            must stay within h2/h3 — the styles below promote h2/h3 tags directly to .h2/.h3
+            visual classes with no structural guard against editors inserting h1 or skipping
+            to h4+. Editors should not add h1 in body copy, and h2 should precede h3 in
+            document order.
+          */}
           <RichText
             className="
               !max-w-[860px] mx-auto
-              [&_p]:body [&_p]:mb-7
+              [&_p]:body [&_p]:mb-7 [&_p]:max-w-[70ch]
               [&_h2]:h2 [&_h2]:mt-16 [&_h2]:mb-6
               [&_h3]:h3 [&_h3]:mt-12 [&_h3]:mb-4
-              [&_blockquote]:editorial [&_blockquote]:border-l-2 [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
+              [&_blockquote]:editorial [&_blockquote]:border-l [&_blockquote]:border-candera-ember-strong [&_blockquote]:pl-8 [&_blockquote]:my-12 [&_blockquote]:mx-0
               [&_blockquote_p]:h3 [&_blockquote_p]:mb-0
               [&_ul]:list-none [&_ul]:pl-0 [&_ul_li]:flex [&_ul_li]:gap-3 [&_ul_li]:mb-3 [&_ul_li]:body
               [&_a]:text-candera-ember-strong [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-candera-obsidian [&_a]:transition-colors
@@ -66,28 +111,7 @@ export default async function Post({ params: paramsPromise }: Args) {
         </Container>
       </Section>
 
-      {/* Inner Circle CTA — full-bleed editorial dark strip */}
-      <aside className="bg-candera-obsidian grain" data-section="inner-circle-cta">
-        <Container className="py-20 md:py-28 flex flex-col items-center text-center gap-8">
-          {/* Eyebrow with flanking rules */}
-          <div className="flex items-center gap-4">
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-            <Eyebrow className="text-candera-ember">The Inner Circle</Eyebrow>
-            <span className="w-10 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-          </div>
-
-          {/* Headline */}
-          <h2 className="h2 text-candera-vellum leading-[1.15] max-w-[36rem] m-0">
-            Be the first to know about new batches, scent notes, and studio moments.
-          </h2>
-
-          <Button asChild variant="cta-ember" size="cta" className="mt-2">
-            <Link href="/contact">Join the Circle</Link>
-          </Button>
-
-          <p className="caption text-candera-vellum/50 m-0">{NEWSLETTER_MICROCOPY}</p>
-        </Container>
-      </aside>
+      <InnerCircleStrip />
 
       {/* Related posts */}
       {post.relatedPosts && post.relatedPosts.length > 0 && (
@@ -98,10 +122,7 @@ export default async function Post({ params: paramsPromise }: Args) {
               <span className="block w-12 h-px bg-candera-stone/25 mt-3" aria-hidden="true" />
             </div>
 
-            <RelatedPosts
-              className="max-w-[1280px] mx-auto"
-              docs={post.relatedPosts.filter((p) => typeof p === 'object')}
-            />
+            <RelatedPosts docs={post.relatedPosts.filter((p) => typeof p === 'object')} />
           </Container>
         </Section>
       )}

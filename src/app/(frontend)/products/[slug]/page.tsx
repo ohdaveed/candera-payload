@@ -182,7 +182,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
 
             {/* Customization note */}
             {product.isCustomizable && (
-              <aside className="flex flex-col gap-1 rounded-sm border border-candera-ember-strong/25 bg-candera-ember/[0.06] p-4">
+              <aside className="flex flex-col gap-1 rounded-card border border-candera-ember-strong/25 bg-candera-ember/[0.06] p-4">
                 <p className="eyebrow text-candera-obsidian">
                   {product.customizationLabel || 'Personalization Available'}
                 </p>
@@ -205,9 +205,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Fragrance Profile — featured prominently, not hidden in an accordion */}
             {showFragrance && (
               <Section padding="none" className="flex flex-col" data-section="fragrance">
-                <Eyebrow className="text-candera-sage-text tracking-[.28em]">
-                  Fragrance Profile
-                </Eyebrow>
+                <h2 className="h4 text-candera-obsidian">Fragrance Profile</h2>
                 <FragranceProfile
                   profile={product.scentProfile}
                   burnTime={product.burnTime}
@@ -219,7 +217,7 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
             {/* Editorial story — given prime space with generous line height */}
             {product.description && (
               <Section padding="none" className="flex flex-col gap-4" data-section="editorial">
-                <Eyebrow className="text-candera-sage-text tracking-[.28em]">The Story</Eyebrow>
+                <h2 className="h4 text-candera-obsidian">The Story</h2>
                 <RichText
                   data={product.description}
                   enableGutter={false}

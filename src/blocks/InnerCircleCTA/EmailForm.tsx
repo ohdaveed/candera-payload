@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useFormSubmission } from '@/hooks/useFormSubmission'
@@ -16,6 +16,11 @@ type Props = {
 export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
   const { isLoading, hasSubmitted, error, submit } = useFormSubmission()
   const [turnstileToken, setTurnstileToken] = useState<string | undefined>()
+  const successRef = useRef<HTMLOutputElement>(null)
+
+  useEffect(() => {
+    if (hasSubmitted) successRef.current?.focus()
+  }, [hasSubmitted])
 
   const {
     register,
@@ -32,11 +37,16 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
 
   if (hasSubmitted) {
     return (
-      <div className="flex flex-col gap-8">
+      <output
+        ref={successRef}
+        aria-live="polite"
+        tabIndex={-1}
+        className="flex flex-col gap-8 outline-none rounded-sm focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-candera-obsidian"
+      >
         <p className="font-sans text-sm text-candera-vellum m-0">
           You&apos;re in. We&apos;ll be in touch before the next batch.
         </p>
-      </div>
+      </output>
     )
   }
 
@@ -52,7 +62,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           {...register('_gotcha')}
         />
 
-        <div className="flex flex-col sm:flex-row sm:items-center border border-candera-stone/50 bg-candera-obsidian/40 p-1 focus-within:border-candera-vellum transition-all duration-300">
+        <div className="flex flex-col sm:flex-row sm:items-center border border-candera-stone/50 bg-candera-vellum/5 p-1 focus-within:border-candera-vellum transition-all duration-300">
           <input
             id="ic-email"
             type="email"
@@ -69,11 +79,13 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
           <button
             type="submit"
             disabled={isLoading || !turnstileToken}
-            aria-label={isLoading ? 'Submitting…' : 'Join the Circle'}
+            aria-label={
+              isLoading ? 'Submitting…' : !turnstileToken ? 'Verifying…' : 'Join the Circle'
+            }
             aria-busy={isLoading}
-            className={`w-full sm:w-auto text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
+            className={`w-full sm:w-auto text-xs font-bold uppercase tracking-widest py-3 px-8 bg-candera-vellum text-candera-obsidian hover:bg-candera-ember hover:text-candera-obsidian transition-all focus-visible:outline-1 focus-visible:outline-candera-ember focus-visible:ring-4 focus-visible:ring-candera-ember/50 ${isLoading || !turnstileToken ? 'cursor-not-allowed opacity-60' : 'cursor-pointer opacity-100'}`}
           >
-            {isLoading ? '…' : 'Join the Circle'}
+            {isLoading ? '…' : !turnstileToken ? 'Verifying…' : 'Join the Circle'}
           </button>
         </div>
         {errors.email && (
@@ -94,7 +106,7 @@ export const InnerCircleEmailForm: React.FC<Props> = ({ formId }) => {
         />
       </form>
 
-      <p className="font-sans text-xs m-0 text-candera-stone/50 px-4">
+      <p className="font-sans text-xs m-0 text-candera-stone/80 px-4">
         Early access · Studio notes · No spam · Unsubscribe any time ·{' '}
         <Link
           href="/privacy-policy"

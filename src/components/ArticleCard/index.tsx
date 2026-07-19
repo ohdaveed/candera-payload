@@ -25,11 +25,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => (
   <Link href={`${pathPrefix}/${slug}`} className="block group">
     <article className="flex flex-col h-full">
-      <div className="relative w-full overflow-hidden bg-candera-ash aspect-[4/3]">
+      <div className="relative w-full overflow-hidden bg-candera-ash aspect-[3/2]">
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={imageAlt || ''}
+            alt={imageAlt || title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-1000 group-hover:scale-105 motion-reduce:transition-none"
@@ -60,7 +60,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           </div>
         )}
 
-        <h3 className="font-display text-lg font-normal not-italic leading-[1.2] text-candera-obsidian m-0 mb-0.5 group-hover:text-candera-ember-strong transition-colors">
+        <h3 className="font-display text-lg font-normal italic leading-[1.2] text-balance text-candera-obsidian m-0 mb-0.5 group-hover:text-candera-ember-strong transition-colors">
           {title}
         </h3>
 
@@ -72,7 +72,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 
         <div className="mt-auto pt-6">
           <span className="text-sm font-bold uppercase tracking-[.2em] text-candera-sage-text border-b border-candera-sage-text/40 pb-px group-hover:text-candera-ember-strong group-hover:border-candera-ember-strong transition-colors">
-            Read →
+            Read <span aria-hidden="true">→</span>
           </span>
         </div>
       </div>

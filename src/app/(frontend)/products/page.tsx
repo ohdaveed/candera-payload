@@ -2,38 +2,27 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { notFound } from 'next/navigation'
 import { Pagination } from '@/components/Pagination'
+import { activeProductSort, resolveProductSort } from '@/lib/productSort'
 import { EditorialPageHero } from '@/components/EditorialPageHero'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { ProductFilters } from './ProductFilters'
-import { ProductGrid } from './ProductGrid'
-import type { Product } from '@/payload-types'
-import type { CardPostData } from '@/components/Card'
+import { ProductGrid } from '@/components/ProductGrid'
+import { toGridProduct } from '@/components/Card/toGridProduct'
+import { assertPageInRange } from '@/utilities/listing'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { InnerCircleCTABlock } from '@/blocks/InnerCircleCTA/Component'
 
+// Filtered/sorted/paginated query variants all canonicalize to the plain
+// collection page, so the query-string URLs never compete with /products
+// or /products/page/N in search indexes.
 export const metadata: Metadata = {
   title: 'Collection — Candera',
   description:
-    'Hand-poured botanical candles. Each piece is hand-labeled and inspected for peak botanical clarity.',
-}
-
-function toGridProduct(product: Product): CardPostData {
-  return {
-    id: product.id,
-    slug: product.slug,
-    title: product.title,
-    tagline: product.tagline,
-    extraPhotos: product.extraPhotos,
-    etsyPrimaryImage: product.etsyPrimaryImage,
-    scentProfile: product.scentProfile,
-    price: product.price,
-    currency: product.currency,
-    categories: product.categories?.map((cat) =>
-      typeof cat === 'object' && cat !== null ? { title: cat.title } : cat,
-    ),
-  }
+    'Hand-poured botanical candles, each one embedded with real pressed flowers — no two pieces alike.',
+  alternates: { canonical: '/products' },
 }
 
 export default async function ProductsPage({
@@ -43,7 +32,13 @@ export default async function ProductsPage({
 }) {
   const { tag, sort, page } = await searchParams
 
-  const sortField = sort === 'price-asc' ? 'price' : sort === 'price-desc' ? '-price' : '-createdAt'
+  const pageNumber = page ? Number(page) : 1
+  if (!Number.isInteger(pageNumber) || pageNumber < 1) notFound()
+
+  // Repeated query params arrive as arrays at runtime — only a plain string is
+  // a valid tag filter (an array passed to Payload's `equals` throws a 500).
+  const activeTag = typeof tag === 'string' && tag !== 'All' ? tag : null
+  const activeSort = activeProductSort(sort)
 
   const payload = await getPayload({ config: configPromise })
   const products = await payload.find({
@@ -51,14 +46,14 @@ export default async function ProductsPage({
     depth: 1,
     limit: 12,
     overrideAccess: false,
-    page: page ? parseInt(page) : 1,
-    sort: sortField,
-    ...(tag && tag !== 'All' ? { where: { productTag: { equals: tag } } } : {}),
+    page: pageNumber,
+    sort: resolveProductSort(sort),
+    ...(activeTag ? { where: { productTag: { equals: activeTag } } } : {}),
   })
 
-  const activeTag = tag && tag !== 'All' ? tag : null
+  assertPageInRange(pageNumber, products.totalPages)
   const resultLabel = activeTag
-    ? `${products.totalDocs} results for '${activeTag}'`
+    ? `${products.totalDocs} pieces tagged ‘${activeTag}’`
     : `${products.totalDocs} pieces in the collection`
 
   return (
@@ -79,7 +74,7 @@ export default async function ProductsPage({
           <ProductFilters />
 
           {/* Result count — sage-text on vellum = 5.2:1 ✅ */}
-          <p className="eyebrow text-candera-sage-text mb-8">{resultLabel}</p>
+          <p className="caption text-candera-sage-text mb-8">{resultLabel}</p>
 
           {products.docs.length > 0 ? (
             <ProductGrid products={products.docs.map(toGridProduct)} />
@@ -87,7 +82,7 @@ export default async function ProductsPage({
             <output aria-live="polite" className="col-span-full py-24 text-center block">
               {activeTag ? (
                 <>
-                  <p className="text-lg text-candera-obsidian mb-2">
+                  <p className="h3 text-candera-obsidian mb-2">
                     No products found for &quot;{activeTag}&quot;.
                   </p>
                   <p className="text-sm text-candera-sage-text">
@@ -101,9 +96,7 @@ export default async function ProductsPage({
                 </>
               ) : (
                 <>
-                  <p className="text-lg text-candera-obsidian mb-2">
-                    The next batch is still curing.
-                  </p>
+                  <p className="h3 text-candera-obsidian mb-2">The next batch is still curing.</p>
                   <p className="text-sm text-candera-sage-text">
                     Join the Inner Circle below and we&apos;ll tell you the moment it&apos;s ready.
                   </p>
@@ -114,10 +107,13 @@ export default async function ProductsPage({
 
           {products.docs.length > 0 && products.totalPages > 1 && products.page && (
             <div className="mt-16">
+              {/* With active filters/sort, paginate via query string so they survive;
+                  otherwise use the cached /products/page/N routes. */}
               <Pagination
                 basePath="/products"
                 page={products.page}
                 totalPages={products.totalPages}
+                query={{ tag: activeTag ?? undefined, sort: activeSort ?? undefined }}
               />
             </div>
           )}

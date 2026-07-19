@@ -28,7 +28,9 @@ export async function GET(req: NextRequest): Promise<Response> {
     return new Response('Insufficient search params', { status: 404 })
   }
 
-  if (!path.startsWith('/')) {
+  // Require a single-slash local path: '//host' and '/\host' are scheme-relative
+  // URLs that redirect() would send off-origin (open redirect).
+  if (!path.startsWith('/') || path.startsWith('//') || path.startsWith('/\\')) {
     return new Response('This endpoint can only be used for relative previews', { status: 500 })
   }
 

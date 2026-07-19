@@ -13,12 +13,13 @@ export function ProductCardSkeleton({ className }: { className?: string }) {
           </div>
           <Skeleton className="h-5 w-12 bg-candera-ash shrink-0 mt-4" />
         </div>
-        <div className="mt-auto pt-4 border-t border-candera-stone/20 px-4">
-          <Skeleton className="h-3 w-24 bg-candera-ash mb-4" />
-          <div className="grid grid-cols-3 gap-2 pb-4">
-            <Skeleton className="h-8 w-full bg-candera-ash" />
-            <Skeleton className="h-8 w-full bg-candera-ash" />
-            <Skeleton className="h-8 w-full bg-candera-ash" />
+        <div className="mt-auto pt-4 pb-4 border-t border-candera-stone/20 px-4">
+          {/* Mirrors the classic card's inline "Scent" label + pill row */}
+          <div className="flex items-center gap-1.5">
+            <Skeleton className="h-3 w-10 bg-candera-ash shrink-0" />
+            <Skeleton className="h-5 w-16 bg-candera-ash" />
+            <Skeleton className="h-5 w-16 bg-candera-ash" />
+            <Skeleton className="h-5 w-14 bg-candera-ash" />
           </div>
         </div>
       </div>

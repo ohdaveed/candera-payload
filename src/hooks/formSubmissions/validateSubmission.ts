@@ -11,7 +11,7 @@ const HONEYPOT_FIELD = '_gotcha'
  * Public REST `create` is disabled in the form-builder plugin override; this hook
  * still guards any trusted server-side writes and legacy paths.
  */
-export const validateSubmission: CollectionBeforeValidateHook = ({ data, req }) => {
+export const validateSubmission: CollectionBeforeValidateHook = async ({ data, req }) => {
   if (!data) return data
 
   const submissionData = data.submissionData
@@ -29,7 +29,7 @@ export const validateSubmission: CollectionBeforeValidateHook = ({ data, req }) 
 
   if (req?.headers) {
     const clientIp = getClientIpFromHeaders(req.headers as Headers)
-    if (!checkFormRateLimit(clientIp)) {
+    if (!(await checkFormRateLimit(clientIp))) {
       throw new ValidationError({
         errors: [
           {

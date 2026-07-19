@@ -352,17 +352,17 @@ export const Card: React.FC<CardProps> = (props) => {
               Scent
             </span>
             {scentProfile?.top && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+              <span className="text-xs text-candera-obsidian bg-candera-vellum rounded-[2px] px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.top}
               </span>
             )}
             {scentProfile?.heart && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+              <span className="text-xs text-candera-obsidian bg-candera-vellum rounded-[2px] px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.heart}
               </span>
             )}
             {scentProfile?.base && (
-              <span className="text-xs text-candera-sage-text bg-candera-vellum px-2 py-0.5 whitespace-nowrap">
+              <span className="text-xs text-candera-obsidian bg-candera-vellum rounded-[2px] px-2 py-0.5 whitespace-nowrap">
                 {scentProfile.base}
               </span>
             )}

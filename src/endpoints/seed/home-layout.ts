@@ -127,11 +127,6 @@ export function buildHomePage(args: BuildHomeArgs = {}): RequiredDataFromCollect
       ethosCardBody: ETHOS_CARD_BODY,
       ethosCardFooterLabel: ETHOS_CARD_FOOTER_LABEL,
       ethosCardLinkLabel: ETHOS_CARD_LINK_LABEL,
-      statusCardTitle: 'Current Pour',
-      statusCardSubtitle: 'Series 01 · Batch of 50',
-      statusCardStatus: 'Now Pouring',
-      statusCardShips: 'Ships in 3–5 days',
-      statusCardLinkUrl: '/products/seashell-garden-glow',
     },
     // Lead with the object: the photography showcase sits directly under the hero.
     ...vesselsBlock,

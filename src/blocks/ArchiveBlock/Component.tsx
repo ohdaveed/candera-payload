@@ -122,9 +122,11 @@ export const ArchiveBlock: React.FC<
             {empty.cta && (
               <Link
                 href={empty.cta.href}
-                className="mt-1 text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian border-b border-candera-obsidian/40 pb-px transition-colors hover:text-candera-ember-strong hover:border-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
+                className="group mt-1 inline-flex min-h-11 w-fit items-center text-xs font-bold uppercase tracking-[.2em] text-candera-obsidian transition-colors hover:text-candera-ember-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember focus-visible:ring-offset-2 rounded-sm"
               >
-                {empty.cta.label} →
+                <span className="border-b border-candera-obsidian/40 pb-px transition-colors group-hover:border-candera-ember-strong">
+                  {empty.cta.label} →
+                </span>
               </Link>
             )}
           </div>
@@ -137,27 +139,21 @@ export const ArchiveBlock: React.FC<
     <Section id={`block-${id}`} padding="none" className="my-16 md:my-24">
       {isPosts ? (
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-12">
-            {/* Left — sticky editorial sidebar */}
-            <div className="md:col-span-1">
-              <div className="sticky top-24 flex flex-col gap-4">
-                {serializedIntroContent && (
-                  <RichText
-                    className="ms-0
-                      [&_h3]:h2 [&_h3]:mb-4
-                      [&_p]:editorial [&_p]:text-candera-sage-text"
-                    data={serializedIntroContent}
-                    enableGutter={false}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Right — 3-column card grid */}
-            <div className="md:col-span-3">
-              <CollectionArchive posts={data as CardPostData[]} relationTo="posts" hideSidebar />
-            </div>
-          </div>
+          <CollectionArchive
+            posts={data as CardPostData[]}
+            relationTo="posts"
+            sidebarContent={
+              serializedIntroContent ? (
+                <RichText
+                  className="ms-0
+                    [&_h3]:h2 [&_h3]:mb-4
+                    [&_p]:editorial [&_p]:text-candera-sage-text"
+                  data={serializedIntroContent}
+                  enableGutter={false}
+                />
+              ) : undefined
+            }
+          />
         </Container>
       ) : (
         <Container>

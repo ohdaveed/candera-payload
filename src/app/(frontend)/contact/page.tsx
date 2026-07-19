@@ -8,6 +8,7 @@ import { Container } from '@/components/ui/container'
 import { SetHeaderTheme } from '@/components/SetHeaderTheme'
 import { BRAND } from '@/constants/brand'
 import { FORM_TITLES } from '@/constants/forms'
+import { payloadLogger } from '@/utilities/logger'
 
 import { cacheLife } from 'next/cache'
 
@@ -25,7 +26,15 @@ export default async function ContactPage() {
     getCachedFormByTitle(FORM_TITLES.CONTACT)(),
     getCachedGlobal('studio-info')(),
   ])
-  const contactFormId = contactForm?.id ?? 0
+  // If the Contact form doc is missing (unseeded environment), don't render a
+  // form wired to a bogus id that fails validation on submit — degrade to the
+  // email contact details, which remain fully functional.
+  const contactFormId = contactForm?.id ?? null
+  if (contactFormId === null) {
+    payloadLogger.error(
+      `Contact form "${FORM_TITLES.CONTACT}" not found — rendering contact page without the form. Seed the forms collection.`,
+    )
+  }
 
   const email = studioInfo?.email || BRAND.email
   const instagramHandle = studioInfo?.instagramHandle || BRAND.instagramHandle
@@ -93,6 +102,7 @@ export default async function ContactPage() {
                       className="body hover:text-candera-ember-strong transition-colors"
                     >
                       {instagramHandle}
+                      <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </dd>
                 </div>
@@ -108,7 +118,7 @@ export default async function ContactPage() {
               {/* Footer note */}
               <div className="flex items-center gap-4 mt-auto pt-4">
                 <span className="w-6 h-[1px] bg-candera-ember-strong" aria-hidden="true" />
-                <span className="eyebrow">{locationTagline}</span>
+                <span className="caption">{locationTagline}</span>
               </div>
             </div>
 
@@ -119,7 +129,20 @@ export default async function ContactPage() {
                 <span className="block w-8 h-[2px] bg-candera-ember-strong" aria-hidden="true" />
               </div>
 
-              <ContactForm formId={contactFormId} />
+              {contactFormId !== null ? (
+                <ContactForm formId={contactFormId} />
+              ) : (
+                <p className="editorial">
+                  Our contact form is briefly unavailable — email us directly at{' '}
+                  <a
+                    href={`mailto:${email}`}
+                    className="underline underline-offset-2 hover:text-candera-ember-strong transition-colors"
+                  >
+                    {email}
+                  </a>{' '}
+                  and we&apos;ll reply within 48 hours.
+                </p>
+              )}
             </div>
           </div>
         </Container>
