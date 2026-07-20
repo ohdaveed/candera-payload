@@ -22,7 +22,8 @@ import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
 const MAX_CONTEXT_ENTRIES = 30
 const MAX_CONTEXT_VALUE_LENGTH = 400
 // Never feed credential-ish or machine-managed values to the model.
-const SENSITIVE_KEY_PATTERN = /token|secret|password|key|email|url|href|slug|id$/i
+const SENSITIVE_KEY_PATTERN = /token|secret|password|key|email|url|href|slug/i
+const ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
 
 function labelToString(label: unknown, fallback: string): string {
   if (typeof label === 'string' && label.length > 0) return label
@@ -42,7 +43,12 @@ function collectContext(data: unknown, excludePath: string): Record<string, stri
 
     if (typeof value === 'string' || typeof value === 'number') {
       const text = String(value).trim()
-      if (text.length > 0 && path !== excludePath && !SENSITIVE_KEY_PATTERN.test(path)) {
+      if (
+        text.length > 0 &&
+        path !== excludePath &&
+        !SENSITIVE_KEY_PATTERN.test(path) &&
+        !ID_SUFFIX_PATTERN.test(path)
+      ) {
         context[path.slice(0, 200)] = text.slice(0, MAX_CONTEXT_VALUE_LENGTH)
       }
       return
@@ -145,14 +151,14 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   }
 
   return (
-    <div style={{ marginTop: '0.25rem', fontSize: 'var(--text-xs)' }}>
+    <div style={{ marginTop: '0.25rem', fontSize: 'var(--theme-font-size-xs)' }}>
       <button
         type="button"
         onClick={handleGenerate}
         disabled={loading}
         style={{
           padding: '0.15rem 0.5rem',
-          fontSize: 'var(--text-xs)',
+          fontSize: 'var(--theme-font-size-xs)',
           borderRadius: '4px',
           border: '1px solid var(--theme-elevation-150)',
           background: 'var(--theme-elevation-50)',
@@ -175,7 +181,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontSize: 'var(--text-xs)',
+              fontSize: 'var(--theme-font-size-xs)',
               color: 'inherit',
               padding: 0,
             }}
@@ -206,7 +212,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               onClick={applySuggestion}
               style={{
                 padding: '0.15rem 0.5rem',
-                fontSize: 'var(--text-xs)',
+                fontSize: 'var(--theme-font-size-xs)',
                 borderRadius: '4px',
                 border: '1px solid var(--theme-elevation-150)',
                 background: 'var(--theme-elevation-100)',
@@ -220,7 +226,7 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
               onClick={() => setSuggestion(null)}
               style={{
                 padding: '0.15rem 0.5rem',
-                fontSize: 'var(--text-xs)',
+                fontSize: 'var(--theme-font-size-xs)',
                 borderRadius: '4px',
                 border: '1px solid var(--theme-elevation-150)',
                 background: 'transparent',
