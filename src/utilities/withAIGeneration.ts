@@ -1,4 +1,5 @@
 import type { CollectionConfig, Field, GlobalConfig, Plugin, Tab } from 'payload'
+import { AI_SENSITIVE_NAME_PATTERN, AI_ID_SUFFIX_PATTERN } from '@/lib/ai/field-copy'
 
 /**
  * Config transform that appends a "Generate with AI" `afterInput` control
@@ -15,14 +16,27 @@ import type { CollectionConfig, Field, GlobalConfig, Plugin, Tab } from 'payload
 const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
 const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
 
-// Field names where AI-generated prose is nonsensical or dangerous.
-const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename/i
-// ID endings only (`id`, `ID`, `foo_id`, `fooId`) — deliberately case-sensitive on
-// the second alternative so words that merely end in "id" (orchid, liquid,
-// hybrid) stay eligible.
-const ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
+// Exact-name skips: the substring pattern below would false-positive on
+// unrelated words (e.g. "alternateTitle"), so these get an exact match.
+// `alt` (Media): the client only sends textual form context, never the
+// image itself — AI generation here produces plausible-but-fabricated
+// descriptions, which is actively harmful for screen-reader users.
+const EXACT_SKIP_NAMES = new Set(['alt'])
 
-function isEligible(field: Extract<Field, { type: 'text' | 'textarea' }>): boolean {
+// Superset of EXACT_SKIP_NAMES applied only to fields nested inside a
+// `blocks`-type field (see the `blocks` case in mapFields). The form builder
+// plugin's `forms` collection defines each form field as a block with a
+// `name` subfield that's the stable submission key — overwriting it breaks
+// the form or orphans existing submissions. No other block schema in this
+// app uses `name` for display copy, so this is scoped to nested block
+// fields only; `forms`' own top-level fields (submitButtonLabel,
+// confirmationMessage) are untouched and stay AI-eligible.
+const EXACT_SKIP_NAMES_IN_BLOCKS = new Set([...EXACT_SKIP_NAMES, 'name'])
+
+function isEligible(
+  field: Extract<Field, { type: 'text' | 'textarea' }>,
+  exactSkipNames: Set<string>,
+): boolean {
   if (field.hidden || field.virtual) return false
   if (field.admin?.hidden || field.admin?.readOnly || field.admin?.disabled) return false
   // Don't clobber fields that already provide a custom component (e.g. the
@@ -31,14 +45,18 @@ function isEligible(field: Extract<Field, { type: 'text' | 'textarea' }>): boole
   // `hasMany` text fields hold string arrays — the single-value generator
   // doesn't apply.
   if (field.type === 'text' && field.hasMany) return false
-  return !SKIP_NAME_PATTERN.test(field.name) && !ID_SUFFIX_PATTERN.test(field.name)
+  return (
+    !exactSkipNames.has(field.name) &&
+    !AI_SENSITIVE_NAME_PATTERN.test(field.name) &&
+    !AI_ID_SUFFIX_PATTERN.test(field.name)
+  )
 }
 
-function mapFields(fields: Field[]): Field[] {
+function mapFields(fields: Field[], exactSkipNames: Set<string> = EXACT_SKIP_NAMES): Field[] {
   return fields.map((field): Field => {
     switch (field.type) {
       case 'text':
-        if (!isEligible(field)) return field
+        if (!isEligible(field, exactSkipNames)) return field
         return {
           ...field,
           admin: {
@@ -50,7 +68,7 @@ function mapFields(fields: Field[]): Field[] {
           },
         }
       case 'textarea':
-        if (!isEligible(field)) return field
+        if (!isEligible(field, exactSkipNames)) return field
         return {
           ...field,
           admin: {
@@ -65,11 +83,14 @@ function mapFields(fields: Field[]): Field[] {
       case 'array':
       case 'row':
       case 'collapsible':
-        return { ...field, fields: mapFields(field.fields) }
+        return { ...field, fields: mapFields(field.fields, exactSkipNames) }
       case 'tabs':
         return {
           ...field,
-          tabs: field.tabs.map((tab): Tab => ({ ...tab, fields: mapFields(tab.fields) })),
+          tabs: field.tabs.map((tab): Tab => ({
+            ...tab,
+            fields: mapFields(tab.fields, exactSkipNames),
+          })),
         }
       case 'blocks':
         // Configs using `blockReferences` have no inline `blocks` array — leave those as-is.
@@ -78,7 +99,7 @@ function mapFields(fields: Field[]): Field[] {
           ...field,
           blocks: field.blocks.map((block) => ({
             ...block,
-            fields: mapFields(block.fields),
+            fields: mapFields(block.fields, EXACT_SKIP_NAMES_IN_BLOCKS),
           })),
         }
       default:

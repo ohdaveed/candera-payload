@@ -13,6 +13,17 @@ export const FIELD_COPY_SYSTEM_PROMPT =
 
 const MAX_CONTEXT_ENTRIES = 40
 
+// Field names where AI-generated prose is nonsensical, dangerous, or could
+// leak sensitive values into another field's prompt context. Shared by
+// withAIGeneration.ts (field eligibility) and AIGenerateTextField.tsx
+// (context filtering) so the two lists can't drift apart.
+export const AI_SENSITIVE_NAME_PATTERN =
+  /token|secret|password|key|email|phone|url|href|slug|filename/i
+// ID endings only (`id`, `ID`, `foo_id`, `fooId`) — deliberately case-sensitive
+// on the second alternative so words that merely end in "id" (orchid, liquid,
+// hybrid) stay eligible.
+export const AI_ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
+
 export const fieldCopyInputSchema = z.object({
   fieldLabel: z.string().min(1).max(200),
   fieldName: z.string().min(1).max(200),

@@ -8,7 +8,12 @@ import type {
   TextareaFieldClientProps,
 } from 'payload'
 import { useDocumentInfo, useField, useForm } from '@payloadcms/ui'
-import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
+import {
+  AI_ID_SUFFIX_PATTERN,
+  AI_SENSITIVE_NAME_PATTERN,
+  type FieldCopyInput,
+  type FieldCopyOutput,
+} from '@/lib/ai/field-copy'
 
 /**
  * `afterInput` controls that add a small "Generate with AI" button beneath the
@@ -21,9 +26,7 @@ import type { FieldCopyInput, FieldCopyOutput } from '@/lib/ai/field-copy'
 
 const MAX_CONTEXT_ENTRIES = 30
 const MAX_CONTEXT_VALUE_LENGTH = 400
-// Never feed credential-ish or machine-managed values to the model.
-const SENSITIVE_KEY_PATTERN = /token|secret|password|key|email|url|href|slug/i
-const ID_SUFFIX_PATTERN = /(^|_)[iI][dD]$|I[Dd]$/
+const MAX_DESCRIPTION_LENGTH = 500 // matches fieldCopyInputSchema.fieldDescription
 
 function labelToString(label: unknown, fallback: string): string {
   if (typeof label === 'string' && label.length > 0) return label
@@ -46,8 +49,8 @@ function collectContext(data: unknown, excludePath: string): Record<string, stri
       if (
         text.length > 0 &&
         path !== excludePath &&
-        !SENSITIVE_KEY_PATTERN.test(path) &&
-        !ID_SUFFIX_PATTERN.test(path)
+        !AI_SENSITIVE_NAME_PATTERN.test(path) &&
+        !AI_ID_SUFFIX_PATTERN.test(path)
       ) {
         context[path.slice(0, 200)] = text.slice(0, MAX_CONTEXT_VALUE_LENGTH)
       }
@@ -98,7 +101,9 @@ function AIGenerateControls({ path, field, variant }: AIControlsProps) {
   const name = typeof field.name === 'string' && field.name ? field.name : path
   const fieldLabel = labelToString(field.label, name)
   const description =
-    typeof field.admin?.description === 'string' ? field.admin.description : undefined
+    typeof field.admin?.description === 'string'
+      ? field.admin.description.slice(0, MAX_DESCRIPTION_LENGTH)
+      : undefined
   const maxLength = typeof field.maxLength === 'number' ? field.maxLength : undefined
 
   async function handleGenerate() {

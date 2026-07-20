@@ -6,10 +6,18 @@ import {
   fieldCopyInputSchema,
   fieldCopyOutputSchema,
 } from '@/lib/ai/field-copy'
+import { InMemoryRateLimiter, type RateLimiter } from '@/utilities/formRateLimit'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
 export const maxDuration = 30
+
+// Per-instance sliding window — see formRateLimit.ts's LIMITATION note (state
+// isn't shared across serverless instances, so this blunts naive loops from a
+// single warm instance rather than acting as durable bot mitigation). Typed
+// as the RateLimiter interface (not the concrete class) so a future
+// async/durable implementation is a drop-in swap.
+const aiGenerateLimiter: RateLimiter = new InMemoryRateLimiter(60_000, 10)
 
 export async function POST(req: Request): Promise<Response> {
   const payload = await getPayload({ config })
@@ -18,6 +26,14 @@ export async function POST(req: Request): Promise<Response> {
 
   if (!user) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const allowed = await aiGenerateLimiter.check(`ai-generate-field:${user.id}`)
+  if (!allowed) {
+    return Response.json(
+      { error: 'Too many generation requests. Please wait a moment and try again.' },
+      { status: 429 },
+    )
   }
 
   let body: unknown
@@ -42,10 +58,13 @@ export async function POST(req: Request): Promise<Response> {
       schema: fieldCopyOutputSchema,
     })
 
+    // `text` fields hold a single line — the prompt says so, but the model
+    // occasionally ignores that instruction, so normalize rather than trust it.
+    const normalized =
+      input.variant === 'text' ? object.suggestion.replace(/\r\n|\r|\n/g, ' ') : object.suggestion
+
     // The model occasionally ignores character limits — trim rather than fail.
-    const suggestion = input.maxLength
-      ? object.suggestion.slice(0, input.maxLength)
-      : object.suggestion
+    const suggestion = input.maxLength ? normalized.slice(0, input.maxLength) : normalized
 
     return Response.json({ suggestion })
   } catch (err) {
