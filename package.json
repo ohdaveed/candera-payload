@@ -77,7 +77,7 @@
     "@react-email/components": "^1.0.12",
     "@sentry/nextjs": "^10.62.0",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/blob": "^2.5.0",
+    "@vercel/blob": "^2.6.1",
     "@vercel/speed-insights": "^2.0.0",
     "ai": "^6.0.211",
     "class-variance-authority": "^0.7.1",
