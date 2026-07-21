@@ -4,6 +4,7 @@ import { slugField } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 
+import { generatePreviewPath } from '../utilities/generatePreviewPath'
 import { productRevalidateHooks } from '../utilities/revalidate'
 import { PRODUCT_TAGS } from '../lib/productTags'
 
@@ -29,6 +30,12 @@ export const Products: CollectionConfig = {
     group: 'Commerce',
     description:
       'Candle listings synced from Etsy, with storefront-only fields layered on top. Rendered at /products and /products/[slug].',
+    livePreview: {
+      url: ({ data, req }) =>
+        generatePreviewPath({ slug: data?.slug, collection: 'products', req }),
+    },
+    preview: (data, { req }) =>
+      generatePreviewPath({ slug: data?.slug as string, collection: 'products', req }),
   },
   hooks: {
     afterChange: [productRevalidateHooks.afterChange],
