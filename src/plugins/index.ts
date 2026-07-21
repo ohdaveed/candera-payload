@@ -199,6 +199,7 @@ export const plugins: Plugin[] = [
       'how-to-guides': { enabled: true },
       redirects: { enabled: true },
       forms: { enabled: true },
+      events: { enabled: true },
     },
     globals: {
       header: { enabled: { find: true, update: false } },
