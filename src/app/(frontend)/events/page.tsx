@@ -14,11 +14,11 @@ import { cacheLife } from 'next/cache'
 
 function formatDateRange(eventDate: string, eventEndDate?: string | null): string {
   const start = new Date(eventDate)
-  const startLabel = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  const startLabel = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
   if (!eventEndDate) return startLabel
   const end = new Date(eventEndDate)
-  const endLabel = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  return `${startLabel} – ${endLabel}`
+  const endLabel = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  return startLabel + ' – ' + endLabel
 }
 
 export default async function Page() {
