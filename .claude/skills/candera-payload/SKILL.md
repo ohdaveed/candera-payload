@@ -1,98 +1,44 @@
-```markdown
+---
+name: candera-payload
+description: Coding conventions and patterns specific to the candera-payload repo (file naming, exports, test patterns, commit style, schema-change checklist). Use when writing or reviewing code in this repository, alongside the root CLAUDE.md.
+metadata:
+  origin: project
+---
+
 # candera-payload Development Patterns
 
-> Auto-generated skill from repository analysis
+This skill captures repo-specific patterns that complement (not duplicate) the root `CLAUDE.md`. Read `CLAUDE.md` first for architecture, toolchain, and env vars.
 
-## Overview
-This skill teaches the core development patterns and conventions used in the `candera-payload` TypeScript codebase. You will learn how to structure files, write imports and exports, follow commit message standards, and implement and run tests. This guide is ideal for onboarding new contributors or maintaining consistency across the project.
+## File naming
 
-## Coding Conventions
+- Payload collections: **PascalCase** (`src/collections/Products.ts`, `src/collections/HowToGuides.ts`).
+- Utilities, hooks, lib code: **camelCase** (`src/hooks/populateAuthors.ts`, `src/lib/formatPrice.ts`).
+- Next.js route segments: **kebab-case**, per App Router convention (`src/app/(frontend)/next/ai/generate-field/route.ts`).
 
-### File Naming
-- Use **camelCase** for all file names.
-  - Example: `dataLoader.ts`, `userProfile.test.ts`
+## Imports
 
-### Imports
-- Use **alias imports** to reference modules.
-  - Example:
-    ```typescript
-    import { fetchData as getData } from './apiClient';
-    ```
+- Alias imports: `@/` for `src/*`, `@payload-config` for `src/payload.config.ts` — see `tsconfig.json` paths.
 
-### Exports
-- Use **named exports** for all modules.
-  - Example:
-    ```typescript
-    // Good
-    export function processPayload() { ... }
-    export const PAYLOAD_VERSION = '1.0.0';
+## Exports
 
-    // Avoid default exports
-    // export default function processPayload() { ... }
-    ```
+- Collections, globals, blocks, and utility modules: **named exports** (`export const Products: CollectionConfig = {...}`).
+- Next.js special files (`page.tsx`, `layout.tsx`, `route.ts`) **require default exports** — that's a framework constraint, not a style violation. Don't "fix" them to named exports.
 
-### Commit Messages
-- Follow **Conventional Commits** with prefixes:
-  - `chore`: For maintenance, tooling, or non-feature changes.
-  - `feat`: For new features.
-- Average commit message length: ~48 characters.
-  - Example:
-    ```
-    feat: add payload validation logic
-    chore: update dependencies
-    ```
+## Testing
 
-## Workflows
+- Test files are suffixed `*.spec.ts` (lightweight) or `*.int.spec.ts` (integration, needs a DB connection) under `tests/int/` — **not** `*.test.*`.
+- E2E specs live in `tests/e2e/` (Playwright).
+- Run via `vp test` (everything), or targeted: `pnpm test:int`, `pnpm test:e2e`.
+- Integration specs need real secrets via `pass-cli run --env-file .env --`, or inline `KEY=test` values for DB-free specs that only need the process to boot (see existing `Bash(...)` entries in `.claude/settings.local.json` for the pattern).
 
-### Code Contribution
-**Trigger:** When adding new features or making changes  
-**Command:** `/contribute`
+## Commit messages
 
-1. Create a new branch from `main`.
-2. Make changes following coding conventions.
-3. Write or update tests in `*.test.*` files.
-4. Commit using a conventional commit message (`feat:` or `chore:`).
-5. Push your branch and open a Pull Request.
+- Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`). Feature branches off `main`.
 
-### Testing
-**Trigger:** Before pushing or merging changes  
-**Command:** `/test`
+## Schema changes
 
-1. Identify test files matching `*.test.*` pattern.
-2. Run the project's test command (framework not specified; refer to project scripts).
-3. Ensure all tests pass before merging.
+- Every field/collection change needs **both** `pnpm generate:types` and `pnpm payload migrate:create`, committed together.
 
-### Code Review
-**Trigger:** Reviewing a Pull Request  
-**Command:** `/review`
+## MCP access
 
-1. Check for adherence to coding conventions (file naming, imports/exports).
-2. Verify commit messages follow conventional patterns.
-3. Ensure new/updated code is covered by tests.
-4. Approve or request changes.
-
-## Testing Patterns
-
-- Test files are named with the pattern `*.test.*` (e.g., `payloadProcessor.test.ts`).
-- The testing framework is not specified; check project documentation or scripts for details.
-- Place tests alongside the code they test or in a dedicated `tests` directory.
-- Example test file:
-  ```typescript
-  import { processPayload } from './processPayload';
-
-  describe('processPayload', () => {
-    it('should return valid output for input', () => {
-      const input = { ... };
-      const result = processPayload(input);
-      expect(result).toEqual({ ... });
-    });
-  });
-  ```
-
-## Commands
-| Command      | Purpose                                      |
-|--------------|----------------------------------------------|
-| /contribute  | Start the code contribution workflow         |
-| /test        | Run all tests in the repository              |
-| /review      | Begin code review and convention checks      |
-```
+- `.mcp.json` (repo root) registers the live Payload MCP server (`POST /api/mcp`). Once `PAYLOAD_MCP_API_KEY` is set locally (`pnpm create-mcp-key`), prefer its tools over ad hoc Local API scripts for reading/writing Products, Posts, Pages, Forms, etc.
