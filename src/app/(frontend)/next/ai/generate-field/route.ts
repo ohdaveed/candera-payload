@@ -29,12 +29,7 @@ export async function POST(req: Request): Promise<Response> {
   // runtime-only, hence the structural read) — those must stay confined to
   // the MCP endpoint's own allowlist.
   const strategy = (user as null | { _strategy?: string })?._strategy
-  if (
-    !user ||
-    user.collection !== 'users' ||
-    strategy === 'mcp-api-key' ||
-    !userIsAdmin(user)
-  ) {
+  if (!user || user.collection !== 'users' || strategy === 'mcp-api-key' || !userIsAdmin(user)) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -67,10 +62,13 @@ export async function POST(req: Request): Promise<Response> {
       schema: fieldCopyOutputSchema,
     })
 
+    // `text` fields hold a single line — the prompt says so, but the model
+    // occasionally ignores that instruction, so normalize rather than trust it.
+    const normalized =
+      input.variant === 'text' ? object.suggestion.replace(/\r\n|\r|\n/g, ' ') : object.suggestion
+
     // The model occasionally ignores character limits — trim rather than fail.
-    const suggestion = input.maxLength
-      ? object.suggestion.slice(0, input.maxLength)
-      : object.suggestion
+    const suggestion = input.maxLength ? normalized.slice(0, input.maxLength) : normalized
 
     return Response.json({ suggestion })
   } catch (err) {
