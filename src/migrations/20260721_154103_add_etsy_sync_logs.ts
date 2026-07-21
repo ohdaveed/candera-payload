@@ -47,11 +47,11 @@ export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs
   DROP TABLE "etsy_sync_logs" CASCADE;
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_etsy_sync_logs_fk";
   
-  DROP INDEX "payload_locked_documents_rels_etsy_sync_logs_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_etsy_sync_logs_id_idx";
   ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_find";
   ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_create";
   ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_update";
   ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_delete";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "etsy_sync_logs_id";
-  DROP TYPE "public"."enum_etsy_sync_logs_trigger";`)
+  DROP TYPE IF EXISTS "public"."enum_etsy_sync_logs_trigger";`)
 }

@@ -24,12 +24,16 @@ function userIsAdmin(user: unknown): boolean {
 }
 
 async function fetchRecentSyncLogs(): Promise<EtsySyncLog[]> {
-  const res = await fetch('/api/etsy-sync-logs?limit=5&sort=-createdAt&depth=0', {
-    credentials: 'include',
-  })
-  if (!res.ok) return []
-  const data = (await res.json()) as { docs?: EtsySyncLog[] }
-  return data.docs ?? []
+  try {
+    const res = await fetch('/api/etsy-sync-logs?limit=5&sort=-createdAt&depth=0', {
+      credentials: 'include',
+    })
+    if (!res.ok) return []
+    const data = (await res.json()) as { docs?: EtsySyncLog[] }
+    return data.docs ?? []
+  } catch {
+    return []
+  }
 }
 
 export function EtsyIntegrationPanel() {
