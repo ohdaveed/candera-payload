@@ -81,6 +81,7 @@ export interface Config {
     'scent-profiles': ScentProfile;
     documentation: Documentation;
     'how-to-guides': HowToGuide;
+    events: Event;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -112,6 +113,7 @@ export interface Config {
     'scent-profiles': ScentProfilesSelect<false> | ScentProfilesSelect<true>;
     documentation: DocumentationSelect<false> | DocumentationSelect<true>;
     'how-to-guides': HowToGuidesSelect<false> | HowToGuidesSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1239,6 +1241,49 @@ export interface HowToGuide {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  venueName: string;
+  /**
+   * Start date.
+   */
+  eventDate: string;
+  /**
+   * Only set for multi-day events.
+   */
+  eventEndDate?: string | null;
+  /**
+   * e.g. "12PM – 5PM"
+   */
+  timeRange: string;
+  address: string;
+  city: string;
+  /**
+   * Google Maps link, optional.
+   */
+  mapUrl?: string | null;
+  blurb: string;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1771,6 +1816,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'how-to-guides';
         value: number | HowToGuide;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2406,6 +2455,32 @@ export interface HowToGuidesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  venueName?: T;
+  eventDate?: T;
+  eventEndDate?: T;
+  timeRange?: T;
+  address?: T;
+  city?: T;
+  mapUrl?: T;
+  blurb?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -2936,7 +3011,8 @@ export interface SiteTheme {
     | 'ink-orchid'
     | 'lavender-noir'
     | 'porcelain-pop'
-    | 'default';
+    | 'default'
+    | 'botanical-lavender';
   fontSet: 'default' | 'dm-sans';
   /**
    * Controls the hero section layout on the homepage
@@ -3170,6 +3246,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'how-to-guides';
           value: number | HowToGuide;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

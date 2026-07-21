@@ -41,6 +41,7 @@ import { Quizzes } from './collections/Quizzes'
 import { ScentProfiles } from './collections/ScentProfiles'
 import { Documentation } from './collections/Documentation'
 import { HowToGuides } from './collections/HowToGuides'
+import { Events } from './collections/Events'
 import { BRAND } from './constants/brand'
 import { aiGenerationPlugin } from './utilities/withAIGeneration'
 
@@ -141,6 +142,7 @@ export default buildConfig({
     ScentProfiles,
     Documentation,
     HowToGuides,
+    Events,
   ],
   cors: corsOrigins,
   plugins: [
