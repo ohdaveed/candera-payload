@@ -27,6 +27,8 @@ export const Products: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'productType', 'etsyListingId', 'updatedAt'],
     group: 'Commerce',
+    description:
+      'Candle listings synced from Etsy, with storefront-only fields layered on top. Rendered at /products and /products/[slug].',
   },
   hooks: {
     afterChange: [productRevalidateHooks.afterChange],

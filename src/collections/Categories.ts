@@ -15,6 +15,8 @@ export const Categories: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Commerce',
+    description:
+      'Taxonomy used to group and filter Posts and Products. No page of its own — browse by category from an archive.',
   },
   fields: [
     {

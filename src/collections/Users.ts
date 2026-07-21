@@ -16,6 +16,7 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email', 'roles', 'status', 'updatedAt'],
     useAsTitle: 'name',
     group: 'System',
+    description: 'Admin panel accounts. Controls who can log in and edit content here.',
   },
   auth: true,
   hooks: {

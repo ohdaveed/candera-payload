@@ -44,6 +44,8 @@ export const Pages: CollectionConfig<'pages'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     group: 'Content',
+    description:
+      'Static site pages such as About and FAQ, built from content blocks. Rendered at /[slug].',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({

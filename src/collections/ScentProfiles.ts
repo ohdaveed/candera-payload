@@ -14,6 +14,8 @@ export const ScentProfiles: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'updatedAt'],
     group: 'Quiz',
+    description:
+      'Scent profiles used to score and recommend products from Scent Quiz results. No page of its own.',
   },
   fields: [
     {

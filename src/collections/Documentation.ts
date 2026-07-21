@@ -23,6 +23,8 @@ export const Documentation: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'order', 'updatedAt'],
     group: 'Resources',
+    description:
+      'Internal how-to guides for admins using this dashboard. Not visible to site visitors.',
   },
   access: {
     read: authenticated,

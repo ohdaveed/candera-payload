@@ -13,6 +13,8 @@ export const Quizzes: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Quiz',
+    description:
+      'Scent Quiz question sets. Edited here, rendered wherever a page includes the Scent Quiz block — not a standalone page.',
   },
   fields: [
     {
