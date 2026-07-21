@@ -52,6 +52,9 @@ export async function runSyncAndLog(
   }
 }
 
+// The collection's `create: () => false` blocks the REST/GraphQL API, not this
+// Local API call — Local API defaults to `overrideAccess: true`, which is what
+// lets a server-only write like this one succeed at all.
 async function writeSyncLog(payload: Payload, data: SyncLogData): Promise<void> {
   try {
     await payload.create({

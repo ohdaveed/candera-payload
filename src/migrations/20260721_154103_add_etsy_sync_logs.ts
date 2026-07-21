@@ -45,7 +45,7 @@ export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs
   ALTER TABLE "etsy_sync_logs" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "etsy_sync_logs_failures" CASCADE;
   DROP TABLE "etsy_sync_logs" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_etsy_sync_logs_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_etsy_sync_logs_fk";
   
   DROP INDEX "payload_locked_documents_rels_etsy_sync_logs_id_idx";
   ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_find";
