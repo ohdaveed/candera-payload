@@ -22,6 +22,7 @@
     "start": "next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "pass-cli run --env-file .env -- cross-env NODE_OPTIONS=\"--import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "test:e2e:ci": "cross-env NODE_OPTIONS=\"--import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "pass-cli run --env-file .env -- vp test run --config ./vitest.config.mts",
     "test:int:ci": "vp test run --config ./vitest.config.mts",
     "prepare": "husky",
