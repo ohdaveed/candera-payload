@@ -191,6 +191,18 @@ const BeforeDashboard: React.FC = async () => {
                   <strong>Posts</strong> — blog-style articles for SEO and storytelling
                 </li>
                 <li>
+                  <strong>Events</strong> — in-person events and markets
+                </li>
+                <li>
+                  <strong>How-To Guides</strong> — step-by-step candle care and usage guides
+                </li>
+                <li>
+                  <strong>Scent Quiz</strong> — question sets for the storefront Scent Quiz
+                </li>
+                <li>
+                  <strong>Scent Profiles</strong> — profiles used to score Scent Quiz results
+                </li>
+                <li>
                   <strong>SEO Briefs</strong> — AI-generated content briefs for product pages
                 </li>
               </ul>
@@ -234,6 +246,46 @@ const BeforeDashboard: React.FC = async () => {
           }}
         >
           Posts
+        </Link>
+        <Link
+          href="/admin/collections/events"
+          style={{
+            fontSize: '0.8125rem',
+            color: 'var(--theme-elevation-700)',
+            textDecoration: 'none',
+          }}
+        >
+          Events
+        </Link>
+        <Link
+          href="/admin/collections/how-to-guides"
+          style={{
+            fontSize: '0.8125rem',
+            color: 'var(--theme-elevation-700)',
+            textDecoration: 'none',
+          }}
+        >
+          How-To Guides
+        </Link>
+        <Link
+          href="/admin/collections/quizzes"
+          style={{
+            fontSize: '0.8125rem',
+            color: 'var(--theme-elevation-700)',
+            textDecoration: 'none',
+          }}
+        >
+          Scent Quiz
+        </Link>
+        <Link
+          href="/admin/collections/scent-profiles"
+          style={{
+            fontSize: '0.8125rem',
+            color: 'var(--theme-elevation-700)',
+            textDecoration: 'none',
+          }}
+        >
+          Scent Profiles
         </Link>
         <Link
           href="/admin/collections/briefs"
