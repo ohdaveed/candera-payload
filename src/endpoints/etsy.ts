@@ -73,7 +73,10 @@ export const syncEtsyEndpoint: Endpoint = {
     }
 
     try {
-      const result = await syncEtsyListings(getEtsyShopId(), req.payload)
+      const result = await syncEtsyListings(getEtsyShopId(), req.payload, {
+        trigger: 'dashboard',
+        triggeredBy: req.user?.id,
+      })
       return Response.json(result)
     } catch (error) {
       req.payload.logger.error({ err: error, msg: 'Error in /sync-etsy endpoint' })
