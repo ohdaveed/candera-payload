@@ -124,9 +124,7 @@ describe('withAIGeneration', () => {
   it('leaves fields with a custom Field component alone', () => {
     const custom = '@/components/Custom#Custom'
     const result = withAIGeneration(
-      makeCollection([
-        { name: 'fancy', type: 'text', admin: { components: { Field: custom } } },
-      ]),
+      makeCollection([{ name: 'fancy', type: 'text', admin: { components: { Field: custom } } }]),
     )
 
     const field = result.fields[0] as Extract<Field, { type: 'text' }>
@@ -371,9 +369,7 @@ describe('field-copy prompt', () => {
   })
 
   it('rejects oversized context payloads', () => {
-    const context = Object.fromEntries(
-      Array.from({ length: 60 }, (_, i) => [`key${i}`, 'value']),
-    )
+    const context = Object.fromEntries(Array.from({ length: 60 }, (_, i) => [`key${i}`, 'value']))
     const parsed = fieldCopyInputSchema.safeParse({
       fieldLabel: 'Tagline',
       fieldName: 'tagline',
