@@ -18,6 +18,26 @@ export const Logo = (props: Props) => {
   )
 }
 
+interface MoonMarkProps {
+  size?: number
+  className?: string
+}
+
+// CSS-drawn crescent — a circle masked by an inset box-shadow, no SVG asset.
+// Visibility is gated purely via CSS (`.logo-icon-moon` in theme.css), not JS,
+// to match how every other skin-scoped visual change in this codebase works.
+export const MoonMark = ({ size = 22, className }: MoonMarkProps) => (
+  <span
+    aria-hidden="true"
+    className={clsx('logo-icon-moon inline-block rounded-full', className)}
+    style={{
+      width: size,
+      height: size,
+      boxShadow: `inset -${Math.round(size * 0.28)}px -${Math.round(size * 0.1)}px 0 0 currentColor`,
+    }}
+  />
+)
+
 export const LogoIcon = () => (
   <svg
     width="24"

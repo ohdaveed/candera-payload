@@ -318,6 +318,34 @@ html[data-skin='porcelain-pop'] {
   --ring: #b9116a;
 }
 
+html[data-skin='botanical-lavender'] {
+  --background: #e6dcf0;
+  --foreground: #33265a;
+  --card: #f8f4fc;
+  --card-foreground: #33265a;
+  --popover: #f8f4fc;
+  --popover-foreground: #33265a;
+  --primary: #7b60ac;
+  --primary-foreground: #e6dcf0;
+  --secondary: #efe7f7;
+  --secondary-foreground: #33265a;
+  --muted: #efe7f7;
+  --muted-foreground: #786e90;
+  --accent: #d3c5e4;
+  --accent-foreground: #33265a;
+  --border: #ded2ec;
+  --input: #ded2ec;
+  --ring: #7b60ac;
+}
+
+/* Crescent brand mark — hidden by default, shown only under the botanical-lavender skin. */
+.logo-icon-moon {
+  display: none;
+}
+html[data-skin='botanical-lavender'] .logo-icon-moon {
+  display: inline-block;
+}
+
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
  * The approved brand font system consists strictly of:

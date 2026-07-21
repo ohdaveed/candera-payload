@@ -36,6 +36,10 @@ export const SiteTheme: GlobalConfig = {
         { label: 'Legacy: Lavender Noir', value: 'lavender-noir' },
         { label: 'Legacy: Porcelain Pop', value: 'porcelain-pop' },
         { label: 'Legacy: Default', value: 'default' },
+        {
+          label: 'Botanical Lavender — cream & plum with a lavender accent',
+          value: 'botanical-lavender',
+        },
       ],
       required: true,
     },

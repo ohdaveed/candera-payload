@@ -9,6 +9,7 @@ import type { Header } from '@/payload-types'
 import { HeaderNav } from './Nav'
 import { MobileNav } from './Nav/MobileNav'
 import { HeaderUtilities } from './Utilities'
+import { MoonMark } from '@/components/Logo/Logo'
 import { Container } from '@/components/ui/container'
 
 import { Section } from '@/components/ui/section'
@@ -70,6 +71,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             ].join(' ')}
             href="/"
           >
+            <MoonMark size={18} className="mr-1.5 align-[-3px]" />
             CANDERA
           </Link>
         </div>
