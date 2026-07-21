@@ -35,8 +35,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@payloadcms/admin-bar':
-        specifier: 3.85.2
-        version: 3.85.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: 3.86.0
+        version: 3.86.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@payloadcms/db-postgres':
         specifier: 3.85.2
         version: 3.85.2(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(@vercel/postgres@0.10.0)(payload@3.85.2(bufferutil@4.1.0)(graphql@16.14.2)(typescript@6.0.3))
@@ -1799,8 +1799,8 @@ packages:
     resolution: {integrity: sha512-titLmukUt/h8ho7Svlf0xSBjoy2ccZKrXjpXpZCj+v6V4CJccC2KyP45BLSCMx8YIpifMyiDyUptM4+5sruKbQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@payloadcms/admin-bar@3.85.2':
-    resolution: {integrity: sha512-3ZfO+NYNRNSp+kgFbV5ZxrRfbHt2m77tYfx7Mt3R95icCEGyFQ3BuI9aYQM8NUqnNnuX+r4A5W4DporQ4YGbTA==}
+  '@payloadcms/admin-bar@3.86.0':
+    resolution: {integrity: sha512-MISbfhZwfuKXzUhy/GipVkDcfLxhX32jy2kXphq9S8D7+395uJSkr31ZYlIoAzmfynug8J4ckd9VvrTQE5PdSw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.1 || ^19.1.2 || ^19.2.1
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.1 || ^19.1.2 || ^19.2.1
@@ -7807,7 +7807,7 @@ snapshots:
 
   '@oxlint/plugins@1.68.0': {}
 
-  '@payloadcms/admin-bar@3.85.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@payloadcms/admin-bar@3.86.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
