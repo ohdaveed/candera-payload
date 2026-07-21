@@ -62,8 +62,8 @@ importers:
         specifier: 3.85.2
         version: 3.85.2(patch_hash=9100c116d0785a02bfdf54e2f43480c29beadbc06ab1d0c069ece7089e6335d3)(next@16.2.9(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))
       '@payloadcms/plugin-nested-docs':
-        specifier: 3.85.2
-        version: 3.85.2(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))
+        specifier: 3.86.0
+        version: 3.86.0(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))
       '@payloadcms/plugin-redirects':
         specifier: 3.85.2
         version: 3.85.2(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))
@@ -1875,10 +1875,10 @@ packages:
     peerDependencies:
       payload: 3.85.2
 
-  '@payloadcms/plugin-nested-docs@3.85.2':
-    resolution: {integrity: sha512-u3GjJXKgdMX+ougrD1GEGdVropSj9LmvFNI7s8u7SdF5pWYD+Q82laCfPCZa+xCQTJlylCfdW++67ytgVSnrPA==}
+  '@payloadcms/plugin-nested-docs@3.86.0':
+    resolution: {integrity: sha512-rXNWSfx9flSNHaZBG+j+mKz/bgYzcMkTc0CzvZM3ORQTuZqya8ujKOq4stoEO6zftj2QKn6A7OtrG4vm8MY51g==}
     peerDependencies:
-      payload: 3.85.2
+      payload: 3.86.0
 
   '@payloadcms/plugin-redirects@3.85.2':
     resolution: {integrity: sha512-gcXGV+cstK0ljiV+YHm2NeOwohA9yQPsxjiQ6M1RRF7NwX4g9VqDzzB1wHgXBFMEtKPa2/gJ/LxjKNZX+VpcDQ==}
@@ -8038,7 +8038,7 @@ snapshots:
       - next
       - supports-color
 
-  '@payloadcms/plugin-nested-docs@3.85.2(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))':
+  '@payloadcms/plugin-nested-docs@3.86.0(payload@3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3))':
     dependencies:
       payload: 3.85.2(bufferutil@4.1.0)(graphql@17.0.2)(typescript@6.0.3)
 

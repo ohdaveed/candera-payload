@@ -59,7 +59,7 @@
     "@payloadcms/next": "3.85.2",
     "@payloadcms/plugin-form-builder": "3.85.2",
     "@payloadcms/plugin-mcp": "3.85.2",
-    "@payloadcms/plugin-nested-docs": "3.85.2",
+    "@payloadcms/plugin-nested-docs": "3.86.0",
     "@payloadcms/plugin-redirects": "3.85.2",
     "@payloadcms/plugin-search": "3.85.2",
     "@payloadcms/plugin-sentry": "3.85.2",
