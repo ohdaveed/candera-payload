@@ -13,6 +13,7 @@ import { scentQuizForm as scentQuizFormData } from './scent-quiz-form'
 import { seedScentQuiz } from './scent-quiz'
 import { seedHowToGuides } from './how-to-guides'
 import { seedOwnerDocs } from './owner-docs'
+import { events as eventsData } from './events'
 import { contact as contactPageData } from './contact-page'
 import { about as aboutPageData } from './about-page'
 import { home } from './home'
@@ -41,6 +42,7 @@ const collections: CollectionSlug[] = [
   'how-to-guides',
   'documentation',
   'payload-mcp-api-keys',
+  'events',
 ]
 
 const _globals: GlobalSlug[] = ['header', 'footer']
@@ -267,6 +269,21 @@ export const seed = async ({
   })
 
   await seedOwnerDocs(payload)
+
+  payload.logger.info(`— Seeding events...`)
+
+  await Promise.all(
+    eventsData().map((event) =>
+      payload.create({
+        collection: 'events',
+        depth: 0,
+        context: {
+          disableRevalidate: true,
+        },
+        data: event,
+      }),
+    ),
+  )
 
   payload.logger.info(`— Seeding products...`)
 

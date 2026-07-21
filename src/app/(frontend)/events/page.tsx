@@ -12,6 +12,22 @@ import { listingMetadata } from '@/utilities/listing'
 
 import { cacheLife } from 'next/cache'
 
+const EVENTS_TIME_ZONE = 'America/Los_Angeles'
+
+// Events are scheduled in Pacific local time. Deriving "today" via toISOString() (UTC) would
+// roll the cutoff to the next calendar date up to 8 hours before it's actually tomorrow in
+// California, dropping same-day evening events from the listing mid-event.
+function todayInTimeZone(timeZone: string): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date())
+  const map = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  return `${map.year}-${map.month}-${map.day}`
+}
+
 function formatDateRange(eventDate: string, eventEndDate?: string | null): string {
   const start = new Date(eventDate)
   const startLabel = start.toLocaleDateString('en-US', {
@@ -34,7 +50,7 @@ export default async function Page() {
   cacheLife({ expire: 600 })
 
   const payload = await getPayload({ config: configPromise })
-  const todayISO = new Date().toISOString().slice(0, 10)
+  const todayISO = todayInTimeZone(EVENTS_TIME_ZONE)
 
   const events = await payload.find({
     collection: 'events',
@@ -118,7 +134,7 @@ export default async function Page() {
                       {event.venueName}
                     </h2>
                     <p className="text-sm text-candera-sage-text mt-1">
-                      {event.timeRange} · {event.city}
+                      {event.timeRange} · {event.address}, {event.city}
                     </p>
                     {event.blurb && (
                       <p className="text-sm text-candera-obsidian mt-3 max-w-prose">

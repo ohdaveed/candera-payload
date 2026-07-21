@@ -3,7 +3,6 @@ import { slugField } from 'payload'
 
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
-import { generatePreviewPath } from '../utilities/generatePreviewPath'
 import { eventsRevalidateHooks } from '../utilities/revalidate'
 
 import {
@@ -36,20 +35,9 @@ export const Events: CollectionConfig<'events'> = {
     useAsTitle: 'venueName',
     defaultColumns: ['venueName', 'eventDate', 'city', '_status', 'updatedAt'],
     group: 'Content',
-    livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({
-          slug: data?.slug,
-          collection: 'events',
-          req,
-        }),
-    },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: data?.slug as string,
-        collection: 'events',
-        req,
-      }),
+    // No per-event detail route exists (only the /events listing), so there is nothing a
+    // per-document preview/live-preview URL could resolve to — omitted rather than pointed
+    // at a route that doesn't exist. Revisit if an /events/[slug] detail page ships.
   },
   fields: [
     {
@@ -85,6 +73,15 @@ export const Events: CollectionConfig<'events'> = {
                       pickerAppearance: 'dayOnly',
                     },
                     description: 'Only set for multi-day events.',
+                  },
+                  validate: (value, { siblingData }) => {
+                    if (!value) return true
+                    const start = (siblingData as { eventDate?: string })?.eventDate
+                    if (!start) return true
+                    return (
+                      new Date(value) >= new Date(start) ||
+                      'End date must be on or after the start date.'
+                    )
                   },
                 },
               ],
@@ -143,7 +140,7 @@ export const Events: CollectionConfig<'events'> = {
         },
       ],
     },
-    slugField(),
+    slugField({ useAsSlug: 'venueName' }),
   ],
   hooks: {
     afterChange: [eventsRevalidateHooks.afterChange],

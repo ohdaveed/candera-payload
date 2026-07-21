@@ -79,10 +79,11 @@ export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs
   ALTER TABLE "_events_v" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "events" CASCADE;
   DROP TABLE "_events_v" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_events_fk";
-  
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_events_fk";
+
   ALTER TABLE "site_theme" ALTER COLUMN "color_scheme" SET DATA TYPE text;
   ALTER TABLE "site_theme" ALTER COLUMN "color_scheme" SET DEFAULT 'rose-conversion'::text;
+  UPDATE "site_theme" SET "color_scheme" = 'rose-conversion' WHERE "color_scheme" = 'botanical-lavender';
   DROP TYPE "public"."enum_site_theme_color_scheme";
   CREATE TYPE "public"."enum_site_theme_color_scheme" AS ENUM('rose-conversion', 'black-gold-rose', 'amethyst-amber', 'ink-orchid-coral', 'plum-sage-coral', 'lavender-trust-rose', 'ink-orchid', 'lavender-noir', 'porcelain-pop', 'default');
   ALTER TABLE "site_theme" ALTER COLUMN "color_scheme" SET DEFAULT 'rose-conversion'::"public"."enum_site_theme_color_scheme";
