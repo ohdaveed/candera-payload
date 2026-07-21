@@ -1,0 +1,5 @@
+secret:
+  ignored_matches:
+  - match: 6e0d657eb1f0fbc40cf0b8f3c3873ef627cc9cb7c4108d1c07d979c04bc8a4bb
+    name: CI ephemeral Postgres test password (candera_e2e service)
+version: 2
