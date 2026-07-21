@@ -140,5 +140,52 @@ describe('validateBootConfig', () => {
         expect.stringContaining('SMTP_HOST is configured, but SMTP_USER or SMTP_PASS is not set'),
       )
     })
+
+    it('logs warning if neither AI_GATEWAY_API_KEY nor AI_GATEWAY_BASE_URL is set', () => {
+      delete process.env.AI_GATEWAY_API_KEY
+      delete process.env.AI_GATEWAY_BASE_URL
+
+      validateBootConfig()
+      expect(payloadLogger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('AI_GATEWAY_API_KEY is not set'),
+      )
+    })
+
+    it('does not warn about AI gateway when AI_GATEWAY_BASE_URL is set', () => {
+      delete process.env.AI_GATEWAY_API_KEY
+      process.env.AI_GATEWAY_BASE_URL = 'https://gateway.example.com'
+
+      validateBootConfig()
+      expect(payloadLogger.warn).not.toHaveBeenCalledWith(
+        expect.stringContaining('AI_GATEWAY_API_KEY'),
+      )
+    })
+
+    it('logs warning if TURNSTILE_SECRET_KEY is missing', () => {
+      delete process.env.TURNSTILE_SECRET_KEY
+
+      validateBootConfig()
+      expect(payloadLogger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('TURNSTILE_SECRET_KEY is not set'),
+      )
+    })
+
+    it('logs warning if PREVIEW_SECRET is missing', () => {
+      delete process.env.PREVIEW_SECRET
+
+      validateBootConfig()
+      expect(payloadLogger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('PREVIEW_SECRET is not set'),
+      )
+    })
+
+    it('logs warning if CRON_SECRET is missing', () => {
+      delete process.env.CRON_SECRET
+
+      validateBootConfig()
+      expect(payloadLogger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('CRON_SECRET is not set'),
+      )
+    })
   })
 })
