@@ -99,6 +99,11 @@ describe('withAIGeneration', () => {
         { name: 'id', type: 'text' },
         { name: 'vessel', type: 'text' },
         { name: 'skuCode', type: 'text' },
+        { name: 'alt', type: 'text' },
+        { name: 'instagramHandle', type: 'text' },
+        { name: 'quote', type: 'textarea' },
+        { name: 'author', type: 'text' },
+        { name: 'location', type: 'text' },
       ]),
     )
 

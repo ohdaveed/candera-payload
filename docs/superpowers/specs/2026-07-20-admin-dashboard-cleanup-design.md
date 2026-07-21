@@ -41,7 +41,7 @@ Confirmed with the project owner during brainstorming:
 | `pages` | Content | Static site pages such as About and FAQ, built from content blocks. Rendered at `/[slug]`. |
 | `posts` | Content | Blog articles for storytelling and SEO. Rendered at `/posts` and `/posts/[slug]`. |
 | `products` | Commerce | Candle listings synced from Etsy, with storefront-only fields layered on top. Rendered at `/products` and `/products/[slug]`. |
-| `events` | Content | In-person events and markets. Rendered on the `/events` listing page — no individual event pages yet. |
+| `events` | Content | In-person events and markets. Rendered at `/events` and `/events/[slug]`. |
 | `how-to-guides` | Content | Step-by-step candle care and usage guides. Rendered at `/how-to` and `/how-to/[slug]`. |
 | `categories` | Commerce | Taxonomy used to group and filter Posts and Products. No page of its own — browse by category from an archive. |
 | `media` | Content (moved from System) | Images and files used across the site. Uploaded here, then attached via relationship fields elsewhere. |
