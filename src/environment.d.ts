@@ -35,6 +35,10 @@ declare global {
       TURNSTILE_SECRET_KEY?: string
       NEXT_PUBLIC_TURNSTILE_SITE_KEY?: string
 
+      // AI (product copy generation — local only)
+      AI_GATEWAY_API_KEY?: string
+      AI_GATEWAY_BASE_URL?: string
+
       // Logging
       LOG_LEVEL?: string
 

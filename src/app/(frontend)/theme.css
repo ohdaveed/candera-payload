@@ -318,6 +318,59 @@ html[data-skin='porcelain-pop'] {
   --ring: #b9116a;
 }
 
+html[data-skin='botanical-lavender'] {
+  --background: #e6dcf0;
+  --foreground: #33265a;
+  --card: #f8f4fc;
+  --card-foreground: #33265a;
+  --popover: #f8f4fc;
+  --popover-foreground: #33265a;
+  --primary: #7b60ac;
+  /* #e6dcf0 (the design source's primary-foreground) is only 3.86:1 against --primary — below
+     WCAG AA's 4.5:1 for normal text. White clears it (~5.1:1) without darkening --primary itself,
+     which is also used for --ring/hover states where the lighter tone is intentional. */
+  --primary-foreground: #ffffff;
+  --secondary: #efe7f7;
+  --secondary-foreground: #33265a;
+  --muted: #efe7f7;
+  /* #786e90 (the design source's muted-foreground) is only 3.58:1 against --background — also
+     below AA. Darkened to clear 4.5:1 (~5.25:1) while staying in the same hue family. */
+  --muted-foreground: #5f5570;
+  --accent: #d3c5e4;
+  --accent-foreground: #33265a;
+  --border: #ded2ec;
+  --input: #ded2ec;
+  --ring: #7b60ac;
+
+  /* Storefront components mostly render the fixed --color-candera-* utilities (bg-candera-vellum,
+     text-candera-obsidian, etc.) rather than the semantic tokens above — override them here too,
+     scoped to this skin, so selecting Botanical Lavender actually changes the storefront instead
+     of only the semantic-token surfaces. See DESIGN-IS-2026-07-20/ for the source palette. */
+  --color-candera-vellum: #e6dcf0;
+  --color-candera-field: #f8f4fc;
+  --color-candera-ash: #efe7f7;
+  --color-candera-stone: #ded2ec;
+  --color-candera-stone-muted: #a99bc4;
+  --color-candera-sage: #7b60ac;
+  --color-candera-sage-text: #5f5570;
+  --color-candera-rose: #d3c5e4;
+  --color-candera-rose-strong: #7b60ac;
+  --color-candera-ember: #9683c2;
+  /* Text-on-background contexts (e.g. text-candera-ember-strong links) need to clear AA against
+     the cream --background, not just work as a button fill — darker than --primary for that reason. */
+  --color-candera-ember-strong: #5c4488;
+  --color-candera-obsidian: #33265a;
+  --color-candera-linen: #f8f4fc;
+}
+
+/* Crescent brand mark — hidden by default, shown only under the botanical-lavender skin. */
+.logo-icon-moon {
+  display: none;
+}
+html[data-skin='botanical-lavender'] .logo-icon-moon {
+  display: inline-block;
+}
+
 /*
  * NOTE TO FUTURE CONTRIBUTORS:
  * The approved brand font system consists strictly of:

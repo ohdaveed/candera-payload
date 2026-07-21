@@ -89,4 +89,29 @@ export function validateBootConfig(): void {
       'SMTP_HOST is configured, but SMTP_USER or SMTP_PASS is not set. Outgoing email authentication might fail.',
     )
   }
+
+  // 3. Verify remaining integration secrets (Non-Fatal - logs startup warnings)
+  if (!process.env.AI_GATEWAY_API_KEY && !process.env.AI_GATEWAY_BASE_URL) {
+    payloadLogger.warn(
+      'AI_GATEWAY_API_KEY is not set. AI copy generation features will fail until it is configured.',
+    )
+  }
+
+  if (!process.env.TURNSTILE_SECRET_KEY) {
+    payloadLogger.warn(
+      'TURNSTILE_SECRET_KEY is not set. Form submissions will use the Cloudflare Turnstile test key, which does not verify real bot protection.',
+    )
+  }
+
+  if (!process.env.PREVIEW_SECRET) {
+    payloadLogger.warn(
+      'PREVIEW_SECRET is not set. Live preview URLs will fail signature validation.',
+    )
+  }
+
+  if (!process.env.CRON_SECRET) {
+    payloadLogger.warn(
+      'CRON_SECRET is not set. Scheduled/cron job requests without a logged-in user will be rejected.',
+    )
+  }
 }

@@ -10,6 +10,7 @@ export const SITE_THEME_OPTIONS = {
     { label: 'Legacy: Lavender Noir', value: 'lavender-noir' },
     { label: 'Legacy: Porcelain Pop', value: 'porcelain-pop' },
     { label: 'Legacy: Default', value: 'default' },
+    { label: 'Botanical Lavender', value: 'botanical-lavender' },
   ],
   /*
    * NOTE TO FUTURE CONTRIBUTORS:

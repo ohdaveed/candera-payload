@@ -304,3 +304,15 @@ globalRevalidator.registerRule(
 )
 
 export const howToGuidesRevalidateHooks = createCollectionHooks('how-to-guides')
+
+// 6. Events Rule
+globalRevalidator.registerRule(
+  createSlugRevalidationRule<{ slug?: string | null; _status?: string }>({
+    name: 'events-revalidation',
+    collections: ['events'],
+    groupTag: 'events-sitemap',
+    formatPaths: (slug) => [`/events/${slug}`, '/events'],
+  }),
+)
+
+export const eventsRevalidateHooks = createCollectionHooks('events')
