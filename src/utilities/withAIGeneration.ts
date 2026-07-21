@@ -17,10 +17,16 @@ import type { CollectionConfig, CustomComponent, Field, GlobalConfig, Plugin, Ta
 const AI_TEXT_COMPONENT = '@/components/admin/AIGenerateTextField#AITextAfterInput'
 const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextareaAfterInput'
 
-// Field names where AI-generated prose is nonsensical or dangerous. `vessel`
-// is exact-match: Products uses it as the SKU in structured data and as the
-// candle/decor guard value.
-const SKIP_NAME_PATTERN = /slug|url|href|email|phone|token|secret|password|filename|sku|^vessel$/i
+// Field names where AI-generated prose is nonsensical or dangerous. The
+// anchored alternatives are exact-match: `vessel` (Products) is the SKU in
+// structured data and the candle/decor guard value; `alt` (Media) has no
+// image sent to the model, so generation here fabricates plausible-but-wrong
+// descriptions — actively harmful for screen-reader users; `instagramHandle`
+// (StudioInfo) is an identifier rendered as the label for a separately
+// configured `instagramUrl`; `quote`/`author`/`location` (Testimonials block
+// items) are factual customer attribution, not promotional copy.
+const SKIP_NAME_PATTERN =
+  /slug|url|href|email|phone|token|secret|password|filename|sku|^vessel$|^alt$|^instagramHandle$|^quote$|^author$|^location$/i
 // ID endings only (`id`, `ID`, `foo_id`, `fooId`) — deliberately case-sensitive on
 // the second alternative so words that merely end in "id" (orchid, liquid,
 // hybrid) stay eligible.
@@ -78,7 +84,10 @@ function collectContextExcludedPaths(fields: Field[], prefix: string, out: strin
       continue // everything beneath is covered by the prefix
     }
 
-    if (name && (field.type === 'relationship' || field.type === 'upload' || field.type === 'join')) {
+    if (
+      name &&
+      (field.type === 'relationship' || field.type === 'upload' || field.type === 'join')
+    ) {
       out.push(`${prefix}${name}`)
       continue
     }
