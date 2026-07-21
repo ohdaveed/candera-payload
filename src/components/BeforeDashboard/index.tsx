@@ -171,7 +171,9 @@ const BeforeDashboard: React.FC = async () => {
         style={{
           display: 'flex',
           alignItems: 'center',
+          flexWrap: 'wrap',
           gap: '0.75rem',
+          rowGap: '0.5rem',
           paddingTop: '1.25rem',
           borderTop: '1px solid var(--theme-elevation-150)',
         }}
@@ -219,8 +221,8 @@ const BeforeDashboard: React.FC = async () => {
         />
         <Link
           href="/admin/collections/pages"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -229,8 +231,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/media"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -239,8 +241,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/posts"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -249,8 +251,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/events"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -259,8 +261,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/how-to-guides"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -269,8 +271,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/quizzes"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -279,8 +281,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/scent-profiles"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
@@ -289,8 +291,8 @@ const BeforeDashboard: React.FC = async () => {
         </Link>
         <Link
           href="/admin/collections/briefs"
+          className="text-sm"
           style={{
-            fontSize: '0.8125rem',
             color: 'var(--theme-elevation-700)',
             textDecoration: 'none',
           }}
