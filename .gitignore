@@ -92,3 +92,6 @@ scripts/__pycache__/
 .neon
 .env*
 .vercel
+
+# Local git worktrees for isolated agent work
+.worktrees/

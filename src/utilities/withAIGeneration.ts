@@ -181,12 +181,10 @@ function mapFields(fields: Field[], contextExcludePaths: string[], extraSkip?: R
       case 'tabs':
         return {
           ...field,
-          tabs: field.tabs.map(
-            (tab): Tab => ({
-              ...tab,
-              fields: mapFields(tab.fields, contextExcludePaths, extraSkip),
-            }),
-          ),
+          tabs: field.tabs.map((tab): Tab => ({
+            ...tab,
+            fields: mapFields(tab.fields, contextExcludePaths, extraSkip),
+          })),
         }
       case 'blocks':
         // Configs using `blockReferences` have no inline `blocks` array — leave those as-is.
