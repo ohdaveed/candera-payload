@@ -43,7 +43,7 @@ CLI (sync-etsy.ts) ─────────────────┘
 
 ## Trigger propagation & failure handling
 
-`syncEtsyListings(source, payload, meta: { trigger: 'dashboard' | 'cli'; triggeredBy?: number | string })` — `meta` is a required parameter, not a hidden default, so both call sites are explicit about which path they are:
+`syncEtsyListings(source, payload, meta: { trigger: 'dashboard' | 'cli'; triggeredBy?: number })` — `meta` is a required parameter, not a hidden default, so both call sites are explicit about which path they are (`triggeredBy` is `number` only, matching Payload's generated `User['id']`, which is numeric, not a string):
 
 - `src/endpoints/etsy.ts` (`syncEtsyEndpoint`): passes `{ trigger: 'dashboard', triggeredBy: req.user.id }`.
 - `scripts/sync-etsy.ts`: passes `{ trigger: 'cli' }` at both call sites (initial shop sync and the manual-listing-IDs fallback).

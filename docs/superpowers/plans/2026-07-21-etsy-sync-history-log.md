@@ -183,7 +183,7 @@ git commit -m "feat(admin): add etsy-sync-logs collection"
 
 **Interfaces:**
 - Consumes: `SyncResult` from `./types` (`src/utilities/sync/types.ts`) — `{ success: boolean; count: number; failures: Array<{ listingId: number; error: string }> }`. The `'etsy-sync-logs'` collection slug and field shape from Task 1.
-- Produces: `runSyncAndLog(sync: () => Promise<SyncResult>, payload: Payload, meta: SyncRunMeta): Promise<SyncResult>` and `type SyncTrigger = 'dashboard' | 'cli'`, `interface SyncRunMeta { trigger: SyncTrigger; triggeredBy?: number | string }` — all exported from `src/utilities/sync/logging.ts`. Task 3 imports and calls these.
+- Produces: `runSyncAndLog(sync: () => Promise<SyncResult>, payload: Payload, meta: SyncRunMeta): Promise<SyncResult>` and `type SyncTrigger = 'dashboard' | 'cli'`, `interface SyncRunMeta { trigger: SyncTrigger; triggeredBy?: number }` — all exported from `src/utilities/sync/logging.ts`. Task 3 imports and calls these. (`triggeredBy` is `number` only, matching `User['id']` — Payload's generated `User` type uses a numeric `id`, not a string one.)
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -320,7 +320,7 @@ export type SyncTrigger = 'dashboard' | 'cli'
 
 export interface SyncRunMeta {
   trigger: SyncTrigger
-  triggeredBy?: number | string
+  triggeredBy?: number
 }
 
 interface SyncLogData extends SyncRunMeta {
