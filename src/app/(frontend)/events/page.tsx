@@ -121,21 +121,20 @@ export default async function Page() {
                       {event.mapUrl && (
                         <a
                           href={event.mapUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs uppercase tracking-[0.18em] px-5 py-3 bg-candera-obsidian text-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2"
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-xs uppercase tracking-[0.18em] px-5 py-3 bg-candera-obsidian text-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                         >
                           View venue ↗
                         </a>
                       )}
                       <BoutiqueLink
                         href={ETSY_SHOP_URL}
-                        location="events-card"
-                        className="text-xs uppercase tracking-[0.18em] px-5 py-3 border border-candera-stone text-candera-obsidian focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-candera-ember-strong focus-visible:ring-offset-2"
+                        location='events-card'
+                        className='text-xs uppercase tracking-[0.18em] px-5 py-3 border border-candera-stone text-candera-obsidian focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       >
                         Shop the collection ↗
                       </BoutiqueLink>
-                    </div>
                   </div>
                 </li>
               ))}
