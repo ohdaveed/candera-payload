@@ -6,7 +6,7 @@ import { searchPlugin } from '@payloadcms/plugin-search'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { sentryPlugin } from '@payloadcms/plugin-sentry'
 import * as Sentry from '@sentry/nextjs'
-import { Plugin } from 'payload'
+import { CollectionConfig, Plugin } from 'payload'
 import { redirectRevalidateHooks } from '@/utilities/revalidate'
 import {
   GenerateDescription,
@@ -89,6 +89,8 @@ export const plugins: Plugin[] = [
     overrides: {
       admin: {
         group: 'System',
+        description:
+          'URL redirect rules for retired or renamed Pages/Posts URLs. Applied automatically.',
       },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -126,6 +128,8 @@ export const plugins: Plugin[] = [
     formOverrides: {
       admin: {
         group: 'Inquiries',
+        description:
+          'Form definitions used by storefront forms like Contact. Submissions are stored separately in Form Submissions.',
       },
       hooks: {
         afterChange: [revalidateForm],
@@ -154,6 +158,8 @@ export const plugins: Plugin[] = [
     formSubmissionOverrides: {
       admin: {
         group: 'Inquiries',
+        description:
+          'Inquiries received through storefront forms. Entries are created by visitors, not edited here.',
       },
       access: {
         // Storefront submissions go through the server action with overrideAccess.
@@ -169,6 +175,10 @@ export const plugins: Plugin[] = [
     collections: ['posts', 'products'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        description:
+          "Auto-generated search index built from published Posts and Products. Don't edit directly.",
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
@@ -207,6 +217,14 @@ export const plugins: Plugin[] = [
       'site-theme': { enabled: { find: true, update: false } },
       'studio-info': { enabled: { find: true, update: false } },
     },
+    overrideApiKeyCollection: (collection: CollectionConfig): CollectionConfig => ({
+      ...collection,
+      admin: {
+        ...collection.admin,
+        description:
+          'API keys for the Payload MCP server used by AI coding tools. Unrelated to storefront/customer data.',
+      },
+    }),
   }),
   sentryPlugin({
     Sentry,

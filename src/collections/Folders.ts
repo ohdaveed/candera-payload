@@ -13,6 +13,8 @@ export const Folders: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'System',
+    description:
+      "Payload's built-in tool for organizing documents inside the admin panel. Doesn't affect the live site.",
   },
   fields: [
     {

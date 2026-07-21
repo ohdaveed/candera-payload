@@ -35,6 +35,8 @@ export const Events: CollectionConfig<'events'> = {
     useAsTitle: 'venueName',
     defaultColumns: ['venueName', 'eventDate', 'city', '_status', 'updatedAt'],
     group: 'Content',
+    description:
+      'In-person events and markets. Rendered on the /events listing page — no individual event pages yet.',
     // No per-event detail route exists (only the /events listing), so there is nothing a
     // per-document preview/live-preview URL could resolve to — omitted rather than pointed
     // at a route that doesn't exist. Revisit if an /events/[slug] detail page ships.

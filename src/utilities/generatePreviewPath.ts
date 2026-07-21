@@ -5,6 +5,7 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
   pages: '',
   'how-to-guides': '/how-to',
+  products: '/products',
 }
 
 type Props = {

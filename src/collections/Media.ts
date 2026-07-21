@@ -18,7 +18,9 @@ export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
   admin: {
-    group: 'System',
+    group: 'Content',
+    description:
+      'Images and files used across the site. Uploaded here, then attached via relationship fields elsewhere.',
   },
   access: {
     create: authenticated,

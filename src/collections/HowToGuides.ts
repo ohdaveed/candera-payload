@@ -49,6 +49,8 @@ export const HowToGuides: CollectionConfig<'how-to-guides'> = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Content',
+    description:
+      'Step-by-step candle care and usage guides. Rendered at /how-to and /how-to/[slug].',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({

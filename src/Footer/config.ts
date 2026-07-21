@@ -10,6 +10,10 @@ export const Footer: GlobalConfig = {
     read: () => true,
     update: isAdmin,
   },
+  admin: {
+    group: 'Layout',
+    description: 'Footer navigation, links, and copyright shown on every page.',
+  },
   fields: [
     {
       name: 'navItems',
