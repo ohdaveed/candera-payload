@@ -21,17 +21,25 @@ const AI_TEXTAREA_COMPONENT = '@/components/admin/AIGenerateTextField#AITextarea
 // `alt` (Media): the client only sends textual form context, never the
 // image itself — AI generation here produces plausible-but-fabricated
 // descriptions, which is actively harmful for screen-reader users.
-const EXACT_SKIP_NAMES = new Set(['alt'])
+// `instagramHandle` (StudioInfo): an identifier rendered as the label for a
+// separately configured `instagramUrl` — AI prose here breaks the link.
+// `quote`/`author`/`location` (Testimonials block items): factual customer
+// attribution, not promotional copy — generating them fabricates a review.
+const EXACT_SKIP_NAMES = new Set(['alt', 'instagramHandle', 'quote', 'author', 'location'])
 
 // Superset of EXACT_SKIP_NAMES applied only to fields nested inside a
 // `blocks`-type field (see the `blocks` case in mapFields). The form builder
 // plugin's `forms` collection defines each form field as a block with a
 // `name` subfield that's the stable submission key — overwriting it breaks
-// the form or orphans existing submissions. No other block schema in this
-// app uses `name` for display copy, so this is scoped to nested block
-// fields only; `forms`' own top-level fields (submitButtonLabel,
-// confirmationMessage) are untouched and stay AI-eligible.
-const EXACT_SKIP_NAMES_IN_BLOCKS = new Set([...EXACT_SKIP_NAMES, 'name'])
+// the form or orphans existing submissions. Its `select`/`checkbox` blocks
+// also carry `options[].value` and `defaultValue`, the actual submitted
+// values (not display copy) — overwriting those changes what a submission
+// records or leaves the default unmatched to any option. No other block
+// schema in this app uses these names for display copy, so this is scoped
+// to nested block fields only; `forms`' own top-level fields
+// (submitButtonLabel, confirmationMessage) are untouched and stay
+// AI-eligible.
+const EXACT_SKIP_NAMES_IN_BLOCKS = new Set([...EXACT_SKIP_NAMES, 'name', 'value', 'defaultValue'])
 
 function isEligible(
   field: Extract<Field, { type: 'text' | 'textarea' }>,
@@ -87,10 +95,12 @@ function mapFields(fields: Field[], exactSkipNames: Set<string> = EXACT_SKIP_NAM
       case 'tabs':
         return {
           ...field,
-          tabs: field.tabs.map((tab): Tab => ({
-            ...tab,
-            fields: mapFields(tab.fields, exactSkipNames),
-          })),
+          tabs: field.tabs.map(
+            (tab): Tab => ({
+              ...tab,
+              fields: mapFields(tab.fields, exactSkipNames),
+            }),
+          ),
         }
       case 'blocks':
         // Configs using `blockReferences` have no inline `blocks` array — leave those as-is.

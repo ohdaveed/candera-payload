@@ -119,12 +119,71 @@ describe('withAIGeneration', () => {
     expect(fieldComponent(result.fields[2])).toBe(AI_TEXTAREA)
   })
 
+  it('skips identifiers and factual attribution fields (instagramHandle, testimonial quote/author/location)', () => {
+    const result = withAIGeneration(
+      makeCollection([
+        { name: 'instagramHandle', type: 'text' },
+        { name: 'quote', type: 'textarea' },
+        { name: 'author', type: 'text' },
+        { name: 'location', type: 'text' },
+      ]),
+    )
+
+    for (const field of result.fields) {
+      expect(fieldComponent(field)).toBeUndefined()
+    }
+  })
+
+  it('skips form-field block machine values (name, value, defaultValue) only inside blocks', () => {
+    const result = withAIGeneration(
+      makeCollection([
+        { name: 'value', type: 'text' },
+        { name: 'defaultValue', type: 'text' },
+        {
+          name: 'fields',
+          type: 'blocks',
+          blocks: [
+            {
+              slug: 'select',
+              fields: [
+                { name: 'name', type: 'text' },
+                { name: 'defaultValue', type: 'text' },
+                {
+                  name: 'options',
+                  type: 'array',
+                  fields: [
+                    { name: 'label', type: 'text' },
+                    { name: 'value', type: 'text' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ]),
+    )
+
+    // Top-level fields sharing these names are ordinary display copy.
+    expect(fieldComponent(result.fields[0])).toBe(AI_TEXT)
+    expect(fieldComponent(result.fields[1])).toBe(AI_TEXT)
+
+    const blockFields = (result.fields[2] as Extract<Field, { type: 'blocks' }>).blocks?.[0]
+      ?.fields as Field[]
+    const [name, defaultValue, options] = blockFields as [
+      Field,
+      Field,
+      Extract<Field, { type: 'array' }>,
+    ]
+    expect(fieldComponent(name)).toBeUndefined()
+    expect(fieldComponent(defaultValue)).toBeUndefined()
+    expect(fieldComponent(options.fields[0])).toBe(AI_TEXT) // label stays eligible
+    expect(fieldComponent(options.fields[1])).toBeUndefined() // value is the submitted machine value
+  })
+
   it('leaves fields with a custom Field component alone', () => {
     const custom = '@/components/Custom#Custom'
     const result = withAIGeneration(
-      makeCollection([
-        { name: 'fancy', type: 'text', admin: { components: { Field: custom } } },
-      ]),
+      makeCollection([{ name: 'fancy', type: 'text', admin: { components: { Field: custom } } }]),
     )
 
     const field = result.fields[0] as Extract<Field, { type: 'text' }>
@@ -206,9 +265,7 @@ describe('field-copy prompt', () => {
   })
 
   it('rejects oversized context payloads', () => {
-    const context = Object.fromEntries(
-      Array.from({ length: 60 }, (_, i) => [`key${i}`, 'value']),
-    )
+    const context = Object.fromEntries(Array.from({ length: 60 }, (_, i) => [`key${i}`, 'value']))
     const parsed = fieldCopyInputSchema.safeParse({
       fieldLabel: 'Tagline',
       fieldName: 'tagline',
