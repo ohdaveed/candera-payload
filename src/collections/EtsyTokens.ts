@@ -6,6 +6,8 @@ export const EtsyTokens: CollectionConfig = {
     useAsTitle: 'label',
     group: 'System',
     hidden: true,
+    description:
+      "OAuth tokens used to sync products from Etsy. Managed automatically by the connect/sync flow — don't edit directly.",
   },
   access: {
     create: () => false, // Only server-side

@@ -7,6 +7,8 @@ export const Briefs: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
     group: 'Marketing',
+    description:
+      'Internal SEO briefs drafted before writing product copy. Not published or visible on the live site — a drafting aid only.',
   },
   access: {
     read: authenticated,

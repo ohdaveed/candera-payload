@@ -199,6 +199,8 @@ export interface PayloadMcpApiKeyAuthOperations {
   };
 }
 /**
+ * Payload's built-in tool for organizing documents inside the admin panel. Doesn't affect the live site.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "folders".
  */
@@ -240,6 +242,8 @@ export interface FolderInterface {
   createdAt: string;
 }
 /**
+ * Images and files used across the site. Uploaded here, then attached via relationship fields elsewhere.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -337,6 +341,8 @@ export interface Media {
   };
 }
 /**
+ * Static site pages such as About and FAQ, built from content blocks. Rendered at /[slug].
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
@@ -417,6 +423,8 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Blog articles for storytelling and SEO. Rendered at /posts and /posts/[slug].
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
@@ -467,6 +475,8 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Taxonomy used to group and filter Posts and Products. No page of its own — browse by category from an archive.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
@@ -491,6 +501,8 @@ export interface Category {
   createdAt: string;
 }
 /**
+ * Admin panel accounts. Controls who can log in and edit content here.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -753,6 +765,8 @@ export interface FormBlock {
   blockType: 'formBlock';
 }
 /**
+ * Form definitions used by storefront forms like Contact. Submissions are stored separately in Form Submissions.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms".
  */
@@ -968,6 +982,8 @@ export interface ScentQuizBlock {
   blockType: 'scentQuiz';
 }
 /**
+ * Scent Quiz question sets. Edited here, rendered wherever a page includes the Scent Quiz block — not a standalone page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "quizzes".
  */
@@ -994,6 +1010,8 @@ export interface Quiz {
   createdAt: string;
 }
 /**
+ * Scent profiles used to score and recommend products from Scent Quiz results. No page of its own.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "scent-profiles".
  */
@@ -1022,6 +1040,8 @@ export interface ScentProfile {
   createdAt: string;
 }
 /**
+ * Candle listings synced from Etsy, with storefront-only fields layered on top. Rendered at /products and /products/[slug].
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -1135,6 +1155,8 @@ export interface Product {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * OAuth tokens used to sync products from Etsy. Managed automatically by the connect/sync flow — don't edit directly.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "etsy-tokens".
  */
@@ -1190,6 +1212,8 @@ export interface EtsySyncLog {
   createdAt: string;
 }
 /**
+ * Internal SEO briefs drafted before writing product copy. Not published or visible on the live site — a drafting aid only.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "briefs".
  */
@@ -1201,6 +1225,8 @@ export interface Brief {
   createdAt: string;
 }
 /**
+ * Internal how-to guides for admins using this dashboard. Not visible to site visitors.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documentation".
  */
@@ -1233,6 +1259,8 @@ export interface Documentation {
   createdAt: string;
 }
 /**
+ * Step-by-step candle care and usage guides. Rendered at /how-to and /how-to/[slug].
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "how-to-guides".
  */
@@ -1275,6 +1303,8 @@ export interface HowToGuide {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * In-person events and markets. Rendered on the /events listing page — no individual event pages yet.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
@@ -1318,6 +1348,8 @@ export interface Event {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * URL redirect rules for retired or renamed Pages/Posts URLs. Applied automatically.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1344,6 +1376,8 @@ export interface Redirect {
   createdAt: string;
 }
 /**
+ * Inquiries received through storefront forms. Entries are created by visitors, not edited here.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
@@ -1361,7 +1395,7 @@ export interface FormSubmission {
   createdAt: string;
 }
 /**
- * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ * Auto-generated search index built from published Posts and Products. Don't edit directly.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search".
@@ -1400,7 +1434,7 @@ export interface Search {
   createdAt: string;
 }
 /**
- * API keys control which collections, resources, tools, and prompts MCP clients can access
+ * API keys for the Payload MCP server used by AI coding tools. Unrelated to storefront/customer data.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-mcp-api-keys".
@@ -2982,6 +3016,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Site navigation and header content shown on every page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
@@ -3011,6 +3047,8 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
+ * Footer navigation, links, and copyright shown on every page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */

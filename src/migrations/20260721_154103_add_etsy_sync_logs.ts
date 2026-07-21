@@ -23,10 +23,6 @@ export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): P
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  ALTER TABLE "payload_mcp_api_keys" ADD COLUMN "events_find" boolean DEFAULT false;
-  ALTER TABLE "payload_mcp_api_keys" ADD COLUMN "events_create" boolean DEFAULT false;
-  ALTER TABLE "payload_mcp_api_keys" ADD COLUMN "events_update" boolean DEFAULT false;
-  ALTER TABLE "payload_mcp_api_keys" ADD COLUMN "events_delete" boolean DEFAULT false;
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "etsy_sync_logs_id" integer;
   ALTER TABLE "etsy_sync_logs_failures" ADD CONSTRAINT "etsy_sync_logs_failures_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."etsy_sync_logs"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "etsy_sync_logs" ADD CONSTRAINT "etsy_sync_logs_triggered_by_id_users_id_fk" FOREIGN KEY ("triggered_by_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
@@ -48,10 +44,6 @@ export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs
   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_etsy_sync_logs_fk";
   
   DROP INDEX IF EXISTS "payload_locked_documents_rels_etsy_sync_logs_id_idx";
-  ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_find";
-  ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_create";
-  ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_update";
-  ALTER TABLE "payload_mcp_api_keys" DROP COLUMN "events_delete";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "etsy_sync_logs_id";
   DROP TYPE IF EXISTS "public"."enum_etsy_sync_logs_trigger";`)
 }

@@ -10,6 +10,10 @@ export const Header: GlobalConfig = {
     read: () => true,
     update: isAdmin,
   },
+  admin: {
+    group: 'Layout',
+    description: 'Site navigation and header content shown on every page.',
+  },
   fields: [
     {
       name: 'navItems',
