@@ -14,10 +14,18 @@ import { cacheLife } from 'next/cache'
 
 function formatDateRange(eventDate: string, eventEndDate?: string | null): string {
   const start = new Date(eventDate)
-  const startLabel = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  const startLabel = start.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
   if (!eventEndDate) return startLabel
   const end = new Date(eventEndDate)
-  const endLabel = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  const endLabel = end.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
   return startLabel + ' – ' + endLabel
 }
 
@@ -121,20 +129,21 @@ export default async function Page() {
                       {event.mapUrl && (
                         <a
                           href={event.mapUrl}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-xs uppercase tracking-[0.18em] px-5 py-3 bg-candera-obsidian text-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs uppercase tracking-[0.18em] px-5 py-3 bg-candera-obsidian text-candera-vellum focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         >
                           View venue ↗
                         </a>
                       )}
                       <BoutiqueLink
                         href={ETSY_SHOP_URL}
-                        location='events-card'
-                        className='text-xs uppercase tracking-[0.18em] px-5 py-3 border border-candera-stone text-candera-obsidian focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                        location="events-card"
+                        className="text-xs uppercase tracking-[0.18em] px-5 py-3 border border-candera-stone text-candera-obsidian focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       >
                         Shop the collection ↗
                       </BoutiqueLink>
+                    </div>
                   </div>
                 </li>
               ))}
