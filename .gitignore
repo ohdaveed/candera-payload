@@ -30,7 +30,8 @@ public/sitemap*.xml
 
 # Claude Code local settings (session-specific, not for version control)
 .claude/settings.local.json
-.claude/skills/
+.claude/skills/*
+!.claude/skills/candera-payload/
 .claude/worktrees/
 .claude/settings.json
 
