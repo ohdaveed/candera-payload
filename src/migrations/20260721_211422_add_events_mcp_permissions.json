@@ -8804,6 +8804,227 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.etsy_sync_logs_failures": {
+      "name": "etsy_sync_logs_failures",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "listing_id": {
+          "name": "listing_id",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "error": {
+          "name": "error",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "etsy_sync_logs_failures_order_idx": {
+          "name": "etsy_sync_logs_failures_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "etsy_sync_logs_failures_parent_id_idx": {
+          "name": "etsy_sync_logs_failures_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "etsy_sync_logs_failures_parent_id_fk": {
+          "name": "etsy_sync_logs_failures_parent_id_fk",
+          "tableFrom": "etsy_sync_logs_failures",
+          "tableTo": "etsy_sync_logs",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.etsy_sync_logs": {
+      "name": "etsy_sync_logs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trigger": {
+          "name": "trigger",
+          "type": "enum_etsy_sync_logs_trigger",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triggered_by_id": {
+          "name": "triggered_by_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "success": {
+          "name": "success",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "count": {
+          "name": "count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "failure_count": {
+          "name": "failure_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "fatal_error": {
+          "name": "fatal_error",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "etsy_sync_logs_triggered_by_idx": {
+          "name": "etsy_sync_logs_triggered_by_idx",
+          "columns": [
+            {
+              "expression": "triggered_by_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "etsy_sync_logs_updated_at_idx": {
+          "name": "etsy_sync_logs_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "etsy_sync_logs_created_at_idx": {
+          "name": "etsy_sync_logs_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "etsy_sync_logs_triggered_by_id_users_id_fk": {
+          "name": "etsy_sync_logs_triggered_by_id_users_id_fk",
+          "tableFrom": "etsy_sync_logs",
+          "tableTo": "users",
+          "columnsFrom": [
+            "triggered_by_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.briefs": {
       "name": "briefs",
       "schema": "",
@@ -14755,6 +14976,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "etsy_sync_logs_id": {
+          "name": "etsy_sync_logs_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "briefs_id": {
           "name": "briefs_id",
           "type": "integer",
@@ -14984,6 +15211,21 @@
           "columns": [
             {
               "expression": "etsy_tokens_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_etsy_sync_logs_id_idx": {
+          "name": "payload_locked_documents_rels_etsy_sync_logs_id_idx",
+          "columns": [
+            {
+              "expression": "etsy_sync_logs_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -15286,6 +15528,19 @@
           "tableTo": "etsy_tokens",
           "columnsFrom": [
             "etsy_tokens_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_etsy_sync_logs_fk": {
+          "name": "payload_locked_documents_rels_etsy_sync_logs_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "etsy_sync_logs",
+          "columnsFrom": [
+            "etsy_sync_logs_id"
           ],
           "columnsTo": [
             "id"
@@ -17229,6 +17484,14 @@
       "values": [
         "active",
         "suspended"
+      ]
+    },
+    "public.enum_etsy_sync_logs_trigger": {
+      "name": "enum_etsy_sync_logs_trigger",
+      "schema": "public",
+      "values": [
+        "dashboard",
+        "cli"
       ]
     },
     "public.enum_documentation_category": {
