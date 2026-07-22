@@ -4,6 +4,7 @@ import type { Product } from '@/payload-types'
 import { EtsyClient, DefaultPayloadTokenRepository } from '../etsyClient'
 import { syncLogger } from '../logger'
 import { EtsySyncEngine } from './engine'
+import { runSyncAndLog, type SyncRunMeta } from './logging'
 import type {
   EtsySourcePort,
   MediaStoragePort,
@@ -228,34 +229,44 @@ export class ProductionMediaStorageAdapter implements MediaStoragePort {
 // ORIGINAL SHALLOW ENTRY POINT
 // -------------------------------------------------------------
 
-export async function syncEtsyListings(source: number | number[], payload: Payload) {
-  const tokenRepository = new DefaultPayloadTokenRepository(payload)
-  const client = new EtsyClient(undefined, tokenRepository)
+export async function syncEtsyListings(
+  source: number | number[],
+  payload: Payload,
+  meta: SyncRunMeta,
+) {
+  return runSyncAndLog(
+    async () => {
+      const tokenRepository = new DefaultPayloadTokenRepository(payload)
+      const client = new EtsyClient(undefined, tokenRepository)
 
-  const isBatch = Array.isArray(source)
-  const syncSource: SyncSource = isBatch
-    ? { type: 'listings', listingIds: source }
-    : { type: 'shop', shopId: source }
+      const isBatch = Array.isArray(source)
+      const syncSource: SyncSource = isBatch
+        ? { type: 'listings', listingIds: source }
+        : { type: 'shop', shopId: source }
 
-  // Build the editor config once, then convert each Etsy description with
-  // Payload's official Markdown→Lexical converter so bullet lists, headings, and
-  // paragraphs become real Lexical nodes instead of one paragraph per line.
-  const editorConfig = await editorConfigFactory.default({ config: payload.config })
+      // Build the editor config once, then convert each Etsy description with
+      // Payload's official Markdown→Lexical converter so bullet lists, headings, and
+      // paragraphs become real Lexical nodes instead of one paragraph per line.
+      const editorConfig = await editorConfigFactory.default({ config: payload.config })
 
-  const engine = new EtsySyncEngine()
-  const ports = {
-    etsySource: new ProductionEtsySourceAdapter(client),
-    productStore: new ProductionProductStoreAdapter(payload),
-    mediaStorage: new ProductionMediaStorageAdapter(payload),
-    logger: syncLogger,
-    descriptionToRichText: (markdown: string) =>
-      convertMarkdownToLexical({ editorConfig, markdown }) as unknown as Product['description'],
-  }
+      const engine = new EtsySyncEngine()
+      const ports = {
+        etsySource: new ProductionEtsySourceAdapter(client),
+        productStore: new ProductionProductStoreAdapter(payload),
+        mediaStorage: new ProductionMediaStorageAdapter(payload),
+        logger: syncLogger,
+        descriptionToRichText: (markdown: string) =>
+          convertMarkdownToLexical({ editorConfig, markdown }) as unknown as Product['description'],
+      }
 
-  const result = await engine.sync(syncSource, ports)
-  return {
-    success: result.success,
-    count: result.count,
-    failures: result.failures,
-  }
+      const result = await engine.sync(syncSource, ports)
+      return {
+        success: result.success,
+        count: result.count,
+        failures: result.failures,
+      }
+    },
+    payload,
+    meta,
+  )
 }

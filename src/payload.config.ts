@@ -35,6 +35,7 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { EtsyTokens } from './collections/EtsyTokens'
+import { EtsySyncLogs } from './collections/EtsySyncLogs'
 import { etsyEndpoints } from './endpoints/etsy'
 
 import { Quizzes } from './collections/Quizzes'
@@ -137,6 +138,7 @@ export default buildConfig({
     Categories,
     Users,
     EtsyTokens,
+    EtsySyncLogs,
     Briefs,
     Quizzes,
     ScentProfiles,

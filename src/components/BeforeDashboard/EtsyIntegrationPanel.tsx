@@ -1,7 +1,9 @@
+// src/components/BeforeDashboard/EtsyIntegrationPanel.tsx
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@payloadcms/ui'
+import type { EtsySyncLog } from '@/payload-types'
 import { SectionTooltip } from './SectionTooltip'
 
 type SyncResponse = {
@@ -21,11 +23,30 @@ function userIsAdmin(user: unknown): boolean {
   )
 }
 
+async function fetchRecentSyncLogs(): Promise<EtsySyncLog[]> {
+  try {
+    const res = await fetch('/api/etsy-sync-logs?limit=5&sort=-createdAt&depth=0', {
+      credentials: 'include',
+    })
+    if (!res.ok) return []
+    const data = (await res.json()) as { docs?: EtsySyncLog[] }
+    return data.docs ?? []
+  } catch {
+    return []
+  }
+}
+
 export function EtsyIntegrationPanel() {
   const { user } = useAuth()
   const [syncing, setSyncing] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [logs, setLogs] = useState<EtsySyncLog[]>([])
+
+  useEffect(() => {
+    if (!userIsAdmin(user)) return
+    void fetchRecentSyncLogs().then(setLogs)
+  }, [user])
 
   if (!userIsAdmin(user)) {
     return null
@@ -54,6 +75,7 @@ export function EtsyIntegrationPanel() {
       setError(err instanceof Error ? err.message : 'Sync failed')
     } finally {
       setSyncing(false)
+      void fetchRecentSyncLogs().then(setLogs)
     }
   }
 
@@ -145,6 +167,63 @@ export function EtsyIntegrationPanel() {
         >
           {error}
         </p>
+      )}
+
+      {logs.length > 0 && (
+        <div style={{ marginTop: '1rem' }}>
+          <p
+            style={{
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              color: 'var(--theme-elevation-600)',
+              margin: '0 0 0.5rem 0',
+            }}
+          >
+            Recent Syncs
+          </p>
+          <ul
+            style={{
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.375rem',
+            }}
+          >
+            {logs.map((log) => (
+              <li
+                key={log.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.8125rem',
+                  color: 'var(--theme-elevation-700)',
+                }}
+              >
+                <span
+                  style={{
+                    color: log.success
+                      ? 'var(--theme-success-500, #22c55e)'
+                      : 'var(--theme-error-500)',
+                    fontWeight: 600,
+                  }}
+                >
+                  {log.success ? '✓' : '✕'}
+                </span>
+                <span style={{ textTransform: 'capitalize' }}>{log.trigger}</span>
+                <span>· {log.count} synced</span>
+                {log.failureCount > 0 && <span>· {log.failureCount} failed</span>}
+                <span style={{ color: 'var(--theme-elevation-500)' }}>
+                  · {new Date(log.createdAt).toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </section>
   )

@@ -14054,34 +14054,6 @@
           "notNull": false,
           "default": false
         },
-        "events_find": {
-          "name": "events_find",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "events_create": {
-          "name": "events_create",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "events_update": {
-          "name": "events_update",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "events_delete": {
-          "name": "events_delete",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
         "header_find": {
           "name": "header_find",
           "type": "boolean",
@@ -17689,6 +17661,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "6fb0f000-3405-4a83-815b-09e072bff8d1",
+  "id": "019d531c-f112-4876-9eff-37f2b1edade6",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

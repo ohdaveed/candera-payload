@@ -76,6 +76,7 @@ export interface Config {
     categories: Category;
     users: User;
     'etsy-tokens': EtsyToken;
+    'etsy-sync-logs': EtsySyncLog;
     briefs: Brief;
     quizzes: Quiz;
     'scent-profiles': ScentProfile;
@@ -108,6 +109,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'etsy-tokens': EtsyTokensSelect<false> | EtsyTokensSelect<true>;
+    'etsy-sync-logs': EtsySyncLogsSelect<false> | EtsySyncLogsSelect<true>;
     briefs: BriefsSelect<false> | BriefsSelect<true>;
     quizzes: QuizzesSelect<false> | QuizzesSelect<true>;
     'scent-profiles': ScentProfilesSelect<false> | ScentProfilesSelect<true>;
@@ -1168,6 +1170,48 @@ export interface EtsyToken {
   createdAt: string;
 }
 /**
+ * History of Etsy sync runs, however triggered. Written automatically — not editable.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "etsy-sync-logs".
+ */
+export interface EtsySyncLog {
+  id: number;
+  /**
+   * How this sync run was started.
+   */
+  trigger: 'dashboard' | 'cli';
+  /**
+   * Admin user who clicked Sync in the dashboard. Empty for CLI-triggered runs.
+   */
+  triggeredBy?: (number | null) | User;
+  success: boolean;
+  /**
+   * Listings synced during this run.
+   */
+  count: number;
+  /**
+   * Number of per-listing failures during this run.
+   */
+  failureCount: number;
+  /**
+   * Per-listing failures for this run, if any.
+   */
+  failures?:
+    | {
+        listingId: number;
+        error: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Set only when the whole run threw before completing (e.g. an Etsy auth failure) — distinct from the per-listing failures above.
+   */
+  fatalError?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Internal SEO briefs drafted before writing product copy. Not published or visible on the live site — a drafting aid only.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1841,6 +1885,10 @@ export interface PayloadLockedDocument {
         value: number | EtsyToken;
       } | null)
     | ({
+        relationTo: 'etsy-sync-logs';
+        value: number | EtsySyncLog;
+      } | null)
+    | ({
         relationTo: 'briefs';
         value: number | Brief;
       } | null)
@@ -2402,6 +2450,27 @@ export interface EtsyTokensSelect<T extends boolean = true> {
   accessToken?: T;
   refreshToken?: T;
   expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "etsy-sync-logs_select".
+ */
+export interface EtsySyncLogsSelect<T extends boolean = true> {
+  trigger?: T;
+  triggeredBy?: T;
+  success?: T;
+  count?: T;
+  failureCount?: T;
+  failures?:
+    | T
+    | {
+        listingId?: T;
+        error?: T;
+        id?: T;
+      };
+  fatalError?: T;
   updatedAt?: T;
   createdAt?: T;
 }

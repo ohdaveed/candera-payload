@@ -24,13 +24,13 @@ async function runSync(): Promise<void> {
     const payload = await getPayload({ config })
 
     // Try syncing by shop ID first
-    let result = await syncEtsyListings(shopId, payload)
+    let result = await syncEtsyListings(shopId, payload, { trigger: 'cli' })
 
     if (result.success && result.count === 0) {
       etsyLogger.warn(
         `No active listings found for shop ${shopId}. Attempting manual sync with known IDs...`,
       )
-      result = await syncEtsyListings(manualListingIds, payload)
+      result = await syncEtsyListings(manualListingIds, payload, { trigger: 'cli' })
     }
 
     if (result.success) {
