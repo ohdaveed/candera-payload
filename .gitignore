@@ -96,3 +96,6 @@ scripts/__pycache__/
 
 # Local git worktrees for isolated agent work
 .worktrees/
+
+# MCP server config (local/session-specific, not for version control)
+.mcp.json
