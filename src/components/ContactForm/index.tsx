@@ -108,7 +108,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
 
         <p className="caption text-candera-sage-text mb-6">
           Fields marked{' '}
-          <span className="text-candera-ember" aria-hidden="true">
+          <span className="text-candera-ember-strong" aria-hidden="true">
             *
           </span>{' '}
           are required.
@@ -123,7 +123,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               <FormItem>
                 <FormLabel className="label">
                   Full Name{' '}
-                  <span className="text-candera-ember" aria-hidden="true">
+                  <span className="text-candera-ember-strong" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>
@@ -151,7 +151,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               <FormItem>
                 <FormLabel className="label">
                   Email{' '}
-                  <span className="text-candera-ember" aria-hidden="true">
+                  <span className="text-candera-ember-strong" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>
@@ -201,7 +201,7 @@ export const ContactForm: React.FC<Props> = ({ formId }) => {
               <FormItem>
                 <FormLabel className="label">
                   Message{' '}
-                  <span className="text-candera-ember" aria-hidden="true">
+                  <span className="text-candera-ember-strong" aria-hidden="true">
                     *
                   </span>
                 </FormLabel>

@@ -53,7 +53,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               </span>
             )}
             {date && (
-              <time className="text-candera-stone/70" dateTime={date}>
+              <time className="text-candera-sage-text" dateTime={date}>
                 {formatDateTime(date)}
               </time>
             )}
